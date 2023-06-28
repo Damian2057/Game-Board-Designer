@@ -10,7 +10,15 @@ services:
 
     frontend:
         image: designer/frontend
+        build:
+            context: frontend
+            dockerfile: DockerFile
         env_file: .env
+        ports:
+            - '3000:3000'
+        volumes:
+            - .:/designer/frontend
+            - /designer/frontend/node_modules
         #        depends_on:
         #            backend:
         #                condition: service_started
