@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+    backend:
+        image: designer/backend
+        build:
+            context: backend
+            dockerfile: DockerFile
+        ports:
+            - "8080:3000"
+
+    frontend:
+        image: designer/frontend
+        env_file: .env
+        #        depends_on:
+        #            backend:
+        #                condition: service_started
+
+    postgres:
+        image: postgres:10.4
+        env_file: .env
+        ports:
+            - "35000:5432"
+        environment:
+            POSTGRES_USER: user
+            POSTGRES_PASSWORD: password
+            POSTGRES_DB: db
