@@ -6,7 +6,8 @@ import * as process from "process";
 async function main() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(process.env.APP_PORT);
-  console.log(`Application is running on: ${process.env.APP_PORT}`);
+  //TODO: app.enableCors();
+  await app.listen(process.env.BACKEND_PORT);
+  console.log(`Application is running on: ${process.env.BACKEND_PORT}`);
 }
-main();
+main().then(r => console.log("Application started"));
