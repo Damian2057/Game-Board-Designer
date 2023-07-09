@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from "@nestjs/common";
+import * as process from "process";
 
-async function bootstrap() {
+async function main() {
   const app = await NestFactory.create(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  await app.listen(3000);
+  //TODO: app.enableCors();
+  await app.listen(process.env.BACKEND_PORT);
+  console.log(`Application is running on: ${process.env.BACKEND_PORT}`);
 }
-bootstrap();
+main().then(() => console.log("Application started"));
