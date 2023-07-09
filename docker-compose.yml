@@ -1,34 +1,48 @@
 version: "3.8"
 services:
-    backend:
-        image: designer/backend
-        build:
-            context: backend
-            dockerfile: DockerFile
-        ports:
-            - "8080:3000"
-
-    frontend:
-        image: designer/frontend
-        build:
-            context: frontend
-            dockerfile: DockerFile
+    postgres:
+        container_name: local_postgres
+        image: postgres:13.2
+        restart: unless-stopped
         env_file: .env
         ports:
-            - '3000:3000'
+            - ${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}
+        environment:
+            POSTGRES_DB: ${POSTGRESQL_DB}
+            POSTGRES_USER: ${POSTGRESQL_USER}
+            POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready" ]
+            timeout: 20s
+            retries: 10
         volumes:
-            - .:/designer/frontend
-            - /designer/frontend/node_modules
+            - db:/var/lib/postgresql/data
+            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+volumes:
+    db:
+        driver: local
+
+
+
+#    backend:
+#        image: designer/backend
+#        build:
+#            context: backend
+#            dockerfile: DockerFile
+#        ports:
+#            - "8080:3000"
+#
+#    frontend:
+#        image: designer/frontend
+#        build:
+#            context: frontend
+#            dockerfile: DockerFile
+#        env_file: .env
+#        ports:
+#            - '3000:3000'
+#        volumes:
+#            - .:/designer/frontend
+#            - /designer/frontend/node_modules
         #        depends_on:
         #            backend:
         #                condition: service_started
-
-    postgres:
-        image: postgres:10.4
-        env_file: .env
-        ports:
-            - "35000:5432"
-        environment:
-            POSTGRES_USER: user
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: db
