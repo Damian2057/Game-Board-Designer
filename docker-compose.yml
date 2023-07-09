@@ -17,7 +17,7 @@ services:
             retries: 10
         volumes:
             - db:/var/lib/postgresql/data
-            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+#            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
 volumes:
     db:
         driver: local
