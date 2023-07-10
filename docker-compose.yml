@@ -1,27 +1,48 @@
 version: "3.8"
+volumes:
+    postgres_data:
+        driver: local
+
 services:
     postgres:
-        container_name: local_postgres
-        image: postgres:13.2
-        restart: unless-stopped
+        container_name: GameBoard-Postgres
+        image: postgres
         env_file: .env
-        ports:
-            - ${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}
         environment:
             POSTGRES_DB: ${POSTGRESQL_DB}
             POSTGRES_USER: ${POSTGRESQL_USER}
             POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
-        healthcheck:
-            test: [ "CMD-SHELL", "pg_isready" ]
-            timeout: 20s
-            retries: 10
+        ports:
+            - ${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}
         volumes:
-            - db:/var/lib/postgresql/data
-            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
-volumes:
-    db:
-        driver: local
+            - postgres_data:/var/lib/postgresql/data
+#            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
 
+    keycloak:
+        container_name: GameBoard-Keycloak
+        image: quay.io/keycloak/keycloak:legacy
+        env_file: .env
+        environment:
+            DB_VENDOR: POSTGRES
+            DB_ADDR: postgres
+            DB_DATABASE: ${POSTGRESQL_DB}
+            DB_USER: ${POSTGRESQL_USER}
+            DB_SCHEMA: public
+            DB_PASSWORD: ${POSTGRESQL_PASS}
+            KEYCLOAK_USER: ${KEYCLOAK_USER}
+            KEYCLOAK_PASSWORD: ${KEYCLOAK_PASS}
+        ports:
+            - ${KEYCLOAK_LOCAL_PORT}:${KEYCLOAK_DOCKER_PORT}
+        depends_on:
+            - postgres
+
+    redis:
+        container_name: GameBoard-Redis
+        image: redis:7.0.11
+        restart: unless-stopped
+        env_file: .env
+        ports:
+            - ${REDIS_LOCAL_PORT}:${REDIS_DOCKER_PORT}
 
 
 #    backend:

@@ -10,4 +10,5 @@ async function main() {
   await app.listen(process.env.BACKEND_PORT);
   console.log(`Application is running on: ${process.env.BACKEND_PORT}`);
 }
-main().then(() => console.log("Application started"));
+main().then(() => console.log("Application started correctly."));
+  // .catch((err) => console.error(err));
