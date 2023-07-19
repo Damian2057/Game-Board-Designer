@@ -1,4 +1,4 @@
-import { Model } from '../../src/users/model/user.entity';
+import { Model } from '../../src/users/model/domain/user.entity';
 
 describe('Model', () => {
   it('should be defined', () => {

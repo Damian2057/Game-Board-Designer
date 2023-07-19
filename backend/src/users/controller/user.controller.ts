@@ -8,9 +8,6 @@ export class UserController {
 
   @Get()
   getHello(): string {
-    console.log(this.userService.findAll().then((users) => {
-      console.log(users)
-    }))
-    return "Hello"
+    return "Hello World!";
   }
 }
