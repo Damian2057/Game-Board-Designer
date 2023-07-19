@@ -18,6 +18,11 @@ services:
             - postgres_data:/var/lib/postgresql/data
 #            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
         restart: unless-stopped
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            interval: 10s
+            timeout: 5s
+            retries: 3
 
     redis:
         container_name: GameBoard-Redis
@@ -26,8 +31,11 @@ services:
         env_file: .env
         ports:
             - ${REDIS_LOCAL_PORT}:${REDIS_DOCKER_PORT}
-        volumes:
-            - redis_data:/data
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
+            interval: 1s
+            timeout: 3s
+            retries: 30
 
     backend:
         image: designer/backend
