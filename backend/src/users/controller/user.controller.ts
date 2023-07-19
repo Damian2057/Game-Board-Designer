@@ -1,5 +1,6 @@
 import { Controller, Get } from "@nestjs/common";
 import { UserService } from "../service/user.service";
+import { ForbiddenException } from "../../exceptions/type/forbidden.exception";
 
 @Controller()
 export class UserController {
@@ -8,9 +9,6 @@ export class UserController {
 
   @Get()
   getHello(): string {
-    console.log(this.userService.findAll().then((users) => {
-      console.log(users)
-    }))
-    return "Hello"
+    return "Hello World!";
   }
 }
