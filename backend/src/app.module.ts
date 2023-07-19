@@ -1,18 +1,18 @@
 import { Module } from '@nestjs/common';
-import { UsersModule } from './users/users.module';
+import { UserModule } from './users/user.module';
 import { ConfigModule } from "@nestjs/config";
-import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { BoardGameModule } from './board-game/board-game.module';
 import { BoardSchemaModule } from './board-schema/board-schema.module';
+import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
-    UsersModule,
-    PrismaModule,
+    UserModule,
     AuthModule,
     BoardGameModule,
-    BoardSchemaModule],
+    BoardSchemaModule,
+    DatabaseModule],
   controllers: [],
   providers: []
 })
