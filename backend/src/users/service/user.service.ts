@@ -5,6 +5,7 @@ import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class UserService {
+
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>
@@ -12,5 +13,9 @@ export class UserService {
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();
+  }
+
+  async findOne(id: number) {
+    return await this.userRepository.findOneBy({id: id});
   }
 }
