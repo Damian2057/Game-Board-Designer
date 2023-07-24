@@ -1,4 +1,22 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from "@nestjs/common";
+import { JwtModule } from "@nestjs/jwt";
+import { AuthService } from './service/auth.service';
+import { UserModule } from "../users/user.module";
+import { JwtGuard } from "./guard/jwt.guard";
+import { RolesGuard } from "./guard/roles.guard";
+import { JwtStrategy } from "./guard/jwt.strategy.guard";
 
-@Module({})
+@Module({
+  imports: [
+    forwardRef(() => UserModule),
+    JwtModule.registerAsync({
+      useFactory: () => ({
+        secret: process.env.JWT_SECRET,
+        signOptions: { expiresIn: process.env.JWT_EXPIRATION_TIME },
+      })
+    })
+  ],
+  providers: [AuthService, JwtGuard, RolesGuard, JwtStrategy],
+  exports: [AuthService]
+})
 export class AuthModule {}
