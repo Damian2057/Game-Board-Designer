@@ -1,4 +1,4 @@
-import { Column, Entity } from "typeorm";
+import { BeforeInsert, Column, Entity } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
 import { UserRoleEntity } from "./user.role.entity";
 import { IsEmail, Length } from "class-validator";
@@ -14,7 +14,10 @@ export class User extends AbstractEntity<User> {
   @Length(8, 50)
   password: string
 
-  @Column({ length: 50 })
+  @Column({
+    length: 50,
+    unique: true
+  })
   @IsEmail()
   email: string
 
@@ -24,4 +27,9 @@ export class User extends AbstractEntity<User> {
     default: UserRoleEntity.USER
   })
   role: UserRoleEntity
+
+  @BeforeInsert()
+  emailToLowerCase() {
+    this.email = this.email.toLowerCase();
+  }
 }

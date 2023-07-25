@@ -1,5 +1,5 @@
 export enum UserRoleEntity {
-  ADMIN = "ADMIN",
-  USER = "USER",
-  EMPLOYEE = "EMPLOYEE"
+  ADMIN = "admin",
+  USER = "user",
+  EMPLOYEE = "employee"
 }
