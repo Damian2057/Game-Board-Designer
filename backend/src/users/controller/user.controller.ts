@@ -4,6 +4,7 @@ import { hasRoles } from "../../auth/decorator/role.decorator";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { User } from "../model/domain/user.entity";
+import { UserRoleEntity } from "../model/domain/user.role.entity";
 
 @Controller('user')
 export class UserController {
@@ -12,7 +13,12 @@ export class UserController {
 
   @Get('all')
   getUsers(): Promise<User[]> {
-    return this.userService.findAll();
+    return null
+  }
+
+  @Get('roles')
+  getRoles(): Promise<UserRoleEntity[]> {
+    return null
   }
 
   @Put('update')
