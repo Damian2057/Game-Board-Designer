@@ -15,7 +15,7 @@ export class AuthController {
   register() {
     return 'register';
   }
-  
+
   @Post('refresh')
   refresh() {
     return 'refresh';

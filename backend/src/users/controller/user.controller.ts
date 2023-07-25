@@ -1,4 +1,4 @@
-import { Controller, Get, Put, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Put, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "../service/user.service";
 import { hasRoles } from "../../auth/decorator/role.decorator";
 import { RolesGuard } from "../../auth/guard/roles.guard";
@@ -25,13 +25,14 @@ export class UserController {
     return null;
   }
 
-  @Get('by_role')
-  getUsersByRole(): Promise<User[]> {
+  @Get('by_filter')
+  getUsersByFiler(@Query('role') role?: string,
+                  @Query('email') email?: string, ): Promise<User[]> {
     return null;
   }
 
-  @Get('by_email')
-  getUserByEmail(): Promise<User> {
+  @Get(':id')
+  getUserById(@Param() id: number): Promise<User> {
     return null;
   }
 
