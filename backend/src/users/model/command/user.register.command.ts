@@ -1,4 +1,4 @@
-export class AuthRegisterCommand {
+export class UserRegisterCommand {
     username: string;
     password: string;
     email: string;

@@ -10,8 +10,8 @@ export class User extends AbstractEntity<User> {
   @Length(4, 50)
   username: string
 
-  @Column({ length: 50 })
-  @Length(8, 50)
+  @Column()
+  @Length(8)
   password: string
 
   @Column({
