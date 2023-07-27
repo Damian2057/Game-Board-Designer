@@ -3,6 +3,8 @@ import { Repository } from "typeorm";
 import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { AuthService } from "../../auth/service/auth.service";
+import { UserRegisterCommand } from "../model/command/user.register.command";
+import { mapUserCommandToUser } from "../util/util.functions";
 
 @Injectable()
 export class UserService {
@@ -23,5 +25,14 @@ export class UserService {
 
   async findOneByEmail(email: string) {
     return await this.userRepository.findOneBy({email: email});
+  }
+
+  async create(command: UserRegisterCommand): Promise<boolean> {
+    if (await this.findOneByEmail(command.email) == null) {
+      await this.userRepository.save(await mapUserCommandToUser(command));
+      return true;
+    } else {
+      return false;
+    }
   }
 }

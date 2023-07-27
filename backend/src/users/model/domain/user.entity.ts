@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
 import { UserRoleEntity } from "./user.role.entity";
-import { IsEmail, Length } from "class-validator";
+import {IsEmail, isMobilePhone, Length} from "class-validator";
 
 @Entity()
 export class User extends AbstractEntity<User> {
@@ -10,8 +10,8 @@ export class User extends AbstractEntity<User> {
   @Length(4, 50)
   username: string
 
-  @Column({ length: 50 })
-  @Length(8, 50)
+  @Column()
+  @Length(8)
   password: string
 
   @Column({
@@ -20,6 +20,9 @@ export class User extends AbstractEntity<User> {
   })
   @IsEmail()
   email: string
+
+  @Column({ length: 9 })
+  phoneNumber: string
 
   @Column({
     type: "enum",
