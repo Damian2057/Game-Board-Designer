@@ -54,4 +54,11 @@ export class UserController {
   getUserById(@Param() id: number): Promise<UserDto> {
     return this.userService.findOne(id);
   }
+
+  @hasRoles(UserRoleEntity.USER)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get()
+  getHello(): string {
+    return 'Hello World!';
+  }
 }

@@ -27,6 +27,10 @@ export class UserService {
     return await this.userRepository.findOneBy({email: email});
   }
 
+  async findOneByUsername(username: string) {
+    return await this.userRepository.findOneBy({username: username});
+  }
+
   async create(command: UserRegisterCommand): Promise<boolean> {
     if (await this.findOneByEmail(command.email) == null) {
       await this.userRepository.save(await mapUserCommandToUser(command));

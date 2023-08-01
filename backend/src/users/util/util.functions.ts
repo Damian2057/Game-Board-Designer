@@ -14,7 +14,3 @@ export async function mapUserCommandToUser(command: UserRegisterCommand): Promis
 export function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, 12);
 }
-
-export function comparePasswords(newPassword: string, passwordHash: string): Promise<boolean>{
-  return bcrypt.compare(newPassword, passwordHash);
-}
