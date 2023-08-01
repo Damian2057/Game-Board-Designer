@@ -17,6 +17,7 @@ export class AuthController {
   @Post('refresh')
   @UseGuards(JwtGuard)
   refresh(): Promise<AuthTokenDto> {
+    //TODO: implement refresh token
     return null;
   }
 

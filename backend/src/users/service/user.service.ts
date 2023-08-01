@@ -2,17 +2,17 @@ import { Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { AuthService } from "../../auth/service/auth.service";
 import { UserRegisterCommand } from "../model/command/user.register.command";
-import { mapUserCommandToUser } from "../util/util.functions";
+import { mapUserCommandToUser, mapUserToUserDto } from "../util/util.functions";
+import { UserDto } from "../model/dto/user.dto";
+import { UserNotFound } from "../../exceptions/type/user.not.found";
 
 @Injectable()
 export class UserService {
 
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
-    private readonly authService: AuthService
+    private readonly userRepository: Repository<User>
   ) {}
 
   async findAll(): Promise<User[]> {
@@ -38,5 +38,12 @@ export class UserService {
     } else {
       return false;
     }
+  }
+
+  me(user): Promise<UserDto> {
+    if (user != null) {
+      return mapUserToUserDto(user);
+    }
+    throw new UserNotFound();
   }
 }
