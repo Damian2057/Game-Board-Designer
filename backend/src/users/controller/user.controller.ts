@@ -8,6 +8,7 @@ import { UserUpdateCommand } from "../model/command/user.update.command";
 import { UserDto } from "../model/dto/user.dto";
 import { UserRegisterCommand } from "../model/command/user.register.command";
 import { UserUpdateRoleCommand } from "../model/command/user.update.role.command";
+import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 
 @Controller('user')
 export class UserController {
@@ -25,8 +26,8 @@ export class UserController {
   }
 
   @Get('roles')
-  getRoles(): Promise<UserRoleEntity[]> {
-    return null
+  getRoles(): string[] {
+    return Object.values(UserRoleEntity)
   }
 
   @Put('update')
@@ -40,8 +41,9 @@ export class UserController {
   }
 
   @Get('me')
-  getCurrentUser(): Promise<UserDto> {
-    return null;
+  @UseGuards(JwtGuard)
+  getCurrentUser(@GetCurrentUser() user): Promise<UserDto> {
+    return this.userService.me(user);
   }
 
   @Get('by_filter')
