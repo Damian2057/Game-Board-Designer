@@ -14,6 +14,7 @@ export async function mapUserCommandToUser(command: UserRegisterCommand): Promis
 
 export async function mapUserToUserDto(user: User): Promise<UserDto> {
   const userDto = new UserDto();
+  userDto.id = user.id;
   userDto.email = user.email;
   userDto.phoneNumber = user.phoneNumber;
   userDto.username = user.username;

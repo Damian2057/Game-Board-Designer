@@ -6,6 +6,7 @@ import { UserRegisterCommand } from "../model/command/user.register.command";
 import { mapUserCommandToUser, mapUserToUserDto } from "../util/util.functions";
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
+import { UserUpdateCommand } from "../model/command/user.update.command";
 
 @Injectable()
 export class UserService {
@@ -45,5 +46,9 @@ export class UserService {
       return mapUserToUserDto(user);
     }
     throw new UserNotFound();
+  }
+
+  async update(user: User, command: UserUpdateCommand): Promise<UserDto> {
+    return null;
   }
 }

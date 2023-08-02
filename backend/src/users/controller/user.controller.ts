@@ -7,7 +7,6 @@ import { UserRoleEntity } from "../model/domain/user.role.entity";
 import { UserUpdateCommand } from "../model/command/user.update.command";
 import { UserDto } from "../model/dto/user.dto";
 import { UserRegisterCommand } from "../model/command/user.register.command";
-import { UserUpdateRoleCommand } from "../model/command/user.update.role.command";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { HierarchyGuard } from "../guards/hierarchy.guard";
 
@@ -25,7 +24,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Get('all')
   getUsers(): Promise<UserDto[]> {
-    return null
+    return this.userService.findAll();
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
@@ -35,21 +34,20 @@ export class UserController {
     return Object.values(UserRoleEntity)
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
   @Put('update')
-  editUser(@Body() command: UserUpdateCommand): UserDto {
+  updateUser(@GetCurrentUser() user, @Body() command: UserUpdateCommand): Promise<UserDto> {
+    return this.userService.update(user, command);
+  }
+
+  @HasRoles(UserRoleEntity.ADMIN, UserRoleEntity.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
+  @Put('update/:id')
+  updateRole(@Param('id') id: number, @Body() command: UserUpdateCommand): Promise<UserDto> {
     return null;
   }
 
-  @HasRoles(UserRoleEntity.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Put('update_role')
-  updateRole(@Body() command: UserUpdateRoleCommand): UserDto {
-    return null;
-  }
-
-  @Get('me')
+  @Get('self')
   @UseGuards(JwtGuard)
   getCurrentUser(@GetCurrentUser() user): Promise<UserDto> {
     return this.userService.me(user);
@@ -57,7 +55,7 @@ export class UserController {
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get('by_filter')
+  @Get('filter')
   getUsersByFiler(@Query('role') role?: string,
                   @Query('email') email?: string): Promise<UserDto[]> {
     return null;
@@ -65,7 +63,7 @@ export class UserController {
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get(':id')
+  @Get('find/:id')
   getUserById(@Param() id: number): Promise<UserDto> {
     return this.userService.findOne(id);
   }
