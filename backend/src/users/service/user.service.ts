@@ -3,10 +3,12 @@ import { Repository } from "typeorm";
 import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRegisterCommand } from "../model/command/user.register.command";
-import { mapUserCommandToUser, mapUserToUserDto } from "../util/util.functions";
+import { getEnumValueByName, mapUserCommandToUser, mapUserToUserDto } from "../util/util.functions";
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
 import { UserUpdateCommand } from "../model/command/user.update.command";
+import { UserRoleEntity } from "../model/domain/user.role.entity";
+import { UserAlreadyExistsException } from "../../exceptions/type/user.already.exists.exception";
 
 @Injectable()
 export class UserService {
@@ -16,39 +18,76 @@ export class UserService {
     private readonly userRepository: Repository<User>
   ) {}
 
-  async findAll(): Promise<User[]> {
-    return await this.userRepository.find();
+  async findAll(): Promise<UserDto[]> {
+    const users: User[] = await this.userRepository.find();
+    return users.map(user => mapUserToUserDto(user));
   }
 
-  async findOne(id: number) {
-    return await this.userRepository.findOneBy({id: id});
+  async findOne(id: number): Promise<User> {
+    const user: User = await this.userRepository.findOneBy({id: id});
+    if (user != null) {
+      return user;
+    }
+    throw new UserNotFound();
   }
 
   async findOneByEmail(email: string) {
-    return await this.userRepository.findOneBy({email: email});
-  }
-
-  async findOneByUsername(username: string) {
-    return await this.userRepository.findOneBy({username: username});
-  }
-
-  async create(command: UserRegisterCommand): Promise<boolean> {
-    if (await this.findOneByEmail(command.email) == null) {
-      await this.userRepository.save(await mapUserCommandToUser(command));
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  me(user): Promise<UserDto> {
+    const user: User = await this.userRepository.findOneBy({email: email});
     if (user != null) {
       return mapUserToUserDto(user);
     }
     throw new UserNotFound();
   }
 
-  async update(user: User, command: UserUpdateCommand): Promise<UserDto> {
-    return null;
+  async findOneByUsername(username: string): Promise<User> {
+    const user: User = await this.userRepository.findOneBy({username: username});
+    if (user != null) {
+      return user;
+    }
+    throw new UserNotFound();
+  }
+
+  async create(command: UserRegisterCommand): Promise<boolean> {
+    if (await this.findOneByEmail(command.email) == null) {
+      await this.userRepository.save(await mapUserCommandToUser(command));
+      return true;
+    }
+    throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');
+  }
+
+  me(user): UserDto {
+    if (user != null) {
+      return mapUserToUserDto(user);
+    }
+    throw new UserNotFound();
+  }
+
+  async selfUpdate(user: User, command: UserUpdateCommand): Promise<UserDto> {
+    user.username = command.username;
+    user.phoneNumber = command.phoneNumber;
+    user.password = command.password;
+    const updated: User = await this.userRepository.save(user);
+    return mapUserToUserDto(updated);
+  }
+
+  async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
+      const user: User = await this.findOne(id);
+      user.username = command.username;
+      user.phoneNumber = command.phoneNumber;
+      user.password = command.password;
+      if (command.role != null) {
+        user.role = getEnumValueByName(UserRoleEntity, command.role)
+      }
+      const updated: User = await this.userRepository.save(user);
+      return mapUserToUserDto(updated);
+  }
+
+  async findByFilter(role: string, email: string) {
+    return Promise.resolve([]);
+  }
+
+  async findOneDto(id: number): Promise<UserDto> {
+    const user: User = await this.findOne(id);
+    return mapUserToUserDto(user);
   }
 }

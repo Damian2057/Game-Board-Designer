@@ -37,19 +37,19 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
   @Put('self_update')
   updateUser(@GetCurrentUser() user, @Body() command: UserUpdateCommand): Promise<UserDto> {
-    return this.userService.update(user, command);
+    return this.userService.selfUpdate(user, command);
   }
 
   @HasRoles(UserRoleEntity.ADMIN, UserRoleEntity.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
   @Put('update/:id')
-  updateRole(@Param('id') id: number, @Body() command: UserUpdateCommand): Promise<UserDto> {
-    return null;
+  updateUserById(@Param('id') id: number, @Body() command: UserUpdateCommand): Promise<UserDto> {
+    return this.userService.updateById(id, command);
   }
 
   @Get('self')
   @UseGuards(JwtGuard)
-  getCurrentUser(@GetCurrentUser() user): Promise<UserDto> {
+  getCurrentUser(@GetCurrentUser() user): UserDto {
     return this.userService.me(user);
   }
 
@@ -58,20 +58,13 @@ export class UserController {
   @Get('find')
   getUsersByFiler(@Query('role') role?: string,
                   @Query('email') email?: string): Promise<UserDto[]> {
-    return null;
+    return this.userService.findByFilter(role, email);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find/:id')
   getUserById(@Param('id') id: number): Promise<UserDto> {
-    return this.userService.findOne(id);
-  }
-
-  @HasRoles(UserRoleEntity.USER)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Get()
-  getHello(): string {
-    return 'Hello World!';
+    return this.userService.findOneDto(id);
   }
 }
