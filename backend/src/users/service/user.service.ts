@@ -3,7 +3,12 @@ import { Repository } from "typeorm";
 import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRegisterCommand } from "../model/command/user.register.command";
-import { getEnumValueByName, mapUserCommandToUser, mapUserToUserDto } from "../util/util.functions";
+import {
+  getEnumValueByName,
+  mapUserCommandToUser,
+  mapUserToUserDto,
+  mapUserToUserExtendedDto
+} from "../util/util.functions";
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
 import { UserUpdateCommand } from "../model/command/user.update.command";
@@ -20,7 +25,7 @@ export class UserService {
 
   async findAll(): Promise<UserDto[]> {
     const users: User[] = await this.userRepository.find();
-    return users.map(user => mapUserToUserDto(user));
+    return users.map(user => mapUserToUserExtendedDto(user));
   }
 
   async findOne(id: number): Promise<User> {
@@ -82,8 +87,32 @@ export class UserService {
       return mapUserToUserDto(updated);
   }
 
-  async findByFilter(role: string, email: string) {
-    return Promise.resolve([]);
+  async findByFilter(role: string, email: string, username: string, phoneNumber: string): Promise<UserDto[]> {
+    const users = new Set<User>();
+    if (role != null) {
+      const result = await this.userRepository.createQueryBuilder("user")
+        .where("user.role = :role", {role: getEnumValueByName(UserRoleEntity, role)}).getMany();
+      result.forEach(user => users.add(user));
+    }
+    if (email != null) {
+      const result = await this.userRepository.findOneBy({email: email});
+      if (result != null) {
+        users.add(result);
+      }
+    }
+    if (username != null) {
+      const result = await this.userRepository.findOneBy({username: username});
+      if (result != null) {
+        users.add(result);
+      }
+    }
+    if (phoneNumber != null) {
+      const result = await this.userRepository.findOneBy({phoneNumber: phoneNumber});
+      if (result != null) {
+        users.add(result);
+      }
+    }
+    return Array.from(users).map(user => mapUserToUserDto(user));
   }
 
   async findOneDto(id: number): Promise<UserDto> {

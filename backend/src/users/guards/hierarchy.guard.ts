@@ -12,7 +12,7 @@ export class HierarchyGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const request = context.switchToHttp().getRequest();
     const params = request.params;
-    const owner: User = request.user;
+    const owner: User = await this.userService.findOne(request.user.id);
     const affectedUser = await this.userService.findOne(params.id);
     if (owner.role === UserRoleEntity.USER) {
       return false;
