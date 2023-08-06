@@ -6,8 +6,7 @@ import { UserRegisterCommand } from "../model/command/user.register.command";
 import {
   getEnumValueByName,
   mapUserCommandToUser,
-  mapUserToUserDto,
-  mapUserToUserExtendedDto
+  mapUserToUserDto
 } from "../util/util.functions";
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
@@ -25,7 +24,7 @@ export class UserService {
 
   async findAll(): Promise<UserDto[]> {
     const users: User[] = await this.userRepository.find();
-    return users.map(user => mapUserToUserExtendedDto(user));
+    return users.map(user => mapUserToUserDto(user));
   }
 
   async findOne(id: number): Promise<User> {
@@ -41,7 +40,7 @@ export class UserService {
     if (user != null) {
       return mapUserToUserDto(user);
     }
-    throw new UserNotFound();
+    return null;
   }
 
   async findOneByUsername(username: string): Promise<User> {
@@ -68,30 +67,25 @@ export class UserService {
   }
 
   async selfUpdate(user: User, command: UserUpdateCommand): Promise<UserDto> {
-    user.username = command.username;
-    user.phoneNumber = command.phoneNumber;
-    user.password = command.password;
+    user = this.updateNotNullFields(user, command);
     const updated: User = await this.userRepository.save(user);
     return mapUserToUserDto(updated);
   }
 
   async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
-      const user: User = await this.findOne(id);
-      user.username = command.username;
-      user.phoneNumber = command.phoneNumber;
-      user.password = command.password;
-      if (command.role != null) {
-        user.role = getEnumValueByName(UserRoleEntity, command.role)
-      }
+      let user: User = await this.findOne(id);
+      user = this.updateNotNullFields(user, command);
       const updated: User = await this.userRepository.save(user);
       return mapUserToUserDto(updated);
   }
 
-  async findByFilter(role: string, email: string, username: string, phoneNumber: string): Promise<UserDto[]> {
+  async findByFilter(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
     const users = new Set<User>();
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")
-        .where("user.role = :role", {role: getEnumValueByName(UserRoleEntity, role)}).getMany();
+        .where("user.role = :role",
+          {role: getEnumValueByName(UserRoleEntity, role)})
+        .getMany();
       result.forEach(user => users.add(user));
     }
     if (email != null) {
@@ -112,11 +106,28 @@ export class UserService {
         users.add(result);
       }
     }
+    if (id != null) {
+      const result = await this.userRepository.findOneBy({id: id});
+      if (result != null) {
+        users.add(result);
+      }
+    }
     return Array.from(users).map(user => mapUserToUserDto(user));
   }
 
-  async findOneDto(id: number): Promise<UserDto> {
-    const user: User = await this.findOne(id);
-    return mapUserToUserDto(user);
+  private updateNotNullFields(user: User, command: UserUpdateCommand): User {
+    if (command.username != null) {
+      user.username = command.username;
+    }
+    if (command.phoneNumber != null) {
+      user.phoneNumber = command.phoneNumber;
+    }
+    if (command.password != null) {
+      user.password = command.password;
+    }
+    if (command.role != null) {
+      user.role = getEnumValueByName(UserRoleEntity, command.role);
+    }
+    return user;
   }
 }
