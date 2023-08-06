@@ -55,18 +55,12 @@ export class UserController {
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get('find_by')
+  @Get('find')
   getUsersByFiler(@Query('role') role?: string,
                   @Query('email') email?: string,
                   @Query('username') username?: string,
-                  @Query('phoneNumber') phoneNumber?: string): Promise<UserDto[]> {
-    return this.userService.findByFilter(role, email, username, phoneNumber);
-  }
-
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Get('find/:id')
-  getUserById(@Param('id') id: number): Promise<UserDto> {
-    return this.userService.findOneDto(id);
+                  @Query('phoneNumber') phoneNumber?: string,
+                  @Query('id') id?: number): Promise<UserDto[]> {
+    return this.userService.findByFilter(role, email, username, phoneNumber, id);
   }
 }

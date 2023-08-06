@@ -6,8 +6,7 @@ import { UserRegisterCommand } from "../model/command/user.register.command";
 import {
   getEnumValueByName,
   mapUserCommandToUser,
-  mapUserToUserDto,
-  mapUserToUserExtendedDto
+  mapUserToUserDto
 } from "../util/util.functions";
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
@@ -25,7 +24,7 @@ export class UserService {
 
   async findAll(): Promise<UserDto[]> {
     const users: User[] = await this.userRepository.find();
-    return users.map(user => mapUserToUserExtendedDto(user));
+    return users.map(user => mapUserToUserDto(user));
   }
 
   async findOne(id: number): Promise<User> {
@@ -41,7 +40,7 @@ export class UserService {
     if (user != null) {
       return mapUserToUserDto(user);
     }
-    throw new UserNotFound();
+    return null;
   }
 
   async findOneByUsername(username: string): Promise<User> {
@@ -87,7 +86,7 @@ export class UserService {
       return mapUserToUserDto(updated);
   }
 
-  async findByFilter(role: string, email: string, username: string, phoneNumber: string): Promise<UserDto[]> {
+  async findByFilter(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
     const users = new Set<User>();
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")
@@ -108,6 +107,12 @@ export class UserService {
     }
     if (phoneNumber != null) {
       const result = await this.userRepository.findOneBy({phoneNumber: phoneNumber});
+      if (result != null) {
+        users.add(result);
+      }
+    }
+    if (id != null) {
+      const result = await this.userRepository.findOneBy({id: id});
       if (result != null) {
         users.add(result);
       }
