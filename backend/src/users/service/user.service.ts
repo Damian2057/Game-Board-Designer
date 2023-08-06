@@ -67,21 +67,14 @@ export class UserService {
   }
 
   async selfUpdate(user: User, command: UserUpdateCommand): Promise<UserDto> {
-    user.username = command.username;
-    user.phoneNumber = command.phoneNumber;
-    user.password = command.password;
+    user = this.updateNotNullFields(user, command);
     const updated: User = await this.userRepository.save(user);
     return mapUserToUserDto(updated);
   }
 
   async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
-      const user: User = await this.findOne(id);
-      user.username = command.username;
-      user.phoneNumber = command.phoneNumber;
-      user.password = command.password;
-      if (command.role != null) {
-        user.role = getEnumValueByName(UserRoleEntity, command.role)
-      }
+      let user: User = await this.findOne(id);
+      user = this.updateNotNullFields(user, command);
       const updated: User = await this.userRepository.save(user);
       return mapUserToUserDto(updated);
   }
@@ -90,7 +83,9 @@ export class UserService {
     const users = new Set<User>();
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")
-        .where("user.role = :role", {role: getEnumValueByName(UserRoleEntity, role)}).getMany();
+        .where("user.role = :role",
+          {role: getEnumValueByName(UserRoleEntity, role)})
+        .getMany();
       result.forEach(user => users.add(user));
     }
     if (email != null) {
@@ -120,8 +115,19 @@ export class UserService {
     return Array.from(users).map(user => mapUserToUserDto(user));
   }
 
-  async findOneDto(id: number): Promise<UserDto> {
-    const user: User = await this.findOne(id);
-    return mapUserToUserDto(user);
+  private updateNotNullFields(user: User, command: UserUpdateCommand): User {
+    if (command.username != null) {
+      user.username = command.username;
+    }
+    if (command.phoneNumber != null) {
+      user.phoneNumber = command.phoneNumber;
+    }
+    if (command.password != null) {
+      user.password = command.password;
+    }
+    if (command.role != null) {
+      user.role = getEnumValueByName(UserRoleEntity, command.role);
+    }
+    return user;
   }
 }
