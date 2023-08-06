@@ -27,9 +27,9 @@ jobs:
       postgres:
         image: postgres
         env:
-          POSTGRES_DB: ${{ secrets.POSTGRESQL_DB }}
-          POSTGRES_USER: ${{ secrets.POSTGRESQL_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRESQL_PASS }}
+          POSTGRES_DB: db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
