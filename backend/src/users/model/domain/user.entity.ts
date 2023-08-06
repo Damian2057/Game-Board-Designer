@@ -1,7 +1,7 @@
 import { BeforeInsert, Column, Entity } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
 import { UserRoleEntity } from "./user.role.entity";
-import {IsEmail, isMobilePhone, Length} from "class-validator";
+import {IsEmail, Length} from "class-validator";
 
 @Entity()
 export class User extends AbstractEntity<User> {
