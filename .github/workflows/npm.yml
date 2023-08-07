@@ -2,6 +2,7 @@ name: npm CI
 
 env:
   POSTGRESQL_DB: db
+  POSTGRES_LOCAL_PORT: 5333
 
 on:
   push:
