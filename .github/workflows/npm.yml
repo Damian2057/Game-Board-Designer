@@ -11,7 +11,7 @@ on:
 
 jobs:
   backend:
-    name: backend test
+    name: backend build and test
     runs-on: ubuntu-latest
 
     services:
@@ -36,7 +36,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: 16
+          node-version: 18.x
 
       - name: Install Dependencies
         working-directory: backend/
@@ -48,3 +48,24 @@ jobs:
       - name: Run Tests
         working-directory: backend/
         run: npm test
+
+  frontend:
+    name: frontend build test
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        working-directory: frontend/
+        run: npm install
+
+      - name: Build frontend
+        working-directory: frontend/
+        run: npm run build --if-present
