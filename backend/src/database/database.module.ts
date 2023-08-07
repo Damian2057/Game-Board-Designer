@@ -7,7 +7,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
       useFactory: () => ({
         type: 'postgres',
         host: process.env.POSTGRESQL_HOST,
-        port: parseInt(process.env.POSTGRESQL_PORT),
+        port: parseInt(process.env.POSTGRES_LOCAL_PORT),
         username: process.env.POSTGRESQL_USER,
         password: process.env.POSTGRESQL_PASS,
         database: process.env.POSTGRESQL_DB,
