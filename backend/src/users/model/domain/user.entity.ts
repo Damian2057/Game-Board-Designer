@@ -33,6 +33,6 @@ export class User extends AbstractEntity<User> {
 
   @BeforeInsert()
   emailToLowerCase() {
-    this.email = this.email.toLowerCase();
+    this.email = this.email.toLowerCase()
   }
 }
