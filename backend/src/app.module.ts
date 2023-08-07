@@ -6,6 +6,7 @@ import { BoardGameModule } from './board-game/board-game.module';
 import { BoardSchemaModule } from './board-schema/board-schema.module';
 import { DatabaseModule } from './database/database.module';
 import { ExceptionsModule } from './exceptions/exceptions.module';
+import { OrderModule } from './order/order.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -14,7 +15,8 @@ import { ExceptionsModule } from './exceptions/exceptions.module';
     BoardGameModule,
     BoardSchemaModule,
     DatabaseModule,
-    ExceptionsModule],
+    ExceptionsModule,
+    OrderModule],
   controllers: [],
   providers: []
 })
