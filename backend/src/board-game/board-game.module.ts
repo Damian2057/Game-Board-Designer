@@ -5,12 +5,13 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Tag } from "./model/domain/tag.entity";
 import { GameElement } from "./model/domain/game.element.entity";
 import { BoardGame } from "./model/domain/board-game.entity";
+import { TagController } from './controller/tag.controller';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([BoardGame, Tag, GameElement]),
   ],
-  controllers: [BoardGameController],
+  controllers: [BoardGameController, TagController],
   providers: [BoardGameService]
 })
 export class BoardGameModule {}
