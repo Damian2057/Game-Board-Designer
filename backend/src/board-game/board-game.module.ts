@@ -6,12 +6,13 @@ import { Tag } from "./model/domain/tag.entity";
 import { GameElement } from "./model/domain/game.element.entity";
 import { BoardGame } from "./model/domain/board-game.entity";
 import { TagController } from './controller/tag.controller';
+import { TagService } from './service/tag.service';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([BoardGame, Tag, GameElement]),
   ],
   controllers: [BoardGameController, TagController],
-  providers: [BoardGameService]
+  providers: [BoardGameService, TagService]
 })
 export class BoardGameModule {}

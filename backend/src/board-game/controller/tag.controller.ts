@@ -1,9 +1,11 @@
 import { Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { TagDto } from "../model/dto/tag.dto";
+import { TagService } from "../service/tag.service";
 
 @Controller('tag')
 export class TagController {
 
+  constructor(private readonly tagService: TagService) {}
   @Get('all')
   getAllTags(): TagDto[] {
     return null;
