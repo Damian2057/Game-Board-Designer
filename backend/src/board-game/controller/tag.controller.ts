@@ -36,14 +36,14 @@ export class TagController {
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
-  updateTag(@Param('id') id: number, @Body() command: UpdateTagCommand): TagDto {
+  updateTag(@Param('id') id: number, @Body() command: UpdateTagCommand): Promise<TagDto> {
     return this.tagService.updateById(id, command);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteTag(@Param('id') id: number): boolean {
+  deleteTag(@Param('id') id: number): Promise<boolean> {
     return this.tagService.deleteById(id);
   }
 }

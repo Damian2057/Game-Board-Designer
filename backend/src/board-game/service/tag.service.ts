@@ -5,7 +5,9 @@ import { Repository } from "typeorm";
 import { CreateTagCommand } from "../model/command/create.tag.command";
 import { UpdateTagCommand } from "../model/command/update.tag.command";
 import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.key.parameter.exception";
-import { mapTagCommandToTag } from "../util/util.functions";
+import { mapTagCommandToTag, mapTagToTagDto } from "../util/util.functions";
+import { TagDto } from "../model/dto/tag.dto";
+import { SetFilter } from "../../util/SetFilter";
 
 @Injectable()
 export class TagService {
@@ -16,25 +18,26 @@ export class TagService {
   ) {
   }
 
-  findAll() {
-    return this.tagRepository.find();
+  async findAll(): Promise<TagDto[]> {
+    const tags: Tag[] = await this.tagRepository.find();
+    return tags.map(tag => mapTagToTagDto(tag));
   }
 
-  async findByFilter(id: number, name: string): Promise<Tag[]> {
-    const tags = new Set<Tag>();
+  async findByFilter(id: number, name: string): Promise<TagDto[]> {
+    const tagger = new SetFilter();
     if (name != null) {
-      const result = await this.tagRepository.findOneBy({name: name});
+      const result: Tag = await this.tagRepository.findOneBy({name: name});
       if (result != null) {
-        tags.add(result);
+        tagger.add(result);
       }
     }
     if (id != null) {
-      const result = await this.tagRepository.findOneBy({id: id});
+      const result: Tag = await this.tagRepository.findOneBy({id: id});
       if (result != null) {
-        tags.add(result);
+        tagger.add(result);
       }
     }
-    return Array.from(tags);
+    return Array.from(tagger.get()).map(tag => mapTagToTagDto(tag));
   }
 
   async create(command: CreateTagCommand): Promise<boolean> {
@@ -45,11 +48,26 @@ export class TagService {
     throw new DuplicateKeyParameterException('Tag with name: ' + command.name + ' already exists!');
   }
 
-  updateById(id: number, command: UpdateTagCommand) {
-    return undefined;
+  async updateById(id: number, command: UpdateTagCommand): Promise<TagDto> {
+    let tag: Tag = await this.tagRepository.findOneBy({id: id});
+    tag = this.updateNotNullFields(tag, command);
+    const updated: Tag = await this.tagRepository.save(tag);
+    return mapTagToTagDto(updated);
   }
 
-  deleteById(id: number) {
-    return false;
+  async deleteById(id: number): Promise<boolean> {
+    const result = await this.tagRepository.delete({ id: id })
+    if (result.affected > 0) {
+      return true;
+    }
+    throw new DuplicateKeyParameterException('Tag with id: ' + id + ' does not exist!')
+
+  }
+
+  private updateNotNullFields(tag: Tag, command: UpdateTagCommand): Tag {
+    if (command.name != null) {
+      tag.name = command.name;
+    }
+    return tag;
   }
 }

@@ -13,6 +13,7 @@ import { UserNotFound } from "../../exceptions/type/user.not.found";
 import { UserUpdateCommand } from "../model/command/user.update.command";
 import { UserRoleEntity } from "../model/domain/user.role.entity";
 import { UserAlreadyExistsException } from "../../exceptions/type/user.already.exists.exception";
+import { SetFilter } from "../../util/SetFilter";
 
 @Injectable()
 export class UserService {
@@ -80,7 +81,7 @@ export class UserService {
   }
 
   async findByFilter(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
-    const users = new Set<User>();
+    const users = new SetFilter();
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")
         .where("user.role = :role",
@@ -112,7 +113,7 @@ export class UserService {
         users.add(result);
       }
     }
-    return Array.from(users).map(user => mapUserToUserDto(user));
+    return Array.from(users.get()).map(user => mapUserToUserDto(user));
   }
 
   private updateNotNullFields(user: User, command: UserUpdateCommand): User {
