@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Controller, Delete, Get, Param, Post, Put, Query } from "@nestjs/common";
 import { TagDto } from "../model/dto/tag.dto";
 
 @Controller('tag')
@@ -6,6 +6,12 @@ export class TagController {
 
   @Get('all')
   getAllTags(): TagDto[] {
+    return null;
+  }
+
+  @Get('find')
+  getTagById(@Query('id') id?: number,
+             @Query('name') name?: string): TagDto {
     return null;
   }
 
