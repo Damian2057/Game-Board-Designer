@@ -10,39 +10,39 @@ import { UpdateBoardGameCommand } from "../model/command/update.board-game.comma
 
 @Controller('board-game')
 export class BoardGameController {
+
   constructor(private readonly boardGameService: BoardGameService) {}
 
   @Get('all')
-  getAllTags(): Promise<BoardGameDto[]> {
+  getAllBoardGames(): Promise<BoardGameDto[]> {
     return this.boardGameService.findAll();
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
-  getTagById(@Query('id') id?: number,
-             @Query('name') name?: string): Promise<BoardGameDto[]> {
-    return this.boardGameService.findByFilter(id, name);
+  getGameBoardByFilter(@Query('id') id?: number,
+             @Query('name') name?: string,
+             @Query('tags') tags?: string): Promise<BoardGameDto[]> {
+    return this.boardGameService.findByFilter(id, name, tags);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
-  createTag(@Body() command: CreateBoardGameCommand): Promise<boolean> {
+  createBoardGame(@Body() command: CreateBoardGameCommand): Promise<boolean> {
     return this.boardGameService.create(command);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
-  updateTag(@Param('id') id: number, @Body() command: UpdateBoardGameCommand): Promise<BoardGameDto> {
+  updateBoardGame(@Param('id') id: number, @Body() command: UpdateBoardGameCommand): Promise<BoardGameDto> {
     return this.boardGameService.updateById(id, command);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteTag(@Param('id') id: number): Promise<boolean> {
+  deleteBoardGame(@Param('id') id: number): Promise<boolean> {
     return this.boardGameService.deleteById(id);
   }
 }

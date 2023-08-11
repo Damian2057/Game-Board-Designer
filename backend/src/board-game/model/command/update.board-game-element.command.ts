@@ -1,6 +1,6 @@
 import { Length, Min } from "class-validator";
 
-export class UpdateBoardGameElement {
+export class UpdateBoardGameElementCommand {
 
   @Length(3, 100)
   name: string

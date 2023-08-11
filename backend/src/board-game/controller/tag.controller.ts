@@ -21,7 +21,7 @@ export class TagController {
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
-  getTagById(@Query('id') id?: number,
+  getTagByFilter(@Query('id') id?: number,
              @Query('name') name?: string): Promise<TagDto[]> {
     return this.tagService.findByFilter(id, name);
   }

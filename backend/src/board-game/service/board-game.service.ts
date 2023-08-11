@@ -24,7 +24,7 @@ export class BoardGameService {
     return Promise.resolve([]);
   }
 
-  findByFilter(id: number, name: string) {
+  findByFilter(id: number, name: string, tags: string) {
     return Promise.resolve([]);
   }
 
