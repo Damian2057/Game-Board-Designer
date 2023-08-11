@@ -70,4 +70,12 @@ export class TagService {
     }
     return tag;
   }
+
+  deleteGameTagById(id: number, tagId: number) {
+    return Promise.resolve([]);
+  }
+
+  addGameTagById(id: number, tagId: number) {
+    return Promise.resolve([]);
+  }
 }

@@ -7,6 +7,7 @@ import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { GameElementDto } from "../model/dto/game-element.dto";
+import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
 
 @Controller('element')
 export class GameElementController {
@@ -43,7 +44,7 @@ export class GameElementController {
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id/add')
-  addGameElement(@Param('id') id: number, @Body() element: UpdateBoardGameElementCommand): Promise<BoardGameDto[]> {
+  addGameElement(@Param('id') id: number, @Body() element: CreateBoardGameElementCommand): Promise<BoardGameDto[]> {
     return this.gameElementService.add(id, element);
   }
 }

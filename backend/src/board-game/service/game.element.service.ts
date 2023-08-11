@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { UpdateBoardGameElementCommand } from "../model/command/update.board-game-element.command";
+import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
 
 @Injectable()
 export class GameElementService {
@@ -12,7 +13,7 @@ export class GameElementService {
     return Promise.resolve([]);
   }
 
-  add(id: number, element: UpdateBoardGameElementCommand) {
+  add(id: number, element: CreateBoardGameElementCommand) {
     return Promise.resolve([]);
   }
 

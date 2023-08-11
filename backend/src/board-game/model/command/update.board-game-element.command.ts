@@ -1,10 +1,4 @@
-import { Length, Min } from "class-validator";
+import { CreateBoardGameElementCommand } from "./create.board-game.element.command";
 
-export class UpdateBoardGameElementCommand {
-
-  @Length(3, 100)
-  name: string
-
-  @Min(1)
-  quantity: number
+export class UpdateBoardGameElementCommand extends CreateBoardGameElementCommand {
 }

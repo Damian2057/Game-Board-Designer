@@ -1,6 +1,6 @@
 import { ArrayMinSize, IsString, Length, Min } from "class-validator";
-import { Tag } from "../domain/tag.entity";
-import { GameElement } from "../domain/game.element.entity";
+import { TagDto } from "../dto/tag.dto";
+import { GameElementDto } from "../dto/game-element.dto";
 
 export class CreateBoardGameCommand {
 
@@ -20,9 +20,9 @@ export class CreateBoardGameCommand {
   price: number
 
   @ArrayMinSize(1)
-  tags: Tag[]
+  tags: TagDto[]
 
   @ArrayMinSize(1)
-  gameElements: GameElement[]
+  gameElements: GameElementDto[]
 
 }

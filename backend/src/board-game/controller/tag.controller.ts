@@ -7,6 +7,7 @@ import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { UpdateTagCommand } from "../model/command/update.tag.command";
+import { BoardGameDto } from "../model/dto/board-game.dto";
 
 @Controller('tag')
 export class TagController {
@@ -45,5 +46,19 @@ export class TagController {
   @Delete('delete/:id')
   deleteTag(@Param('id') id: number): Promise<boolean> {
     return this.tagService.deleteById(id);
+  }
+
+  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Delete(':id/delete/:tagId')
+  deleteTagFromGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto[]> {
+    return this.tagService.deleteGameTagById(id, tagId);
+  }
+
+  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Put(':id/add/:tagId')
+  addTagToGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto[]> {
+    return this.tagService.addGameTagById(id, tagId);
   }
 }
