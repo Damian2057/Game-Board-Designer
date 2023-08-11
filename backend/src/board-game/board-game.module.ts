@@ -9,6 +9,7 @@ import { TagController } from './controller/tag.controller';
 import { TagService } from './service/tag.service';
 import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
+import { GameElementController } from "./controller/game.element.controller";
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { UserModule } from "../users/user.module";
     AuthModule,
     UserModule
   ],
-  controllers: [BoardGameController, TagController],
+  controllers: [BoardGameController, TagController, GameElementController],
   providers: [BoardGameService, TagService]
 })
 export class BoardGameModule {}

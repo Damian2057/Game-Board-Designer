@@ -1,5 +1,3 @@
 import { CreateTagCommand } from "./create.tag.command";
 
-export class UpdateTagCommand extends CreateTagCommand {
-
-}
+export class UpdateTagCommand extends CreateTagCommand {}

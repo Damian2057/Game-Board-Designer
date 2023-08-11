@@ -5,7 +5,9 @@ import { BoardGame } from "./board-game.entity";
 @Entity()
 export class Tag extends AbstractEntity<Tag> {
 
-    @Column({ length: 20 })
+    @Column({ length: 20,
+        unique: true
+    })
     name: string;
 
     @ManyToMany(() => BoardGame, boardGame => boardGame.tags)
