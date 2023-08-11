@@ -15,4 +15,12 @@ export class GameElementService {
   add(id: number, element: UpdateBoardGameElementCommand) {
     return Promise.resolve([]);
   }
+
+  findAll(id: number) {
+    return Promise.resolve([]);
+  }
+
+  findByFilter(id: number) {
+    return Promise.resolve(undefined);
+  }
 }
