@@ -12,8 +12,8 @@ export class BoardGame extends AbstractEntity<BoardGame> {
   @Length(3, 50)
   title: string
 
-  @Column({ length: 500 })
-  @Length(10, 500)
+  @Column({ length: 2000 })
+  @Length(10, 2000)
   description: string
 
   @Column({ length: 20 })
