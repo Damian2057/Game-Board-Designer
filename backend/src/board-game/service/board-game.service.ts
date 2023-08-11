@@ -20,23 +20,23 @@ export class BoardGameService {
   ) {}
 
 
-  findAll() {
+  async findAll() {
     return Promise.resolve([]);
   }
 
-  findByFilter(id: number, name: string, tags: string) {
+  async findByFilter(id: number, name: string, tags: string) {
     return Promise.resolve([]);
   }
 
-  create(command: CreateBoardGameCommand) {
+  async create(command: CreateBoardGameCommand) {
     return Promise.resolve(false);
   }
 
-  updateById(id: number, command: UpdateBoardGameCommand) {
+  async updateById(id: number, command: UpdateBoardGameCommand) {
     return Promise.resolve(undefined);
   }
 
-  deleteById(id: number) {
+  async deleteById(id: number) {
     return Promise.resolve(false);
   }
 }

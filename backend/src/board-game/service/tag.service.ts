@@ -64,18 +64,18 @@ export class TagService {
 
   }
 
+  async deleteGameTagById(id: number, tagId: number) {
+    return Promise.resolve([]);
+  }
+
+  async addGameTagById(id: number, tagId: number) {
+    return Promise.resolve([]);
+  }
+
   private updateNotNullFields(tag: Tag, command: UpdateTagCommand): Tag {
     if (command.name != null) {
       tag.name = command.name;
     }
     return tag;
-  }
-
-  deleteGameTagById(id: number, tagId: number) {
-    return Promise.resolve([]);
-  }
-
-  addGameTagById(id: number, tagId: number) {
-    return Promise.resolve([]);
   }
 }
