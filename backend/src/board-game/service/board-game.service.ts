@@ -38,9 +38,9 @@ export class BoardGameService {
   async findByFilter(id: number, title: string, tags: string) {
     const games = new SetFilter();
     if (id != null) {
-      const result: BoardGame[] = await this.getGameBoardById(id);
+      const result: BoardGame = await this.getGameBoardById(id);
       if (result != null) {
-        games.add(result[0]);
+        games.add(result);
       }
     }
     if (title != null) {
@@ -71,8 +71,8 @@ export class BoardGameService {
           }
         });
         for (const result of results) {
-          const gamesWithFullProperties: BoardGame[] = await this.getGameBoardById(result.id);
-          games.add(gamesWithFullProperties[0]);
+          const gameWithFullProperties: BoardGame = await this.getGameBoardById(result.id);
+          games.add(gameWithFullProperties);
         }
       }
     }
@@ -91,8 +91,8 @@ export class BoardGameService {
   }
 
   async updateById(id: number, command: UpdateBoardGameCommand): Promise<BoardGameDto> {
-    const game: BoardGame[] = await this.getGameBoardById(id);
-    game[0] = this.updateNotNullFields(game[0], command);
+    let game: BoardGame = await this.getGameBoardById(id);
+    game = this.updateNotNullFields(game[0], command);
     const updated: BoardGame = await this.boardGameRepository.save(game[0]);
     return mapBoardGameToBoardGameDto(updated);
   }
@@ -107,8 +107,7 @@ export class BoardGameService {
 
   async removeTagFromGameById(id: number, tagId: number): Promise<BoardGameDto> {
     const tag: Tag = await this.tagRepository.findOneBy({ id: tagId });
-    const games: BoardGame[] = await this.getGameBoardById(id);
-    const game: BoardGame = games[0];
+    const game: BoardGame = await this.getGameBoardById(id);
 
     const existingTagIndex = game.tags.findIndex(t => t.id === tag.id);
 
@@ -123,8 +122,7 @@ export class BoardGameService {
 
   async addTagToGameById(id: number, tagId: number): Promise<BoardGameDto> {
     const tag: Tag = await this.tagRepository.findOneBy({id: tagId});
-    const games: BoardGame[] = await this.getGameBoardById(id);
-    const game: BoardGame = games[0];
+    const game: BoardGame = await this.getGameBoardById(id);
     const existingTagIndex = game.tags.findIndex(t => t.id === tag.id);
 
     if (existingTagIndex === -1) {
@@ -136,8 +134,8 @@ export class BoardGameService {
     }
   }
 
-  private async getGameBoardById(id: number): Promise<BoardGame[]> {
-    return await this.boardGameRepository.find({
+  private async getGameBoardById(id: number): Promise<BoardGame> {
+    const games: BoardGame[] = await this.boardGameRepository.find({
       relations: {
         tags: true,
         gameElements: true
@@ -146,6 +144,10 @@ export class BoardGameService {
         id: id
       }
     });
+    if (games.length === 0) {
+      throw new IllegalArgumentException('BoardGame with id: ' + id + ' does not exist!')
+    }
+    return games[0]
   }
 
   private updateNotNullFields(boardGame: BoardGame, command: UpdateBoardGameCommand): BoardGame {
