@@ -32,4 +32,9 @@ jobs:
 
       - name: Push to GitHub
         working-directory: backend/
-        run: git push origin main
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add package.json package-lock.json
+          git commit -m "Bump version"
+          git push
