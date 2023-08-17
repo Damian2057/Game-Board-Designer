@@ -7,6 +7,7 @@ import { BoardSchemaModule } from './board-schema/board-schema.module';
 import { DatabaseModule } from './database/database.module';
 import { ExceptionsModule } from './exceptions/exceptions.module';
 import { OrderModule } from './order/order.module';
+import { ImageModule } from './image/image.module';
 
 @Module({
   imports: [ConfigModule.forRoot(),
@@ -16,7 +17,8 @@ import { OrderModule } from './order/order.module';
     BoardSchemaModule,
     DatabaseModule,
     ExceptionsModule,
-    OrderModule],
+    OrderModule,
+    ImageModule],
   controllers: [],
   providers: []
 })

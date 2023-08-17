@@ -18,7 +18,7 @@ import { GameElementService } from "./service/game.element.service";
     AuthModule,
     UserModule
   ],
-  controllers: [BoardGameController, TagController, GameElementController],
+  controllers: [TagController, GameElementController, BoardGameController],
   providers: [BoardGameService, TagService, GameElementService],
 })
 export class BoardGameModule {}
