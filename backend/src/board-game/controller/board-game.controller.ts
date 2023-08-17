@@ -20,9 +20,9 @@ export class BoardGameController {
 
   @Get('find')
   getGameBoardByFilter(@Query('id') id?: number,
-             @Query('name') name?: string,
+             @Query('title') title?: string,
              @Query('tags') tags?: string): Promise<BoardGameDto[]> {
-    return this.boardGameService.findByFilter(id, name, tags);
+    return this.boardGameService.findByFilter(id, title, tags);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
