@@ -8,9 +8,10 @@ import { GameElement } from "../board-game/model/domain/game.element.entity";
 import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
 import { ImageService } from './service/image.service';
-import { ImageCron } from './tasks/image.cron';
+import { ImageScheduler } from './tasks/image.scheduler';
 import * as process from "process";
 import { ScheduleModule } from "@nestjs/schedule";
+import { ImageEntity } from "./model/domain/image.entity";
 
 @Module({
   imports: [
@@ -20,11 +21,11 @@ import { ScheduleModule } from "@nestjs/schedule";
       }),
     }),
     ScheduleModule.forRoot(),
-    TypeOrmModule.forFeature([BoardGame, Tag, GameElement]),
+    TypeOrmModule.forFeature([ImageEntity, BoardGame, Tag, GameElement]),
     AuthModule,
     UserModule
   ],
   controllers: [ImageController],
-  providers: [ImageService, ImageCron]
+  providers: [ImageService, ImageScheduler]
 })
 export class ImageModule {}
