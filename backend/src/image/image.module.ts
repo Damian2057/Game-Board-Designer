@@ -8,19 +8,23 @@ import { GameElement } from "../board-game/model/domain/game.element.entity";
 import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
 import { ImageService } from './service/image.service';
+import { ImageCron } from './tasks/image.cron';
+import * as process from "process";
+import { ScheduleModule } from "@nestjs/schedule";
 
 @Module({
   imports: [
     MulterModule.registerAsync({
       useFactory: () => ({
-        dest: './upload',
+        dest: process.env.MULTER_STORAGE_PATH,
       }),
     }),
+    ScheduleModule.forRoot(),
     TypeOrmModule.forFeature([BoardGame, Tag, GameElement]),
     AuthModule,
     UserModule
   ],
   controllers: [ImageController],
-  providers: [ImageService]
+  providers: [ImageService, ImageCron]
 })
 export class ImageModule {}
