@@ -7,7 +7,6 @@ import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { UpdateTagCommand } from "../model/command/update.tag.command";
-import { BoardGameDto } from "../model/dto/board-game.dto";
 
 @Controller('tag')
 export class TagController {

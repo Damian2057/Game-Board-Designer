@@ -8,6 +8,7 @@ import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.
 import { mapTagCommandToTag, mapTagToTagDto } from "../util/util.functions";
 import { TagDto } from "../model/dto/tag.dto";
 import { SetFilter } from "../../util/SetFilter";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 
 @Injectable()
 export class TagService {
@@ -60,8 +61,7 @@ export class TagService {
     if (result.affected > 0) {
       return true;
     }
-    throw new DuplicateKeyParameterException('Tag with id: ' + id + ' does not exist!')
-
+    throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!')
   }
 
   private updateNotNullFields(tag: Tag, command: UpdateTagCommand): Tag {

@@ -6,9 +6,10 @@ import { Tag } from "../model/domain/tag.entity";
 import { GameElement } from "../model/domain/game.element.entity";
 import { CreateBoardGameCommand } from "../model/command/create.board-game.command";
 import { UpdateBoardGameCommand } from "../model/command/update.board-game.command";
-import { mapBoardGameToBoardGameDto } from "../util/util.functions";
+import { mapBoardGameToBoardGameDto, mapTagToTagDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
 import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.key.parameter.exception";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 
 @Injectable()
 export class BoardGameService {
@@ -79,6 +80,9 @@ export class BoardGameService {
 
   async create(command: CreateBoardGameCommand) {
     if (await this.boardGameRepository.findOneBy({title: command.title}) == null) {
+      if (command.publicationDate == null) {
+        command.publicationDate = new Date().toISOString().slice(0, 10);
+      }
       await this.boardGameRepository.save(command);
       return true;
     }
@@ -86,18 +90,25 @@ export class BoardGameService {
   }
 
   async updateById(id: number, command: UpdateBoardGameCommand) {
-    return Promise.resolve(undefined);
+    const game: BoardGame[] = await this.getNewGameElementId(id);
+    game[0] = this.updateNotNullFields(game[0], command);
+    const updated: BoardGame = await this.boardGameRepository.save(game[0]);
+    return mapBoardGameToBoardGameDto(updated);
   }
 
   async deleteById(id: number) {
-    return Promise.resolve(false);
+    const result = await this.boardGameRepository.delete({ id: id })
+    if (result.affected > 0) {
+      return true;
+    }
+    throw new IllegalArgumentException('BoardGame with id: ' + id + ' does not exist!')
   }
 
-  deleteGameTagById(id: number, tagId: number) {
+  async removeTagFromGameById(id: number, tagId: number) {
     return Promise.resolve([]);
   }
 
-  addGameTagById(id: number, tagId: number) {
+  async addTagToGameById(id: number, tagId: number) {
     return Promise.resolve([]);
   }
 
@@ -111,5 +122,21 @@ export class BoardGameService {
         id: id
       }
     });
+  }
+
+  private updateNotNullFields(boardGame: BoardGame, command: UpdateBoardGameCommand) {
+    if (command.title != null) {
+      boardGame.title = command.title;
+    }
+    if (command.description != null) {
+      boardGame.description = command.description;
+    }
+    if (command.publicationDate != null) {
+      boardGame.publicationDate = command.publicationDate;
+    }
+    if (command.price != null) {
+      boardGame.price = command.price;
+    }
+    return boardGame;
   }
 }
