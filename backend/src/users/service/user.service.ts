@@ -80,7 +80,7 @@ export class UserService {
       return mapUserToUserDto(updated);
   }
 
-  async findByFilter(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
+  async find(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
     const users = new SetFilter();
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")

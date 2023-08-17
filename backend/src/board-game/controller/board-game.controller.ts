@@ -48,15 +48,15 @@ export class BoardGameController {
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Delete(':id/delete/:tagId')
-  deleteTagFromGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto[]> {
+  @Put(':id/remove/:tagId')
+  deleteTagFromGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto> {
     return this.boardGameService.removeTagFromGameById(id, tagId);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id/add/:tagId')
-  addTagToGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto[]> {
+  addTagToGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto> {
     return this.boardGameService.addTagToGameById(id, tagId);
   }
 }

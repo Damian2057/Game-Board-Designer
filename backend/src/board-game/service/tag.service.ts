@@ -24,7 +24,7 @@ export class TagService {
     return tags.map(tag => mapTagToTagDto(tag));
   }
 
-  async findByFilter(id: number, name: string): Promise<TagDto[]> {
+  async find(id: number, name: string): Promise<TagDto[]> {
     const tagger = new SetFilter();
     if (name != null) {
       const result: Tag = await this.tagRepository.findOneBy({name: name});

@@ -23,7 +23,7 @@ export class TagController {
   @Get('find')
   getTagByFilter(@Query('id') id?: number,
              @Query('name') name?: string): Promise<TagDto[]> {
-    return this.tagService.findByFilter(id, name);
+    return this.tagService.find(id, name);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)

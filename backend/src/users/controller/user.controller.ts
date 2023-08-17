@@ -61,6 +61,6 @@ export class UserController {
                   @Query('username') username?: string,
                   @Query('phoneNumber') phoneNumber?: string,
                   @Query('id') id?: number): Promise<UserDto[]> {
-    return this.userService.findByFilter(role, email, username, phoneNumber, id);
+    return this.userService.find(role, email, username, phoneNumber, id);
   }
 }
