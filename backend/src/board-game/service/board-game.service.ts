@@ -98,15 +98,16 @@ export class BoardGameService {
   }
 
   async deleteById(id: number): Promise<boolean> {
-    const result = await this.boardGameRepository.delete({ id: id })
-    if (result.affected > 0) {
-      return true;
-    }
-    throw new IllegalArgumentException('BoardGame with id: ' + id + ' does not exist!')
+    const result = await this.getGameBoardById(id);
+    result.gameElements.forEach(element => {
+      this.gameElementRepository.delete(element);
+    });
+    await this.boardGameRepository.delete(id);
+    return true;
   }
 
   async removeTagFromGameById(id: number, tagId: number): Promise<BoardGameDto> {
-    const tag: Tag = await this.tagRepository.findOneBy({ id: tagId });
+    const tag: Tag = await this.getTagById(tagId);
     const game: BoardGame = await this.getGameBoardById(id);
     const existingTagIndex = game.tags.findIndex(t => t.id === tag.id);
 
@@ -120,7 +121,7 @@ export class BoardGameService {
   }
 
   async addTagToGameById(id: number, tagId: number): Promise<BoardGameDto> {
-    const tag: Tag = await this.tagRepository.findOneBy({id: tagId});
+    const tag: Tag = await this.getTagById(tagId);
     const game: BoardGame = await this.getGameBoardById(id);
     const existingTagIndex = game.tags.findIndex(t => t.id === tag.id);
 
@@ -134,8 +135,9 @@ export class BoardGameService {
   }
 
   async addGameElementToGameById(id: number, gameElementId: number): Promise<BoardGameDto> {
-    const gameElement: GameElement = await this.gameElementRepository.findOneBy({id: gameElementId});
+    const gameElement: GameElement = await this.getGameElementById(gameElementId);
     const game: BoardGame = await this.getGameBoardById(id);
+    await this.checkIfGameElementIsNotAlreadyUsed(gameElement);
     const existingGameElementIndex = game.gameElements.findIndex(t => t.id === gameElement.id);
 
     if (existingGameElementIndex === -1) {
@@ -148,7 +150,7 @@ export class BoardGameService {
   }
 
   async removeGameElementFromGameById(id: number, gameElementId: number): Promise<BoardGameDto> {
-    const gameElement: GameElement = await this.gameElementRepository.findOneBy({ id: gameElementId });
+    const gameElement: GameElement = await this.getGameElementById(gameElementId);
     const game: BoardGame = await this.getGameBoardById(id);
     const existingGameElementIndex = game.gameElements.findIndex(t => t.id === gameElement.id);
 
@@ -177,6 +179,14 @@ export class BoardGameService {
     return games[0]
   }
 
+  private async getTagById(id: number): Promise<Tag> {
+    const tag: Tag = await this.tagRepository.findOneBy({id: id});
+    if (tag == null) {
+      throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!');
+    }
+    return tag;
+  }
+
   private updateNotNullFields(boardGame: BoardGame, command: UpdateBoardGameCommand): BoardGame {
     if (command.title != null) {
       boardGame.title = command.title;
@@ -191,5 +201,30 @@ export class BoardGameService {
       boardGame.price = command.price;
     }
     return boardGame;
+  }
+
+  private async getGameElementById(id: number): Promise<GameElement> {
+    const gameElement: GameElement = await this.gameElementRepository.findOneBy({id: id});
+    if (gameElement == null) {
+      throw new IllegalArgumentException('GameElement with id: ' + id + ' does not exist!');
+    }
+    return gameElement;
+  }
+
+  private async checkIfGameElementIsNotAlreadyUsed(gameElement: GameElement) {
+    const games: BoardGame[] = await this.boardGameRepository.find({
+      relations: {
+        tags: true,
+        gameElements: true
+      },
+      where: {
+        gameElements: {
+          id: gameElement.id
+        }
+      }
+    });
+    if (games.length > 0) {
+      throw new IllegalArgumentException('GameElement with id: ' + gameElement.id + ' is already used by the game with id: ' + games[0].id);
+    }
   }
 }

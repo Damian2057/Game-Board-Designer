@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { GameElementService } from "../service/game.element.service";
 import { UpdateBoardGameElementCommand } from "../model/command/update.board-game-element.command";
 import { BoardGameDto } from "../model/dto/board-game.dto";
@@ -19,7 +19,7 @@ export class GameElementController {
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateGameElement(@Param('id') id: number,
-                    @Body() element: UpdateBoardGameElementCommand): Promise<BoardGameDto[]> {
+                    @Body() element: UpdateBoardGameElementCommand): Promise<GameElementDto> {
     return this.gameElementService.updateById(id, element);
   }
 
@@ -37,22 +37,21 @@ export class GameElementController {
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
   getGameElementByFilter(@Query('id') id?: number,
-                         @Query('name') name?: string): Promise<GameElementDto> {
+                         @Query('name') name?: string): Promise<GameElementDto[]> {
     return this.gameElementService.find(id, name);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteGameElement(@Param('id') id: number): Promise<BoardGameDto[]> {
+  deleteGameElement(@Param('id') id: number): Promise<boolean> {
     return this.gameElementService.deleteById(id);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Put('create/:id')
-  addGameElement(@Param('id') id: number,
-                 @Body() element: CreateBoardGameElementCommand): Promise<BoardGameDto[]> {
-    return this.gameElementService.add(id, element);
+  @Post('create')
+  addGameElement(@Body() element: CreateBoardGameElementCommand): Promise<boolean> {
+    return this.gameElementService.add(element);
   }
 }

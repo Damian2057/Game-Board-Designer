@@ -25,20 +25,20 @@ export class TagService {
   }
 
   async find(id: number, name: string): Promise<TagDto[]> {
-    const tagger = new SetFilter();
+    const tags = new SetFilter();
     if (name != null) {
       const result: Tag = await this.tagRepository.findOneBy({name: name});
       if (result != null) {
-        tagger.add(result);
+        tags.add(result);
       }
     }
     if (id != null) {
       const result: Tag = await this.tagRepository.findOneBy({id: id});
       if (result != null) {
-        tagger.add(result);
+        tags.add(result);
       }
     }
-    return Array.from(tagger.get()).map(tag => mapTagToTagDto(tag));
+    return Array.from(tags.get()).map(tag => mapTagToTagDto(tag));
   }
 
   async create(command: CreateTagCommand): Promise<boolean> {
@@ -51,6 +51,9 @@ export class TagService {
 
   async updateById(id: number, command: UpdateTagCommand): Promise<TagDto> {
     let tag: Tag = await this.tagRepository.findOneBy({id: id});
+    if (tag == null) {
+      throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!')
+    }
     tag = this.updateNotNullFields(tag, command);
     const updated: Tag = await this.tagRepository.save(tag);
     return mapTagToTagDto(updated);

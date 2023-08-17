@@ -75,6 +75,9 @@ export class UserService {
 
   async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
       let user: User = await this.findOne(id);
+      if (user == null) {
+        throw new UserNotFound();
+      }
       user = this.updateNotNullFields(user, command);
       const updated: User = await this.userRepository.save(user);
       return mapUserToUserDto(updated);
