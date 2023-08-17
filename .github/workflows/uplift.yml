@@ -1,0 +1,35 @@
+name: uplift version
+
+on:
+  push:
+    branches: [ main ]
+
+
+jobs:
+  uplift-backend-version:
+    name: Uplift version
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.x
+
+      - name: Install Dependencies
+        working-directory: backend/
+        run: npm install
+
+      - name: Copy .env
+        run: cp .env backend/.env
+
+      - name: Uplift version
+        working-directory: backend/
+        run: npm version patch
+
+      - name: Push to GitHub
+        working-directory: backend/
+        run: git push origin main
