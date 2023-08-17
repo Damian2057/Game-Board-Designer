@@ -126,14 +126,23 @@
 						},
 						"method": "PUT",
 						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"phoneNumber\": \"999999999\",\r\n    \"username\": \"BobaAAAA\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
 						"url": {
-							"raw": "{{BASEURL}}/user/update",
+							"raw": "{{BASEURL}}/user/self_update",
 							"host": [
 								"{{BASEURL}}"
 							],
 							"path": [
 								"user",
-								"update"
+								"self_update"
 							]
 						}
 					},
@@ -336,6 +345,126 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "addTagToGame",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/board-game/1/add-tag/5",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"board-game",
+								"1",
+								"add-tag",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "addElementToGame",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/board-game/1/add-element/5",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"board-game",
+								"1",
+								"add-element",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeElementFromGame",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/board-game/1/remove-element/5",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"board-game",
+								"1",
+								"remove-element",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "removeTagFromGame",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/board-game/1/remove-tag/5",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"board-game",
+								"1",
+								"remove-tag",
+								"5"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -344,6 +473,14 @@
 			"item": [
 				{
 					"name": "all",
+					"request": {
+						"method": "GET",
+						"header": []
+					},
+					"response": []
+				},
+				{
+					"name": "all by game",
 					"request": {
 						"method": "GET",
 						"header": []
@@ -401,7 +538,7 @@
 					"response": []
 				},
 				{
-					"name": "add",
+					"name": "create",
 					"protocolProfileBehavior": {
 						"disableBodyPruning": true
 					},
