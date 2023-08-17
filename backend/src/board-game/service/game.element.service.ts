@@ -5,11 +5,11 @@ import { CreateBoardGameElementCommand } from "../model/command/create.board-gam
 @Injectable()
 export class GameElementService {
 
-  async updateById(id: number, elementId: number, element: UpdateBoardGameElementCommand) {
+  async updateById(id: number, element: UpdateBoardGameElementCommand) {
     return Promise.resolve([]);
   }
 
-  async deleteById(id: number, elementId: number) {
+  async deleteById(id: number) {
     return Promise.resolve([]);
   }
 
@@ -17,11 +17,15 @@ export class GameElementService {
     return Promise.resolve([]);
   }
 
-  async findAll(id: number) {
+  async findAll() {
     return Promise.resolve([]);
   }
 
-  async findByFilter(id: number) {
+  async find(id: number, name: string) {
     return Promise.resolve(undefined);
+  }
+
+  findByBoardGame(id: number) {
+    return Promise.resolve([]);
   }
 }
