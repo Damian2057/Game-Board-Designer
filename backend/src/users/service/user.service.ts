@@ -75,12 +75,15 @@ export class UserService {
 
   async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
       let user: User = await this.findOne(id);
+      if (user == null) {
+        throw new UserNotFound();
+      }
       user = this.updateNotNullFields(user, command);
       const updated: User = await this.userRepository.save(user);
       return mapUserToUserDto(updated);
   }
 
-  async findByFilter(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
+  async find(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
     const users = new SetFilter();
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")

@@ -8,6 +8,7 @@ import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.
 import { mapTagCommandToTag, mapTagToTagDto } from "../util/util.functions";
 import { TagDto } from "../model/dto/tag.dto";
 import { SetFilter } from "../../util/SetFilter";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 
 @Injectable()
 export class TagService {
@@ -23,21 +24,21 @@ export class TagService {
     return tags.map(tag => mapTagToTagDto(tag));
   }
 
-  async findByFilter(id: number, name: string): Promise<TagDto[]> {
-    const tagger = new SetFilter();
+  async find(id: number, name: string): Promise<TagDto[]> {
+    const tags = new SetFilter();
     if (name != null) {
       const result: Tag = await this.tagRepository.findOneBy({name: name});
       if (result != null) {
-        tagger.add(result);
+        tags.add(result);
       }
     }
     if (id != null) {
       const result: Tag = await this.tagRepository.findOneBy({id: id});
       if (result != null) {
-        tagger.add(result);
+        tags.add(result);
       }
     }
-    return Array.from(tagger.get()).map(tag => mapTagToTagDto(tag));
+    return Array.from(tags.get()).map(tag => mapTagToTagDto(tag));
   }
 
   async create(command: CreateTagCommand): Promise<boolean> {
@@ -50,6 +51,9 @@ export class TagService {
 
   async updateById(id: number, command: UpdateTagCommand): Promise<TagDto> {
     let tag: Tag = await this.tagRepository.findOneBy({id: id});
+    if (tag == null) {
+      throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!')
+    }
     tag = this.updateNotNullFields(tag, command);
     const updated: Tag = await this.tagRepository.save(tag);
     return mapTagToTagDto(updated);
@@ -60,16 +64,7 @@ export class TagService {
     if (result.affected > 0) {
       return true;
     }
-    throw new DuplicateKeyParameterException('Tag with id: ' + id + ' does not exist!')
-
-  }
-
-  async deleteGameTagById(id: number, tagId: number) {
-    return Promise.resolve([]);
-  }
-
-  async addGameTagById(id: number, tagId: number) {
-    return Promise.resolve([]);
+    throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!')
   }
 
   private updateNotNullFields(tag: Tag, command: UpdateTagCommand): Tag {
