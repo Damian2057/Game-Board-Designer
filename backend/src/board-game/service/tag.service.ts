@@ -26,15 +26,15 @@ export class TagService {
 
   async find(id: number, name: string): Promise<TagDto[]> {
     const tags = new SetFilter();
-    if (name != null) {
+    if (name) {
       const result: Tag = await this.tagRepository.findOneBy({name: name});
-      if (result != null) {
+      if (result) {
         tags.add(result);
       }
     }
-    if (id != null) {
+    if (id) {
       const result: Tag = await this.tagRepository.findOneBy({id: id});
-      if (result != null) {
+      if (result) {
         tags.add(result);
       }
     }
@@ -42,17 +42,17 @@ export class TagService {
   }
 
   async create(command: CreateTagCommand): Promise<boolean> {
-    if (await this.tagRepository.findOneBy({name: command.name}) == null) {
+    if (await this.tagRepository.findOneBy({name: command.name})) {
       await this.tagRepository.save(mapTagCommandToTag(command));
       return true;
     }
-    throw new DuplicateKeyParameterException('Tag with name: ' + command.name + ' already exists!');
+    throw new DuplicateKeyParameterException(`Tag with name: ${command.name} already exists!`);
   }
 
   async updateById(id: number, command: UpdateTagCommand): Promise<TagDto> {
     let tag: Tag = await this.tagRepository.findOneBy({id: id});
     if (tag == null) {
-      throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!')
+      throw new IllegalArgumentException(`Tag with id: ${id} does not exist!`)
     }
     tag = this.updateNotNullFields(tag, command);
     const updated: Tag = await this.tagRepository.save(tag);
@@ -64,7 +64,7 @@ export class TagService {
     if (result.affected > 0) {
       return true;
     }
-    throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!')
+    throw new IllegalArgumentException(`Tag with id: ${id} does not exist!`)
   }
 
   private updateNotNullFields(tag: Tag, command: UpdateTagCommand): Tag {

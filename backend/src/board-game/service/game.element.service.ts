@@ -22,8 +22,8 @@ export class GameElementService {
 
   async updateById(id: number, command: UpdateBoardGameElementCommand): Promise<GameElementDto> {
     let element: GameElement = await this.gameElementRepository.findOneBy({id: id});
-    if (element == null) {
-      throw new IllegalArgumentException("Game element with id " + id + " does not exist.");
+    if (!element) {
+      throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
     }
     element = this.updateNotNullFields(command, element);
     const updated = await this.gameElementRepository.save(element);
@@ -35,7 +35,7 @@ export class GameElementService {
     if (result.affected > 0) {
       return true;
     }
-    throw new IllegalArgumentException("Game element with id " + id + " does not exist.");
+    throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
   }
 
   async add(command: CreateBoardGameElementCommand) {
@@ -50,15 +50,15 @@ export class GameElementService {
 
   async find(id: number, name: string): Promise<GameElementDto[]> {
     const elements = new SetFilter();
-    if (name != null) {
+    if (name) {
       const result: GameElement = await this.gameElementRepository.findOneBy({name: name});
-      if (result != null) {
+      if (result) {
         elements.add(result);
       }
     }
-    if (id != null) {
+    if (id) {
       const result: GameElement = await this.gameElementRepository.findOneBy({id: id});
-      if (result != null) {
+      if (result) {
         elements.add(result);
       }
     }
@@ -81,16 +81,16 @@ export class GameElementService {
       }
     });
     if (games.length === 0) {
-      throw new IllegalArgumentException('BoardGame with id: ' + id + ' does not exist!');
+      throw new IllegalArgumentException(`BoardGame with id: ${id} does not exist!`);
     }
     return games[0];
   }
 
   private updateNotNullFields(command: UpdateBoardGameElementCommand, element: GameElement) {
-    if (command.name != null) {
+    if (command.name) {
       element.name = command.name;
     }
-    if (command.quantity != null) {
+    if (command.quantity) {
       element.quantity = command.quantity;
     }
     return element;

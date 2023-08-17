@@ -4,8 +4,6 @@ env:
   POSTGRESQL_DB: db
 
 on:
-  push:
-    branches: [ main ]
   pull_request:
     branches: [ main ]
 
