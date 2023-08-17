@@ -48,15 +48,30 @@ export class BoardGameController {
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Put(':id/remove/:tagId')
-  deleteTagFromGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto> {
+  @Put(':id/remove-tag/:tagId')
+  removeTagFromGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto> {
     return this.boardGameService.removeTagFromGameById(id, tagId);
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Put(':id/add/:tagId')
+  @Put(':id/add-tag/:tagId')
   addTagToGame(@Param('id') id: number, @Param('tagId') tagId: number): Promise<BoardGameDto> {
     return this.boardGameService.addTagToGameById(id, tagId);
   }
+
+  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Put(':id/add-element/:gameElementId')
+  addGameElementToGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<BoardGameDto> {
+    return this.boardGameService.addGameElementToGameById(id, gameElementId);
+  }
+
+  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Put(':id/remove-element/:gameElementId')
+  removeGameElementFromGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<BoardGameDto> {
+    return this.boardGameService.removeGameElementFromGameById(id, gameElementId);
+  }
+
 }
