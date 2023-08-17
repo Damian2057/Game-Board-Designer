@@ -6,6 +6,7 @@ import { Tag } from "../model/domain/tag.entity";
 import { GameElement } from "../model/domain/game.element.entity";
 import { CreateBoardGameCommand } from "../model/command/create.board-game.command";
 import { UpdateBoardGameCommand } from "../model/command/update.board-game.command";
+import { mapBoardGameToBoardGameDto } from "../util/util.functions";
 
 @Injectable()
 export class BoardGameService {
@@ -21,7 +22,8 @@ export class BoardGameService {
 
 
   async findAll() {
-    return Promise.resolve([]);
+    const boardGames: BoardGame[] = await this.boardGameRepository.find();
+    return boardGames.map(boardGame => mapBoardGameToBoardGameDto(boardGame));
   }
 
   async findByFilter(id: number, name: string, tags: string) {
@@ -38,5 +40,13 @@ export class BoardGameService {
 
   async deleteById(id: number) {
     return Promise.resolve(false);
+  }
+
+  deleteGameTagById(id: number, tagId: number) {
+    return Promise.resolve([]);
+  }
+
+  addGameTagById(id: number, tagId: number) {
+    return Promise.resolve([]);
   }
 }
