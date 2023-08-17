@@ -37,13 +37,13 @@ export class BoardGameService {
 
   async findByFilter(id: number, title: string, tags: string) {
     const games = new SetFilter();
-    if (id != null) {
+    if (id) {
       const result: BoardGame = await this.getGameBoardById(id);
       if (result != null) {
         games.add(result);
       }
     }
-    if (title != null) {
+    if (title) {
       const result: BoardGame[] = await this.boardGameRepository.find({
         relations: {
           tags: true,
@@ -57,7 +57,7 @@ export class BoardGameService {
         games.add(result[0]);
       }
     }
-    if (tags != null) {
+    if (tags) {
       const tagNames: string[] = tags.split(',');
       for (const tagName of tagNames) {
         const results: BoardGame[] = await this.boardGameRepository.find({
@@ -81,7 +81,7 @@ export class BoardGameService {
 
   async create(command: CreateBoardGameCommand): Promise<boolean> {
     if (await this.boardGameRepository.findOneBy({title: command.title}) == null) {
-      if (command.publicationDate == null) {
+      if (!command.publicationDate) {
         command.publicationDate = new Date().toISOString().slice(0, 10);
       }
       await this.boardGameRepository.save(command);
@@ -92,8 +92,8 @@ export class BoardGameService {
 
   async updateById(id: number, command: UpdateBoardGameCommand): Promise<BoardGameDto> {
     let game: BoardGame = await this.getGameBoardById(id);
-    game = this.updateNotNullFields(game[0], command);
-    const updated: BoardGame = await this.boardGameRepository.save(game[0]);
+    game = this.updateNotNullFields(game, command);
+    const updated: BoardGame = await this.boardGameRepository.save(game);
     return mapBoardGameToBoardGameDto(updated);
   }
 
@@ -115,9 +115,8 @@ export class BoardGameService {
       game.tags.splice(existingTagIndex, 1);
       await this.boardGameRepository.save(game);
       return mapBoardGameToBoardGameDto(game);
-    } else {
-      throw new IllegalArgumentException('Tag with id: ' + tagId + ' does not exist for the game!');
     }
+    throw new IllegalArgumentException('Tag with id: ' + tagId + ' does not exist for the game!');
   }
 
   async addTagToGameById(id: number, tagId: number): Promise<BoardGameDto> {
@@ -129,9 +128,8 @@ export class BoardGameService {
       game.tags.push(tag);
       await this.boardGameRepository.save(game);
       return mapBoardGameToBoardGameDto(game);
-    } else {
-      throw new IllegalArgumentException('Tag with id: ' + tagId + ' already exists for the game!');
     }
+    throw new IllegalArgumentException('Tag with id: ' + tagId + ' already exists for the game!');
   }
 
   async addGameElementToGameById(id: number, gameElementId: number): Promise<BoardGameDto> {
@@ -144,9 +142,8 @@ export class BoardGameService {
       game.gameElements.push(gameElement);
       await this.boardGameRepository.save(game);
       return mapBoardGameToBoardGameDto(game);
-    } else {
-      throw new IllegalArgumentException('GameElement with id: ' + gameElementId + ' already exists for the game!');
     }
+    throw new IllegalArgumentException('GameElement with id: ' + gameElementId + ' already exists for the game!');
   }
 
   async removeGameElementFromGameById(id: number, gameElementId: number): Promise<BoardGameDto> {
@@ -158,9 +155,8 @@ export class BoardGameService {
       game.gameElements.splice(existingGameElementIndex, 1);
       await this.boardGameRepository.save(game);
       return mapBoardGameToBoardGameDto(game);
-    } else {
-      throw new IllegalArgumentException('GameElement with id: ' + gameElementId + ' does not exist for the game!');
     }
+    throw new IllegalArgumentException('GameElement with id: ' + gameElementId + ' does not exist for the game!');
   }
 
   private async getGameBoardById(id: number): Promise<BoardGame> {
@@ -181,23 +177,23 @@ export class BoardGameService {
 
   private async getTagById(id: number): Promise<Tag> {
     const tag: Tag = await this.tagRepository.findOneBy({id: id});
-    if (tag == null) {
+    if (!tag) {
       throw new IllegalArgumentException('Tag with id: ' + id + ' does not exist!');
     }
     return tag;
   }
 
   private updateNotNullFields(boardGame: BoardGame, command: UpdateBoardGameCommand): BoardGame {
-    if (command.title != null) {
+    if (command.title) {
       boardGame.title = command.title;
     }
-    if (command.description != null) {
+    if (command.description) {
       boardGame.description = command.description;
     }
-    if (command.publicationDate != null) {
+    if (command.publicationDate) {
       boardGame.publicationDate = command.publicationDate;
     }
-    if (command.price != null) {
+    if (command.price) {
       boardGame.price = command.price;
     }
     return boardGame;
@@ -205,7 +201,7 @@ export class BoardGameService {
 
   private async getGameElementById(id: number): Promise<GameElement> {
     const gameElement: GameElement = await this.gameElementRepository.findOneBy({id: id});
-    if (gameElement == null) {
+    if (!gameElement) {
       throw new IllegalArgumentException('GameElement with id: ' + id + ' does not exist!');
     }
     return gameElement;

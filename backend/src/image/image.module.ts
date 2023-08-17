@@ -8,7 +8,7 @@ import { GameElement } from "../board-game/model/domain/game.element.entity";
 import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
 import { ImageService } from './service/image.service';
-import { ImageScheduler } from './tasks/image.scheduler';
+import { ImageScheduler } from './scheduler/image.scheduler';
 import * as process from "process";
 import { ScheduleModule } from "@nestjs/schedule";
 import { ImageEntity } from "./model/domain/image.entity";

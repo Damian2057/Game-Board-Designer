@@ -6,9 +6,15 @@ export class ImageScheduler {
 
   private readonly logger = new Logger(ImageScheduler.name)
 
-  //TODO: implement this
-  @Cron(CronExpression.EVERY_30_SECONDS)
+  @Cron(CronExpression.EVERY_WEEK)
   deleteUnusedImages() {
     this.logger.debug('delete unused images');
+    //TODO: implement this
+  }
+
+  @Cron(CronExpression.EVERY_DAY_AT_1AM)
+  isDbConsistentWithDirectory() {
+    this.logger.debug('synchronization');
+    //TODO: implement this
   }
 }
