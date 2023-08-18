@@ -25,4 +25,6 @@ export class CreateBoardGameCommand {
   @ArrayMinSize(1)
   gameElements: GameElementDto[]
 
+  @ArrayMinSize(1)
+  imageIds: number[]
 }

@@ -9,4 +9,5 @@ export class BoardGameDto {
   price: number;
   tags: TagDto[];
   gameElements: GameElementDto[];
+  imageIds: number[];
 }

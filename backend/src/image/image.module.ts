@@ -26,6 +26,7 @@ import { ImageEntity } from "./model/domain/image.entity";
     UserModule
   ],
   controllers: [ImageController],
-  providers: [ImageService, ImageScheduler]
+  providers: [ImageService, ImageScheduler],
+  exports: [ImageService]
 })
 export class ImageModule {}

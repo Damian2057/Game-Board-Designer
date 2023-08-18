@@ -11,12 +11,15 @@ import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
 import { GameElementController } from "./controller/game.element.controller";
 import { GameElementService } from "./service/game.element.service";
+import { ImageModule } from "../image/image.module";
+import { ImageEntity } from "../image/model/domain/image.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([BoardGame, Tag, GameElement]),
+    TypeOrmModule.forFeature([BoardGame, Tag, GameElement, ImageEntity]),
     AuthModule,
-    UserModule
+    UserModule,
+    ImageModule
   ],
   controllers: [TagController, GameElementController, BoardGameController],
   providers: [BoardGameService, TagService, GameElementService],
