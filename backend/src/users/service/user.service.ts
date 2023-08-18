@@ -11,7 +11,7 @@ import {
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
 import { UserUpdateCommand } from "../model/command/user.update.command";
-import { UserRoleEntity } from "../model/domain/user.role.entity";
+import { UserRole } from "../model/domain/userRole";
 import { UserAlreadyExistsException } from "../../exceptions/type/user.already.exists.exception";
 import { SetFilter } from "../../util/SetFilter";
 
@@ -88,7 +88,7 @@ export class UserService {
     if (role != null) {
       const result = await this.userRepository.createQueryBuilder("user")
         .where("user.role = :role",
-          {role: getEnumValueByName(UserRoleEntity, role)})
+          {role: getEnumValueByName(UserRole, role)})
         .getMany();
       result.forEach(user => users.add(user));
     }
@@ -130,7 +130,7 @@ export class UserService {
       user.password = command.password;
     }
     if (command.role != null) {
-      user.role = getEnumValueByName(UserRoleEntity, command.role);
+      user.role = getEnumValueByName(UserRole, command.role);
     }
     return user;
   }

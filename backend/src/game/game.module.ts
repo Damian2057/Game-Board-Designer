@@ -3,8 +3,8 @@ import { GameController } from './controller/game.controller';
 import { GameService } from './service/game.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Tag } from "./model/domain/tag.entity";
-import { ElementEntity } from "./model/domain/element.entity";
-import { GameEntity } from "./model/domain/game.entity";
+import { Element } from "./model/domain/element";
+import { Game } from "./model/domain/game";
 import { TagController } from './controller/tag.controller';
 import { TagService } from './service/tag.service';
 import { AuthModule } from "../auth/auth.module";
@@ -16,7 +16,7 @@ import { ImageEntity } from "../image/model/domain/image.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([GameEntity, Tag, ElementEntity, ImageEntity]),
+    TypeOrmModule.forFeature([Game, Tag, Element, ImageEntity]),
     AuthModule,
     UserModule,
     ImageModule

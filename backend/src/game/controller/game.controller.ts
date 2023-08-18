@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { GameService } from "../service/game.service";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
+import { UserRole } from "../../users/model/domain/userRole";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { GameDto } from "../model/dto/game.dto";
@@ -25,14 +25,14 @@ export class GameController {
     return this.boardGameService.findByFilter(id, title, tags);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
   createBoardGame(@Body() command: CreateBoardGameCommand): Promise<boolean> {
     return this.boardGameService.create(command);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateBoardGame(@Param('id') id: number,
@@ -40,14 +40,14 @@ export class GameController {
     return this.boardGameService.updateById(id, command);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
   deleteBoardGame(@Param('id') id: number): Promise<boolean> {
     return this.boardGameService.deleteById(id);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id/remove-tag/:tagId')
   removeTagFromGame(@Param('id') id: number,
@@ -55,7 +55,7 @@ export class GameController {
     return this.boardGameService.removeTagFromGameById(id, tagId);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id/add-tag/:tagId')
   addTagToGame(@Param('id') id: number,
@@ -63,14 +63,14 @@ export class GameController {
     return this.boardGameService.addTagToGameById(id, tagId);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id/add-element/:gameElementId')
   addGameElementToGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<GameDto> {
     return this.boardGameService.addGameElementToGameById(id, gameElementId);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id/remove-element/:gameElementId')
   removeGameElementFromGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<GameDto> {

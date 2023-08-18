@@ -6,7 +6,7 @@ import { ImageDto } from "../model/dto/image.dto";
 import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
 import { ImageEntity } from "../model/domain/image.entity";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
+import { UserRole } from "../../users/model/domain/userRole";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 
@@ -16,7 +16,7 @@ export class ImageController {
   constructor(private readonly imageService: ImageService) {
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('upload')
   @UseInterceptors(AnyFilesInterceptor())
@@ -24,7 +24,7 @@ export class ImageController {
     return this.imageService.storeFiles(files);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('all')
   async getAllFiles(): Promise<ImageDto[]> {
@@ -44,7 +44,7 @@ export class ImageController {
     }
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
   deleteFile(@Param('id') id: number): Promise<boolean> {

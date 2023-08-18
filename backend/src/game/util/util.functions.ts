@@ -1,10 +1,10 @@
 import { Tag } from "../model/domain/tag.entity";
 import { TagDto } from "../model/dto/tag.dto";
 import { CreateTagCommand } from "../model/command/create.tag.command";
-import { GameEntity } from "../model/domain/game.entity";
+import { Game } from "../model/domain/game";
 import { GameDto } from "../model/dto/game.dto";
 import { ElementDto } from "../model/dto/element.dto";
-import { ElementEntity } from "../model/domain/element.entity";
+import { Element } from "../model/domain/element";
 import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
 
 export function mapTagToTagDto(tag: Tag): TagDto {
@@ -14,7 +14,7 @@ export function mapTagToTagDto(tag: Tag): TagDto {
   return tagDto;
 }
 
-export function mapElementToElementDto(element: ElementEntity): ElementDto {
+export function mapElementToElementDto(element: Element): ElementDto {
   const elementDto = new ElementDto();
   elementDto.id = element.id;
   elementDto.name = element.name;
@@ -22,7 +22,7 @@ export function mapElementToElementDto(element: ElementEntity): ElementDto {
   return elementDto;
 }
 
-export function mapGameToGameDto(game: GameEntity) {
+export function mapGameToGameDto(game: Game) {
   const gameDto = new GameDto();
   gameDto.id = game.id;
   gameDto.title = game.title;
@@ -41,8 +41,8 @@ export function mapTagCommandToTag(command: CreateTagCommand): Tag {
   return tag;
 }
 
-export function mapElementCommandToElement(command: CreateBoardGameElementCommand): ElementEntity {
-  const element = new ElementEntity();
+export function mapElementCommandToElement(command: CreateBoardGameElementCommand): Element {
+  const element = new Element();
   element.name = command.name;
   element.quantity = command.quantity;
   return element;

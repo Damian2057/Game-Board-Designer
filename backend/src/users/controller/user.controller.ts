@@ -3,7 +3,7 @@ import { UserService } from "../service/user.service";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
-import { UserRoleEntity } from "../model/domain/user.role.entity";
+import { UserRole } from "../model/domain/userRole";
 import { UserUpdateCommand } from "../model/command/user.update.command";
 import { UserDto } from "../model/dto/user.dto";
 import { UserRegisterCommand } from "../model/command/user.register.command";
@@ -20,18 +20,18 @@ export class UserController {
     return this.userService.create(command);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('all')
   getUsers(): Promise<UserDto[]> {
     return this.userService.findAll();
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('roles')
   getRoles(): string[] {
-    return Object.values(UserRoleEntity)
+    return Object.values(UserRole)
   }
 
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
@@ -40,7 +40,7 @@ export class UserController {
     return this.userService.selfUpdate(user, command);
   }
 
-  @HasRoles(UserRoleEntity.ADMIN, UserRoleEntity.EMPLOYEE)
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
   @Put('update/:id')
   updateUserById(@Param('id') id: number, @Body() command: UserUpdateCommand): Promise<UserDto> {
@@ -53,7 +53,7 @@ export class UserController {
     return this.userService.me(user);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
   getUsersByFiler(@Query('role') role?: string,

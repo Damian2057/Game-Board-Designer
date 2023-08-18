@@ -3,7 +3,7 @@ import { ElementService } from "../service/element.service";
 import { UpdateBoardGameElementCommand } from "../model/command/update.board-game-element.command";
 import { GameDto } from "../model/dto/game.dto";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
+import { UserRole } from "../../users/model/domain/userRole";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { ElementDto } from "../model/dto/element.dto";
@@ -15,7 +15,7 @@ export class GameElementController {
   constructor(private readonly gameElementService: ElementService) {
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateGameElement(@Param('id') id: number,
@@ -33,7 +33,7 @@ export class GameElementController {
     return this.gameElementService.findAll();
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
   getGameElementByFilter(@Query('id') id?: number,
@@ -41,14 +41,14 @@ export class GameElementController {
     return this.gameElementService.find(id, name);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
   deleteGameElement(@Param('id') id: number): Promise<boolean> {
     return this.gameElementService.deleteById(id);
   }
 
-  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
   addGameElement(@Body() element: CreateBoardGameElementCommand): Promise<boolean> {

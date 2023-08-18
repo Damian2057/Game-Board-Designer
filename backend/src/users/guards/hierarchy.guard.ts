@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { UserService } from "../service/user.service";
 import { User } from "../model/domain/user.entity";
-import { UserRoleEntity } from "../model/domain/user.role.entity";
+import { UserRole } from "../model/domain/userRole";
 
 @Injectable()
 export class HierarchyGuard implements CanActivate {
@@ -14,14 +14,14 @@ export class HierarchyGuard implements CanActivate {
     const params = request.params;
     const owner: User = await this.userService.findOne(request.user.id);
     const affectedUser = await this.userService.findOne(params.id);
-    if (owner.role === UserRoleEntity.USER) {
+    if (owner.role === UserRole.USER) {
       return false;
     }
-    if (owner.role === UserRoleEntity.ADMIN) {
+    if (owner.role === UserRole.ADMIN) {
       return true;
     }
-    if (owner.role === UserRoleEntity.EMPLOYEE) {
-      if (affectedUser.role === UserRoleEntity.ADMIN || affectedUser.role === UserRoleEntity.EMPLOYEE || params.role !== null) {
+    if (owner.role === UserRole.EMPLOYEE) {
+      if (affectedUser.role === UserRole.ADMIN || affectedUser.role === UserRole.EMPLOYEE || params.role !== null) {
         return false;
       }
     }

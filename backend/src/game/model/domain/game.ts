@@ -3,10 +3,10 @@ import { AbstractEntity } from "../../../database/abstract.entity";
 import { Length, Min } from "class-validator";
 import { NumericTransformer } from "../../../users/util/NumericTransformer";
 import { Tag } from "./tag.entity";
-import { ElementEntity } from "./element.entity";
+import { Element } from "./element";
 
 @Entity()
-export class GameEntity extends AbstractEntity<GameEntity> {
+export class Game extends AbstractEntity<Game> {
 
   @Column({ length: 50 })
   @Length(3, 50)
@@ -32,11 +32,11 @@ export class GameEntity extends AbstractEntity<GameEntity> {
   @JoinTable()
   tags: Tag[]
 
-  @OneToMany(() => ElementEntity, element => element.game, {
+  @OneToMany(() => Element, element => element.game, {
     cascade: true
   })
   @JoinTable()
-  gameElements: ElementEntity[]
+  gameElements: Element[]
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];

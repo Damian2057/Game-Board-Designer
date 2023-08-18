@@ -2,9 +2,9 @@ import { Module } from '@nestjs/common';
 import { ImageController } from './controller/image.controller';
 import { MulterModule } from "@nestjs/platform-express";
 import { TypeOrmModule } from "@nestjs/typeorm";
-import { GameEntity } from "../game/model/domain/game.entity";
+import { Game } from "../game/model/domain/game";
 import { Tag } from "../game/model/domain/tag.entity";
-import { ElementEntity } from "../game/model/domain/element.entity";
+import { Element } from "../game/model/domain/element";
 import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
 import { ImageService } from './service/image.service';
@@ -21,7 +21,7 @@ import { ImageEntity } from "./model/domain/image.entity";
       }),
     }),
     ScheduleModule.forRoot(),
-    TypeOrmModule.forFeature([ImageEntity, GameEntity, Tag, ElementEntity]),
+    TypeOrmModule.forFeature([ImageEntity, Game, Tag, Element]),
     AuthModule,
     UserModule
   ],
