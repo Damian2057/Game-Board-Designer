@@ -4,7 +4,7 @@ import { GameService } from './service/game.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Tag } from "./model/domain/tag.entity";
 import { ElementEntity } from "./model/domain/element.entity";
-import { Game } from "./model/domain/game.entity";
+import { GameEntity } from "./model/domain/game.entity";
 import { TagController } from './controller/tag.controller';
 import { TagService } from './service/tag.service';
 import { AuthModule } from "../auth/auth.module";
@@ -16,7 +16,7 @@ import { ImageEntity } from "../image/model/domain/image.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([Game, Tag, ElementEntity, ImageEntity]),
+    TypeOrmModule.forFeature([GameEntity, Tag, ElementEntity, ImageEntity]),
     AuthModule,
     UserModule,
     ImageModule

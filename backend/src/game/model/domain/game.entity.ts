@@ -6,7 +6,7 @@ import { Tag } from "./tag.entity";
 import { ElementEntity } from "./element.entity";
 
 @Entity()
-export class Game extends AbstractEntity<Game> {
+export class GameEntity extends AbstractEntity<GameEntity> {
 
   @Column({ length: 50 })
   @Length(3, 50)

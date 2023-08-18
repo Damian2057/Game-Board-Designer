@@ -1,6 +1,6 @@
 import { Column, Entity, ManyToOne } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
-import { Game } from "./game.entity";
+import { GameEntity } from "./game.entity";
 import { Length, Min } from "class-validator";
 import { NumericTransformer } from "../../../users/util/NumericTransformer";
 
@@ -19,6 +19,6 @@ export class ElementEntity extends AbstractEntity<ElementEntity> {
   })
   quantity: number
 
-  @ManyToOne(() => Game, boardGame => boardGame.gameElements)
-  game: Game
+  @ManyToOne(() => GameEntity, boardGame => boardGame.gameElements)
+  game: GameEntity
 }

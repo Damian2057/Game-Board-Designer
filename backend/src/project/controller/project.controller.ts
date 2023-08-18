@@ -1,11 +1,11 @@
 import { Controller, Get, Param, Post, Put } from "@nestjs/common";
-import { BoardSchemaService } from "../service/board-schema.service";
+import { ProjectService } from "../service/project.service";
 
-@Controller('board-schema')
-export class BoardSchemaController {
+@Controller('project')
+export class ProjectController {
 
   constructor(
-    private readonly boardSchemaService: BoardSchemaService,
+    private readonly boardSchemaService: ProjectService,
   ) {
   }
 

@@ -1,7 +1,7 @@
 import { Tag } from "../model/domain/tag.entity";
 import { TagDto } from "../model/dto/tag.dto";
 import { CreateTagCommand } from "../model/command/create.tag.command";
-import { Game } from "../model/domain/game.entity";
+import { GameEntity } from "../model/domain/game.entity";
 import { GameDto } from "../model/dto/game.dto";
 import { ElementDto } from "../model/dto/element.dto";
 import { ElementEntity } from "../model/domain/element.entity";
@@ -22,7 +22,7 @@ export function mapElementToElementDto(element: ElementEntity): ElementDto {
   return elementDto;
 }
 
-export function mapGameToGameDto(game: Game) {
+export function mapGameToGameDto(game: GameEntity) {
   const gameDto = new GameDto();
   gameDto.id = game.id;
   gameDto.title = game.title;

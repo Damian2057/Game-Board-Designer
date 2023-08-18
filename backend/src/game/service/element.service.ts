@@ -6,7 +6,7 @@ import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { mapElementToElementDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
-import { Game } from "../model/domain/game.entity";
+import { GameEntity } from "../model/domain/game.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { ElementDto } from "../model/dto/element.dto";
 
@@ -16,8 +16,8 @@ export class ElementService {
   constructor(
     @InjectRepository(ElementEntity)
     private readonly gameElementRepository: Repository<ElementEntity>,
-    @InjectRepository(Game)
-    private readonly boardGameRepository: Repository<Game>
+    @InjectRepository(GameEntity)
+    private readonly boardGameRepository: Repository<GameEntity>
   ) {}
 
   async updateById(id: number, command: UpdateBoardGameElementCommand): Promise<ElementDto> {
@@ -70,8 +70,8 @@ export class ElementService {
     return game.gameElements.map(element => mapElementToElementDto(element));
   }
 
-  private async getGameBoardById(id: number): Promise<Game> {
-    const games: Game[] = await this.boardGameRepository.find({
+  private async getGameBoardById(id: number): Promise<GameEntity> {
+    const games: GameEntity[] = await this.boardGameRepository.find({
       relations: {
         tags: true,
         gameElements: true

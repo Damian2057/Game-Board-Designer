@@ -3,7 +3,7 @@ import { UserModule } from './users/user.module';
 import { ConfigModule } from "@nestjs/config";
 import { AuthModule } from './auth/auth.module';
 import { GameModule } from './game/game.module';
-import { BoardSchemaModule } from './board-schema/board-schema.module';
+import { ProjectModule } from './project/project.module';
 import { DatabaseModule } from './database/database.module';
 import { ExceptionsModule } from './exceptions/exceptions.module';
 import { OrderModule } from './order/order.module';
@@ -22,7 +22,7 @@ import * as process from "process";
     UserModule,
     AuthModule,
     GameModule,
-    BoardSchemaModule,
+    ProjectModule,
     DatabaseModule,
     ExceptionsModule,
     OrderModule,
