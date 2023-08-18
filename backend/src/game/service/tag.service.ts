@@ -42,7 +42,7 @@ export class TagService {
   }
 
   async create(command: CreateTagCommand): Promise<boolean> {
-    if (await this.tagRepository.findOneBy({name: command.name})) {
+    if (await this.tagRepository.findOneBy({name: command.name}) == null) {
       await this.tagRepository.save(mapTagCommandToTag(command));
       return true;
     }

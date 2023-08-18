@@ -1,33 +1,33 @@
 import { Injectable } from "@nestjs/common";
 import { UpdateBoardGameElementCommand } from "../model/command/update.board-game-element.command";
 import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
-import { GameElement } from "../model/domain/game.element.entity";
+import { ElementEntity } from "../model/domain/element.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { mapGameElementToGameElementDto } from "../util/util.functions";
+import { mapElementToElementDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
-import { BoardGame } from "../model/domain/board-game.entity";
+import { Game } from "../model/domain/game.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
-import { GameElementDto } from "../model/dto/game-element.dto";
+import { ElementDto } from "../model/dto/element.dto";
 
 @Injectable()
-export class GameElementService {
+export class ElementService {
 
   constructor(
-    @InjectRepository(GameElement)
-    private readonly gameElementRepository: Repository<GameElement>,
-    @InjectRepository(BoardGame)
-    private readonly boardGameRepository: Repository<BoardGame>
+    @InjectRepository(ElementEntity)
+    private readonly gameElementRepository: Repository<ElementEntity>,
+    @InjectRepository(Game)
+    private readonly boardGameRepository: Repository<Game>
   ) {}
 
-  async updateById(id: number, command: UpdateBoardGameElementCommand): Promise<GameElementDto> {
-    let element: GameElement = await this.gameElementRepository.findOneBy({id: id});
+  async updateById(id: number, command: UpdateBoardGameElementCommand): Promise<ElementDto> {
+    let element: ElementEntity = await this.gameElementRepository.findOneBy({id: id});
     if (!element) {
       throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
     }
     element = this.updateNotNullFields(command, element);
     const updated = await this.gameElementRepository.save(element);
-    return mapGameElementToGameElementDto(updated);
+    return mapElementToElementDto(updated);
   }
 
   async deleteById(id: number): Promise<boolean> {
@@ -43,35 +43,35 @@ export class GameElementService {
     return true;
   }
 
-  async findAll(): Promise<GameElementDto[]> {
-    const elements: GameElement[] = await this.gameElementRepository.find();
-    return elements.map(element => mapGameElementToGameElementDto(element));
+  async findAll(): Promise<ElementDto[]> {
+    const elements: ElementEntity[] = await this.gameElementRepository.find();
+    return elements.map(element => mapElementToElementDto(element));
   }
 
-  async find(id: number, name: string): Promise<GameElementDto[]> {
+  async find(id: number, name: string): Promise<ElementDto[]> {
     const elements = new SetFilter();
     if (name) {
-      const result: GameElement = await this.gameElementRepository.findOneBy({name: name});
+      const result: ElementEntity = await this.gameElementRepository.findOneBy({name: name});
       if (result) {
         elements.add(result);
       }
     }
     if (id) {
-      const result: GameElement = await this.gameElementRepository.findOneBy({id: id});
+      const result: ElementEntity = await this.gameElementRepository.findOneBy({id: id});
       if (result) {
         elements.add(result);
       }
     }
-    return Array.from(elements.get()).map(element => mapGameElementToGameElementDto(element));
+    return Array.from(elements.get()).map(element => mapElementToElementDto(element));
   }
 
-  async findByBoardGame(id: number): Promise<GameElementDto[]> {
+  async findByBoardGame(id: number): Promise<ElementDto[]> {
     const game = await this.getGameBoardById(id);
-    return game.gameElements.map(element => mapGameElementToGameElementDto(element));
+    return game.gameElements.map(element => mapElementToElementDto(element));
   }
 
-  private async getGameBoardById(id: number): Promise<BoardGame> {
-    const games: BoardGame[] = await this.boardGameRepository.find({
+  private async getGameBoardById(id: number): Promise<Game> {
+    const games: Game[] = await this.boardGameRepository.find({
       relations: {
         tags: true,
         gameElements: true
@@ -86,7 +86,7 @@ export class GameElementService {
     return games[0];
   }
 
-  private updateNotNullFields(command: UpdateBoardGameElementCommand, element: GameElement) {
+  private updateNotNullFields(command: UpdateBoardGameElementCommand, element: ElementEntity) {
     if (command.name) {
       element.name = command.name;
     }

@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
-import { BoardGame } from "./board-game.entity";
+import { Game } from "./game.entity";
 
 @Entity()
 export class Tag extends AbstractEntity<Tag> {
@@ -10,8 +10,8 @@ export class Tag extends AbstractEntity<Tag> {
     })
     name: string;
 
-    @ManyToMany(() => BoardGame, boardGame => boardGame.tags)
+    @ManyToMany(() => Game, boardGame => boardGame.tags)
     @JoinTable()
-    game: BoardGame[]
+    game: Game[]
 
 }

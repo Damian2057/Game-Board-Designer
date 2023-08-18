@@ -1,35 +1,35 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
-import { GameElementService } from "../service/game.element.service";
+import { ElementService } from "../service/element.service";
 import { UpdateBoardGameElementCommand } from "../model/command/update.board-game-element.command";
-import { BoardGameDto } from "../model/dto/board-game.dto";
+import { GameDto } from "../model/dto/game.dto";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRoleEntity } from "../../users/model/domain/user.role.entity";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
-import { GameElementDto } from "../model/dto/game-element.dto";
+import { ElementDto } from "../model/dto/element.dto";
 import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
 
 @Controller('element')
 export class GameElementController {
 
-  constructor(private readonly gameElementService: GameElementService) {
+  constructor(private readonly gameElementService: ElementService) {
   }
 
   @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateGameElement(@Param('id') id: number,
-                    @Body() element: UpdateBoardGameElementCommand): Promise<GameElementDto> {
+                    @Body() element: UpdateBoardGameElementCommand): Promise<ElementDto> {
     return this.gameElementService.updateById(id, element);
   }
 
   @Get('all/:id')
-  getAllGameElementsByBoardGame(@Param('id') id: number): Promise<GameElementDto[]> {
+  getAllGameElementsByBoardGame(@Param('id') id: number): Promise<ElementDto[]> {
     return this.gameElementService.findByBoardGame(id);
   }
 
   @Get('/all')
-  getAllGameElements(): Promise<GameElementDto[]> {
+  getAllGameElements(): Promise<ElementDto[]> {
     return this.gameElementService.findAll();
   }
 
@@ -37,7 +37,7 @@ export class GameElementController {
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
   getGameElementByFilter(@Query('id') id?: number,
-                         @Query('name') name?: string): Promise<GameElementDto[]> {
+                         @Query('name') name?: string): Promise<ElementDto[]> {
     return this.gameElementService.find(id, name);
   }
 

@@ -1,6 +1,6 @@
 import { ArrayMinSize, IsString, Length, Min } from "class-validator";
 import { TagDto } from "../dto/tag.dto";
-import { GameElementDto } from "../dto/game-element.dto";
+import { ElementDto } from "../dto/element.dto";
 
 export class CreateBoardGameCommand {
 
@@ -23,7 +23,7 @@ export class CreateBoardGameCommand {
   tags: TagDto[]
 
   @ArrayMinSize(1)
-  gameElements: GameElementDto[]
+  gameElements: ElementDto[]
 
   @ArrayMinSize(1)
   imageIds: number[]

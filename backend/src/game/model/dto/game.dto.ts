@@ -1,13 +1,13 @@
-import { GameElementDto } from "./game-element.dto";
+import { ElementDto } from "./element.dto";
 import { TagDto } from "./tag.dto";
 
-export class BoardGameDto {
+export class GameDto {
   id: number;
   title: string;
   description: string;
   publicationDate: string;
   price: number;
   tags: TagDto[];
-  gameElements: GameElementDto[];
+  gameElements: ElementDto[];
   imageIds: number[];
 }

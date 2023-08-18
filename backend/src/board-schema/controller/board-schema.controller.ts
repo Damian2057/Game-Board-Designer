@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post } from "@nestjs/common";
+import { Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { BoardSchemaService } from "../service/board-schema.service";
 
 @Controller('board-schema')
@@ -9,23 +9,32 @@ export class BoardSchemaController {
   ) {
   }
 
-  @Post('create-schema-from-template/:boardGameId')
-  async createSchemaFromTemplate(@Param('boardGameId') boardGameId: number) {
+  @Post('start-project/:templateId')
+  async startNewSchemaBasedOnTemplate(@Param('templateId') templateId: number) {
 
   }
 
-  @Post('create-template')
-  async createTemplate() {
+  @Post('create-new-Schema')
+  async createCompletelyNewSchema() {
 
   }
 
-  @Get('templates')
-  async getTemplates() {
+  /**
+   * This method init elements based on board game elements
+   * @param boardGameId
+   */
+  @Post('init-new-Schema/:boardGameId')
+  async initNewSchemaBasedOnBoardGameElements(@Param('boardGameId') boardGameId: number) {
+
+  }
+
+  @Get('schemas')
+  async getSchemas() {
 
   }
 
   @Get('schema/:schemaId')
-  async getTemplate(@Param('schemaId') templateId: number) {
+  async getSchemaById(@Param('schemaId') templateId: number) {
 
   }
 
@@ -35,7 +44,12 @@ export class BoardSchemaController {
   }
 
   @Get('assigned')
-  async getAssigned() {
+  async getAssignedToCurrentUser() {
+
+  }
+
+  @Put('assign/:schemaId')
+  async assign(@Param('schemaId') schemaId: number) {
 
   }
 
