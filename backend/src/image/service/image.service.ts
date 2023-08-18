@@ -21,7 +21,7 @@ export class ImageService {
 
   async storeFiles(files: Array<Express.Multer.File>): Promise<ImageDto[]> {
     const images: ImageEntity[] = [];
-    this.logger.debug(`Store ${files.length} files`);
+    this.logger.debug(`Store: ${files.length} files`);
     try {
       for (const file of files) {
         const image = new ImageEntity(file.filename, file.mimetype);
@@ -32,7 +32,7 @@ export class ImageService {
       this.logger.error(error.message);
       throw new ImageDownloadException(error.message);
     }
-    this.logger.debug('Successfully stored files');
+    this.logger.debug(`Successfully stored: ${files.length} files`);
     return images.map(image => mapImageToImageDto(image));
   }
 
