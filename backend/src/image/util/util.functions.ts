@@ -1,6 +1,8 @@
 import { HttpStatus, ParseFilePipe, ParseFilePipeBuilder } from "@nestjs/common";
 import { ImageEntity } from "../model/domain/image.entity";
 import { ImageDto } from "../model/dto/image.dto";
+import * as fs from "fs";
+import process from "process";
 
 export function IsImageFile(): ParseFilePipe {
   return new ParseFilePipeBuilder()
@@ -25,4 +27,8 @@ export function mapImageToImageDto(image: ImageEntity) {
   return new ImageDto(
     image.id
   )
+}
+
+export function deleteFileFromDisk(path: string) {
+  fs.unlinkSync(path);
 }
