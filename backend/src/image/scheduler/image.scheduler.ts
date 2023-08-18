@@ -22,6 +22,18 @@ export class ImageScheduler {
 
   @Cron(CronExpression.EVERY_WEEK)
   async deleteUnusedImages() {
+    const imagesToDelete = await this.getImagesToDelete();
+    this.logger.debug(`Found ${imagesToDelete.length} images to delete`);
+
+    imagesToDelete.forEach(async image => {
+      await this.imageRepository.delete(image.id);
+      const path = `${process.env.MULTER_STORAGE_PATH}\\${image.filename}`;
+      deleteFileFromDisk(path);
+      this.logger.debug(`Deleted image with id: ${image.id}`);
+    });
+  }
+
+  private async getImagesToDelete(): Promise<ImageEntity[]> {
     const images: ImageEntity[] = await this.imageRepository.find();
     const boardGames: BoardGame[] = await this.boardGameRepository.find();
     const usedImageIds = new Set<number>();
@@ -33,20 +45,6 @@ export class ImageScheduler {
         });
       }
     });
-    const imagesToDelete = images.filter(image => !usedImageIds.has(image.id));
-    this.logger.debug(`Found ${imagesToDelete.length} images to delete`);
-
-    imagesToDelete.forEach(async image => {
-      await this.imageRepository.delete(image.id);
-      const path = `${process.env.MULTER_STORAGE_PATH}\\${image.filename}`;
-      deleteFileFromDisk(path);
-      this.logger.debug(`Deleted image with id: ${image.id}`);
-    });
-  }
-
-  @Cron(CronExpression.EVERY_DAY_AT_1AM)
-  isDbConsistentWithDirectory() {
-    this.logger.debug('synchronization');
-    //TODO: implement this
+    return images.filter(image => !usedImageIds.has(image.id));
   }
 }

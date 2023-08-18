@@ -11,6 +11,8 @@ import { SetFilter } from "../../util/SetFilter";
 import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.key.parameter.exception";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { BoardGameDto } from "../model/dto/board-game.dto";
+import { ImageEntity } from "../../image/model/domain/image.entity";
+import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
 
 @Injectable()
 export class BoardGameService {
@@ -21,7 +23,9 @@ export class BoardGameService {
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
     @InjectRepository(GameElement)
-    private readonly gameElementRepository: Repository<GameElement>
+    private readonly gameElementRepository: Repository<GameElement>,
+    @InjectRepository(ImageEntity)
+    private readonly imageRepository: Repository<ImageEntity>,
   ) {}
 
 
@@ -85,6 +89,7 @@ export class BoardGameService {
         if (!command.publicationDate) {
           command.publicationDate = new Date().toISOString().slice(0, 10);
         }
+        await this.checkImageExists(command.imageIds);
         await this.boardGameRepository.save(command);
         return true;
       } catch (e) {
@@ -228,6 +233,15 @@ export class BoardGameService {
     });
     if (games.length > 0) {
       throw new IllegalArgumentException('GameElement with id: ' + gameElement.id + ' is already used by the game with id: ' + games[0].id);
+    }
+  }
+
+  private async checkImageExists(imageIds: number[]): Promise<void> {
+    for (const id of imageIds) {
+      const file: ImageEntity = await this.imageRepository.findOneBy({ id: id });
+      if (!file) {
+        throw new ImageDownloadException(`The file with the id ${id} does not exist.`);
+      }
     }
   }
 }

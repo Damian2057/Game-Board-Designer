@@ -42,7 +42,7 @@ export class ImageService {
     if (!file) {
       throw new ImageDownloadException(`The file with the id ${id} does not exist.`);
     }
-    return await this.imageRepository.findOneBy({ id: id });
+    return file;
   }
 
   async deleteFile(id: number): Promise<boolean> {
