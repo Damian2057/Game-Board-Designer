@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
-import { UserRoleEntity } from "./user.role.entity";
+import { UserRole } from "./userRole";
 import {IsEmail, Length} from "class-validator";
 
 @Entity()
@@ -26,10 +26,10 @@ export class User extends AbstractEntity<User> {
 
   @Column({
     type: "enum",
-    enum: UserRoleEntity,
-    default: UserRoleEntity.USER
+    enum: UserRole,
+    default: UserRole.USER
   })
-  role: UserRoleEntity
+  role: UserRole
 
   @BeforeInsert()
   emailToLowerCase() {

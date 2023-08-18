@@ -3,7 +3,7 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageEntity } from "../model/domain/image.entity";
 import { Repository } from "typeorm";
-import { BoardGame } from "../../board-game/model/domain/board-game.entity";
+import { Game } from "../../game/model/domain/game";
 import * as process from "process";
 import { deleteFileFromDisk } from "../util/util.functions";
 
@@ -15,8 +15,8 @@ export class ImageScheduler {
   constructor(
     @InjectRepository(ImageEntity)
     private readonly imageRepository: Repository<ImageEntity>,
-    @InjectRepository(BoardGame)
-    private readonly boardGameRepository: Repository<BoardGame>,
+    @InjectRepository(Game)
+    private readonly boardGameRepository: Repository<Game>,
   ) {
   }
 
@@ -35,7 +35,7 @@ export class ImageScheduler {
 
   private async getImagesToDelete(): Promise<ImageEntity[]> {
     const images: ImageEntity[] = await this.imageRepository.find();
-    const boardGames: BoardGame[] = await this.boardGameRepository.find();
+    const boardGames: Game[] = await this.boardGameRepository.find();
     const usedImageIds = new Set<number>();
 
     boardGames.forEach(boardGame => {
