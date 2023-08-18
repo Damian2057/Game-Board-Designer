@@ -58,7 +58,7 @@ export class ImageService {
     return Promise.resolve(true);
   }
 
-  async getFileBuffer(file: ImageEntity) {
+  async getFileBuffer(file: ImageEntity): Promise<Buffer> {
     this.logger.debug(`The file with the ${file.filename} is being downloaded.`);
     const path = `${process.env.MULTER_STORAGE_PATH}\\${file.filename}`;
     return new Promise((resolve, reject) => {
@@ -70,5 +70,10 @@ export class ImageService {
         }
       });
     });
+  }
+
+  async getAllFiles(): Promise<ImageDto[]> {
+    const images: ImageEntity[] = await this.imageRepository.find()
+    return images.map(image => mapImageToImageDto(image));
   }
 }

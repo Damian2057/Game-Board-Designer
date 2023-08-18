@@ -24,6 +24,13 @@ export class ImageController {
     return this.imageService.storeFiles(files);
   }
 
+  @HasRoles(UserRoleEntity.EMPLOYEE, UserRoleEntity.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get('all')
+  async getAllFiles(): Promise<ImageDto[]> {
+    return this.imageService.getAllFiles();
+  }
+
   @Get('get/:id')
   async downloadFile(@Param('id') id: number,
                      @Res() res: Response) {
