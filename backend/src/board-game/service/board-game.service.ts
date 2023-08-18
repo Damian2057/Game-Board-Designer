@@ -81,11 +81,15 @@ export class BoardGameService {
 
   async create(command: CreateBoardGameCommand): Promise<boolean> {
     if (await this.boardGameRepository.findOneBy({title: command.title}) == null) {
-      if (!command.publicationDate) {
-        command.publicationDate = new Date().toISOString().slice(0, 10);
+      try {
+        if (!command.publicationDate) {
+          command.publicationDate = new Date().toISOString().slice(0, 10);
+        }
+        await this.boardGameRepository.save(command);
+        return true;
+      } catch (e) {
+        throw new IllegalArgumentException(e.message);
       }
-      await this.boardGameRepository.save(command);
-      return true;
     }
     throw new DuplicateKeyParameterException('Board Game with title: ' + command.title + ' already exists!');
   }
@@ -100,7 +104,7 @@ export class BoardGameService {
   async deleteById(id: number): Promise<boolean> {
     const result = await this.getGameBoardById(id);
     result.gameElements.forEach(element => {
-      this.gameElementRepository.delete(element);
+      this.gameElementRepository.delete(element.id)
     });
     await this.boardGameRepository.delete(id);
     return true;
@@ -195,6 +199,9 @@ export class BoardGameService {
     }
     if (command.price) {
       boardGame.price = command.price;
+    }
+    if (command.imageIds) {
+      boardGame.imageIds = command.imageIds;
     }
     return boardGame;
   }

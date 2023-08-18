@@ -31,6 +31,7 @@ export function mapBoardGameToBoardGameDto(boardGame: BoardGame) {
   boardGameDto.price = boardGame.price;
   boardGameDto.tags = boardGame.tags.map(tag => mapTagToTagDto(tag));
   boardGameDto.gameElements = boardGame.gameElements.map(gameElement => mapGameElementToGameElementDto(gameElement));
+  boardGameDto.imageIds = boardGame.imageIds;
   return boardGameDto;
 }
 

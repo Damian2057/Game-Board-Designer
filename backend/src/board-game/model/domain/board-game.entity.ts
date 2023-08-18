@@ -37,4 +37,7 @@ export class BoardGame extends AbstractEntity<BoardGame> {
   })
   @JoinTable()
   gameElements: GameElement[]
+
+  @Column('integer', { array: true, nullable: true })
+  imageIds: number[];
 }
