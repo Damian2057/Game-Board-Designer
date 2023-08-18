@@ -8,9 +8,17 @@ import { DatabaseModule } from './database/database.module';
 import { ExceptionsModule } from './exceptions/exceptions.module';
 import { OrderModule } from './order/order.module';
 import { ImageModule } from './image/image.module';
+import { BullModule } from "@nestjs/bull";
+import * as process from "process";
 
 @Module({
   imports: [ConfigModule.forRoot(),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: parseInt(process.env.REDIS_PORT),
+      },
+    }),
     UserModule,
     AuthModule,
     BoardGameModule,
