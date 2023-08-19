@@ -6,7 +6,7 @@ import { ImageDto } from "../model/dto/image.dto";
 import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
 import { ImageEntity } from "../model/domain/image.entity";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRole } from "../../users/model/domain/userRole";
+import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 

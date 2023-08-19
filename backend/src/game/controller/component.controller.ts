@@ -2,7 +2,7 @@ import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } fro
 import { ComponentService } from "../service/component.service";
 import { UpdateComponentCommand } from "../model/command/update.component.command";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRole } from "../../users/model/domain/userRole";
+import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { ComponentDto } from "../model/dto/component.dto";

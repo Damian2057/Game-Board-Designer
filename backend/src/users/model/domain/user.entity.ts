@@ -1,6 +1,6 @@
 import { BeforeInsert, Column, Entity } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
-import { UserRole } from "./userRole";
+import { UserRole } from "./user.role.enum";
 import {IsEmail, Length} from "class-validator";
 
 @Entity()
