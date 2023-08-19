@@ -3,7 +3,7 @@ import { UserService } from "../service/user.service";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
-import { UserRole } from "../model/domain/userRole";
+import { UserRole } from "../model/domain/user.role.enum";
 import { UserUpdateCommand } from "../model/command/user.update.command";
 import { UserDto } from "../model/dto/user.dto";
 import { UserRegisterCommand } from "../model/command/user.register.command";

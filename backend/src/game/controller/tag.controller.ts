@@ -3,7 +3,7 @@ import { TagDto } from "../model/dto/tag.dto";
 import { TagService } from "../service/tag.service";
 import { CreateTagCommand } from "../model/command/create.tag.command";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRole } from "../../users/model/domain/userRole";
+import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { UpdateTagCommand } from "../model/command/update.tag.command";

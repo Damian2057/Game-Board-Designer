@@ -11,7 +11,7 @@ import {
 import { UserDto } from "../model/dto/user.dto";
 import { UserNotFound } from "../../exceptions/type/user.not.found";
 import { UserUpdateCommand } from "../model/command/user.update.command";
-import { UserRole } from "../model/domain/userRole";
+import { UserRole } from "../model/domain/user.role.enum";
 import { UserAlreadyExistsException } from "../../exceptions/type/user.already.exists.exception";
 import { SetFilter } from "../../util/SetFilter";
 

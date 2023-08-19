@@ -141,7 +141,7 @@ export class GameService {
     throw new IllegalArgumentException('Tag with id: ' + tagId + ' already exists for the game!');
   }
 
-  async addGameElementToGameById(id: number, gameElementId: number): Promise<GameDto> {
+  async addComponentToGameById(id: number, gameElementId: number): Promise<GameDto> {
     const gameElement: Component = await this.getGameElementById(gameElementId);
     const game: Game = await this.getGameBoardById(id);
     await this.checkIfGameElementIsNotAlreadyUsed(gameElement);
@@ -155,7 +155,7 @@ export class GameService {
     throw new IllegalArgumentException('GameElement with id: ' + gameElementId + ' already exists for the game!');
   }
 
-  async removeGameElementFromGameById(id: number, gameElementId: number): Promise<GameDto> {
+  async removeComponentFromGameById(id: number, gameElementId: number): Promise<GameDto> {
     const gameElement: Component = await this.getGameElementById(gameElementId);
     const game: Game = await this.getGameBoardById(id);
     const existingGameElementIndex = game.components.findIndex(t => t.id === gameElement.id);

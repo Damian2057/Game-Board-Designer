@@ -1,7 +1,7 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { UserService } from "../service/user.service";
 import { User } from "../model/domain/user.entity";
-import { UserRole } from "../model/domain/userRole";
+import { UserRole } from "../model/domain/user.role.enum";
 
 @Injectable()
 export class HierarchyGuard implements CanActivate {

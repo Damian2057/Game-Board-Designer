@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { GameService } from "../service/game.service";
 import { HasRoles } from "../../auth/decorator/role.decorator";
-import { UserRole } from "../../users/model/domain/userRole";
+import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { GameDto } from "../model/dto/game.dto";
@@ -62,19 +62,4 @@ export class GameController {
                @Param('tagId') tagId: number): Promise<GameDto> {
     return this.boardGameService.addTagToGameById(id, tagId);
   }
-
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Put(':id/add-element/:gameElementId')
-  addGameElementToGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<GameDto> {
-    return this.boardGameService.addGameElementToGameById(id, gameElementId);
-  }
-
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Put(':id/remove-element/:gameElementId')
-  removeGameElementFromGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<GameDto> {
-    return this.boardGameService.removeGameElementFromGameById(id, gameElementId);
-  }
-
 }

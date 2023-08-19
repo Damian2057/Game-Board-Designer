@@ -40,3 +40,11 @@ export function mapTagCommandToTag(command: CreateTagCommand): Tag {
   tag.name = command.name;
   return tag;
 }
+
+export function mapComponentCommandToComponent(command: CreateComponentCommand, game: Game): Component {
+  const component = new Component();
+  component.name = command.name;
+  component.quantity = command.quantity;
+  component.game = game;
+  return component;
+}
