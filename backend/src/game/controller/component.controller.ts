@@ -1,35 +1,34 @@
 import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
-import { ElementService } from "../service/element.service";
-import { UpdateBoardGameElementCommand } from "../model/command/update.board-game-element.command";
-import { GameDto } from "../model/dto/game.dto";
+import { ComponentService } from "../service/component.service";
+import { UpdateComponentCommand } from "../model/command/update.component.command";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/userRole";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
-import { ElementDto } from "../model/dto/element.dto";
-import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
+import { ComponentDto } from "../model/dto/component.dto";
+import { CreateComponentCommand } from "../model/command/create.component.command";
 
-@Controller('element')
-export class GameElementController {
+@Controller('component')
+export class ComponentController {
 
-  constructor(private readonly gameElementService: ElementService) {
+  constructor(private readonly gameElementService: ComponentService) {
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateGameElement(@Param('id') id: number,
-                    @Body() element: UpdateBoardGameElementCommand): Promise<ElementDto> {
+                    @Body() element: UpdateComponentCommand): Promise<ComponentDto> {
     return this.gameElementService.updateById(id, element);
   }
 
   @Get('all/:id')
-  getAllGameElementsByBoardGame(@Param('id') id: number): Promise<ElementDto[]> {
+  getAllGameElementsByBoardGame(@Param('id') id: number): Promise<ComponentDto[]> {
     return this.gameElementService.findByBoardGame(id);
   }
 
   @Get('/all')
-  getAllGameElements(): Promise<ElementDto[]> {
+  getAllGameElements(): Promise<ComponentDto[]> {
     return this.gameElementService.findAll();
   }
 
@@ -37,7 +36,7 @@ export class GameElementController {
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
   getGameElementByFilter(@Query('id') id?: number,
-                         @Query('name') name?: string): Promise<ElementDto[]> {
+                         @Query('name') name?: string): Promise<ComponentDto[]> {
     return this.gameElementService.find(id, name);
   }
 
@@ -51,7 +50,7 @@ export class GameElementController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
-  addGameElement(@Body() element: CreateBoardGameElementCommand): Promise<boolean> {
+  addGameElement(@Body() element: CreateComponentCommand): Promise<boolean> {
     return this.gameElementService.add(element);
   }
 }

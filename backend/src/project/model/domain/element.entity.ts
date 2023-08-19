@@ -2,6 +2,6 @@ import { AbstractEntity } from "../../../database/abstract.entity";
 import { Entity } from "typeorm";
 
 @Entity()
-export class Component extends AbstractEntity<Component> {
+export class Element extends AbstractEntity<Element> {
 
 }

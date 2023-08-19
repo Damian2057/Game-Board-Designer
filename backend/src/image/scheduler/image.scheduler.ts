@@ -3,7 +3,7 @@ import { Cron, CronExpression } from "@nestjs/schedule";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ImageEntity } from "../model/domain/image.entity";
 import { Repository } from "typeorm";
-import { Game } from "../../game/model/domain/game";
+import { Game } from "../../game/model/domain/game.entity";
 import * as process from "process";
 import { deleteFileFromDisk } from "../util/util.functions";
 

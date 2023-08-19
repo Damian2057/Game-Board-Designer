@@ -1,6 +1,6 @@
 import { Column, Entity, JoinTable, ManyToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
-import { Game } from "./game";
+import { Game } from "./game.entity";
 
 @Entity()
 export class Tag extends AbstractEntity<Tag> {

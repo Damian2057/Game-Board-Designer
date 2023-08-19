@@ -5,8 +5,8 @@ import { UserRole } from "../../users/model/domain/userRole";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { GameDto } from "../model/dto/game.dto";
-import { CreateBoardGameCommand } from "../model/command/create.board-game.command";
-import { UpdateBoardGameCommand } from "../model/command/update.board-game.command";
+import { CreateGameCommand } from "../model/command/create.game.command";
+import { UpdateGameCommand } from "../model/command/update.game.command";
 
 @Controller('game')
 export class GameController {
@@ -28,7 +28,7 @@ export class GameController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
-  createBoardGame(@Body() command: CreateBoardGameCommand): Promise<boolean> {
+  createBoardGame(@Body() command: CreateGameCommand): Promise<boolean> {
     return this.boardGameService.create(command);
   }
 
@@ -36,7 +36,7 @@ export class GameController {
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateBoardGame(@Param('id') id: number,
-                  @Body() command: UpdateBoardGameCommand): Promise<GameDto> {
+                  @Body() command: UpdateGameCommand): Promise<GameDto> {
     return this.boardGameService.updateById(id, command);
   }
 

@@ -3,5 +3,6 @@ import { Entity } from "typeorm";
 
 @Entity()
 export class Property extends AbstractEntity<Property> {
-
+    name: string;
+    value: string;
 }
