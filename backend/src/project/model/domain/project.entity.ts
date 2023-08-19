@@ -11,4 +11,5 @@ export class Project extends AbstractEntity<Project>{
   notes: string[];
   box: Box;
   containers: Container[];
+  elements: Element[];
 }
