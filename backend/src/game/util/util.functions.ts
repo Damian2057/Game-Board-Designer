@@ -1,11 +1,11 @@
 import { Tag } from "../model/domain/tag.entity";
 import { TagDto } from "../model/dto/tag.dto";
 import { CreateTagCommand } from "../model/command/create.tag.command";
-import { Game } from "../model/domain/game";
+import { Game } from "../model/domain/game.entity";
 import { GameDto } from "../model/dto/game.dto";
-import { ElementDto } from "../model/dto/element.dto";
-import { Element } from "../model/domain/element";
-import { CreateBoardGameElementCommand } from "../model/command/create.board-game.element.command";
+import { ComponentDto } from "../model/dto/component.dto";
+import { Component } from "../model/domain/component";
+import { CreateComponentCommand } from "../model/command/create.component.command";
 
 export function mapTagToTagDto(tag: Tag): TagDto {
   const tagDto = new TagDto();
@@ -14,12 +14,12 @@ export function mapTagToTagDto(tag: Tag): TagDto {
   return tagDto;
 }
 
-export function mapElementToElementDto(element: Element): ElementDto {
-  const elementDto = new ElementDto();
-  elementDto.id = element.id;
-  elementDto.name = element.name;
-  elementDto.quantity = element.quantity;
-  return elementDto;
+export function mapComponentToComponentDto(component: Component): ComponentDto {
+  const componentDto = new ComponentDto();
+  componentDto.id = component.id;
+  componentDto.name = component.name;
+  componentDto.quantity = component.quantity;
+  return componentDto;
 }
 
 export function mapGameToGameDto(game: Game) {
@@ -30,7 +30,7 @@ export function mapGameToGameDto(game: Game) {
   gameDto.publicationDate = game.publicationDate;
   gameDto.price = game.price;
   gameDto.tags = game.tags.map(tag => mapTagToTagDto(tag));
-  gameDto.gameElements = game.gameElements.map(gameElement => mapElementToElementDto(gameElement));
+  gameDto.components = game.components.map(component => mapComponentToComponentDto(component));
   gameDto.imageIds = game.imageIds;
   return gameDto;
 }
@@ -39,11 +39,4 @@ export function mapTagCommandToTag(command: CreateTagCommand): Tag {
   const tag = new Tag();
   tag.name = command.name;
   return tag;
-}
-
-export function mapElementCommandToElement(command: CreateBoardGameElementCommand): Element {
-  const element = new Element();
-  element.name = command.name;
-  element.quantity = command.quantity;
-  return element;
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { Game } from "../model/domain/game";
+import { Game } from "../model/domain/game.entity";
 import { Tag } from "../model/domain/tag.entity";
-import { Element } from "../model/domain/element";
-import { CreateBoardGameCommand } from "../model/command/create.board-game.command";
-import { UpdateBoardGameCommand } from "../model/command/update.board-game.command";
+import { Component } from "../model/domain/component";
+import { CreateGameCommand } from "../model/command/create.game.command";
+import { UpdateGameCommand } from "../model/command/update.game.command";
 import { mapGameToGameDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
 import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.key.parameter.exception";
@@ -22,8 +22,8 @@ export class GameService {
     private readonly boardGameRepository: Repository<Game>,
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
-    @InjectRepository(Element)
-    private readonly gameElementRepository: Repository<Element>,
+    @InjectRepository(Component)
+    private readonly gameElementRepository: Repository<Component>,
     @InjectRepository(ImageEntity)
     private readonly imageRepository: Repository<ImageEntity>,
   ) {}
@@ -33,7 +33,7 @@ export class GameService {
     const boardGames: Game[] = await this.boardGameRepository.find({
       relations: {
         tags: true,
-        gameElements: true
+        components: true
       },
     });
     return boardGames.map(boardGame => mapGameToGameDto(boardGame));
@@ -51,7 +51,7 @@ export class GameService {
       const result: Game[] = await this.boardGameRepository.find({
         relations: {
           tags: true,
-          gameElements: true
+          components: true
         },
         where: {
           title: title
@@ -83,7 +83,7 @@ export class GameService {
     return Array.from(games.get()).map(game => mapGameToGameDto(game));
   }
 
-  async create(command: CreateBoardGameCommand): Promise<boolean> {
+  async create(command: CreateGameCommand): Promise<boolean> {
     if (await this.boardGameRepository.findOneBy({title: command.title}) == null) {
       try {
         if (!command.publicationDate) {
@@ -99,7 +99,7 @@ export class GameService {
     throw new DuplicateKeyParameterException('Board Game with title: ' + command.title + ' already exists!');
   }
 
-  async updateById(id: number, command: UpdateBoardGameCommand): Promise<GameDto> {
+  async updateById(id: number, command: UpdateGameCommand): Promise<GameDto> {
     let game: Game = await this.getGameBoardById(id);
     game = this.updateNotNullFields(game, command);
     const updated: Game = await this.boardGameRepository.save(game);
@@ -108,7 +108,7 @@ export class GameService {
 
   async deleteById(id: number): Promise<boolean> {
     const result = await this.getGameBoardById(id);
-    result.gameElements.forEach(element => {
+    result.components.forEach(element => {
       this.gameElementRepository.delete(element.id)
     });
     await this.boardGameRepository.delete(id);
@@ -142,13 +142,13 @@ export class GameService {
   }
 
   async addGameElementToGameById(id: number, gameElementId: number): Promise<GameDto> {
-    const gameElement: Element = await this.getGameElementById(gameElementId);
+    const gameElement: Component = await this.getGameElementById(gameElementId);
     const game: Game = await this.getGameBoardById(id);
     await this.checkIfGameElementIsNotAlreadyUsed(gameElement);
-    const existingGameElementIndex = game.gameElements.findIndex(t => t.id === gameElement.id);
+    const existingGameElementIndex = game.components.findIndex(t => t.id === gameElement.id);
 
     if (existingGameElementIndex === -1) {
-      game.gameElements.push(gameElement);
+      game.components.push(gameElement);
       await this.boardGameRepository.save(game);
       return mapGameToGameDto(game);
     }
@@ -156,12 +156,12 @@ export class GameService {
   }
 
   async removeGameElementFromGameById(id: number, gameElementId: number): Promise<GameDto> {
-    const gameElement: Element = await this.getGameElementById(gameElementId);
+    const gameElement: Component = await this.getGameElementById(gameElementId);
     const game: Game = await this.getGameBoardById(id);
-    const existingGameElementIndex = game.gameElements.findIndex(t => t.id === gameElement.id);
+    const existingGameElementIndex = game.components.findIndex(t => t.id === gameElement.id);
 
     if (existingGameElementIndex !== -1) {
-      game.gameElements.splice(existingGameElementIndex, 1);
+      game.components.splice(existingGameElementIndex, 1);
       await this.boardGameRepository.save(game);
       return mapGameToGameDto(game);
     }
@@ -172,7 +172,7 @@ export class GameService {
     const games: Game[] = await this.boardGameRepository.find({
       relations: {
         tags: true,
-        gameElements: true
+        components: true
       },
       where: {
         id: id
@@ -192,7 +192,7 @@ export class GameService {
     return tag;
   }
 
-  private updateNotNullFields(boardGame: Game, command: UpdateBoardGameCommand): Game {
+  private updateNotNullFields(boardGame: Game, command: UpdateGameCommand): Game {
     if (command.title) {
       boardGame.title = command.title;
     }
@@ -211,22 +211,22 @@ export class GameService {
     return boardGame;
   }
 
-  private async getGameElementById(id: number): Promise<Element> {
-    const gameElement: Element = await this.gameElementRepository.findOneBy({id: id});
+  private async getGameElementById(id: number): Promise<Component> {
+    const gameElement: Component = await this.gameElementRepository.findOneBy({id: id});
     if (!gameElement) {
       throw new IllegalArgumentException('GameElement with id: ' + id + ' does not exist!');
     }
     return gameElement;
   }
 
-  private async checkIfGameElementIsNotAlreadyUsed(gameElement: Element) {
+  private async checkIfGameElementIsNotAlreadyUsed(gameElement: Component) {
     const games: Game[] = await this.boardGameRepository.find({
       relations: {
         tags: true,
-        gameElements: true
+        components: true
       },
       where: {
-        gameElements: {
+        components: {
           id: gameElement.id
         }
       }

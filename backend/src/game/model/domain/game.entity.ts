@@ -3,7 +3,7 @@ import { AbstractEntity } from "../../../database/abstract.entity";
 import { Length, Min } from "class-validator";
 import { NumericTransformer } from "../../../users/util/NumericTransformer";
 import { Tag } from "./tag.entity";
-import { Element } from "./element";
+import { Component } from "./component";
 
 @Entity()
 export class Game extends AbstractEntity<Game> {
@@ -32,11 +32,11 @@ export class Game extends AbstractEntity<Game> {
   @JoinTable()
   tags: Tag[]
 
-  @OneToMany(() => Element, element => element.game, {
+  @OneToMany(() => Component, component => component.game, {
     cascade: true
   })
   @JoinTable()
-  gameElements: Element[]
+  components: Component[]
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];

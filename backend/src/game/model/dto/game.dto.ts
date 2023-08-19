@@ -1,4 +1,4 @@
-import { ElementDto } from "./element.dto";
+import { ComponentDto } from "./component.dto";
 import { TagDto } from "./tag.dto";
 
 export class GameDto {
@@ -8,6 +8,6 @@ export class GameDto {
   publicationDate: string;
   price: number;
   tags: TagDto[];
-  gameElements: ElementDto[];
+  components: ComponentDto[];
   imageIds: number[];
 }

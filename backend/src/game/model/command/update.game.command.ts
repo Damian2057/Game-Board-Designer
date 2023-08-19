@@ -1,4 +1,4 @@
-export class UpdateBoardGameCommand {
+export class UpdateGameCommand {
   title: string
   description: string
   publicationDate: string

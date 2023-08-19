@@ -1,4 +1,4 @@
-export class ElementDto {
+export class ComponentDto {
   id: number
   name: string
   quantity: number
