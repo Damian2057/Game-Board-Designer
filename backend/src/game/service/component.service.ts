@@ -4,11 +4,12 @@ import { CreateComponentCommand } from "../model/command/create.component.comman
 import { Component } from "../model/domain/component";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { mapComponentCommandToComponent, mapComponentToComponentDto } from "../util/util.functions";
+import { mapComponentCommandToComponent, mapComponentToComponentDto, mapGameToGameDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
 import { Game } from "../model/domain/game.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { ComponentDto } from "../model/dto/component.dto";
+import { GameDto } from "../model/dto/game.dto";
 
 @Injectable()
 export class ComponentService {
@@ -38,11 +39,12 @@ export class ComponentService {
     throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
   }
 
-  async add(command: CreateComponentCommand, gameId: number): Promise<ComponentDto> {
+  async add(command: CreateComponentCommand, gameId: number): Promise<GameDto> {
     const game = await this.getGameBoardById(gameId);
     const component = mapComponentCommandToComponent(command, game);
     await this.componentRepository.save(component);
-    return mapComponentToComponentDto(component);
+    const updatedGame = await this.getGameBoardById(gameId);
+    return mapGameToGameDto(updatedGame);
   }
 
   async findAll(): Promise<ComponentDto[]> {

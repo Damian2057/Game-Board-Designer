@@ -7,6 +7,7 @@ import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { ComponentDto } from "../model/dto/component.dto";
 import { CreateComponentCommand } from "../model/command/create.component.command";
+import { GameDto } from "../model/dto/game.dto";
 
 @Controller('component')
 export class ComponentController {
@@ -50,7 +51,7 @@ export class ComponentController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create/:gameId')
-  addGameElement(@Param('gameId') gameId: number ,@Body() element: CreateComponentCommand): Promise<ComponentDto> {
+  addGameElement(@Param('gameId') gameId: number ,@Body() element: CreateComponentCommand): Promise<GameDto> {
     return this.componentService.add(element, gameId);
   }
 }
