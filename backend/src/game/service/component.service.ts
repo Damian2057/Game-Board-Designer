@@ -4,7 +4,7 @@ import { CreateComponentCommand } from "../model/command/create.component.comman
 import { Component } from "../model/domain/component";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
-import { mapComponentToComponentDto } from "../util/util.functions";
+import { mapComponentCommandToComponent, mapComponentToComponentDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
 import { Game } from "../model/domain/game.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
@@ -15,49 +15,51 @@ export class ComponentService {
 
   constructor(
     @InjectRepository(Component)
-    private readonly gameElementRepository: Repository<Component>,
+    private readonly componentRepository: Repository<Component>,
     @InjectRepository(Game)
     private readonly boardGameRepository: Repository<Game>
   ) {}
 
   async updateById(id: number, command: UpdateComponentCommand): Promise<ComponentDto> {
-    let element: Component = await this.gameElementRepository.findOneBy({id: id});
+    let element: Component = await this.componentRepository.findOneBy({id: id});
     if (!element) {
       throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
     }
     element = this.updateNotNullFields(command, element);
-    const updated = await this.gameElementRepository.save(element);
+    const updated = await this.componentRepository.save(element);
     return mapComponentToComponentDto(updated);
   }
 
   async deleteById(id: number): Promise<boolean> {
-    const result = await this.gameElementRepository.delete(id);
+    const result = await this.componentRepository.delete(id);
     if (result.affected > 0) {
       return true;
     }
     throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
   }
 
-  async add(command: CreateComponentCommand) {
-    await this.gameElementRepository.save(command);
-    return true;
+  async add(command: CreateComponentCommand, gameId: number): Promise<ComponentDto> {
+    const game = await this.getGameBoardById(gameId);
+    const component = mapComponentCommandToComponent(command, game);
+    await this.componentRepository.save(component);
+    return mapComponentToComponentDto(component);
   }
 
   async findAll(): Promise<ComponentDto[]> {
-    const elements: Component[] = await this.gameElementRepository.find();
+    const elements: Component[] = await this.componentRepository.find();
     return elements.map(element => mapComponentToComponentDto(element));
   }
 
   async find(id: number, name: string): Promise<ComponentDto[]> {
     const elements = new SetFilter();
     if (name) {
-      const result: Component = await this.gameElementRepository.findOneBy({name: name});
+      const result: Component = await this.componentRepository.findOneBy({name: name});
       if (result) {
         elements.add(result);
       }
     }
     if (id) {
-      const result: Component = await this.gameElementRepository.findOneBy({id: id});
+      const result: Component = await this.componentRepository.findOneBy({id: id});
       if (result) {
         elements.add(result);
       }

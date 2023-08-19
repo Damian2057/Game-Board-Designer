@@ -11,46 +11,46 @@ import { CreateComponentCommand } from "../model/command/create.component.comman
 @Controller('component')
 export class ComponentController {
 
-  constructor(private readonly gameElementService: ComponentService) {
+  constructor(private readonly componentService: ComponentService) {
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
-  updateGameElement(@Param('id') id: number,
-                    @Body() element: UpdateComponentCommand): Promise<ComponentDto> {
-    return this.gameElementService.updateById(id, element);
+  updateComponent(@Param('id') id: number,
+                  @Body() element: UpdateComponentCommand): Promise<ComponentDto> {
+    return this.componentService.updateById(id, element);
   }
 
   @Get('all/:id')
-  getAllGameElementsByBoardGame(@Param('id') id: number): Promise<ComponentDto[]> {
-    return this.gameElementService.findByBoardGame(id);
+  getAllComponentsByGameId(@Param('id') id: number): Promise<ComponentDto[]> {
+    return this.componentService.findByBoardGame(id);
   }
 
   @Get('/all')
-  getAllGameElements(): Promise<ComponentDto[]> {
-    return this.gameElementService.findAll();
+  getAllComponents(): Promise<ComponentDto[]> {
+    return this.componentService.findAll();
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
-  getGameElementByFilter(@Query('id') id?: number,
-                         @Query('name') name?: string): Promise<ComponentDto[]> {
-    return this.gameElementService.find(id, name);
+  getComponentByFilter(@Query('id') id?: number,
+                       @Query('name') name?: string): Promise<ComponentDto[]> {
+    return this.componentService.find(id, name);
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
   deleteGameElement(@Param('id') id: number): Promise<boolean> {
-    return this.gameElementService.deleteById(id);
+    return this.componentService.deleteById(id);
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
-  @Post('create')
-  addGameElement(@Body() element: CreateComponentCommand): Promise<boolean> {
-    return this.gameElementService.add(element);
+  @Post('create/:gameId')
+  addGameElement(@Param('gameId') gameId: number ,@Body() element: CreateComponentCommand): Promise<ComponentDto> {
+    return this.componentService.add(element, gameId);
   }
 }

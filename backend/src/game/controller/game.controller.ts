@@ -62,19 +62,4 @@ export class GameController {
                @Param('tagId') tagId: number): Promise<GameDto> {
     return this.boardGameService.addTagToGameById(id, tagId);
   }
-
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Put(':id/add-element/:gameElementId')
-  addGameElementToGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<GameDto> {
-    return this.boardGameService.addGameElementToGameById(id, gameElementId);
-  }
-
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
-  @Put(':id/remove-element/:gameElementId')
-  removeGameElementFromGame(@Param('id') id: number, @Param('gameElementId') gameElementId: number): Promise<GameDto> {
-    return this.boardGameService.removeGameElementFromGameById(id, gameElementId);
-  }
-
 }
