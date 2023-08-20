@@ -42,4 +42,9 @@ export class Element extends AbstractTicketEntity<Element> {
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];
+
+  @Column({
+    default: 'element'
+  })
+  type: string;
 }

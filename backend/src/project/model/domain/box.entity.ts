@@ -25,4 +25,9 @@ export class Box extends AbstractTicketEntity<Box> {
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];
+
+  @Column({
+    default: 'box'
+  })
+  type: string;
 }
