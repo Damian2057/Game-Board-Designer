@@ -53,12 +53,12 @@ export class ProjectService {
     prop2.value = 'test';
     box.properties.push(prop2);
     await this.boxRepository.save(box);
-    const saved = await this.boxRepository.find();
-    const saved2 = saved[0];
-
-    project.box = [saved2];
+    // const saved = await this.boxRepository.find();
+    // const saved2 = saved[0];
+    //try eager: true
+    project.box = box;
     project.games = [game2];
-    project.currentGame = [game2];
+    project.currentGame = game2;
     await this.projectRepository.save(project);
     return await this.projectRepository.find({
       relations: {
