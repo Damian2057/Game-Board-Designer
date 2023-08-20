@@ -9,17 +9,19 @@ import { Property } from "./model/domain/property.entity";
 import { GameModule } from "../game/game.module";
 import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
-import { ComponentController } from './controller/component.controller';
+import { ElementController } from './controller/element.controller';
 import { Container } from "./model/domain/container.entity";
 import { Element } from "./model/domain/element.entity";
 import { Box } from "./model/domain/box.entity";
+import { ImageModule } from "../image/image.module";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Component, Project, Container, Element, Property, Box]),
   GameModule,
   AuthModule,
-  UserModule],
-  controllers: [ProjectController, ComponentController],
+  UserModule,
+  ImageModule],
+  controllers: [ProjectController, ElementController],
   providers: [ProjectService]
 })
 export class ProjectModule {}

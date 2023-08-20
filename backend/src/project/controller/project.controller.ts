@@ -5,13 +5,13 @@ import { ProjectService } from "../service/project.service";
 export class ProjectController {
 
   constructor(
-    private readonly boardSchemaService: ProjectService,
+    private readonly projectService: ProjectService,
   ) {
   }
 
   @Post('start-project/:templateId')
   async startNewSchemaBasedOnTemplate(@Param('templateId') templateId: number) {
-
+    return this.projectService.test();
   }
 
   @Post('create-new-Schema')
