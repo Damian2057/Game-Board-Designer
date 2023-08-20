@@ -1,9 +1,10 @@
-import { Column, Entity, JoinTable, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
 import { Container } from "./container.entity";
 import { Box } from "./box.entity";
 import { Length } from "class-validator";
 import { Element } from "./element.entity";
+import { Game } from "../../../game/model/domain/game.entity";
 
 @Entity()
 export class Project extends AbstractEntity<Project>{
@@ -36,4 +37,16 @@ export class Project extends AbstractEntity<Project>{
   })
   @JoinTable()
   elements: Element[];
+
+  @ManyToMany(() => Game, {
+    cascade: true,
+    nullable: true
+  })
+  @JoinTable()
+  games: Game[];
+
+  @Column({
+    default: true
+  })
+  isTemplate: boolean;
 }
