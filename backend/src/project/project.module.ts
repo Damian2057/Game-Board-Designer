@@ -13,12 +13,14 @@ import { ComponentController } from './controller/component.controller';
 import { Container } from "./model/domain/container.entity";
 import { Element } from "./model/domain/element.entity";
 import { Box } from "./model/domain/box.entity";
+import { ImageModule } from "../image/image.module";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Component, Project, Container, Element, Property, Box]),
   GameModule,
   AuthModule,
-  UserModule],
+  UserModule,
+  ImageModule],
   controllers: [ProjectController, ComponentController],
   providers: [ProjectService]
 })

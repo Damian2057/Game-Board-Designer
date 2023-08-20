@@ -1,28 +1,45 @@
-import { Column, Entity } from "typeorm";
-import { Status } from "./status.enum";
-import { Priority } from "./priority.enum";
+import { Column, Entity, JoinTable, ManyToOne, OneToMany } from "typeorm";
 import { AbstractTicketEntity } from "./abstract.ticket.entity";
+import { Project } from "./project.entity";
+import { Length, Min } from "class-validator";
+import { NumericTransformer } from "../../../users/util/NumericTransformer";
+import { Property } from "./property.entity";
+import { Element } from "./element.entity";
 
 @Entity()
 export class Container extends AbstractTicketEntity<Container> {
 
+  @Column({ length: 50 })
+  @Length(3, 50)
   name: string;
+
+  @Column({ length: 2000 })
+  @Length(10, 2000)
   description: string;
+
+  @Column('text', { array: true, nullable: true })
   notes: string[];
+
+  @Min(0)
+  @Column('numeric', {
+    precision: 10,
+    scale: 2,
+    transformer: new NumericTransformer()
+  })
   quantity: number;
+
+  @OneToMany(() => Element, element => element.container, {
+    cascade: true
+  })
+  @JoinTable()
   elements: Element[];
 
-  @Column({
-    type: "enum",
-    enum: Status,
-    default: Status.TODO
+  @OneToMany(() => Property, prop => prop.container, {
+    cascade: true
   })
-  status: Status
+  @JoinTable()
+  properties: Property[];
 
-  @Column({
-    type: "enum",
-    enum: Priority,
-    default: Priority.C
-  })
-  priority: Priority
+  @ManyToOne(() => Project, project => project.containers)
+  project: Project
 }
