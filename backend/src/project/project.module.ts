@@ -14,6 +14,12 @@ import { Container } from "./model/domain/container.entity";
 import { Element } from "./model/domain/element.entity";
 import { Box } from "./model/domain/box.entity";
 import { ImageModule } from "../image/image.module";
+import { BoxService } from './service/box.service';
+import { BoxController } from './controller/box.controller';
+import { PriorityController } from './controller/priority.controller';
+import { StatusController } from './controller/status.controller';
+import { PriorityService } from './service/priority.service';
+import { StatusService } from './service/status.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Component, Project, Container, Element, Property, Box]),
@@ -21,7 +27,7 @@ import { ImageModule } from "../image/image.module";
   AuthModule,
   UserModule,
   ImageModule],
-  controllers: [ProjectController, ElementController],
-  providers: [ProjectService]
+  controllers: [ProjectController, ElementController, BoxController, PriorityController, StatusController],
+  providers: [ProjectService, BoxService, PriorityService, StatusService]
 })
 export class ProjectModule {}

@@ -45,4 +45,9 @@ export class Container extends AbstractTicketEntity<Container> {
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];
+
+  @Column({
+    default: 'container'
+  })
+  type: string;
 }
