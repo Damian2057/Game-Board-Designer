@@ -3,7 +3,7 @@ import {
   Entity,
   JoinColumn,
   JoinTable,
-  ManyToMany,
+  ManyToMany, ManyToOne,
   OneToMany,
   OneToOne
 } from "typeorm";
@@ -55,9 +55,7 @@ export class Project extends AbstractEntity<Project>{
   @JoinTable()
   games: Game[];
 
-  @OneToOne(() => Game,{
-    nullable: true
-  })
+  @ManyToOne(() => Game, { nullable: true })
   @JoinColumn()
   currentGame: Game;
 

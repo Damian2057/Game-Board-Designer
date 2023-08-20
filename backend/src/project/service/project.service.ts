@@ -14,7 +14,7 @@ export class ProjectService {
     private readonly projectRepository: Repository<Project>,
     @InjectRepository(Game)
     private readonly gameRepository: Repository<Game>,
-@InjectRepository(Box)
+    @InjectRepository(Box)
     private readonly boxRepository: Repository<Box>,
     @InjectRepository(Element)
     private readonly elementRepository: Repository<Element>,
@@ -53,9 +53,6 @@ export class ProjectService {
     prop2.value = 'test';
     box.properties.push(prop2);
     await this.boxRepository.save(box);
-    // const saved = await this.boxRepository.find();
-    // const saved2 = saved[0];
-    //try eager: true
     project.box = box;
     project.games = [game2];
     project.currentGame = game2;
