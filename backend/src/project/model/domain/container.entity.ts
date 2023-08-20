@@ -42,4 +42,7 @@ export class Container extends AbstractTicketEntity<Container> {
 
   @ManyToOne(() => Project, project => project.containers)
   project: Project
+
+  @Column('integer', { array: true, nullable: true })
+  imageIds: number[];
 }

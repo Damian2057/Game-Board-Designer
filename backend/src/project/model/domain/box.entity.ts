@@ -1,8 +1,8 @@
-import { Column, Entity, JoinTable, ManyToOne, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToOne, OneToMany, OneToOne } from "typeorm";
 import { Property } from "./property.entity";
 import { AbstractTicketEntity } from "./abstract.ticket.entity";
-import { Project } from "./project.entity";
 import { Length } from "class-validator";
+import { Project } from "./project.entity";
 
 @Entity()
 export class Box extends AbstractTicketEntity<Box> {
@@ -25,5 +25,8 @@ export class Box extends AbstractTicketEntity<Box> {
   properties: Property[];
 
   @ManyToOne(() => Project, project => project.box)
-  project: Project
+  project: Project;
+
+  @Column('integer', { array: true, nullable: true })
+  imageIds: number[];
 }

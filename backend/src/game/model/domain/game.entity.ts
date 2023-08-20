@@ -1,9 +1,10 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
 import { Length, Min } from "class-validator";
 import { NumericTransformer } from "../../../users/util/NumericTransformer";
 import { Tag } from "./tag.entity";
 import { Component } from "./component";
+import { Project } from "../../../project/model/domain/project.entity";
 
 @Entity()
 export class Game extends AbstractEntity<Game> {
@@ -40,4 +41,7 @@ export class Game extends AbstractEntity<Game> {
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];
+
+  @ManyToOne(() => Project, project => project.games)
+  project: Project
 }

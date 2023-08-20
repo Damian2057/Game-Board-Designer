@@ -1,4 +1,4 @@
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne } from "typeorm";
+import { BeforeInsert, Column, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryColumn } from "typeorm";
 import { AbstractEntity } from "../../../database/abstract.entity";
 import { Container } from "./container.entity";
 import { Box } from "./box.entity";
@@ -20,20 +20,26 @@ export class Project extends AbstractEntity<Project>{
   @Column('text', { array: true, nullable: true })
   notes: string[];
 
+  // @PrimaryColumn()
+  // boxId: number;
+
   @OneToMany(() => Box, box => box.project, {
-    cascade: true
+    cascade: true,
+    nullable: true
   })
   @JoinTable()
-  box: Box;
+  box: Box[];
 
   @OneToMany(() => Container, container => container.project, {
-    cascade: true
+    cascade: true,
+    nullable: true
   })
   @JoinTable()
   containers: Container[];
 
   @OneToMany(() => Element, element => element.project, {
-    cascade: true
+    cascade: true,
+    nullable: true
   })
   @JoinTable()
   elements: Element[];
@@ -45,8 +51,18 @@ export class Project extends AbstractEntity<Project>{
   @JoinTable()
   games: Game[];
 
+  @OneToMany(() => Game, game => game.project, {
+    cascade: true,
+    nullable: true
+  })
+  @JoinTable()
+  currentGame: Game[];
+
   @Column({
     default: true
   })
   isTemplate: boolean;
+
+  @Column('integer', { array: true, nullable: true })
+  imageIds: number[];
 }

@@ -38,5 +38,8 @@ export class Element extends AbstractTicketEntity<Element> {
   project: Project
 
   @ManyToOne(() => Container, container => container.elements)
-  container: Container
+  container: Container;
+
+  @Column('integer', { array: true, nullable: true })
+  imageIds: number[];
 }
