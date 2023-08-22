@@ -1,5 +1,10 @@
+import { IsNotEmpty } from "class-validator";
+
 export class UpdatePriorityCommand {
+
+  @IsNotEmpty()
   id: number;
-  type: string;
+
+  @IsNotEmpty()
   priority: string;
 }

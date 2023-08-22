@@ -1,5 +1,10 @@
+import { IsNotEmpty } from "class-validator";
+
 export class UpdateStatusCommand {
+
+  @IsNotEmpty()
   id: number;
-  type: string;
+
+  @IsNotEmpty()
   status: string;
 }
