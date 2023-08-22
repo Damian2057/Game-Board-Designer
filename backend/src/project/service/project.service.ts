@@ -8,6 +8,7 @@ import { Game } from "../../game/model/domain/game.entity";
 import { Box } from "../model/domain/box.entity";
 import { CreateProjectCommand } from "../model/command/create.project.command";
 import { User } from "../../users/model/domain/user.entity";
+import { ProjectDto } from "../model/dto/project.dto";
 
 @Injectable()
 export class ProjectService {
@@ -86,7 +87,7 @@ export class ProjectService {
     return undefined;
   }
 
-  async findOne(id) {
-
+  async findOne(id): Promise<ProjectDto> {
+    return null;
   }
 }

@@ -22,7 +22,7 @@ export class ProjectCreatorController {
   @Get('all-projects-template')
   @UseGuards(JwtGuard, RolesGuard)
   async getAllProjectsTemplate(@GetCurrentUser() user) {
-    return this.projectService.test(user);
+
   }
 
   @Get('all-projects/:gameId')

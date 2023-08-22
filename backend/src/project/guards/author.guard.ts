@@ -2,6 +2,7 @@ import { CanActivate, Injectable } from "@nestjs/common";
 import { User } from "../../users/model/domain/user.entity";
 import { UserService } from "../../users/service/user.service";
 import { ProjectService } from "../service/project.service";
+import { UserRole } from "../../users/model/domain/user.role.enum";
 
 @Injectable()
 export class AuthorGuard implements CanActivate {
@@ -16,8 +17,8 @@ export class AuthorGuard implements CanActivate {
 
       const sender: User = await this.userService.findOne(request.user.id);
       const project = await this.projectService.findOne(params.id);
-      project
+      return sender.role === UserRole.ADMIN || sender.id === project.user.id;
 
-      return true;
+
     }
 }
