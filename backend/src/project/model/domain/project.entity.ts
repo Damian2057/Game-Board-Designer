@@ -73,7 +73,9 @@ export class Project extends AbstractEntity<Project>{
   })
   isCompleted: boolean;
 
-  @ManyToOne(() => User)
+  @ManyToOne(() => User, {
+    nullable: true
+  })
   @JoinColumn()
   user: User;
 }
