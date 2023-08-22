@@ -2,7 +2,6 @@ import { Body, Controller, Get, Param, Put } from "@nestjs/common";
 import { ProjectDto } from "../model/dto/project.dto";
 import { StatusService } from "../service/status.service";
 import { UpdateStatusCommand } from "../model/command/status/update.status.command";
-import { Status } from "../model/domain/status.enum";
 
 @Controller('status')
 export class StatusController {

@@ -18,7 +18,7 @@ export class StatusService {
     return undefined;
   }
 
-  getAvailableStatuses() {
+  getAvailableStatuses(): Status[] {
     return Object.values(Status);
   }
 }
