@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ProjectController } from './controller/project.controller';
+import { ProjectCreatorController } from './controller/project.creator.controller';
 import { ProjectService } from './service/project.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { Game } from "../game/model/domain/game.entity";
@@ -20,6 +20,7 @@ import { PriorityController } from './controller/priority.controller';
 import { StatusController } from './controller/status.controller';
 import { PriorityService } from './service/priority.service';
 import { StatusService } from './service/status.service';
+import { ProjectManagementController } from './controller/project.management.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Component, Project, Container, Element, Property, Box]),
@@ -27,7 +28,7 @@ import { StatusService } from './service/status.service';
   AuthModule,
   UserModule,
   ImageModule],
-  controllers: [ProjectController, ElementController, BoxController, PriorityController, StatusController],
+  controllers: [ProjectCreatorController, ElementController, BoxController, PriorityController, StatusController, ProjectManagementController],
   providers: [ProjectService, BoxService, PriorityService, StatusService]
 })
 export class ProjectModule {}

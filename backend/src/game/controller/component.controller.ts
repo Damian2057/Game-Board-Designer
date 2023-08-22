@@ -19,8 +19,8 @@ export class ComponentController {
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update/:id')
   updateComponent(@Param('id') id: number,
-                  @Body() element: UpdateComponentCommand): Promise<ComponentDto> {
-    return this.componentService.updateById(id, element);
+                  @Body() command: UpdateComponentCommand): Promise<ComponentDto> {
+    return this.componentService.updateById(id, command);
   }
 
   @Get('all/:id')

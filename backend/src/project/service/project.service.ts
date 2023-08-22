@@ -6,6 +6,8 @@ import { Property } from "../model/domain/property.entity";
 import { Repository } from "typeorm";
 import { Game } from "../../game/model/domain/game.entity";
 import { Box } from "../model/domain/box.entity";
+import { CreateProjectCommand } from "../model/command/create.project.command";
+import { User } from "../../users/model/domain/user.entity";
 
 @Injectable()
 export class ProjectService {
@@ -22,7 +24,8 @@ export class ProjectService {
     private readonly propertyRepository: Repository<Property>,
   ) {}
 
-  async test() {
+  async test(user: User) {
+    console.log(user);
     const game = await this.gameRepository.find();
     const game2 = game[0];
     const project = new Project();
@@ -56,6 +59,7 @@ export class ProjectService {
     project.box = box;
     project.games = [game2];
     project.currentGame = game2;
+    project.user = user;
     await this.projectRepository.save(project);
     return await this.projectRepository.find({
       relations: {
@@ -64,6 +68,7 @@ export class ProjectService {
         box: {
           properties: true
         },
+        user: true,
         containers: {
           properties: true,
           elements: {
@@ -75,5 +80,13 @@ export class ProjectService {
         }
       }
     });
+  }
+
+  createNewProjectTemplate(command: CreateProjectCommand) {
+    return undefined;
+  }
+
+  async findOne(id) {
+
   }
 }
