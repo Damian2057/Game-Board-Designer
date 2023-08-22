@@ -27,7 +27,6 @@ import * as process from "process";
     ExceptionsModule,
     OrderModule,
     ImageModule],
-  controllers: [],
   providers: []
 })
 export class AppModule {}

@@ -119,6 +119,10 @@ export class UserService {
     return Array.from(users.get()).map(user => mapUserToUserDto(user));
   }
 
+  getRoles(): UserRole[] {
+    return Object.values(UserRole)
+  }
+
   private updateNotNullFields(user: User, command: UserUpdateCommand): User {
     if (command.username != null) {
       user.username = command.username;

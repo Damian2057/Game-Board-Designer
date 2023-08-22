@@ -13,6 +13,7 @@ import { Box } from "./box.entity";
 import { Length } from "class-validator";
 import { Element } from "./element.entity";
 import { Game } from "../../../game/model/domain/game.entity";
+import { User } from "../../../users/model/domain/user.entity";
 
 @Entity()
 export class Project extends AbstractEntity<Project>{
@@ -66,4 +67,15 @@ export class Project extends AbstractEntity<Project>{
 
   @Column('integer', { array: true, nullable: true })
   imageIds: number[];
+
+  @Column({
+    default: false
+  })
+  isCompleted: boolean;
+
+  @ManyToOne(() => User, {
+    nullable: true
+  })
+  @JoinColumn()
+  user: User;
 }
