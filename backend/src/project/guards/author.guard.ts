@@ -1,14 +1,14 @@
 import { CanActivate, Injectable } from "@nestjs/common";
 import { User } from "../../users/model/domain/user.entity";
 import { UserService } from "../../users/service/user.service";
-import { ProjectService } from "../service/project.service";
+import { ProjectCreatorService } from "../service/project.creator.service";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 
 @Injectable()
 export class AuthorGuard implements CanActivate {
     constructor(
       private readonly userService: UserService,
-      private readonly projectService: ProjectService,
+      private readonly projectService: ProjectCreatorService,
     ) {}
 
     async canActivate(context): Promise<boolean> {

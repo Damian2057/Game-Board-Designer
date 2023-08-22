@@ -11,7 +11,7 @@ import { User } from "../../users/model/domain/user.entity";
 import { ProjectDto } from "../model/dto/project.dto";
 
 @Injectable()
-export class ProjectService {
+export class ProjectCreatorService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,

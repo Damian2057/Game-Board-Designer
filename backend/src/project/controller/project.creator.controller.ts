@@ -1,5 +1,5 @@
 import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
-import { ProjectService } from "../service/project.service";
+import { ProjectCreatorService } from "../service/project.creator.service";
 import { CreateProjectCommand } from "../model/command/create.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
@@ -10,9 +10,8 @@ import { RolesGuard } from "../../auth/guard/roles.guard";
 export class ProjectCreatorController {
 
   constructor(
-    private readonly projectService: ProjectService,
-  ) {
-  }
+    private readonly projectService: ProjectCreatorService,
+  ) {}
 
   @Post('create-new-project-template')
   async createNewProjectTemplate(@Body() command: CreateProjectCommand): Promise<ProjectDto> {
