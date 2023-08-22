@@ -31,7 +31,7 @@ export class UserController {
   @UseGuards(JwtGuard, RolesGuard)
   @Get('roles')
   getRoles(): string[] {
-    return Object.values(UserRole)
+    return this.userService.getRoles();
   }
 
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)

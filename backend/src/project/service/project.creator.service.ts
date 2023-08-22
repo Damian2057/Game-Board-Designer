@@ -28,7 +28,7 @@ export class ProjectCreatorService {
     return undefined;
   }
 
-  async findOne(id): Promise<ProjectDto> {
+  async findOne(id: number): Promise<ProjectDto> {
     return null;
   }
 }
