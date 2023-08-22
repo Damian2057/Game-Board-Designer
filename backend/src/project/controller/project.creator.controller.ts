@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { ProjectCreatorService } from "../service/project.creator.service";
-import { CreateProjectCommand } from "../model/command/create.project.command";
+import { CreateProjectCommand } from "../model/command/project-creator/create.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
 
 @Controller('project')

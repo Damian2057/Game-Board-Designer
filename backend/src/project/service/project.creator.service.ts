@@ -6,7 +6,7 @@ import { Property } from "../model/domain/property.entity";
 import { Repository } from "typeorm";
 import { Game } from "../../game/model/domain/game.entity";
 import { Box } from "../model/domain/box.entity";
-import { CreateProjectCommand } from "../model/command/create.project.command";
+import { CreateProjectCommand } from "../model/command/project-creator/create.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
 
 @Injectable()
