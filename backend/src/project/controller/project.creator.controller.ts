@@ -1,46 +1,42 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { ProjectCreatorService } from "../service/project.creator.service";
 import { CreateProjectCommand } from "../model/command/create.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
-import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
-import { JwtGuard } from "../../auth/guard/jwt.guard";
-import { RolesGuard } from "../../auth/guard/roles.guard";
 
 @Controller('project')
 export class ProjectCreatorController {
 
   constructor(
-    private readonly projectService: ProjectCreatorService,
+    private readonly projectCreatorService: ProjectCreatorService,
   ) {}
 
   @Post('create-new-project-template')
   async createNewProjectTemplate(@Body() command: CreateProjectCommand): Promise<ProjectDto> {
-    return this.projectService.createNewProjectTemplate(command);
+    return this.projectCreatorService.createNewProjectTemplate(command);
   }
 
   @Get('all-projects-template')
-  @UseGuards(JwtGuard, RolesGuard)
-  async getAllProjectsTemplate(@GetCurrentUser() user) {
-
+  async getAllProjectsTemplate(): Promise<ProjectDto[]> {
+    return this.projectCreatorService.getAllProjectsTemplate();
   }
 
   @Get('all-projects/:gameId')
-  async getAllProjectsForGame(@Param('gameId') gameId: number) {
-
+  async getAllProjectsForGame(@Param('gameId') gameId: number): Promise<ProjectDto[]> {
+    return this.projectCreatorService.getAllProjectsForGame(gameId);
   }
 
   @Get('all')
-  async getAllProjectsAndTemplates() {
-
+  async getAllProjectsAndTemplates(): Promise<ProjectDto[]> {
+    return this.projectCreatorService.getAllProjectsAndTemplates();
   }
 
   @Get('/:projectId')
-  async getProjectById(@Param('projectId') projectId: number) {
-
+  async getProjectById(@Param('projectId') projectId: number): Promise<ProjectDto> {
+    return this.projectCreatorService.getProjectById(projectId);
   }
 
   @Put('complete-project/:projectId')
-  async completeProject(@Param('projectId') projectId: number) {
-
+  async completeProject(@Param('projectId') projectId: number): Promise<ProjectDto> {
+    return this.projectCreatorService.completeProject(projectId);
   }
 }

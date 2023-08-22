@@ -31,4 +31,24 @@ export class ProjectCreatorService {
   async findOne(id: number): Promise<ProjectDto> {
     return null;
   }
+
+  getProjectById(projectId: number) {
+    return undefined;
+  }
+
+  getAllProjectsTemplate() {
+    return [];
+  }
+
+  getAllProjectsForGame(gameId: number) {
+    return [];
+  }
+
+  getAllProjectsAndTemplates() {
+    return [];
+  }
+
+  completeProject(projectId: number) {
+    return undefined;
+  }
 }

@@ -1,9 +1,13 @@
 import { Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
+import { ProjectManagementService } from "../service/project.management.service";
 
 @Controller('project')
 export class ProjectManagementController {
 
+  constructor(
+    private readonly projectManagementService: ProjectManagementService,
+  ) {}
 
   @Post('start-new-project/:projectId')
   async createNewProjectBasedOnExistingProject(@GetCurrentUser() user, @Param('projectId') projectId: number) {
