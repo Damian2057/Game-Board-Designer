@@ -20,6 +20,8 @@ export function mapUserToUserDto(user: User): UserDto {
   userDto.phoneNumber = user.phoneNumber;
   userDto.username = user.username;
   userDto.role = user.role;
+  userDto.isActive = user.isActive;
+
   return userDto;
 }
 

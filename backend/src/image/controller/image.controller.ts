@@ -9,6 +9,7 @@ import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
+import { Result } from "../../util/pojo/Result";
 
 @Controller('image')
 export class ImageController {
@@ -47,7 +48,7 @@ export class ImageController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteFile(@Param('id') id: number): Promise<boolean> {
+  deleteFile(@Param('id') id: number): Promise<Result> {
     return this.imageService.deleteFile(id);
   }
 }

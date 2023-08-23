@@ -31,6 +31,9 @@ export class User extends AbstractEntity<User> {
   })
   role: UserRole
 
+  @Column({ default: true })
+  isActive: boolean
+
   @BeforeInsert()
   emailToLowerCase() {
     this.email = this.email.toLowerCase()
