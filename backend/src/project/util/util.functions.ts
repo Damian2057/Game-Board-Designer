@@ -9,6 +9,7 @@ import { Project } from "../model/domain/project.entity";
 import { ProjectDto } from "../model/dto/project.dto";
 import { PropertyDto } from "../model/dto/property.dto";
 import { mapGameToGameDto } from "../../game/util/util.functions";
+import { mapUserToUserDto } from "../../users/util/util.functions";
 
 export function mapPropertyToPropertyDto(property: Property): PropertyDto {
   const propertyDto = new PropertyDto();
@@ -78,7 +79,9 @@ const projectDto = new ProjectDto();
   projectDto.imageIds = project.imageIds;
   projectDto.isTemplate = project.isTemplate;
   projectDto.isCompleted = project.isCompleted;
-  projectDto.games = mapGameToGameDto(project.games);
+  projectDto.games = project.games.map((game) => mapGameToGameDto(game));
+  projectDto.currentGame = mapGameToGameDto(project.currentGame);
+  projectDto.user = mapUserToUserDto(project.user)
 
   return projectDto;
 }
