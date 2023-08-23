@@ -19,6 +19,8 @@ export class Component extends AbstractEntity<Component> {
   })
   quantity: number
 
-  @ManyToOne(() => Game, boardGame => boardGame.components)
+  @ManyToOne(() => Game, boardGame => boardGame.components, {
+    onDelete: 'CASCADE',
+  })
   game: Game
 }

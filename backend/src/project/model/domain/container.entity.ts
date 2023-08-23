@@ -28,19 +28,17 @@ export class Container extends AbstractTicketEntity<Container> {
   })
   quantity: number;
 
-  @OneToMany(() => Element, element => element.container, {
-    cascade: true
-  })
+  @OneToMany(() => Element, element => element.container)
   @JoinTable()
   elements: Element[];
 
-  @OneToMany(() => Property, prop => prop.container, {
-    cascade: true
-  })
+  @OneToMany(() => Property, prop => prop.container)
   @JoinTable()
   properties: Property[];
 
-  @ManyToOne(() => Project, project => project.containers)
+  @ManyToOne(() => Project, project => project.containers, {
+    onDelete: 'CASCADE',
+  })
   project: Project
 
   @Column('integer', { array: true, nullable: true })

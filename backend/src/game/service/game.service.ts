@@ -108,12 +108,11 @@ export class GameService {
   }
 
   async deleteById(id: number): Promise<Result> {
-    const result = await this.getGameBoardById(id);
-    result.components.forEach(element => {
-      this.componentRepository.delete(element.id)
-    });
     const res = await this.boardGameRepository.delete(id);
-    return new Result(res);
+    if (res.affected > 0) {
+      return new Result(res);
+    }
+    throw new IllegalArgumentException(`Game with id: ${id} does not exist!`)
   }
 
   async removeTagFromGameById(id: number, tagId: number): Promise<GameDto> {

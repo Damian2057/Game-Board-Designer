@@ -51,4 +51,12 @@ export class ProjectCreatorService {
   completeProject(projectId: number) {
     return undefined;
   }
+
+  getAllContainersByProjectId(projectId: number) {
+    return [];
+  }
+
+  getAllProjectElementsByProjectId(projectId: number) {
+    return [];
+  }
 }

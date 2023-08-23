@@ -32,9 +32,7 @@ export class Game extends AbstractEntity<Game> {
   @JoinTable()
   tags: Tag[]
 
-  @OneToMany(() => Component, component => component.game, {
-    cascade: true
-  })
+  @OneToMany(() => Component, component => component.game)
   @JoinTable()
   components: Component[]
 
