@@ -4,8 +4,6 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { Box } from "../model/domain/box.entity";
 import { Repository } from "typeorm";
 import { UpdateBoxCommand } from "../model/command/box/update.box.command";
-import { ImageEntity } from "../../image/model/domain/image.entity";
-import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
 import { ImageService } from "../../image/service/image.service";
 import { mapBoxToBoxDto } from "../util/util.functions";
 import { BoxDto } from "../model/dto/box.dto";

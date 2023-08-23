@@ -6,8 +6,11 @@ import { Element } from "../model/domain/element.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
-import { mapElementToElementDto } from "../util/util.functions";
+import { mapElementCommandToElement, mapElementToElementDto } from "../util/util.functions";
 import { Result } from "../../util/pojo/Result";
+import { Project } from "../model/domain/project.entity";
+import { Container } from "../model/domain/container.entity";
+import { ImageService } from "../../image/service/image.service";
 
 @Injectable()
 export class ElementService {
@@ -15,6 +18,11 @@ export class ElementService {
   constructor(
     @InjectRepository(Element)
     private readonly elementRepository: Repository<Element>,
+    @InjectRepository(Project)
+    private readonly projectRepository: Repository<Project>,
+    @InjectRepository(Container)
+    private readonly containerRepository: Repository<Container>,
+    private readonly imageService: ImageService
   ) {
   }
 
@@ -25,13 +33,66 @@ export class ElementService {
     return mapElementToElementDto(updatedElement);
   }
 
+  async addContainerElement(command: CreateElementCommand, containerId: number): Promise<ElementDto[]> {
+    await this.checkImageExists(command.imageIds);
+    const container: Container = await this.containerRepository.findOne({
+      relations: {
+        elements: {
+          properties: true,
+        },
+        properties: true,
+      },
+      where: {
+        id: containerId,
+      }
+    });
+    if (!container) {
+      throw new IllegalArgumentException(`Container with id: ${containerId} does not exist!`);
+    }
+    const element: Element = mapElementCommandToElement(command);
+    await this.elementRepository.save(element);
+    if (!container.elements) {
+      container.elements = [];
+    }
+    container.elements.push(element);
+    await this.containerRepository.save(container);
 
-  addContainerElement(command: CreateElementCommand, containerId: number) {
-    return undefined;
+    return container.elements.map(element => mapElementToElementDto(element));
   }
 
-  addProjectElement(command: CreateElementCommand, projectId: number) {
-    return undefined;
+  async addProjectElement(command: CreateElementCommand, projectId: number): Promise<ElementDto[]> {
+    await this.checkImageExists(command.imageIds);
+    const project: Project = await this.projectRepository.findOne({
+      relations: {
+        elements: {
+          properties: true,
+        },
+        box: {
+          properties: true,
+        },
+        containers: {
+          properties: true,
+          elements: {
+            properties: true,
+          }
+        },
+      },
+      where: {
+        id: projectId,
+      }
+    });
+    if (!project) {
+      throw new IllegalArgumentException(`Project with id: ${projectId} does not exist!`);
+    }
+    const element: Element = mapElementCommandToElement(command);
+    await this.elementRepository.save(element);
+    if (!project.elements) {
+      project.elements = [];
+    }
+    project.elements.push(element);
+    await this.projectRepository.save(project);
+
+    return project.elements.map(element => mapElementToElementDto(element));
   }
 
   async getElementDtoById(elementId: number): Promise<ElementDto> {
@@ -81,5 +142,11 @@ export class ElementService {
       element.imageIds = command.imageIds;
     }
     return element;
+  }
+
+  private async checkImageExists(imageIds: number[]): Promise<void> {
+    for (const id of imageIds) {
+      await this.imageService.getFile(id);
+    }
   }
 }

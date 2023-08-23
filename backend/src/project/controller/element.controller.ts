@@ -18,12 +18,12 @@ export class ElementController {
   }
 
   @Post('add-container-element/:containerId')
-  async addContainerElement(@Body() command: CreateElementCommand, @Param('containerId') containerId: number): Promise<ElementDto> {
+  async addContainerElement(@Body() command: CreateElementCommand, @Param('containerId') containerId: number): Promise<ElementDto[]> {
     return this.elementService.addContainerElement(command, containerId);
   }
 
   @Post('add-project-element/:projectId')
-  async addProjectElement(@Body() command: CreateElementCommand, @Param('projectId') projectId: number): Promise<ElementDto> {
+  async addProjectElement(@Body() command: CreateElementCommand, @Param('projectId') projectId: number): Promise<ElementDto[]> {
     return this.elementService.addProjectElement(command, projectId);
   }
 

@@ -10,6 +10,7 @@ import { ProjectDto } from "../model/dto/project.dto";
 import { PropertyDto } from "../model/dto/property.dto";
 import { mapGameToGameDto } from "../../game/util/util.functions";
 import { mapUserToUserDto } from "../../users/util/util.functions";
+import { CreateElementCommand } from "../model/command/element/create.element.command";
 
 export function mapPropertyToPropertyDto(property: Property): PropertyDto {
   const propertyDto = new PropertyDto();
@@ -84,4 +85,24 @@ const projectDto = new ProjectDto();
   projectDto.user = mapUserToUserDto(project.user)
 
   return projectDto;
+}
+
+export function mapElementCommandToElement(command: CreateElementCommand): Element {
+  const element: Element = new Element();
+  element.name = command.name;
+  element.description = command.description;
+  element.notes = command.notes;
+  element.quantity = command.quantity;
+  element.imageIds = command.imageIds;
+  element.properties = command.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+
+  return element;
+}
+
+export function mapPropertyDtoToProperty(propertyDto: PropertyDto): Property {
+  const property: Property = new Property();
+  property.name = propertyDto.name;
+  property.value = propertyDto.value;
+
+  return property;
 }
