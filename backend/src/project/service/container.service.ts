@@ -37,4 +37,8 @@ export class ContainerService {
   addContainer(command: CreateContainerCommand, projectId: number) {
     return undefined;
   }
+
+  getAllContainerElementsByContainerId(containerId: number) {
+    return [];
+  }
 }

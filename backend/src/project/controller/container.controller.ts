@@ -3,6 +3,7 @@ import { ContainerService } from "../service/container.service";
 import { ContainerDto } from "../model/dto/container.dto";
 import { UpdateContainerCommand } from "../model/command/container/update.container.command";
 import { CreateContainerCommand } from "../model/command/container/create.container.command";
+import { ElementDto } from "../model/dto/element.dto";
 
 @Controller('container')
 export class ContainerController {
@@ -26,11 +27,10 @@ export class ContainerController {
     return this.containerService.getContainerById(containerId);
   }
 
-  @Get('containers/:projectId')
-  async getAllContainersByProjectId(@Param('projectId') projectId: number): Promise<ContainerDto[]> {
-    return this.containerService.getAllContainersByProjectId(projectId);
+  @Get('containers-elements/:containerId')
+  async getAllContainerElementsByContainerId(@Param('containerId') containerId: number): Promise<ElementDto[]> {
+    return this.containerService.getAllContainerElementsByContainerId(containerId);
   }
-
 
   @Delete('delete-container/:containerId')
   async deleteContainerById(@Param('containerId') containerId: number): Promise<void> {

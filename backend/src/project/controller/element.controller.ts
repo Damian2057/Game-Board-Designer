@@ -31,16 +31,6 @@ export class ElementController {
     return this.elementService.getElementById(elementId);
   }
 
-  @Get('containers-elements/:containerId')
-  async getAllContainerElementsByContainerId(@Param('containerId') containerId: number): Promise<ElementDto[]> {
-    return this.elementService.getAllContainerElementsByContainerId(containerId);
-  }
-
-  @Get('project-elements/:projectId')
-  async getAllProjectElementsByProjectId(@Param('projectId') projectId: number): Promise<ElementDto[]> {
-    return this.elementService.getAllProjectElementsByProjectId(projectId);
-  }
-
   @Delete('delete-element/:elementId')
   async deleteElementById(@Param('elementId') elementId: number): Promise<void> {
     return this.elementService.deleteElementById(elementId);
