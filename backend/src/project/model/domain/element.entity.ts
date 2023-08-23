@@ -29,7 +29,7 @@ export class Element extends AbstractTicketEntity<Element> {
   quantity: number;
 
   @OneToMany(() => Property, prop => prop.element, {
-    cascade: true
+    nullable: true,
   })
   @JoinTable()
   properties: Property[];

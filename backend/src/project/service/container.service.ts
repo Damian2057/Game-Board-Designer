@@ -4,6 +4,9 @@ import { Repository } from "typeorm";
 import { Container } from "../model/domain/container.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { CreateContainerCommand } from "../model/command/container/create.container.command";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { mapElementToElementDto } from "../util/util.functions";
+import { ElementDto } from "../model/dto/element.dto";
 
 @Injectable()
 export class ContainerService {
@@ -18,7 +21,7 @@ export class ContainerService {
     return undefined;
   }
 
-  getContainerById(containerId: number) {
+  getContainerDtoById(containerId: number) {
     return undefined;
   }
 
@@ -38,7 +41,27 @@ export class ContainerService {
     return undefined;
   }
 
-  getAllContainerElementsByContainerId(containerId: number) {
-    return [];
+  async getAllContainerElementsByContainerId(containerId: number): Promise<ElementDto[]> {
+    const container: Container = await this.getContainerById(containerId);
+    return container.elements.map(element => mapElementToElementDto(element));
+  }
+
+  private async getContainerById(containerId: number): Promise<Container> {
+    const container: Container = await this.containerRepository.findOne({
+      relations: {
+        project: true,
+        properties: true,
+        elements: {
+          properties: true,
+        }
+      },
+      where: {
+        id: containerId,
+      }
+    });
+    if (!container) {
+      throw new IllegalArgumentException(`Container with id ${containerId} not found`);
+    }
+    return container;
   }
 }

@@ -17,9 +17,7 @@ export class Box extends AbstractTicketEntity<Box> {
   @Column('text', { array: true, nullable: true })
   notes: string[];
 
-  @OneToMany(() => Property, prop => prop.box, {
-    cascade: true
-  })
+  @OneToMany(() => Property, prop => prop.box)
   @JoinTable()
   properties: Property[];
 

@@ -24,7 +24,7 @@ export class ContainerController {
 
   @Get(':containerId')
   async getContainerById(@Param('containerId') containerId: number): Promise<ContainerDto> {
-    return this.containerService.getContainerById(containerId);
+    return this.containerService.getContainerDtoById(containerId);
   }
 
   @Get('containers-elements/:containerId')

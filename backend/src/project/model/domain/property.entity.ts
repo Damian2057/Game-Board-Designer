@@ -16,12 +16,18 @@ export class Property extends AbstractEntity<Property> {
     @Length(1, 50)
     value: string;
 
-    @ManyToOne(() => Box, box => box.properties)
+    @ManyToOne(() => Box, box => box.properties, {
+        onDelete: 'CASCADE',
+    })
     box: Box;
 
-    @ManyToOne(() => Container, container => container.properties)
+    @ManyToOne(() => Container, container => container.properties, {
+        onDelete: 'CASCADE',
+    })
     container: Container;
 
-    @ManyToOne(() => Element, element => element.properties)
+    @ManyToOne(() => Element, element => element.properties, {
+        onDelete: 'CASCADE',
+    })
     element: Element;
 }

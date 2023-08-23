@@ -36,21 +36,18 @@ export class Project extends AbstractEntity<Project>{
   box: Box;
 
   @OneToMany(() => Container, container => container.project, {
-    cascade: true,
     nullable: true
   })
   @JoinTable()
   containers: Container[];
 
   @OneToMany(() => Element, element => element.project, {
-    cascade: true,
     nullable: true
   })
   @JoinTable()
   elements: Element[];
 
   @ManyToMany(() => Game, {
-    cascade: true,
     nullable: true
   })
   @JoinTable()
