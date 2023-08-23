@@ -7,6 +7,7 @@ import { RolesGuard } from "../../auth/guard/roles.guard";
 import { GameDto } from "../model/dto/game.dto";
 import { CreateGameCommand } from "../model/command/create.game.command";
 import { UpdateGameCommand } from "../model/command/update.game.command";
+import { Result } from "../../util/pojo/Result";
 
 @Controller('game')
 export class GameController {
@@ -28,7 +29,7 @@ export class GameController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
-  createBoardGame(@Body() command: CreateGameCommand): Promise<boolean> {
+  createBoardGame(@Body() command: CreateGameCommand): Promise<GameDto> {
     return this.boardGameService.create(command);
   }
 
@@ -43,7 +44,7 @@ export class GameController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteBoardGame(@Param('id') id: number): Promise<boolean> {
+  deleteBoardGame(@Param('id') id: number): Promise<Result> {
     return this.boardGameService.deleteById(id);
   }
 
