@@ -18,7 +18,7 @@ export class StatusService {
     @InjectRepository(Container)
     private readonly containerRepository: Repository<Container>,
     @InjectRepository(Box)
-    private readonly boxRepository: Repository<Box>,
+    private readonly boxRepository: Repository<Box>
   ) {
   }
 
