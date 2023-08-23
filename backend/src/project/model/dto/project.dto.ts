@@ -5,7 +5,7 @@ import { ElementDto } from "./element.dto";
 import { GameDto } from "../../../game/model/dto/game.dto";
 import { UserDto } from "../../../users/model/dto/user.dto";
 
-export class ProjectDto extends AbstractTicketDto {
+export class ProjectDto {
   id: number;
   name: string;
   description: string;
