@@ -8,6 +8,7 @@ import { RolesGuard } from "../../auth/guard/roles.guard";
 import { ComponentDto } from "../model/dto/component.dto";
 import { CreateComponentCommand } from "../model/command/create.component.command";
 import { GameDto } from "../model/dto/game.dto";
+import { Result } from "../../util/pojo/Result";
 
 @Controller('component')
 export class ComponentController {
@@ -44,7 +45,7 @@ export class ComponentController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteGameElement(@Param('id') id: number): Promise<boolean> {
+  deleteGameElement(@Param('id') id: number): Promise<Result> {
     return this.componentService.deleteById(id);
   }
 

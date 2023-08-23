@@ -9,6 +9,7 @@ import { mapTagCommandToTag, mapTagToTagDto } from "../util/util.functions";
 import { TagDto } from "../model/dto/tag.dto";
 import { SetFilter } from "../../util/SetFilter";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { Result } from "../../util/pojo/Result";
 
 @Injectable()
 export class TagService {
@@ -41,10 +42,10 @@ export class TagService {
     return Array.from(tags.get()).map(tag => mapTagToTagDto(tag));
   }
 
-  async create(command: CreateTagCommand): Promise<boolean> {
+  async create(command: CreateTagCommand): Promise<TagDto> {
     if (await this.tagRepository.findOneBy({name: command.name}) == null) {
-      await this.tagRepository.save(mapTagCommandToTag(command));
-      return true;
+      const tag = await this.tagRepository.save(mapTagCommandToTag(command));
+      return mapTagToTagDto(tag);
     }
     throw new DuplicateKeyParameterException(`Tag with name: ${command.name} already exists!`);
   }
@@ -59,10 +60,10 @@ export class TagService {
     return mapTagToTagDto(updated);
   }
 
-  async deleteById(id: number): Promise<boolean> {
+  async deleteById(id: number): Promise<Result> {
     const result = await this.tagRepository.delete({ id: id })
     if (result.affected > 0) {
-      return true;
+      return new Result(result);
     }
     throw new IllegalArgumentException(`Tag with id: ${id} does not exist!`)
   }

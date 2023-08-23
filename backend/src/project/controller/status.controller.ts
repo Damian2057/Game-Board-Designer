@@ -1,5 +1,4 @@
 import { Body, Controller, Get, Param, Put } from "@nestjs/common";
-import { ProjectDto } from "../model/dto/project.dto";
 import { StatusService } from "../service/status.service";
 import { UpdateStatusCommand } from "../model/command/status/update.status.command";
 
@@ -10,9 +9,9 @@ export class StatusController {
     private readonly statusService: StatusService,
   ) {}
 
-  @Put('update-status/:projectId')
-  async updateStatus(@Body() command: UpdateStatusCommand, @Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.statusService.updateStatus(command, projectId);
+  @Put('update-status/:id')
+  async updateStatus(@Body() command: UpdateStatusCommand, @Param('id') id: number): Promise<any> {
+    return this.statusService.updateStatus(command, id);
   }
 
   @Get('available-statuses')

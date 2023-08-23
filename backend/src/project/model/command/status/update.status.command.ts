@@ -1,10 +1,11 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEnum, IsIn } from "class-validator";
+import { Status } from "../../domain/status.enum";
 
 export class UpdateStatusCommand {
 
-  @IsNotEmpty()
-  id: number;
+  @IsEnum(Status)
+  status: Status;
 
-  @IsNotEmpty()
-  status: string;
+  @IsIn(['box', 'container', 'element'])
+  type: string;
 }
