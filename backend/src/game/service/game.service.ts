@@ -13,6 +13,7 @@ import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument
 import { GameDto } from "../model/dto/game.dto";
 import { ImageEntity } from "../../image/model/domain/image.entity";
 import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
+import { Result } from "../../util/pojo/Result";
 
 @Injectable()
 export class GameService {
@@ -23,7 +24,7 @@ export class GameService {
     @InjectRepository(Tag)
     private readonly tagRepository: Repository<Tag>,
     @InjectRepository(Component)
-    private readonly gameElementRepository: Repository<Component>,
+    private readonly componentRepository: Repository<Component>,
     @InjectRepository(ImageEntity)
     private readonly imageRepository: Repository<ImageEntity>,
   ) {}
@@ -83,15 +84,15 @@ export class GameService {
     return Array.from(games.get()).map(game => mapGameToGameDto(game));
   }
 
-  async create(command: CreateGameCommand): Promise<boolean> {
+  async create(command: CreateGameCommand): Promise<GameDto> {
     if (await this.boardGameRepository.findOneBy({title: command.title}) == null) {
       try {
         if (!command.publicationDate) {
           command.publicationDate = new Date().toISOString().slice(0, 10);
         }
         await this.checkImageExists(command.imageIds);
-        await this.boardGameRepository.save(command);
-        return true;
+        const game = await this.boardGameRepository.save(command);
+        return mapGameToGameDto(game);
       } catch (e) {
         throw new IllegalArgumentException(e.message);
       }
@@ -106,13 +107,13 @@ export class GameService {
     return mapGameToGameDto(updated);
   }
 
-  async deleteById(id: number): Promise<boolean> {
+  async deleteById(id: number): Promise<Result> {
     const result = await this.getGameBoardById(id);
     result.components.forEach(element => {
-      this.gameElementRepository.delete(element.id)
+      this.componentRepository.delete(element.id)
     });
-    await this.boardGameRepository.delete(id);
-    return true;
+    const res = await this.boardGameRepository.delete(id);
+    return new Result(res);
   }
 
   async removeTagFromGameById(id: number, tagId: number): Promise<GameDto> {
@@ -212,7 +213,7 @@ export class GameService {
   }
 
   private async getGameElementById(id: number): Promise<Component> {
-    const gameElement: Component = await this.gameElementRepository.findOneBy({id: id});
+    const gameElement: Component = await this.componentRepository.findOneBy({id: id});
     if (!gameElement) {
       throw new IllegalArgumentException('GameElement with id: ' + id + ' does not exist!');
     }

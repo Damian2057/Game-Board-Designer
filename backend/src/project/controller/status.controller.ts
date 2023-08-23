@@ -1,7 +1,10 @@
-import { Body, Controller, Get, Param, Put } from "@nestjs/common";
-import { ProjectDto } from "../model/dto/project.dto";
+import { Body, Controller, Get, Param, Put, UseGuards } from "@nestjs/common";
 import { StatusService } from "../service/status.service";
 import { UpdateStatusCommand } from "../model/command/status/update.status.command";
+import { HasRoles } from "../../auth/decorator/role.decorator";
+import { UserRole } from "../../users/model/domain/user.role.enum";
+import { JwtGuard } from "../../auth/guard/jwt.guard";
+import { RolesGuard } from "../../auth/guard/roles.guard";
 
 @Controller('status')
 export class StatusController {
@@ -10,11 +13,15 @@ export class StatusController {
     private readonly statusService: StatusService,
   ) {}
 
-  @Put('update-status/:projectId')
-  async updateStatus(@Body() command: UpdateStatusCommand, @Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.statusService.updateStatus(command, projectId);
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Put('update-status/:id')
+  async updateStatus(@Body() command: UpdateStatusCommand, @Param('id') id: number): Promise<any> {
+    return this.statusService.updateStatus(command, id);
   }
 
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('available-statuses')
   getAvailableStatuses(): string[] {
     return this.statusService.getAvailableStatuses();

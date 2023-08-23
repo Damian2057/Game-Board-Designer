@@ -4,4 +4,5 @@ export class UserDto {
     email: string;
     phoneNumber: string;
     role: string;
+    isActive: boolean;
 }

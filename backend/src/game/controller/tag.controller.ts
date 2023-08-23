@@ -7,6 +7,7 @@ import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { UpdateTagCommand } from "../model/command/update.tag.command";
+import { Result } from "../../util/pojo/Result";
 
 @Controller('tag')
 export class TagController {
@@ -29,7 +30,7 @@ export class TagController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Post('create')
-  createTag(@Body() command: CreateTagCommand): Promise<boolean> {
+  createTag(@Body() command: CreateTagCommand): Promise<TagDto> {
     return this.tagService.create(command);
   }
 
@@ -43,7 +44,7 @@ export class TagController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Delete('delete/:id')
-  deleteTag(@Param('id') id: number): Promise<boolean> {
+  deleteTag(@Param('id') id: number): Promise<Result> {
     return this.tagService.deleteById(id);
   }
 }

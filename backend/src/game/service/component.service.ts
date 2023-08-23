@@ -10,6 +10,7 @@ import { Game } from "../model/domain/game.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { ComponentDto } from "../model/dto/component.dto";
 import { GameDto } from "../model/dto/game.dto";
+import { Result } from "../../util/pojo/Result";
 
 @Injectable()
 export class ComponentService {
@@ -31,10 +32,10 @@ export class ComponentService {
     return mapComponentToComponentDto(updated);
   }
 
-  async deleteById(id: number): Promise<boolean> {
+  async deleteById(id: number): Promise<Result> {
     const result = await this.componentRepository.delete(id);
     if (result.affected > 0) {
-      return true;
+      return new Result(result);
     }
     throw new IllegalArgumentException(`Game element with id ${id} does not exist.`);
   }

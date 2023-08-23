@@ -17,7 +17,7 @@ export class AuthService {
 
   async login(command: AuthLoginCommand) {
     const user = await this.userService.findOneByUsername(command.username);
-    if (user && await comparePasswords(command.password, user.password)) {
+    if (user && await comparePasswords(command.password, user.password) && user.isActive) {
       return new AuthTokenDto(process.env.JWT_EXPIRATION_TIME, await this.createToken(user));
     }
     throw new IncorrectLoginCredentialsException();

@@ -1,10 +1,11 @@
-import { IsNotEmpty } from "class-validator";
+import { IsEnum, IsIn } from "class-validator";
+import { Priority } from "../../domain/priority.enum";
 
 export class UpdatePriorityCommand {
 
-  @IsNotEmpty()
-  id: number;
+  @IsEnum(Priority)
+  priority: Priority;
 
-  @IsNotEmpty()
-  priority: string;
+  @IsIn(['box', 'container', 'element'])
+  type: string;
 }

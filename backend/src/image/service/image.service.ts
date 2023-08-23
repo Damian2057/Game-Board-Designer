@@ -7,6 +7,7 @@ import { ImageDto } from "../model/dto/image.dto";
 import { deleteFileFromDisk, mapImageToImageDto } from "../util/util.functions";
 import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
 import * as process from "process";
+import { Result } from "../../util/pojo/Result";
 
 @Injectable()
 export class ImageService {
@@ -45,7 +46,7 @@ export class ImageService {
     return file;
   }
 
-  async deleteFile(id: number): Promise<boolean> {
+  async deleteFile(id: number): Promise<Result> {
     this.logger.debug(`Attempt to delete file with ID: ${id}`);
     const file: ImageEntity = await this.imageRepository.findOneBy({ id: id });
     if (!file) {
@@ -55,7 +56,7 @@ export class ImageService {
     await this.imageRepository.delete({ id: id });
     const path = `${process.env.MULTER_STORAGE_PATH}\\${file.filename}`;
     deleteFileFromDisk(path);
-    return Promise.resolve(true);
+    return new Result({affected: 1});
   }
 
   async getFileBuffer(file: ImageEntity): Promise<Buffer> {

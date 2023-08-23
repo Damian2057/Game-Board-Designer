@@ -9,6 +9,7 @@ import { UserDto } from "../model/dto/user.dto";
 import { UserRegisterCommand } from "../model/command/user.register.command";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { HierarchyGuard } from "../guards/hierarchy.guard";
+import { Result } from "../../util/pojo/Result";
 
 @Controller('user')
 export class UserController {
@@ -16,7 +17,7 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  register(@Body() command: UserRegisterCommand): Promise<boolean> {
+  register(@Body() command: UserRegisterCommand): Promise<Result> {
     return this.userService.create(command);
   }
 
