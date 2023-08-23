@@ -1,4 +1,10 @@
-import { CreateBoxCommand } from "./create.box.command";
+export class UpdateBoxCommand {
 
-export class UpdateBoxCommand extends CreateBoxCommand{
+  name: string;
+
+  description: string;
+
+  notes: string[];
+
+  imageIds: number[];
 }

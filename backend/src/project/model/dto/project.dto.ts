@@ -1,4 +1,3 @@
-import { AbstractTicketDto } from "./abstract.ticket.dto";
 import { BoxDto } from "./box.dto";
 import { ContainerDto } from "./container.dto";
 import { ElementDto } from "./element.dto";
