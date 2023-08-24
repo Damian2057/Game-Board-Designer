@@ -11,6 +11,7 @@ import { PropertyDto } from "../model/dto/property.dto";
 import { mapGameToGameDto } from "../../game/util/util.functions";
 import { mapUserToUserDto } from "../../users/util/util.functions";
 import { CreateElementCommand } from "../model/command/element/create.element.command";
+import { CreateContainerCommand } from "../model/command/container/create.container.command";
 
 export function mapPropertyToPropertyDto(property: Property): PropertyDto {
   const propertyDto = new PropertyDto();
@@ -99,10 +100,40 @@ export function mapElementCommandToElement(command: CreateElementCommand): Eleme
   return element;
 }
 
+export function mapContainerCommandToContainer(command: CreateContainerCommand): Container {
+  const container: Container = new Container();
+  container.name = command.name;
+  container.description = command.description;
+  container.notes = command.notes;
+  container.quantity = command.quantity;
+  container.imageIds = command.imageIds;
+  container.elements = command.elements.map((elementDto: ElementDto) => mapElementDtoToElement(elementDto));
+  container.properties = command.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+
+  return container;
+}
+
 export function mapPropertyDtoToProperty(propertyDto: PropertyDto): Property {
   const property: Property = new Property();
+  if (propertyDto.id) {
+    property.id = propertyDto.id;
+  }
   property.name = propertyDto.name;
   property.value = propertyDto.value;
 
   return property;
+}
+
+export function mapElementDtoToElement(elementDto: ElementDto): Element {
+  const element: Element = new Element();
+  if (elementDto.id) {
+    element.id = elementDto.id;
+  }
+  element.name = elementDto.name;
+  element.description = elementDto.description;
+  element.notes = elementDto.notes;
+  element.quantity = elementDto.quantity;
+  element.imageIds = elementDto.imageIds;
+  element.properties = elementDto.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+  return element;
 }

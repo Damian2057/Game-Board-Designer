@@ -24,6 +24,7 @@ import { ProjectManagementController } from './controller/project.management.con
 import { ProjectManagementService } from './service/project.management.service';
 import { ContainerService } from './service/container.service';
 import { ElementService } from "./service/element.service";
+import { ContainerController } from "./controller/container.controller";
 
 @Module({
   imports: [TypeOrmModule.forFeature([Game, Component, Project, Container, Element, Property, Box]),
@@ -31,7 +32,7 @@ import { ElementService } from "./service/element.service";
   AuthModule,
   UserModule,
   ImageModule],
-  controllers: [ProjectCreatorController, ElementController, BoxController, PriorityController, StatusController, ProjectManagementController],
+  controllers: [ProjectCreatorController, ElementController, BoxController, PriorityController, StatusController, ProjectManagementController, ContainerController],
   providers: [ProjectCreatorService, BoxService, PriorityService, StatusService, ProjectManagementService, ContainerService, ElementService]
 })
 export class ProjectModule {}

@@ -18,7 +18,7 @@ export class ContainerController {
   }
 
   @Post('add-container/:projectId')
-  async addContainer(@Body() command: CreateContainerCommand, @Param('projectId') projectId: number): Promise<ContainerDto> {
+  async addContainer(@Body() command: CreateContainerCommand, @Param('projectId') projectId: number): Promise<ContainerDto[]> {
     return this.containerService.addContainer(command, projectId);
   }
 
