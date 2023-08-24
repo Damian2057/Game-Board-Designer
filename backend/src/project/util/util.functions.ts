@@ -81,9 +81,15 @@ const projectDto = new ProjectDto();
   projectDto.imageIds = project.imageIds;
   projectDto.isTemplate = project.isTemplate;
   projectDto.isCompleted = project.isCompleted;
-  projectDto.games = project.games.map((game) => mapGameToGameDto(game));
-  projectDto.currentGame = mapGameToGameDto(project.currentGame);
-  projectDto.user = mapUserToUserDto(project.user)
+  if (project.games) {
+    projectDto.games = project.games.map((game) => mapGameToGameDto(game));
+  }
+  if (project.currentGame) {
+    projectDto.currentGame = mapGameToGameDto(project.currentGame);
+  }
+  if (project.user) {
+    projectDto.user = mapUserToUserDto(project.user)
+  }
 
   return projectDto;
 }
