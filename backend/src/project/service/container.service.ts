@@ -36,7 +36,7 @@ export class ContainerService {
   }
 
   async updateContainer(command: UpdateContainerCommand, containerId: number): Promise<ContainerDto> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     let container = await this.getContainerById(containerId);
     container = this.updateNotNullFields(command, container);
     const updatedContainer: Container = await this.updateAndFlush(container);
@@ -67,7 +67,7 @@ export class ContainerService {
   }
 
   async addContainer(command: CreateContainerCommand, projectId: number): Promise<ContainerDto[]> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     const project: Project = await this.getProjectByProjectId(projectId);
     if (!project) {
       throw new IllegalArgumentException(`Project with id: ${projectId} does not exist!`);
@@ -166,11 +166,5 @@ export class ContainerService {
     }
 
     return container;
-  }
-
-  private async checkImageExists(imageIds: number[]): Promise<void> {
-    for (const id of imageIds) {
-      await this.imageService.getFile(id);
-    }
   }
 }

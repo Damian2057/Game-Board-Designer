@@ -77,4 +77,10 @@ export class ImageService {
     const images: ImageEntity[] = await this.imageRepository.find()
     return images.map(image => mapImageToImageDto(image));
   }
+
+  async checkImageExists(imageIds: number[]): Promise<void> {
+    for (const id of imageIds) {
+      await this.getFile(id);
+    }
+  }
 }

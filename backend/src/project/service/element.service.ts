@@ -30,14 +30,14 @@ export class ElementService {
   }
 
   async updateElement(command: UpdateElementCommand, elementId: number): Promise<ElementDto> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     let element = await this.getElementById(elementId);
     element = this.updateNotNullFields(command, element);
     return mapElementToElementDto(await this.updateAndFlush(element));
   }
 
   async addContainerElement(command: CreateElementCommand, containerId: number): Promise<ElementDto[]> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     const container: Container = await this.containerRepository.findOne({
       relations: {
         elements: {
@@ -64,7 +64,7 @@ export class ElementService {
   }
 
   async addProjectElement(command: CreateElementCommand, projectId: number): Promise<ElementDto[]> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     const project: Project = await this.projectRepository.findOne({
       relations: {
         elements: {
@@ -161,11 +161,5 @@ export class ElementService {
       element.properties = command.properties.map(property => mapPropertyDtoToProperty(property));
     }
     return element;
-  }
-
-  private async checkImageExists(imageIds: number[]): Promise<void> {
-    for (const id of imageIds) {
-      await this.imageService.getFile(id);
-    }
   }
 }
