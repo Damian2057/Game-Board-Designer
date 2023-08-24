@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import { UpdateContainerCommand } from "../model/command/container/update.container.command";
 import { Repository } from "typeorm";
 import { Container } from "../model/domain/container.entity";
@@ -18,6 +18,7 @@ import { ImageService } from "../../image/service/image.service";
 import { ContainerDto } from "../model/dto/container.dto";
 import { Project } from "../model/domain/project.entity";
 import { Property } from "../model/domain/property.entity";
+import { Result } from "../../util/pojo/Result";
 
 @Injectable()
 export class ContainerService {
@@ -47,17 +48,43 @@ export class ContainerService {
     return mapContainerToContainerDto(container);
   }
 
-  async deleteContainerById(containerId: number) {
-
+  async deleteContainerById(containerId: number): Promise<Result> {
+    const result = await this.containerRepository.delete(containerId);
+    if (result.affected > 0) {
+      return new Result(result);
+    }
+    throw new IllegalArgumentException(`Container with id: ${containerId} does not exist!`);
   }
 
-  async deleteAllContainersByProjectId(projectId: number) {
-
+  async deleteAllContainersByProjectId(projectId: number): Promise<Result> {
+    let project = await this.getProjectByProjectId(projectId);
+    const affected: Result[] = []
+    for (const container of project.containers) {
+      affected.push(await this.deleteContainerById(container.id));
+    }
+    const allSuccessful = affected.every(result => result.result === "success");
+    return allSuccessful ? new Result({affected: 1}) : new Result({affected: 0});
   }
 
   async addContainer(command: CreateContainerCommand, projectId: number): Promise<ContainerDto[]> {
     await this.checkImageExists(command.imageIds);
-    const project: Project = await this.projectRepository.findOne({
+    const project: Project = await this.getProjectByProjectId(projectId);
+    if (!project) {
+      throw new IllegalArgumentException(`Project with id: ${projectId} does not exist!`);
+    }
+    const container: Container = mapContainerCommandToContainer(command);
+    await this.updateAndFlush(container);
+    if (!project.containers) {
+      project.containers = [];
+    }
+    project.containers.push(container);
+    const result: Project = await this.projectRepository.save(project);
+
+    return result.containers.map(container => mapContainerToContainerDto(container));
+  }
+
+  async getProjectByProjectId(projectId: number) {
+    return await this.projectRepository.findOne({
       relations: {
         elements: {
           properties: true,
@@ -76,18 +103,6 @@ export class ContainerService {
         id: projectId,
       }
     });
-    if (!project) {
-      throw new IllegalArgumentException(`Project with id: ${projectId} does not exist!`);
-    }
-    const container: Container = mapContainerCommandToContainer(command);
-    await this.updateAndFlush(container);
-    if (!project.containers) {
-      project.containers = [];
-    }
-    project.containers.push(container);
-    const result: Project = await this.projectRepository.save(project);
-
-    return result.containers.map(container => mapContainerToContainerDto(container));
   }
 
   async getAllContainerElementsByContainerId(containerId: number): Promise<ElementDto[]> {
