@@ -34,10 +34,14 @@ export class Element extends AbstractTicketEntity<Element> {
   @JoinTable()
   properties: Property[];
 
-  @ManyToOne(() => Project, project => project.elements)
+  @ManyToOne(() => Project, project => project.elements, {
+    onDelete: 'CASCADE',
+  })
   project: Project
 
-  @ManyToOne(() => Container, container => container.elements)
+  @ManyToOne(() => Container, container => container.elements, {
+    onDelete: 'CASCADE',
+  })
   container: Container;
 
   @Column('integer', { array: true, nullable: true })

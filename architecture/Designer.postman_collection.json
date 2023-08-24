@@ -248,474 +248,479 @@
 			]
 		},
 		{
-			"name": "tag",
+			"name": "game-module",
 			"item": [
 				{
-					"name": "all",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "find",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "create",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
+					"name": "game",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/all",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"all"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"STRAteg\"\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "find",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/find?id=6",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"find"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "6"
+										},
+										{
+											"key": "title",
+											"value": "dasd",
+											"disabled": true
+										},
+										{
+											"key": "tags",
+											"value": "Test",
+											"disabled": true
+										}
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{BASEURL}}/tag/create",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"tag",
-								"create"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
-					"request": {
-						"method": "GET",
-						"header": []
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "game",
-			"item": [
-				{
-					"name": "all",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/game/all",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/game/find?id=6",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"find"
-							],
-							"query": [
-								{
-									"key": "id",
-									"value": "6"
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
 								},
-								{
-									"key": "title",
-									"value": "dasd",
-									"disabled": true
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"title\": \"Sample Board Game 42\",\r\n  \"description\": \"A fun and exciting sample board game for players of all ages.\",\r\n  \"publicationDate\": \"2023-08-11\",\r\n  \"price\": 29.99,\r\n  \"tags\": [\r\n    {\r\n        \"id\": 3\r\n    }\r\n  ],\r\n  \"gameElements\": [\r\n    {\r\n      \"quantity\": 5,\r\n      \"name\": \"Game Board\"\r\n    },\r\n    {\r\n      \"quantity\": 5,\r\n      \"name\": \"Dice Set\"\r\n    }\r\n  ],\r\n  \"imageIds\": [30]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
 								},
-								{
-									"key": "tags",
-									"value": "Test",
-									"disabled": true
+								"url": {
+									"raw": "{{BASEURL}}/game/create",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"create"
+									]
 								}
-							]
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"title\": \"Updatedaaaaadd Board Gamess\",\r\n  \"description\": \"An updated version of the exciting board game with new features.\",\r\n  \"publicationDate\": \"2023-08-11\",\r\n  \"price\": 34.99,\r\n  \"imageIds\": [23, 24]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/game/update/6",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"update",
+										"6"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/delete/4",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"delete",
+										"4"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "addTagToGame",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/1/add-tag/10",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"1",
+										"add-tag",
+										"10"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "removeTagFromGame",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/1/remove-tag/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"1",
+										"remove-tag",
+										"1"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "create",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
+					"name": "tag",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Sample Board Game 42\",\r\n  \"description\": \"A fun and exciting sample board game for players of all ages.\",\r\n  \"publicationDate\": \"2023-08-11\",\r\n  \"price\": 29.99,\r\n  \"tags\": [\r\n    {\r\n        \"id\": 3\r\n    }\r\n  ],\r\n  \"gameElements\": [\r\n    {\r\n      \"quantity\": 5,\r\n      \"name\": \"Game Board\"\r\n    },\r\n    {\r\n      \"quantity\": 5,\r\n      \"name\": \"Dice Set\"\r\n    }\r\n  ],\r\n  \"imageIds\": [30]\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
+						{
+							"name": "find",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{BASEURL}}/game/create",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"create"
-							]
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"STRAteg\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/tag/create",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"tag",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
 						}
-					},
-					"response": []
+					]
 				},
 				{
-					"name": "update",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
+					"name": "components",
+					"item": [
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/component/all",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"component",
+										"all"
+									]
 								}
-							]
+							},
+							"response": []
 						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"title\": \"Updatedaaaaadd Board Gamess\",\r\n  \"description\": \"An updated version of the exciting board game with new features.\",\r\n  \"publicationDate\": \"2023-08-11\",\r\n  \"price\": 34.99,\r\n  \"imageIds\": [23, 24]\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
+						{
+							"name": "all by game",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/component/all/3",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"component",
+										"all",
+										"3"
+									]
 								}
-							}
+							},
+							"response": []
 						},
-						"url": {
-							"raw": "{{BASEURL}}/game/update/6",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"update",
-								"6"
-							]
+						{
+							"name": "find",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/component/1/find",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"component",
+										"1",
+										"find"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"tesst\",\r\n    \"quantity\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/component/1/update/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"component",
+										"1",
+										"update",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"tesst\",\r\n    \"quantity\": 5\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/component/create/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"component",
+										"create",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/component/delete/5",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"component",
+										"delete",
+										"5"
+									]
+								}
+							},
+							"response": []
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/game/delete/4",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"delete",
-								"4"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "addTagToGame",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/game/1/add-tag/10",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"1",
-								"add-tag",
-								"10"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "removeTagFromGame",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/game/1/remove-tag/1",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"game",
-								"1",
-								"remove-tag",
-								"1"
-							]
-						}
-					},
-					"response": []
-				}
-			]
-		},
-		{
-			"name": "components",
-			"item": [
-				{
-					"name": "all",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/component/all",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"component",
-								"all"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "all by game",
-					"request": {
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/component/all/3",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"component",
-								"all",
-								"3"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "find",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "GET",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/component/1/find",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"component",
-								"1",
-								"find"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "update",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "PUT",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"tesst\",\r\n    \"quantity\": 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASEURL}}/component/1/update/1",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"component",
-								"1",
-								"update",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "create",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"name\": \"tesst\",\r\n    \"quantity\": 5\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{BASEURL}}/component/create/1",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"component",
-								"create",
-								"1"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "delete",
-					"request": {
-						"auth": {
-							"type": "bearer",
-							"bearer": [
-								{
-									"key": "token",
-									"value": "{{TOKEN}}",
-									"type": "string"
-								}
-							]
-						},
-						"method": "DELETE",
-						"header": [],
-						"url": {
-							"raw": "{{BASEURL}}/component/delete/5",
-							"host": [
-								"{{BASEURL}}"
-							],
-							"path": [
-								"component",
-								"delete",
-								"5"
-							]
-						}
-					},
-					"response": []
+					]
 				}
 			]
 		},
@@ -766,14 +771,14 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{BASEURL}}/image/get/9",
+							"raw": "{{BASEURL}}/image/get/25",
 							"host": [
 								"{{BASEURL}}"
 							],
 							"path": [
 								"image",
 								"get",
-								"9"
+								"25"
 							]
 						}
 					},
@@ -825,6 +830,823 @@
 						}
 					},
 					"response": []
+				}
+			]
+		},
+		{
+			"name": "project-module",
+			"item": [
+				{
+					"name": "creator",
+					"item": [
+						{
+							"name": "all-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all-projects",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all-projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all Copy",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "containers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/containers/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"containers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "elements",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/elements/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"elements",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-projects-template",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all-projects-template",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all-projects-template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "complete-project",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/complete-project/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"complete-project",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get/projid",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all-projects-template",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all-projects-template"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "management",
+					"item": []
+				},
+				{
+					"name": "box",
+					"item": [
+						{
+							"name": "create",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/create-new-box",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"create-new-box"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"updated name\",\r\n    \"imageIds\": [1]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/box/update/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"box",
+										"update",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "status",
+					"item": [
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"updated name\",\r\n    \"imageIds\": [1]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/box/update/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"box",
+										"update",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "priority",
+					"item": [
+						{
+							"name": "get",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"updated name\",\r\n    \"imageIds\": [1]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/priority/update-priority/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"priority",
+										"update-priority",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "element",
+					"item": [
+						{
+							"name": "get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/element/2",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"element",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update element",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"updated Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/element/update-element/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"element",
+										"update-element",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add-cont-elem",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Sample Element\",\r\n  \"description\": \"This is a sample element description.\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 5,\r\n  \"imageIds\": [1, 2]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/element/add-container-element/2",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"element",
+										"add-container-element",
+										"2"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add-proj-elem",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Sample Element\",\r\n  \"description\": \"This is a sample element description.\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 5,\r\n  \"imageIds\": [1, 2],\r\n  \"properties\": [\r\n    {\r\n      \"name\": \"Color\",\r\n      \"value\": \"Blue\"\r\n    },\r\n    {\r\n      \"name\": \"Size\",\r\n      \"value\": \"Medium\"\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/element/add-project-element/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"element",
+										"add-project-element",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "delete",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"updated Name\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/element/delete-element/2",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"element",
+										"delete-element",
+										"2"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "container",
+					"item": [
+						{
+							"name": "update",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/container/update-container/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"container",
+										"update-container",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "add-container",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"SampleContainer\",\r\n  \"description\": \"A container for storing items\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 10,\r\n  \"imageIds\": [1, 2],\r\n  \"properties\": [\r\n    {\r\n      \"name\": \"Property 1\",\r\n      \"value\": \"Value 1\"\r\n    },\r\n    {\r\n      \"name\": \"Property 2\",\r\n      \"value\": \"Value 2\"\r\n    }\r\n  ],\r\n  \"elements\": [\r\n    {\r\n      \"name\": \"Element 1\",\r\n      \"description\": \"Description of Element 1\",\r\n      \"notes\": [\"Element Note 1\", \"Element Note 2\"],\r\n      \"quantity\": 5,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 1\",\r\n          \"value\": \"Element Value 1\"\r\n        },\r\n        {\r\n          \"name\": \"Element Property 2\",\r\n          \"value\": \"Element Value 2\"\r\n        }\r\n      ],\r\n      \"imageIds\": [1]\r\n    },\r\n    {\r\n      \"name\": \"Element 2\",\r\n      \"description\": \"Description of Element 2\",\r\n      \"notes\": [\"Element Note 3\"],\r\n      \"quantity\": 3,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 3\",\r\n          \"value\": \"Element Value 3\"\r\n        }\r\n      ],\r\n      \"imageIds\": [2]\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/container/add-container/24",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"container",
+										"add-container",
+										"24"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"SampleContainer\",\r\n  \"description\": \"A container for storing items\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 10,\r\n  \"imageIds\": [1, 2],\r\n  \"properties\": [\r\n    {\r\n      \"name\": \"Property 1\",\r\n      \"value\": \"Value 1\"\r\n    },\r\n    {\r\n      \"name\": \"Property 2\",\r\n      \"value\": \"Value 2\"\r\n    }\r\n  ],\r\n  \"elements\": [\r\n    {\r\n      \"name\": \"Element 1\",\r\n      \"description\": \"Description of Element 1\",\r\n      \"notes\": [\"Element Note 1\", \"Element Note 2\"],\r\n      \"quantity\": 5,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 1\",\r\n          \"value\": \"Element Value 1\"\r\n        },\r\n        {\r\n          \"name\": \"Element Property 2\",\r\n          \"value\": \"Element Value 2\"\r\n        }\r\n      ],\r\n      \"imageIds\": [1]\r\n    },\r\n    {\r\n      \"name\": \"Element 2\",\r\n      \"description\": \"Description of Element 2\",\r\n      \"notes\": [\"Element Note 3\"],\r\n      \"quantity\": 3,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 3\",\r\n          \"value\": \"Element Value 3\"\r\n        }\r\n      ],\r\n      \"imageIds\": [2]\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/container/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"container",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "get-elems",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"SampleContainer\",\r\n  \"description\": \"A container for storing items\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 10,\r\n  \"imageIds\": [1, 2],\r\n  \"properties\": [\r\n    {\r\n      \"name\": \"Property 1\",\r\n      \"value\": \"Value 1\"\r\n    },\r\n    {\r\n      \"name\": \"Property 2\",\r\n      \"value\": \"Value 2\"\r\n    }\r\n  ],\r\n  \"elements\": [\r\n    {\r\n      \"name\": \"Element 1\",\r\n      \"description\": \"Description of Element 1\",\r\n      \"notes\": [\"Element Note 1\", \"Element Note 2\"],\r\n      \"quantity\": 5,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 1\",\r\n          \"value\": \"Element Value 1\"\r\n        },\r\n        {\r\n          \"name\": \"Element Property 2\",\r\n          \"value\": \"Element Value 2\"\r\n        }\r\n      ],\r\n      \"imageIds\": [1]\r\n    },\r\n    {\r\n      \"name\": \"Element 2\",\r\n      \"description\": \"Description of Element 2\",\r\n      \"notes\": [\"Element Note 3\"],\r\n      \"quantity\": 3,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 3\",\r\n          \"value\": \"Element Value 3\"\r\n        }\r\n      ],\r\n      \"imageIds\": [2]\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/container/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"container",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "del-container",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"SampleContainer\",\r\n  \"description\": \"A container for storing items\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 10,\r\n  \"imageIds\": [1, 2],\r\n  \"properties\": [\r\n    {\r\n      \"name\": \"Property 1\",\r\n      \"value\": \"Value 1\"\r\n    },\r\n    {\r\n      \"name\": \"Property 2\",\r\n      \"value\": \"Value 2\"\r\n    }\r\n  ],\r\n  \"elements\": [\r\n    {\r\n      \"name\": \"Element 1\",\r\n      \"description\": \"Description of Element 1\",\r\n      \"notes\": [\"Element Note 1\", \"Element Note 2\"],\r\n      \"quantity\": 5,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 1\",\r\n          \"value\": \"Element Value 1\"\r\n        },\r\n        {\r\n          \"name\": \"Element Property 2\",\r\n          \"value\": \"Element Value 2\"\r\n        }\r\n      ],\r\n      \"imageIds\": [1]\r\n    },\r\n    {\r\n      \"name\": \"Element 2\",\r\n      \"description\": \"Description of Element 2\",\r\n      \"notes\": [\"Element Note 3\"],\r\n      \"quantity\": 3,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 3\",\r\n          \"value\": \"Element Value 3\"\r\n        }\r\n      ],\r\n      \"imageIds\": [2]\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/container/delete-container/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"container",
+										"delete-container",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "del-containers",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"SampleContainer\",\r\n  \"description\": \"A container for storing items\",\r\n  \"notes\": [\"Note 1\", \"Note 2\"],\r\n  \"quantity\": 10,\r\n  \"imageIds\": [1, 2],\r\n  \"properties\": [\r\n    {\r\n      \"name\": \"Property 1\",\r\n      \"value\": \"Value 1\"\r\n    },\r\n    {\r\n      \"name\": \"Property 2\",\r\n      \"value\": \"Value 2\"\r\n    }\r\n  ],\r\n  \"elements\": [\r\n    {\r\n      \"name\": \"Element 1\",\r\n      \"description\": \"Description of Element 1\",\r\n      \"notes\": [\"Element Note 1\", \"Element Note 2\"],\r\n      \"quantity\": 5,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 1\",\r\n          \"value\": \"Element Value 1\"\r\n        },\r\n        {\r\n          \"name\": \"Element Property 2\",\r\n          \"value\": \"Element Value 2\"\r\n        }\r\n      ],\r\n      \"imageIds\": [1]\r\n    },\r\n    {\r\n      \"name\": \"Element 2\",\r\n      \"description\": \"Description of Element 2\",\r\n      \"notes\": [\"Element Note 3\"],\r\n      \"quantity\": 3,\r\n      \"properties\": [\r\n        {\r\n          \"name\": \"Element Property 3\",\r\n          \"value\": \"Element Value 3\"\r\n        }\r\n      ],\r\n      \"imageIds\": [2]\r\n    }\r\n  ]\r\n}\r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/container/delete-containers/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"container",
+										"delete-containers",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		}

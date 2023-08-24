@@ -34,7 +34,7 @@ export class ProjectCreatorController {
 
   @Get('/:projectId')
   async getProjectById(@Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.projectCreatorService.getProjectById(projectId);
+    return this.projectCreatorService.getProjectDtoById(projectId);
   }
 
   @Put('complete-project/:projectId')
@@ -47,7 +47,7 @@ export class ProjectCreatorController {
     return this.projectCreatorService.getAllContainersByProjectId(projectId);
   }
 
-  @Get('project-elements/:projectId')
+  @Get('elements/:projectId')
   async getAllProjectElementsByProjectId(@Param('projectId') projectId: number): Promise<ElementDto[]> {
     return this.projectCreatorService.getAllProjectElementsByProjectId(projectId);
   }

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import { UpdateElementCommand } from "../model/command/element/update.element.command";
 import { CreateElementCommand } from "../model/command/element/create.element.command";
 import { ElementDto } from "../model/dto/element.dto";
@@ -6,11 +6,12 @@ import { Element } from "../model/domain/element.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
-import { mapElementCommandToElement, mapElementToElementDto } from "../util/util.functions";
+import { mapElementCommandToElement, mapElementToElementDto, mapPropertyDtoToProperty } from "../util/util.functions";
 import { Result } from "../../util/pojo/Result";
 import { Project } from "../model/domain/project.entity";
 import { Container } from "../model/domain/container.entity";
 import { ImageService } from "../../image/service/image.service";
+import { Property } from "../model/domain/property.entity";
 
 @Injectable()
 export class ElementService {
@@ -22,19 +23,21 @@ export class ElementService {
     private readonly projectRepository: Repository<Project>,
     @InjectRepository(Container)
     private readonly containerRepository: Repository<Container>,
-    private readonly imageService: ImageService
+    private readonly imageService: ImageService,
+    @InjectRepository(Property)
+    private readonly propertyRepository: Repository<Property>,
   ) {
   }
 
   async updateElement(command: UpdateElementCommand, elementId: number): Promise<ElementDto> {
+    await this.imageService.checkImageExists(command.imageIds);
     let element = await this.getElementById(elementId);
     element = this.updateNotNullFields(command, element);
-    const updatedElement: Element = await this.elementRepository.save(element);
-    return mapElementToElementDto(updatedElement);
+    return mapElementToElementDto(await this.updateAndFlush(element));
   }
 
   async addContainerElement(command: CreateElementCommand, containerId: number): Promise<ElementDto[]> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     const container: Container = await this.containerRepository.findOne({
       relations: {
         elements: {
@@ -50,7 +53,7 @@ export class ElementService {
       throw new IllegalArgumentException(`Container with id: ${containerId} does not exist!`);
     }
     const element: Element = mapElementCommandToElement(command);
-    await this.elementRepository.save(element);
+    await this.updateAndFlush(element);
     if (!container.elements) {
       container.elements = [];
     }
@@ -61,7 +64,7 @@ export class ElementService {
   }
 
   async addProjectElement(command: CreateElementCommand, projectId: number): Promise<ElementDto[]> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     const project: Project = await this.projectRepository.findOne({
       relations: {
         elements: {
@@ -85,19 +88,32 @@ export class ElementService {
       throw new IllegalArgumentException(`Project with id: ${projectId} does not exist!`);
     }
     const element: Element = mapElementCommandToElement(command);
-    await this.elementRepository.save(element);
+    await this.updateAndFlush(element)
     if (!project.elements) {
       project.elements = [];
     }
     project.elements.push(element);
-    await this.projectRepository.save(project);
+    const result = await this.projectRepository.save(project);
 
-    return project.elements.map(element => mapElementToElementDto(element));
+    return result.elements.map(element => mapElementToElementDto(element));
   }
 
   async getElementDtoById(elementId: number): Promise<ElementDto> {
     const element: Element = await this.getElementById(elementId);
     return mapElementToElementDto(element);
+  }
+
+  async updateAndFlush(element: Element): Promise<Element> {
+    await this.propertyRepository.save(element.properties);
+    return await this.elementRepository.save(element);
+  }
+
+  async updatesAndFlush(elements: Element[]): Promise<Element[]> {
+    let elementsToSave: Element[] = [];
+    for (const element of elements) {
+      elementsToSave.push(await this.updateAndFlush(element));
+    }
+    return elementsToSave;
   }
 
   async deleteElementById(elementId: number): Promise<Result> {
@@ -141,12 +157,9 @@ export class ElementService {
     if (command.imageIds) {
       element.imageIds = command.imageIds;
     }
-    return element;
-  }
-
-  private async checkImageExists(imageIds: number[]): Promise<void> {
-    for (const id of imageIds) {
-      await this.imageService.getFile(id);
+    if (command.properties) {
+      element.properties = command.properties.map(property => mapPropertyDtoToProperty(property));
     }
+    return element;
   }
 }

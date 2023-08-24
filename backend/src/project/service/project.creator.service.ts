@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { Project } from "../model/domain/project.entity";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Element } from "../model/domain/element.entity";
-import { Property } from "../model/domain/property.entity";
 import { Repository } from "typeorm";
 import { Game } from "../../game/model/domain/game.entity";
-import { Box } from "../model/domain/box.entity";
 import { CreateProjectCommand } from "../model/command/project-creator/create.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
+import { ContainerService } from "./container.service";
+import { BoxService } from "./box.service";
+import { mapContainerToContainerDto, mapElementToElementDto, mapProjectToProjectDto } from "../util/util.functions";
 
 @Injectable()
 export class ProjectCreatorService {
@@ -16,47 +16,175 @@ export class ProjectCreatorService {
     private readonly projectRepository: Repository<Project>,
     @InjectRepository(Game)
     private readonly gameRepository: Repository<Game>,
-    @InjectRepository(Box)
-    private readonly boxRepository: Repository<Box>,
-    @InjectRepository(Element)
-    private readonly elementRepository: Repository<Element>,
-    @InjectRepository(Property)
-    private readonly propertyRepository: Repository<Property>,
+    private readonly containerService: ContainerService,
+    private readonly boxService: BoxService
   ) {}
 
-  createNewProjectTemplate(command: CreateProjectCommand) {
+  async createNewProjectTemplate(command: CreateProjectCommand): Promise<ProjectDto> {
     return undefined;
   }
 
-  async findOne(id: number): Promise<ProjectDto> {
-    return null;
+  async getProjectDtoById(projectId: number): Promise<ProjectDto> {
+    const project = await this.getProjectById(projectId);
+    return mapProjectToProjectDto(project);
   }
 
-  getProjectById(projectId: number) {
-    return undefined;
+  async getAllProjectsTemplate(): Promise<ProjectDto[]> {
+    const projects: Project[] = await this.projectRepository.find({
+      relations: {
+        games: {
+          tags: true,
+          components: true
+        },
+        currentGame: {
+          tags: true,
+          components: true
+        },
+        elements: {
+          properties: true,
+        },
+        box: {
+          properties: true,
+        },
+        containers: {
+          properties: true,
+          elements: {
+            properties: true,
+          }
+        },
+      },
+      where: {
+        isTemplate: true
+      }
+    })
+    return projects.map(project => mapProjectToProjectDto(project));
   }
 
-  getAllProjectsTemplate() {
-    return [];
+  async getAllProjectsForGame(gameId: number): Promise<ProjectDto[]> {
+    const projects: Project[] = await this.projectRepository.find({
+      relations: {
+        games: {
+          tags: true,
+          components: true
+        },
+        currentGame: {
+          tags: true,
+          components: true
+        },
+        elements: {
+          properties: true,
+        },
+        box: {
+          properties: true,
+        },
+        containers: {
+          properties: true,
+          elements: {
+            properties: true,
+          }
+        },
+      },
+      where: {
+        games: {
+          id: gameId
+        }
+      }
+    })
+    return projects.map(project => mapProjectToProjectDto(project));
   }
 
-  getAllProjectsForGame(gameId: number) {
-    return [];
+  async getAllProjectsAndTemplates(): Promise<ProjectDto[]> {
+    const projects: Project[] = await this.projectRepository.find({
+      relations: {
+        games: {
+          tags: true,
+          components: true
+        },
+        currentGame: {
+          tags: true,
+          components: true
+        },
+        elements: {
+          properties: true,
+        },
+        box: {
+          properties: true,
+        },
+        containers: {
+          properties: true,
+          elements: {
+            properties: true,
+          }
+        },
+      }
+    })
+    return projects.map(project => mapProjectToProjectDto(project));
   }
 
-  getAllProjectsAndTemplates() {
-    return [];
+  async completeProject(projectId: number): Promise<ProjectDto> {
+    let project: Project = await this.projectRepository.findOne({
+      relations: {
+        games: {
+          tags: true,
+          components: true
+        },
+        currentGame: {
+          tags: true,
+          components: true
+        },
+        elements: {
+          properties: true,
+        },
+        box: {
+          properties: true,
+        },
+        containers: {
+          properties: true,
+          elements: {
+            properties: true,
+          }
+        },
+      },
+      where: {
+        id: projectId
+      }
+    });
+    project.isCompleted = true;
+    await this.projectRepository.save(project);
+    return mapProjectToProjectDto(project);
   }
 
-  completeProject(projectId: number) {
-    return undefined;
+  async getAllContainersByProjectId(projectId: number) {
+    const project: Project = await this.getProjectById(projectId);
+    return project.containers.map(container => mapContainerToContainerDto(container));
   }
 
-  getAllContainersByProjectId(projectId: number) {
-    return [];
+  async getAllProjectElementsByProjectId(projectId: number) {
+    const project: Project = await this.getProjectById(projectId);
+    return project.elements.map(element => mapElementToElementDto(element));
   }
 
-  getAllProjectElementsByProjectId(projectId: number) {
-    return [];
+  private async getProjectById(projectId: number): Promise<Project> {
+    return await this.projectRepository.findOne({
+      relations: {
+        games: true,
+        currentGame: true,
+        elements: {
+          properties: true,
+        },
+        box: {
+          properties: true,
+        },
+        containers: {
+          properties: true,
+          elements: {
+            properties: true,
+          }
+        },
+      },
+      where: {
+        id: projectId,
+      }
+    });
   }
 }

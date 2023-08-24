@@ -4,6 +4,7 @@ import { ContainerDto } from "../model/dto/container.dto";
 import { UpdateContainerCommand } from "../model/command/container/update.container.command";
 import { CreateContainerCommand } from "../model/command/container/create.container.command";
 import { ElementDto } from "../model/dto/element.dto";
+import { Result } from "../../util/pojo/Result";
 
 @Controller('container')
 export class ContainerController {
@@ -18,7 +19,7 @@ export class ContainerController {
   }
 
   @Post('add-container/:projectId')
-  async addContainer(@Body() command: CreateContainerCommand, @Param('projectId') projectId: number): Promise<ContainerDto> {
+  async addContainer(@Body() command: CreateContainerCommand, @Param('projectId') projectId: number): Promise<ContainerDto[]> {
     return this.containerService.addContainer(command, projectId);
   }
 
@@ -33,12 +34,12 @@ export class ContainerController {
   }
 
   @Delete('delete-container/:containerId')
-  async deleteContainerById(@Param('containerId') containerId: number): Promise<void> {
+  async deleteContainerById(@Param('containerId') containerId: number): Promise<Result> {
     return this.containerService.deleteContainerById(containerId);
   }
 
   @Delete('delete-containers/:projectId')
-  async deleteAllContainersByProjectId(@Param('projectId') projectId: number): Promise<void> {
+  async deleteAllContainersByProjectId(@Param('projectId') projectId: number): Promise<Result> {
     return this.containerService.deleteAllContainersByProjectId(projectId);
   }
 }

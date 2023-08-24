@@ -16,9 +16,7 @@ export class AuthorGuard implements CanActivate {
       const params = request.params;
 
       const sender: User = await this.userService.findOne(request.user.id);
-      const project = await this.projectService.findOne(params.id);
-      return sender.role === UserRole.ADMIN || sender.id === project.user.id;
-
-
+      const project = await this.projectService.getProjectDtoById(params.id);
+      return !(project.isCompleted || (sender.role !== UserRole.ADMIN && sender.id !== project.user.id));
     }
 }

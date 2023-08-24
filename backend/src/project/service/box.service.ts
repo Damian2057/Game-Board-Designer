@@ -20,7 +20,7 @@ export class BoxService {
   }
 
   async createNewBox(command: CreateBoxCommand): Promise<BoxDto> {
-    await this.checkImageExists(command.imageIds);
+    await this.imageService.checkImageExists(command.imageIds);
     return mapBoxToBoxDto(await this.boxRepository.save(command));
   }
 
@@ -38,12 +38,6 @@ export class BoxService {
     box = this.updateNotNullFields(command, box);
     const updatedBox: Box = await this.boxRepository.save(box);
     return mapBoxToBoxDto(updatedBox);
-  }
-
-  private async checkImageExists(imageIds: number[]): Promise<void> {
-    for (const id of imageIds) {
-      await this.imageService.getFile(id);
-    }
   }
 
   async getBoxDtoById(id: number): Promise<BoxDto> {
