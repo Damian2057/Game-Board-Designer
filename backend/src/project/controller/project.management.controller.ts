@@ -1,8 +1,14 @@
-import { Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { ProjectManagementService } from "../service/project.management.service";
 import { ProjectDto } from "../model/dto/project.dto";
+import { HasRoles } from "../../auth/decorator/role.decorator";
+import { UserRole } from "../../users/model/domain/user.role.enum";
+import { JwtGuard } from "../../auth/guard/jwt.guard";
+import { RolesGuard } from "../../auth/guard/roles.guard";
 
+@HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('project')
 export class ProjectManagementController {
 

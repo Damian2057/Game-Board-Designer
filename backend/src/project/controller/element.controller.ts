@@ -1,10 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ElementService } from "../service/element.service";
 import { ElementDto } from "../model/dto/element.dto";
 import { UpdateElementCommand } from "../model/command/element/update.element.command";
 import { CreateElementCommand } from "../model/command/element/create.element.command";
 import { Result } from "../../util/pojo/Result";
+import { HasRoles } from "../../auth/decorator/role.decorator";
+import { UserRole } from "../../users/model/domain/user.role.enum";
+import { JwtGuard } from "../../auth/guard/jwt.guard";
+import { RolesGuard } from "../../auth/guard/roles.guard";
 
+@HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('element')
 export class ElementController {
 

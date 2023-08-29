@@ -1,11 +1,17 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { ContainerService } from "../service/container.service";
 import { ContainerDto } from "../model/dto/container.dto";
 import { UpdateContainerCommand } from "../model/command/container/update.container.command";
 import { CreateContainerCommand } from "../model/command/container/create.container.command";
 import { ElementDto } from "../model/dto/element.dto";
 import { Result } from "../../util/pojo/Result";
+import { HasRoles } from "../../auth/decorator/role.decorator";
+import { UserRole } from "../../users/model/domain/user.role.enum";
+import { JwtGuard } from "../../auth/guard/jwt.guard";
+import { RolesGuard } from "../../auth/guard/roles.guard";
 
+@HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('container')
 export class ContainerController {
 
