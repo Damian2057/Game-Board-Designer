@@ -32,10 +32,7 @@ export class ProjectCreatorService {
   ) {}
 
   async createNewProjectTemplate(command: CreateProjectCommand): Promise<ProjectDto> {
-    await this.imageService.checkImageExists(command.imageIds);
-    if (await this.getProjectByName(command.name)) {
-      throw new IllegalArgumentException(`Project with name: ${command.name} already exists!`);
-    }
+    await this.checkProjectProperties(command.imageIds, command.name);
     const project: Project = mapProjectCreateCommandToProject(command);
     await this.containerService.updatesAndFlush(project.containers);
     await this.elementService.updatesAndFlush(project.elements);
@@ -219,8 +216,12 @@ export class ProjectCreatorService {
     });
   }
 
-  updateProject(command: UpdateProjectCommand, projectId: number) {
-    return undefined;
+  async updateProject(command: UpdateProjectCommand, projectId: number) {
+    await this.checkProjectProperties(command.imageIds, command.name);
+    let project: Project = await this.getProjectById(projectId);
+    project = await this.updateNotNullFields(command, project);
+    const updatedProject: Project = await this.projectRepository.save(project);
+    return mapProjectToProjectDto(updatedProject);
   }
 
   private async getProjectByName(projectName: string): Promise<Project> {
@@ -229,5 +230,36 @@ export class ProjectCreatorService {
         name: projectName,
       }
     });
+  }
+
+  private async updateNotNullFields(command: UpdateProjectCommand, project: Project): Promise<Project> {
+    if (command.name) {
+      project.name = command.name;
+    }
+    if (command.description) {
+      project.description = command.description;
+    }
+    if (command.notes) {
+      project.notes = command.notes;
+    }
+    if (command.imageIds) {
+      project.imageIds = command.imageIds;
+    }
+    if (command.games) {
+      const games: Game[] = [];
+      for (const game of command.games) {
+        games.push(await this.gameService.getGameBoardById(game.id));
+      }
+      project.games = games;
+    }
+
+    return project;
+  }
+
+  private async checkProjectProperties(imageIds: number[], name: string) {
+    await this.imageService.checkImageExists(imageIds);
+    if (await this.getProjectByName(name)) {
+      throw new IllegalArgumentException(`Project with name: ${name} already exists!`);
+    }
   }
 }

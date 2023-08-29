@@ -153,7 +153,6 @@ export function mapElementDtoToElement(elementDto: ElementDto): Element {
   element.quantity = elementDto.quantity;
   element.imageIds = elementDto.imageIds;
   element.properties = elementDto.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
-  element.type = elementDto.type;
   if (elementDto.status) {
     element.status = elementDto.status;
   }
