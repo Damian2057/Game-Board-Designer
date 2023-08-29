@@ -9,6 +9,7 @@ import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
+import { AuthorGuard } from "../guards/author.guard";
 
 @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
 @UseGuards(JwtGuard, RolesGuard)
@@ -44,6 +45,7 @@ export class ProjectCreatorController {
     return this.projectCreatorService.getProjectDtoById(projectId);
   }
 
+  @UseGuards(JwtGuard, RolesGuard, AuthorGuard)
   @Put('complete-project/:projectId')
   async completeProject(@Param('projectId') projectId: number): Promise<ProjectDto> {
     return this.projectCreatorService.completeProject(projectId);
@@ -54,11 +56,13 @@ export class ProjectCreatorController {
     return this.projectCreatorService.getAllContainersByProjectId(projectId);
   }
 
+  @UseGuards(JwtGuard, RolesGuard, AuthorGuard)
   @Get('elements/:projectId')
   async getAllProjectElementsByProjectId(@Param('projectId') projectId: number): Promise<ElementDto[]> {
     return this.projectCreatorService.getAllProjectElementsByProjectId(projectId);
   }
 
+  @UseGuards(JwtGuard, RolesGuard, AuthorGuard)
   @Put('update-project/:projectId')
   async updateProject(@Body() command: UpdateProjectCommand, @Param('projectId') projectId: number): Promise<ProjectDto> {
     return this.projectCreatorService.updateProject(command, projectId);
