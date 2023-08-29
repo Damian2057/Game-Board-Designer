@@ -1,5 +1,7 @@
 import { PropertyDto } from "../../dto/property.dto";
 import { ArrayMinSize, IsString, Min } from "class-validator";
+import { Status } from "../../domain/status.enum";
+import { Priority } from "../../domain/priority.enum";
 
 export class CreateElementCommand {
 
@@ -19,4 +21,8 @@ export class CreateElementCommand {
 
   @ArrayMinSize(1)
   properties: PropertyDto[];
+
+  status: Status;
+
+  priority: Priority;
 }

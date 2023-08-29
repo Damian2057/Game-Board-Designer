@@ -11,8 +11,5 @@ export class CreateProjectCommand {
   containers: ContainerDto[];
   elements: ElementDto[];
   games: GameDto[];
-  currentGame: GameDto;
-  isTemplate: boolean;
   imageIds: number[];
-  isCompleted: boolean;
 }

@@ -4,6 +4,7 @@ import { CreateProjectCommand } from "../model/command/project-creator/create.pr
 import { ProjectDto } from "../model/dto/project.dto";
 import { ContainerDto } from "../model/dto/container.dto";
 import { ElementDto } from "../model/dto/element.dto";
+import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
 
 @Controller('project')
 export class ProjectCreatorController {
@@ -50,5 +51,10 @@ export class ProjectCreatorController {
   @Get('elements/:projectId')
   async getAllProjectElementsByProjectId(@Param('projectId') projectId: number): Promise<ElementDto[]> {
     return this.projectCreatorService.getAllProjectElementsByProjectId(projectId);
+  }
+
+  @Put('update-project/:projectId')
+  async updateProject(@Body() command: UpdateProjectCommand, @Param('projectId') projectId: number): Promise<ProjectDto> {
+    return this.projectCreatorService.updateProject(command, projectId);
   }
 }

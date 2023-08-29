@@ -8,6 +8,8 @@ import { ProjectDto } from "../model/dto/project.dto";
 import { ContainerService } from "./container.service";
 import { BoxService } from "./box.service";
 import { mapContainerToContainerDto, mapElementToElementDto, mapProjectToProjectDto } from "../util/util.functions";
+import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
+import { ImageService } from "../../image/service/image.service";
 
 @Injectable()
 export class ProjectCreatorService {
@@ -17,10 +19,13 @@ export class ProjectCreatorService {
     @InjectRepository(Game)
     private readonly gameRepository: Repository<Game>,
     private readonly containerService: ContainerService,
-    private readonly boxService: BoxService
+    private readonly boxService: BoxService,
+    private readonly imageService: ImageService,
   ) {}
 
   async createNewProjectTemplate(command: CreateProjectCommand): Promise<ProjectDto> {
+    await this.imageService.checkImageExists(command.imageIds);
+
     return undefined;
   }
 
@@ -186,5 +191,9 @@ export class ProjectCreatorService {
         id: projectId,
       }
     });
+  }
+
+  updateProject(command: UpdateProjectCommand, projectId: number) {
+    return undefined;
   }
 }
