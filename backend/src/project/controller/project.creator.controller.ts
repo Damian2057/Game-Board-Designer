@@ -4,7 +4,7 @@ import { CreateProjectCommand } from "../model/command/project-creator/create.pr
 import { ProjectDto } from "../model/dto/project.dto";
 import { ContainerDto } from "../model/dto/container.dto";
 import { ElementDto } from "../model/dto/element.dto";
-import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
+import { UpdateProjectCommand } from "../model/command/project-creator/update.project.command";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
