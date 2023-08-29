@@ -79,8 +79,13 @@ export class ImageService {
   }
 
   async checkImageExists(imageIds: number[]): Promise<void> {
-    for (const id of imageIds) {
-      await this.getFile(id);
+    try {
+      for (const id of imageIds) {
+        await this.getFile(id);
+      }
+    } catch (error) {
+      this.logger.error(error.message);
+      throw new ImageDownloadException(error.message);
     }
   }
 }

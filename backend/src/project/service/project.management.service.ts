@@ -32,7 +32,7 @@ export class ProjectManagementService {
     return [];
   }
 
-  updateProject(command: UpdateProjectCommand, projectId: number) {
+  assignProjectToUser(user, projectId: number) {
     return undefined;
   }
 }
