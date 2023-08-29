@@ -19,6 +19,11 @@ export class GameController {
     return this.boardGameService.findAll();
   }
 
+  @Get(':id')
+  getBoardGameById(@Param('id') id: number): Promise<GameDto> {
+    return this.boardGameService.findById(id);
+  }
+
   @Get('find')
   getGameBoardByFilter(@Query('id') id?: number,
              @Query('title') title?: string,

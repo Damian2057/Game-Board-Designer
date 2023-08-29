@@ -7,26 +7,46 @@ import { CreateProjectCommand } from "../model/command/project-creator/create.pr
 import { ProjectDto } from "../model/dto/project.dto";
 import { ContainerService } from "./container.service";
 import { BoxService } from "./box.service";
-import { mapContainerToContainerDto, mapElementToElementDto, mapProjectToProjectDto } from "../util/util.functions";
+import {
+  mapContainerToContainerDto,
+  mapElementToElementDto,
+  mapProjectCreateCommandToProject,
+  mapProjectToProjectDto
+} from "../util/util.functions";
 import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
 import { ImageService } from "../../image/service/image.service";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { ElementService } from "./element.service";
+import { GameService } from "../../game/service/game.service";
 
 @Injectable()
 export class ProjectCreatorService {
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
-    @InjectRepository(Game)
-    private readonly gameRepository: Repository<Game>,
+    private readonly gameService: GameService,
     private readonly containerService: ContainerService,
     private readonly boxService: BoxService,
+    private readonly elementService: ElementService,
     private readonly imageService: ImageService,
   ) {}
 
   async createNewProjectTemplate(command: CreateProjectCommand): Promise<ProjectDto> {
     await this.imageService.checkImageExists(command.imageIds);
-
-    return undefined;
+    if (await this.getProjectByName(command.name)) {
+      throw new IllegalArgumentException(`Project with name: ${command.name} already exists!`);
+    }
+    const project: Project = mapProjectCreateCommandToProject(command);
+    await this.containerService.updatesAndFlush(project.containers);
+    await this.elementService.updatesAndFlush(project.elements);
+    await this.boxService.updatesAndFlush(project.box);
+    const games: Game[] = [];
+    for (const game of command.games) {
+      games.push(await this.gameService.getGameBoardById(game.id));
+    }
+    project.games = games;
+    const savedProject: Project = await this.projectRepository.save(project);
+    return mapProjectToProjectDto(savedProject);
   }
 
   async getProjectDtoById(projectId: number): Promise<ProjectDto> {
@@ -172,8 +192,14 @@ export class ProjectCreatorService {
   private async getProjectById(projectId: number): Promise<Project> {
     return await this.projectRepository.findOne({
       relations: {
-        games: true,
-        currentGame: true,
+        games: {
+          tags: true,
+          components: true
+        },
+        currentGame: {
+          tags: true,
+          components: true
+        },
         elements: {
           properties: true,
         },
@@ -195,5 +221,13 @@ export class ProjectCreatorService {
 
   updateProject(command: UpdateProjectCommand, projectId: number) {
     return undefined;
+  }
+
+  private async getProjectByName(projectName: string): Promise<Project> {
+    return await this.projectRepository.findOne({
+      where: {
+        name: projectName,
+      }
+    });
   }
 }

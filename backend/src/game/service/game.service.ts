@@ -168,8 +168,8 @@ export class GameService {
     throw new IllegalArgumentException('GameElement with id: ' + gameElementId + ' does not exist for the game!');
   }
 
-  private async getGameBoardById(id: number): Promise<Game> {
-    const games: Game[] = await this.boardGameRepository.find({
+  async getGameBoardById(id: number): Promise<Game> {
+    const game: Game = await this.boardGameRepository.findOne({
       relations: {
         tags: true,
         components: true
@@ -178,10 +178,10 @@ export class GameService {
         id: id
       }
     });
-    if (games.length === 0) {
+    if (!game) {
       throw new IllegalArgumentException('BoardGame with id: ' + id + ' does not exist!')
     }
-    return games[0]
+    return game
   }
 
   private async getTagById(id: number): Promise<Tag> {
@@ -243,5 +243,10 @@ export class GameService {
         throw new ImageDownloadException(`The file with the id ${id} does not exist.`);
       }
     }
+  }
+
+  async findById(id: number): Promise<GameDto> {
+    const game: Game = await this.getGameBoardById(id);
+    return mapGameToGameDto(game);
   }
 }
