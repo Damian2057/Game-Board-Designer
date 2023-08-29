@@ -1,14 +1,16 @@
 import { PropertyDto } from "../../dto/property.dto";
-import { ArrayMinSize, IsString, Min } from "class-validator";
+import { ArrayMinSize, IsString, Length, Min } from "class-validator";
 import { Status } from "../../domain/status.enum";
 import { Priority } from "../../domain/priority.enum";
 
 export class CreateElementCommand {
 
   @IsString()
+  @Length(3, 50)
   name: string;
 
   @IsString()
+  @Length(10, 2000)
   description: string;
 
   notes: string[];

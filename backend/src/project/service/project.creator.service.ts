@@ -13,7 +13,7 @@ import {
   mapProjectCreateCommandToProject,
   mapProjectToProjectDto
 } from "../util/util.functions";
-import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
+import { UpdateProjectCommand } from "../model/command/project-creator/update.project.command";
 import { ImageService } from "../../image/service/image.service";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { ElementService } from "./element.service";

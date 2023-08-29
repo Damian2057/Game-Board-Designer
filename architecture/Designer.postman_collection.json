@@ -840,7 +840,7 @@
 					"name": "creator",
 					"item": [
 						{
-							"name": "all-projects",
+							"name": "all-projects-for-game",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -868,7 +868,7 @@
 							"response": []
 						},
 						{
-							"name": "all Copy",
+							"name": "all-projects",
 							"request": {
 								"auth": {
 									"type": "bearer",
@@ -1033,6 +1033,81 @@
 									"path": [
 										"project",
 										"all-projects-template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "create",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"name\": \"test123\",\r\n        \"description\": \"test\",\r\n        \"notes\": [\r\n            \"test\"\r\n        ],\r\n        \"box\": {\r\n            \"name\": \"test123\",\r\n            \"description\": \"test\",\r\n            \"notes\": [\r\n                \"test\"\r\n            ],\r\n            \"properties\": [\r\n                {\r\n                    \"name\": \"test123\",\r\n                    \"value\": \"test\"\r\n                }\r\n            ],\r\n            \"imageIds\": [1, 2],\r\n            \"status\": \"TODO\",\r\n            \"priority\": \"C\"\r\n        },\r\n        \"containers\": [],\r\n        \"elements\": [\r\n            {\r\n                \"name\": \"test1\",\r\n                \"description\": \"test\",\r\n                \"notes\": [\r\n                    \"test\"\r\n                ],\r\n                \"quantity\": 1,\r\n                \"properties\": [\r\n                    {\r\n                        \"name\": \"test1\",\r\n                        \"value\": \"test\"\r\n                    }\r\n                ],\r\n                \"imageIds\": null,\r\n                \"type\": \"element\",\r\n                \"status\": \"TODO\",\r\n                \"priority\": \"C\"\r\n            }\r\n        ],\r\n        \"imageIds\": [1,2],\r\n        \"games\": [\r\n            {\r\n                \"id\": 1,\r\n                \"title\": \"Sample Board Game 10\",\r\n                \"description\": \"A fun and exciting sample board game for players of all ages.\",\r\n                \"publicationDate\": \"2023-08-11\",\r\n                \"price\": 29.99,\r\n                \"tags\": [\r\n                    {\r\n                        \"id\": 1,\r\n                        \"name\": \"RP2\"\r\n                    }\r\n                ],\r\n                \"components\": [\r\n                    {\r\n                        \"id\": 1,\r\n                        \"name\": \"Game Board\",\r\n                        \"quantity\": 5\r\n                    },\r\n                    {\r\n                        \"id\": 2,\r\n                        \"name\": \"Dice Set\",\r\n                        \"quantity\": 5\r\n                    },\r\n                    {\r\n                        \"id\": 3,\r\n                        \"name\": \"tesst\",\r\n                        \"quantity\": 5\r\n                    },\r\n                    {\r\n                        \"id\": 4,\r\n                        \"name\": \"tesst\",\r\n                        \"quantity\": 5\r\n                    }\r\n                ],\r\n                \"imageIds\": [\r\n                    1,\r\n                    2\r\n                ]\r\n            }\r\n        ],\r\n        \"currentGame\": {\r\n            \"id\": 1,\r\n            \"title\": \"Sample Board Game 10\",\r\n            \"description\": \"A fun and exciting sample board game for players of all ages.\",\r\n            \"publicationDate\": \"2023-08-11\",\r\n            \"price\": 29.99,\r\n            \"tags\": [\r\n                {\r\n                    \"id\": 1,\r\n                    \"name\": \"RP2\"\r\n                }\r\n            ],\r\n            \"components\": [\r\n                {\r\n                    \"id\": 1,\r\n                    \"name\": \"Game Board\",\r\n                    \"quantity\": 5\r\n                },\r\n                {\r\n                    \"id\": 2,\r\n                    \"name\": \"Dice Set\",\r\n                    \"quantity\": 5\r\n                },\r\n                {\r\n                    \"id\": 3,\r\n                    \"name\": \"tesst\",\r\n                    \"quantity\": 5\r\n                },\r\n                {\r\n                    \"id\": 4,\r\n                    \"name\": \"tesst\",\r\n                    \"quantity\": 5\r\n                }\r\n            ],\r\n            \"imageIds\": [\r\n                1,\r\n                2\r\n            ]\r\n        }\r\n    }",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/project/create-new-project-template",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"create-new-project-template"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "update-proj",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"testUPDATE1\",\r\n    \"description\": \"test\",\r\n    \"notes\": [\r\n        \"test\"\r\n    ],\r\n    \"imageIds\": [1,2],\r\n    \"games\": [\r\n        {\r\n            \"id\": 1\r\n        },\r\n        {\r\n            \"id\": 3\r\n        }\r\n    ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/project/update-project/28",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"update-project",
+										"28"
 									]
 								}
 							},
@@ -1558,13 +1633,14 @@
 									}
 								},
 								"url": {
-									"raw": "{{BASEURL}}/container/1",
+									"raw": "{{BASEURL}}/container/containers-elements/14",
 									"host": [
 										"{{BASEURL}}"
 									],
 									"path": [
 										"container",
-										"1"
+										"containers-elements",
+										"14"
 									]
 								}
 							},
