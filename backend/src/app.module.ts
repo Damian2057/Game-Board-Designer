@@ -9,6 +9,7 @@ import { ExceptionsModule } from './exceptions/exceptions.module';
 import { OrderModule } from './order/order.module';
 import { ImageModule } from './image/image.module';
 import { BullModule } from "@nestjs/bull";
+import { InformationModule } from './information/information.module';
 import * as process from "process";
 
 @Module({
@@ -26,7 +27,8 @@ import * as process from "process";
     DatabaseModule,
     ExceptionsModule,
     OrderModule,
-    ImageModule],
+    ImageModule,
+    InformationModule],
   providers: []
 })
 export class AppModule {}

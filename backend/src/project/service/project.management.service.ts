@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
 
 @Injectable()
 export class ProjectManagementService {
