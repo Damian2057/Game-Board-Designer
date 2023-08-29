@@ -1,9 +1,14 @@
-import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
+import { Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { ProjectManagementService } from "../service/project.management.service";
-import { UpdateProjectCommand } from "../model/command/project-management/update.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
+import { HasRoles } from "../../auth/decorator/role.decorator";
+import { UserRole } from "../../users/model/domain/user.role.enum";
+import { JwtGuard } from "../../auth/guard/jwt.guard";
+import { RolesGuard } from "../../auth/guard/roles.guard";
 
+@HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('project')
 export class ProjectManagementController {
 
@@ -16,6 +21,10 @@ export class ProjectManagementController {
     return this.projectManagementService.createNewProjectBasedOnExistingProject(user, projectId);
   }
 
+  @Put('assign-project/:projectId')
+  async assignProjectToUser(@GetCurrentUser() user, @Param('projectId') projectId: number): Promise<ProjectDto> {
+    return this.projectManagementService.assignProjectToUser(user, projectId);
+  }
 
   @Get('my-projects')
   async getMyProjects(@GetCurrentUser() user): Promise<ProjectDto[]> {
@@ -45,10 +54,5 @@ export class ProjectManagementController {
   @Get('all-ongoing-projects/:userId')
   async getAllOngoingProjects(@Param('userId') userId: number): Promise<ProjectDto[]> {
     return this.projectManagementService.getAllOngoingProjects(userId);
-  }
-
-  @Put('update-project/:projectId')
-  async updateProject(@Body() command: UpdateProjectCommand, @Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.projectManagementService.updateProject(command, projectId);
   }
 }

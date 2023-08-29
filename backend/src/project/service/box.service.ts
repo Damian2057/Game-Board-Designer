@@ -8,6 +8,7 @@ import { ImageService } from "../../image/service/image.service";
 import { mapBoxToBoxDto } from "../util/util.functions";
 import { BoxDto } from "../model/dto/box.dto";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { Property } from "../model/domain/property.entity";
 
 @Injectable()
 export class BoxService {
@@ -15,7 +16,9 @@ export class BoxService {
   constructor(
     @InjectRepository(Box)
     private readonly boxRepository: Repository<Box>,
-    private readonly imageService: ImageService
+    @InjectRepository(Property)
+    private readonly propertyRepository: Repository<Property>,
+    private readonly imageService: ImageService,
   ) {
   }
 
@@ -73,5 +76,10 @@ export class BoxService {
       throw new IllegalArgumentException(`Box with id ${id} does not exist.`)
     }
     return box;
+  }
+
+  async updatesAndFlush(box: Box) {
+    await this.propertyRepository.save(box.properties);
+    return await this.boxRepository.save(box);
   }
 }

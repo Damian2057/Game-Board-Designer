@@ -23,5 +23,6 @@ import { ImageEntity } from "../image/model/domain/image.entity";
   ],
   controllers: [TagController, ComponentController, GameController],
   providers: [GameService, TagService, ComponentService],
+  exports: [GameService]
 })
 export class GameModule {}

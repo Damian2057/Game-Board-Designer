@@ -6,6 +6,8 @@ import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 
+@HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('status')
 export class StatusController {
 

@@ -32,8 +32,7 @@ export class ContainerService {
     private readonly propertyRepository: Repository<Property>,
     private readonly elementService: ElementService,
     private readonly imageService: ImageService,
-  ) {
-  }
+  ) {}
 
   async updateContainer(command: UpdateContainerCommand, containerId: number): Promise<ContainerDto> {
     await this.imageService.checkImageExists(command.imageIds);

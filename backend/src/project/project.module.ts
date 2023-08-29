@@ -31,7 +31,8 @@ import { ContainerController } from "./controller/container.controller";
   GameModule,
   AuthModule,
   UserModule,
-  ImageModule],
+  ImageModule,
+  GameModule],
   controllers: [ProjectCreatorController, ElementController, BoxController, PriorityController, StatusController, ProjectManagementController, ContainerController],
   providers: [ProjectCreatorService, BoxService, PriorityService, StatusService, ProjectManagementService, ContainerService, ElementService]
 })

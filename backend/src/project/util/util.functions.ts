@@ -12,6 +12,7 @@ import { mapGameToGameDto } from "../../game/util/util.functions";
 import { mapUserToUserDto } from "../../users/util/util.functions";
 import { CreateElementCommand } from "../model/command/element/create.element.command";
 import { CreateContainerCommand } from "../model/command/container/create.container.command";
+import { CreateProjectCommand } from "../model/command/project-creator/create.project.command";
 
 export function mapPropertyToPropertyDto(property: Property): PropertyDto {
   const propertyDto = new PropertyDto();
@@ -102,6 +103,12 @@ export function mapElementCommandToElement(command: CreateElementCommand): Eleme
   element.quantity = command.quantity;
   element.imageIds = command.imageIds;
   element.properties = command.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+  if (command.status) {
+    element.status = command.status;
+  }
+  if (command.priority) {
+    element.priority = command.priority;
+  }
 
   return element;
 }
@@ -115,7 +122,12 @@ export function mapContainerCommandToContainer(command: CreateContainerCommand):
   container.imageIds = command.imageIds;
   container.elements = command.elements.map((elementDto: ElementDto) => mapElementDtoToElement(elementDto));
   container.properties = command.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
-
+  if (command.status) {
+    container.status = command.status;
+  }
+  if (command.priority) {
+    container.priority = command.priority;
+  }
   return container;
 }
 
@@ -141,5 +153,66 @@ export function mapElementDtoToElement(elementDto: ElementDto): Element {
   element.quantity = elementDto.quantity;
   element.imageIds = elementDto.imageIds;
   element.properties = elementDto.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+  if (elementDto.status) {
+    element.status = elementDto.status;
+  }
+  if (elementDto.priority) {
+    element.priority = elementDto.priority;
+  }
   return element;
+}
+
+function mapBoxDtoToBox(boxDto: BoxDto): Box {
+  const box: Box = new Box();
+  if (boxDto.id) {
+    box.id = boxDto.id;
+  }
+  box.name = boxDto.name;
+  box.description = boxDto.description;
+  box.notes = boxDto.notes;
+  box.properties = boxDto.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+  box.imageIds = boxDto.imageIds;
+  if (boxDto.status) {
+    box.status = boxDto.status;
+  }
+  if (boxDto.priority) {
+    box.priority = boxDto.priority;
+  }
+  return box;
+}
+
+function mapContainerDtoToContainer(containerDto: ContainerDto): Container {
+  const container: Container = new Container();
+  if (containerDto.id) {
+    container.id = containerDto.id;
+  }
+  container.name = containerDto.name;
+  container.description = containerDto.description;
+  container.notes = containerDto.notes;
+  container.quantity = containerDto.quantity;
+  container.imageIds = containerDto.imageIds;
+  container.elements = containerDto.elements.map((elementDto: ElementDto) => mapElementDtoToElement(elementDto));
+  container.properties = containerDto.properties.map((propertyDto: PropertyDto) => mapPropertyDtoToProperty(propertyDto));
+  if (containerDto.status) {
+    container.status = containerDto.status;
+  }
+  if (containerDto.priority) {
+    container.priority = containerDto.priority;
+  }
+  return container;
+}
+
+export function mapProjectCreateCommandToProject(command: CreateProjectCommand): Project {
+  const project: Project = new Project();
+  project.name = command.name;
+  project.description = command.description;
+  project.notes = command.notes;
+  project.imageIds = command.imageIds;
+  project.isTemplate = true;
+  project.isCompleted = false;
+  project.box = mapBoxDtoToBox(command.box);
+  project.containers = command.containers.map((containerDto: ContainerDto) => mapContainerDtoToContainer(containerDto));
+  project.elements = command.elements.map((elementDto: ElementDto) => mapElementDtoToElement(elementDto));
+
+  return project;
 }
