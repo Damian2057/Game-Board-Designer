@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Controller, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { ProjectManagementService } from "../service/project.management.service";
 import { ProjectDto } from "../model/dto/project.dto";
@@ -22,8 +22,13 @@ export class ProjectManagementController {
   }
 
   @Put('assign-project/:projectId')
-  async assignProjectToUser(@GetCurrentUser() user, @Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.projectManagementService.assignProjectToUser(user, projectId);
+  async assignProjectToMe(@GetCurrentUser() user, @Param('projectId') projectId: number): Promise<ProjectDto> {
+    return this.projectManagementService.assignProjectToUser(user.id, projectId);
+  }
+
+  @Put('assign-project-to-user/:projectId')
+  async assignProjectToUser(@Query('userId') id: number, @Param('projectId') projectId: number): Promise<ProjectDto> {
+    return this.projectManagementService.assignProjectToUser(id, projectId);
   }
 
   @Get('my-projects')

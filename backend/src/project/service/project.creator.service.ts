@@ -171,6 +171,9 @@ export class ProjectCreatorService {
         id: projectId
       }
     });
+    if (!project) {
+      throw new IllegalArgumentException(`Project with id ${projectId} not found`);
+    }
     project.isCompleted = true;
     await this.projectRepository.save(project);
     return mapProjectToProjectDto(project);
@@ -187,7 +190,7 @@ export class ProjectCreatorService {
   }
 
   private async getProjectById(projectId: number): Promise<Project> {
-    return await this.projectRepository.findOne({
+    const project: Project = await this.projectRepository.findOne({
       relations: {
         games: {
           tags: true,
@@ -214,6 +217,10 @@ export class ProjectCreatorService {
         id: projectId,
       }
     });
+    if (!project) {
+      throw new IllegalArgumentException(`Project with id ${projectId} not found`);
+    }
+    return project;
   }
 
   async updateProject(command: UpdateProjectCommand, projectId: number) {
