@@ -216,3 +216,16 @@ export function mapProjectCreateCommandToProject(command: CreateProjectCommand):
 
   return project;
 }
+
+export function deleteIdsFromObject(obj: any): any {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (key === "id") {
+        delete obj[key];
+      } else if (typeof obj[key] === "object") {
+        deleteIdsFromObject(obj[key]);
+      }
+    }
+  }
+  return obj;
+}
