@@ -13,6 +13,7 @@ import { mapUserToUserDto } from "../../users/util/util.functions";
 import { CreateElementCommand } from "../model/command/element/create.element.command";
 import { CreateContainerCommand } from "../model/command/container/create.container.command";
 import { CreateProjectCommand } from "../model/command/project-creator/create.project.command";
+import { ID, OBJECT } from "./const";
 
 export function mapPropertyToPropertyDto(property: Property): PropertyDto {
   const propertyDto = new PropertyDto();
@@ -215,4 +216,17 @@ export function mapProjectCreateCommandToProject(command: CreateProjectCommand):
   project.elements = command.elements.map((elementDto: ElementDto) => mapElementDtoToElement(elementDto));
 
   return project;
+}
+
+export function deleteIdsFromObject(obj: any): any {
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      if (key === ID) {
+        delete obj[key];
+      } else if (typeof obj[key] === OBJECT) {
+        deleteIdsFromObject(obj[key]);
+      }
+    }
+  }
+  return obj;
 }
