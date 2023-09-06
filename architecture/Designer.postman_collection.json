@@ -1117,7 +1117,266 @@
 				},
 				{
 					"name": "management",
-					"item": []
+					"item": [
+						{
+							"name": "start",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/start-new-project/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"start-new-project",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assign-to-me",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/assign-project/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"assign-project",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "assign-to-user",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/assign-project/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"assign-project",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "my-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/my-projects",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"my-projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "my-completed-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/my-completed-projects",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"my-completed-projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "my-ongoing-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/my-ongoing-projects",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"my-ongoing-projects"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all-projects/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all-projects",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-completed-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all-completed-projects/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all-completed-projects",
+										"1"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "all-ongoing-projects",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all-ongoing-projects/1",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all-ongoing-projects",
+										"1"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				},
 				{
 					"name": "box",
@@ -1723,6 +1982,56 @@
 							"response": []
 						}
 					]
+				}
+			]
+		},
+		{
+			"name": "information",
+			"item": [
+				{
+					"name": "upfate-about",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/configuration/update/about?address=lplpl",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"configuration",
+								"update",
+								"about"
+							],
+							"query": [
+								{
+									"key": "address",
+									"value": "lplpl"
+								},
+								{
+									"key": "phoneNumber",
+									"value": "12321312312",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "dsadsadas",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		}
