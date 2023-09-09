@@ -3,6 +3,7 @@ import { ContainerDto } from "../../dto/container.dto";
 import { ElementDto } from "../../dto/element.dto";
 import { GameDto } from "../../../../game/model/dto/game.dto";
 import { ArrayMinSize, IsString, Length } from "class-validator";
+import { OrderDto } from "../../../../order/model/dto/order.dto";
 
 export class CreateProjectCommand {
 
@@ -27,4 +28,6 @@ export class CreateProjectCommand {
 
   @ArrayMinSize(1)
   imageIds: number[];
+
+  order: OrderDto;
 }

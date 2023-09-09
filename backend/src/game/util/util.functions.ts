@@ -6,6 +6,7 @@ import { GameDto } from "../model/dto/game.dto";
 import { ComponentDto } from "../model/dto/component.dto";
 import { Component } from "../model/domain/component";
 import { CreateComponentCommand } from "../model/command/create.component.command";
+import { CreateGameCommand } from "../model/command/create.game.command";
 
 export function mapTagToTagDto(tag: Tag): TagDto {
   const tagDto = new TagDto();
@@ -46,5 +47,25 @@ export function mapComponentCommandToComponent(command: CreateComponentCommand, 
   component.name = command.name;
   component.quantity = command.quantity;
   component.game = game;
+  return component;
+}
+
+export function mapGameCommandToGame(command: CreateGameCommand): Game {
+  const game = new Game();
+  game.title = command.title;
+  game.description = command.description;
+  game.publicationDate = command.publicationDate;
+  game.price = command.price;
+  //game.components = command.components.map(component => mapComponentCommandToComponent(component, game));
+  return game;
+}
+
+export function mapComponentDtoToComponent(command: ComponentDto): Component {
+  const component = new Component();
+  if (command.id) {
+    component.id = command.id;
+  }
+  component.name = command.name;
+  component.quantity = command.quantity;
   return component;
 }
