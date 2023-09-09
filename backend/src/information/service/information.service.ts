@@ -3,7 +3,7 @@ import { Information } from "../model/domain/information.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
-import { UpdatedInformationDto } from "../model/dto/updated.information.dto";
+import { InformationDto } from "../model/dto/information.dto";
 import { mapInformationToUpdatedInformation } from "../util/util.functions";
 
 @Injectable()
@@ -14,7 +14,7 @@ export class InformationService {
     private readonly informationRepository: Repository<Information>
   ) {}
 
-  async updateAbout(address: string, phoneNumber: string, email: string): Promise<UpdatedInformationDto> {
+  async updateAbout(address: string, phoneNumber: string, email: string): Promise<InformationDto> {
     this.checkNulls(address, phoneNumber, email);
     let information = await this.getInformation();
     if (!information) {

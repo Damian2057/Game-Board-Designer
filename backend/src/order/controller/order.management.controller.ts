@@ -14,4 +14,14 @@ export class OrderManagementController {
 
   }
 
+  @Post('cancel')
+  async cancelOrder() {
+
+  }
+
+  @Post('staff-update')
+  async staffUpdateOrder() {
+
+  }
+
 }
