@@ -1,4 +1,4 @@
-export class UpdatedInformationCommand {
+export class InformationDto {
   constructor(
     public readonly address: string,
     public readonly phoneNumber: string,
