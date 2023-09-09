@@ -72,7 +72,7 @@ export function mapContainerToContainerDto(container: Container): ContainerDto {
 }
 
 export function mapProjectToProjectDto(project: Project): ProjectDto {
-const projectDto = new ProjectDto();
+const projectDto: ProjectDto = new ProjectDto();
   projectDto.id = project.id;
   projectDto.name = project.name;
   projectDto.description = project.description;
@@ -91,6 +91,9 @@ const projectDto = new ProjectDto();
   }
   if (project.user) {
     projectDto.user = mapUserToUserDto(project.user)
+  }
+  if (project.order) {
+    projectDto.order = project.order;
   }
 
   return projectDto;

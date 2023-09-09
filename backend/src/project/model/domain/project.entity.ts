@@ -14,6 +14,7 @@ import { Length } from "class-validator";
 import { Element } from "./element.entity";
 import { Game } from "../../../game/model/domain/game.entity";
 import { User } from "../../../users/model/domain/user.entity";
+import { Order } from "../../../order/model/domain/order.entity";
 
 @Entity()
 export class Project extends AbstractEntity<Project>{
@@ -75,4 +76,10 @@ export class Project extends AbstractEntity<Project>{
   })
   @JoinColumn()
   user: User;
+
+  @OneToOne(() => Order, order => order.project, {
+    nullable: true
+  })
+  @JoinColumn()
+  order: Order;
 }

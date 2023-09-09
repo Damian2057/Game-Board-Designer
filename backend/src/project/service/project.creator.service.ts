@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import { Project } from "../model/domain/project.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
@@ -18,6 +18,8 @@ import { ImageService } from "../../image/service/image.service";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { ElementService } from "./element.service";
 import { GameService } from "../../game/service/game.service";
+import { OrderService } from "../../order/service/order.service";
+import { Order } from "../../order/model/domain/order.entity";
 
 @Injectable()
 export class ProjectCreatorService {
@@ -29,6 +31,7 @@ export class ProjectCreatorService {
     private readonly boxService: BoxService,
     private readonly elementService: ElementService,
     private readonly imageService: ImageService,
+    private readonly orderService: OrderService,
   ) {}
 
   async createNewProjectTemplate(command: CreateProjectCommand): Promise<ProjectDto> {
@@ -42,6 +45,10 @@ export class ProjectCreatorService {
       games.push(await this.gameService.getGameBoardById(game.id));
     }
     project.games = games;
+    if (command.order) {
+      project.order = await this.assignOrderToProject(command.order.id);
+    }
+
     const savedProject: Project = await this.projectRepository.save(project);
     return mapProjectToProjectDto(savedProject);
   }
@@ -74,6 +81,7 @@ export class ProjectCreatorService {
             properties: true,
           }
         },
+        order: true,
       },
       where: {
         isTemplate: true
@@ -105,6 +113,7 @@ export class ProjectCreatorService {
             properties: true,
           }
         },
+        order: true,
       },
       where: {
         games: {
@@ -138,6 +147,7 @@ export class ProjectCreatorService {
             properties: true,
           }
         },
+        order: true,
       }
     })
     return projects.map(project => mapProjectToProjectDto(project));
@@ -166,6 +176,7 @@ export class ProjectCreatorService {
             properties: true,
           }
         },
+        order: true,
       },
       where: {
         id: projectId
@@ -212,6 +223,7 @@ export class ProjectCreatorService {
             properties: true,
           }
         },
+        order: true,
       },
       where: {
         id: projectId,
@@ -268,5 +280,18 @@ export class ProjectCreatorService {
     if (await this.getProjectByName(name)) {
       throw new IllegalArgumentException(`Project with name: ${name} already exists!`);
     }
+  }
+
+  private async assignOrderToProject(orderId: number): Promise<Order> {
+    if (await this.projectRepository.find({
+        where: {
+          order: {
+            id: orderId
+          }
+        }
+    })) {
+      throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
+    }
+    return await this.orderService.getOrderById(orderId);
   }
 }

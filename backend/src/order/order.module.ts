@@ -6,16 +6,17 @@ import { AuthModule } from "../auth/auth.module";
 import { UserModule } from "../users/user.module";
 import { GameModule } from "../game/game.module";
 import { TypeOrmModule } from "@nestjs/typeorm";
+import { Order } from "./model/domain/order.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([]),
+    TypeOrmModule.forFeature([Order]),
     AuthModule,
     UserModule,
     GameModule
   ],
   controllers: [OrderController, OrderManagementController],
-
-  providers: [OrderService]
+  providers: [OrderService],
+  exports: [OrderService]
 })
 export class OrderModule {}

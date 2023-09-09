@@ -3,6 +3,7 @@ import { ContainerDto } from "./container.dto";
 import { ElementDto } from "./element.dto";
 import { GameDto } from "../../../game/model/dto/game.dto";
 import { UserDto } from "../../../users/model/dto/user.dto";
+import { OrderDto } from "../../../order/model/dto/order.dto";
 
 export class ProjectDto {
   id: number;
@@ -19,4 +20,5 @@ export class ProjectDto {
   currentGame: GameDto;
   games: GameDto[];
   user: UserDto;
+  order: OrderDto;
 }
