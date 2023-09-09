@@ -28,7 +28,7 @@ export class GameController {
   getGameBoardByFilter(@Query('id') id?: number,
              @Query('title') title?: string,
              @Query('tags') tags?: string): Promise<GameDto[]> {
-    console.log(id, title, tags)
+    //TODO: FIX THIS
     return this.boardGameService.findByFilter(id, title, tags);
   }
 
