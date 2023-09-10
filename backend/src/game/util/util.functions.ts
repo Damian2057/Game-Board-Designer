@@ -56,7 +56,7 @@ export function mapGameCommandToGame(command: CreateGameCommand): Game {
   game.description = command.description;
   game.publicationDate = command.publicationDate;
   game.price = command.price;
-  //game.components = command.components.map(component => mapComponentCommandToComponent(component, game));
+  game.components = command.components.map(component => mapComponentCommandToComponent(component, game));
   return game;
 }
 

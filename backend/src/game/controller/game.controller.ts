@@ -24,11 +24,10 @@ export class GameController {
     return this.boardGameService.findById(id);
   }
 
-  @Get('find')
+  @Get('find/by')
   getGameBoardByFilter(@Query('id') id?: number,
              @Query('title') title?: string,
              @Query('tags') tags?: string): Promise<GameDto[]> {
-    //TODO: FIX THIS
     return this.boardGameService.findByFilter(id, title, tags);
   }
 

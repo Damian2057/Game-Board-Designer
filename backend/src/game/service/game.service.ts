@@ -6,7 +6,7 @@ import { Tag } from "../model/domain/tag.entity";
 import { Component } from "../model/domain/component";
 import { CreateGameCommand } from "../model/command/create.game.command";
 import { UpdateGameCommand } from "../model/command/update.game.command";
-import { mapGameCommandToGame, mapGameToGameDto } from "../util/util.functions";
+import { mapGameToGameDto } from "../util/util.functions";
 import { SetFilter } from "../../util/SetFilter";
 import { DuplicateKeyParameterException } from "../../exceptions/type/duplicate.key.parameter.exception";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
@@ -91,13 +91,9 @@ export class GameService {
           command.publicationDate = new Date().toISOString().slice(0, 10);
         }
         await this.checkImageExists(command.imageIds);
-        const game: Game = mapGameCommandToGame(command);
-        console.log(game);
-        //TODO: FIX THIS
+        const game: Game = await this.boardGameRepository.save(command);
         await this.componentRepository.save(game.components);
-        console.log("1" + game);
-        const saved = await this.boardGameRepository.save(game);
-        return mapGameToGameDto(saved);
+        return mapGameToGameDto(await this.boardGameRepository.save(game));
       } catch (e) {
         throw new IllegalArgumentException(e.message);
       }
