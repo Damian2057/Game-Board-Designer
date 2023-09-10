@@ -10,9 +10,9 @@ export class OrderManagementController {
   ) {
   }
 
-  @Post('claim')
-  async claimOrder(@GetCurrentUser() user) {
-    return this.orderService.claimOrder(user);
+  @Post('claim/:id')
+  async claimOrder(@GetCurrentUser() user, @Param('id') id: number) {
+    return this.orderService.claimOrder(user, id);
   }
 
   @Get('my-orders')
@@ -22,7 +22,7 @@ export class OrderManagementController {
 
   @Get(':id')
   async getOrderById(@Param('id') id: number) {
-    return this.orderService.getOrderById(id);
+    return this.orderService.getOrderDtoById(id);
   }
 
   @Delete('cancel/:id')

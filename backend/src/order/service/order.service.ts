@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import { UpdateOrderCommand } from "../model/command/update.order.command";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Order } from "../model/domain/order.entity";
 import { Repository } from "typeorm";
 import { CreateOrderCommand } from "../model/command/create.order.command";
 import { User } from "../../users/model/domain/user.entity";
+import { mapOrderToOrderDto } from "../util/util.functions";
 
 @Injectable()
 export class OrderService {
@@ -14,18 +15,9 @@ export class OrderService {
     private readonly orderRepository: Repository<Order>,
   ) {}
 
-  async getOrderById(id: any) {
-    const order: Order = await this.orderRepository.findOne({
-      relations: {
-        game: true,
-        customer: true,
-        worker: true,
-        project: true,
-      },
-      where: {
-        id: id
-      }});
-    return order;
+  async getOrderDtoById(id: any) {
+    const order: Order = await this.getOrderById(id);
+    return mapOrderToOrderDto(order);
   }
 
   async submitOrder(customer: User, command: CreateOrderCommand) {
@@ -33,12 +25,20 @@ export class OrderService {
   }
 
   async getMyOrders(customer: User) {
-    return this.orderRepository.find({
+    const orders: Order[] = await this.orderRepository.find({
       relations: {
-
+        game: true,
+        customer: true,
+        worker: true,
+        project: true,
+      },
+      where: {
+        customer: {
+          id: customer.id
+        }
       }
     });
-    return Promise.resolve(undefined);
+    return orders.map(order => mapOrderToOrderDto(order));
   }
 
   async getUserOrders(id: number) {
@@ -46,15 +46,26 @@ export class OrderService {
   }
 
   async getAllOrders() {
-    return Promise.resolve(undefined);
+    const orders: Order[] = await this.orderRepository.find({
+      relations: {
+        game: true,
+        customer: true,
+        worker: true,
+        project: true,
+      }
+    });
+    return orders.map(order => mapOrderToOrderDto(order));
   }
 
   async updateOrder(command: UpdateOrderCommand, id: number) {
     return Promise.resolve(undefined);
   }
 
-  async claimOrder(user) {
-    return Promise.resolve(undefined);
+  async claimOrder(worker: User, id: number) {
+    const order: Order = await this.getOrderById(id);
+    order.worker = worker;
+    const updatedOrder: Order = await this.orderRepository.save(order);
+    return mapOrderToOrderDto(updatedOrder);
   }
 
   async cancelOrder(id: number) {
@@ -65,7 +76,34 @@ export class OrderService {
     return Promise.resolve(undefined);
   }
 
-  getMyOrdersWorker(user) {
-    return Promise.resolve(undefined);
+  async getMyOrdersWorker(worker: User) {
+    const orders: Order[] = await this.orderRepository.find({
+      relations: {
+        game: true,
+        customer: true,
+        worker: true,
+        project: true,
+      },
+      where: {
+        worker: {
+          id: worker.id
+        }
+      }
+    });
+    return orders.map(order => mapOrderToOrderDto(order));
+  }
+
+  async getOrderById(id: any) {
+    return await this.orderRepository.findOne({
+      relations: {
+        game: true,
+        customer: true,
+        worker: true,
+        project: true,
+      },
+      where: {
+        id: id
+      }
+    });
   }
 }

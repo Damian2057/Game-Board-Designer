@@ -4,7 +4,7 @@ import { User } from "../../../users/model/domain/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
 import { IsString, Length, Min } from "class-validator";
 import { NumericTransformer } from "../../../users/util/NumericTransformer";
-import { OrderStatusEnum } from "./order.status.enum";
+import { OrderStatus } from "./order.status.enum";
 import { Project } from "../../../project/model/domain/project.entity";
 
 @Entity()
@@ -48,10 +48,10 @@ export class Order extends AbstractEntity<Order> {
 
   @Column({
     type: "enum",
-    enum: OrderStatusEnum,
-    default: OrderStatusEnum.PENDING
+    enum: OrderStatus,
+    default: OrderStatus.PENDING
   })
-  status: OrderStatusEnum;
+  status: OrderStatus;
 
   @OneToOne(() => Project, (project) => project.order)
   @JoinColumn()
