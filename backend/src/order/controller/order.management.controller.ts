@@ -60,9 +60,9 @@ export class OrderManagementController {
 
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard)
-  @Put('advance-update')
-  async advanceUpdateOrder(@Body() command: AdvancedUpdateOrderCommand): Promise<OrderDto> {
-    return this.orderService.advanceUpdateOrder(command);
+  @Put('advance-update/:id')
+  async advanceUpdateOrder(@Body() command: AdvancedUpdateOrderCommand, @Param('id') id: number): Promise<OrderDto> {
+    return this.orderService.advanceUpdateOrder(command, id);
   }
 
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)

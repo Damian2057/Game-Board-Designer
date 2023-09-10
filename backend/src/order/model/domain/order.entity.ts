@@ -18,7 +18,7 @@ export class Order extends AbstractEntity<Order> {
   @Length(3, 20)
   email: string;
 
-  @IsString()
+  @Column({ length: 2000 })
   @Length(3, 2000)
   description: string;
 

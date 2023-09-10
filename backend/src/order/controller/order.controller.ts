@@ -36,7 +36,7 @@ export class OrderController {
     return this.orderService.getAllOrders();
   }
 
-  @HasRoles(UserRole.USER)
+  @HasRoles(UserRole.USER, UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard, OrderMemberShip)
   @Put(':id')
   async updateOrder(@Body() command: UpdateOrderCommand, @Param('id') id: number): Promise<OrderDto> {
