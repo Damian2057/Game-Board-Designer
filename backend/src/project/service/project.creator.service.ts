@@ -43,7 +43,7 @@ export class ProjectCreatorService {
     await this.boxService.updatesAndFlush(project.box);
     const games: Game[] = [];
     for (const game of command.games) {
-      games.push(await this.gameService.getGameBoardById(game.id));
+      games.push(await this.gameService.getGameById(game.id));
     }
     project.games = games;
     if (command.order) {
@@ -268,7 +268,7 @@ export class ProjectCreatorService {
     if (command.games) {
       const games: Game[] = [];
       for (const game of command.games) {
-        games.push(await this.gameService.getGameBoardById(game.id));
+        games.push(await this.gameService.getGameById(game.id));
       }
       project.games = games;
     }

@@ -5,7 +5,11 @@ import { Order } from "../model/domain/order.entity";
 import { Repository } from "typeorm";
 import { CreateOrderCommand } from "../model/command/create.order.command";
 import { User } from "../../users/model/domain/user.entity";
-import { mapOrderToOrderDto } from "../util/util.functions";
+import { mapOrderCreateCommandToOrder, mapOrderToOrderDto } from "../util/util.functions";
+import { OrderDto } from "../model/dto/order.dto";
+import { AdvancedUpdateOrderCommand } from "../model/command/advanced.update.order.command";
+import { Game } from "../../game/model/domain/game.entity";
+import { GameService } from "../../game/service/game.service";
 
 @Injectable()
 export class OrderService {
@@ -13,18 +17,28 @@ export class OrderService {
   constructor(
     @InjectRepository(Order)
     private readonly orderRepository: Repository<Order>,
+    private readonly gameService: GameService,
   ) {}
 
-  async getOrderDtoById(id: any) {
+  async getOrderDtoById(id: any): Promise<OrderDto> {
     const order: Order = await this.getOrderById(id);
     return mapOrderToOrderDto(order);
   }
 
   async submitOrder(customer: User, command: CreateOrderCommand) {
-    return Promise.resolve(undefined);
+    const order: Order = mapOrderCreateCommandToOrder(command);
+    order.customer = customer;
+    const game: Game = await this.gameService.getGameById(command.game.id);
+    order.game = game;
+    order.price = game.price;
+    return mapOrderToOrderDto(await this.orderRepository.save(order));
   }
 
-  async getMyOrders(customer: User) {
+  async getMyOrders(customer: User): Promise<OrderDto[]> {
+    return await this.getUserOrders(customer.id);
+  }
+
+  async getUserOrders(id: number) {
     const orders: Order[] = await this.orderRepository.find({
       relations: {
         game: true,
@@ -34,15 +48,11 @@ export class OrderService {
       },
       where: {
         customer: {
-          id: customer.id
+          id: id
         }
       }
     });
     return orders.map(order => mapOrderToOrderDto(order));
-  }
-
-  async getUserOrders(id: number) {
-    return Promise.resolve(undefined);
   }
 
   async getAllOrders() {
@@ -72,7 +82,7 @@ export class OrderService {
     return Promise.resolve(undefined);
   }
 
-  async staffUpdateOrder(command) {
+  async advanceUpdateOrder(command: AdvancedUpdateOrderCommand) {
     return Promise.resolve(undefined);
   }
 

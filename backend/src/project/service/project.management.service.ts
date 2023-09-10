@@ -36,7 +36,7 @@ export class ProjectManagementService {
     await this.boxService.updatesAndFlush(newProject.box);
     const games: Game[] = [];
     for (const game of project.games) {
-      games.push(await this.gameService.getGameBoardById(game.id));
+      games.push(await this.gameService.getGameById(game.id));
     }
     newProject.games = games;
     newProject.user = user;

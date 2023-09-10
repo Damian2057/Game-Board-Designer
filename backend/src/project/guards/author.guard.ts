@@ -7,6 +7,7 @@ import { ProjectDto } from "../model/dto/project.dto";
 
 @Injectable()
 export class AuthorGuard implements CanActivate {
+
     constructor(
       private readonly userService: UserService,
       private readonly projectService: ProjectCreatorService,
