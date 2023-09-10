@@ -36,10 +36,10 @@ export class OrderService {
   }
 
   async getMyOrders(customer: User): Promise<OrderDto[]> {
-    return await this.getUserOrders(customer.id);
+    return await this.getCustomerOrdersById(customer.id);
   }
 
-  async getUserOrders(id: number) {
+  async getCustomerOrdersById(id: number) {
     const orders: Order[] = await this.orderRepository.find({
       relations: {
         game: true,
