@@ -277,28 +277,24 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{BASEURL}}/game/find?id=6",
+									"raw": "{{BASEURL}}/game/find/by?id=4",
 									"host": [
 										"{{BASEURL}}"
 									],
 									"path": [
 										"game",
-										"find"
+										"find",
+										"by"
 									],
 									"query": [
-										{
-											"key": "id",
-											"value": "6"
-										},
 										{
 											"key": "title",
 											"value": "dasd",
 											"disabled": true
 										},
 										{
-											"key": "tags",
-											"value": "Test",
-											"disabled": true
+											"key": "id",
+											"value": "4"
 										}
 									]
 								}
@@ -746,7 +742,12 @@
 							"mode": "formdata",
 							"formdata": [
 								{
-									"key": "file",
+									"key": "",
+									"type": "file",
+									"src": "/C:/Users/Damian/Pictures/9a6f2eb0e3ad4c401b76b790a539ac47.jpg"
+								},
+								{
+									"key": "",
 									"type": "file",
 									"src": "/C:/Users/Damian/Pictures/9a6f2eb0e3ad4c401b76b790a539ac47.jpg"
 								}
@@ -1989,7 +1990,7 @@
 			"name": "information",
 			"item": [
 				{
-					"name": "upfate-about",
+					"name": "update-about",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2028,6 +2029,385 @@
 									"value": "dsadsadas",
 									"disabled": true
 								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "order",
+			"item": [
+				{
+					"name": "submit",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"phone\": \"your_phone_here\",\r\n  \"email\": \"your_email_here\",\r\n  \"description\": \"your_description_here\",\r\n  \"address\": \"your_address_here\",\r\n  \"game\": {\r\n    \"id\": 1\r\n  }\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/order/submit",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "my-orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/my-orders",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"my-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all-orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/all-orders",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"all-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "user-update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"description\": \"updated\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/order/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "claim",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/claim/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"claim",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get my workers orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/my-orders",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"my-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get worker orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/orders-worker/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"orders-worker",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get customers orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/orders-customer",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"orders-customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "byid",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/orders-customer",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"orders-customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "cancel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/orders-customer",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"orders-customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "statuses",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/orders-customer",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"orders-customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "adv-update",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"price\": 10000,\r\n    \"worker\": {\r\n        \"id\": 2\r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/order/management/advance-update/1",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"advance-update",
+								"1"
 							]
 						}
 					},

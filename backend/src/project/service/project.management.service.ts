@@ -11,7 +11,6 @@ import { GameService } from "../../game/service/game.service";
 import { ContainerService } from "./container.service";
 import { BoxService } from "./box.service";
 import { ElementService } from "./element.service";
-import { ImageService } from "../../image/service/image.service";
 import { Game } from "../../game/model/domain/game.entity";
 
 @Injectable()

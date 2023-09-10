@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Put, UseGuards } from "@nestjs/common";
 import { OrderService } from "../service/order.service";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { OrderDto } from "../model/dto/order.dto";
@@ -18,7 +18,7 @@ export class OrderManagementController {
 
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard)
-  @Post('claim/:id')
+  @Put('claim/:id')
   async claimOrder(@GetCurrentUser() user, @Param('id') id: number): Promise<OrderDto> {
     return this.orderService.claimOrder(user, id);
   }
@@ -67,7 +67,7 @@ export class OrderManagementController {
 
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get('available-statuses')
+  @Get('available/statuses')
   getAvailableOrdersStatuses(): OrderStatus[] {
     return this.orderService.getAvailableOrdersStatuses();
   }

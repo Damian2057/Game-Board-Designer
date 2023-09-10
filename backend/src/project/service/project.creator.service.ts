@@ -284,15 +284,19 @@ export class ProjectCreatorService {
   }
 
   private async assignOrderToProject(orderId: number): Promise<Order> {
-    if (await this.projectRepository.find({
-        where: {
-          order: {
-            id: orderId
-          }
+    const project: Project = await this.projectRepository.findOne({
+      relations: {
+        order: true,
+      },
+      where: {
+        order: {
+          id: orderId
         }
-    })) {
-      throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
+      }
+    });
+    if (project == null) {
+      return await this.orderService.getOrderById(orderId);
     }
-    return await this.orderService.getOrderById(orderId);
+    throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
   }
 }
