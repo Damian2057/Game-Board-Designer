@@ -10,6 +10,7 @@ import { OrderDto } from "../model/dto/order.dto";
 import { AdvancedUpdateOrderCommand } from "../model/command/advanced.update.order.command";
 import { Game } from "../../game/model/domain/game.entity";
 import { GameService } from "../../game/service/game.service";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 
 @Injectable()
 export class OrderService {
@@ -103,8 +104,8 @@ export class OrderService {
     return orders.map(order => mapOrderToOrderDto(order));
   }
 
-  async getOrderById(id: any) {
-    return await this.orderRepository.findOne({
+  async getOrderById(id: number): Promise<Order> {
+    const order: Order = await this.orderRepository.findOne({
       relations: {
         game: true,
         customer: true,
@@ -115,5 +116,10 @@ export class OrderService {
         id: id
       }
     });
+    if (!order) {
+      throw new IllegalArgumentException(`Order with id ${id} does not exist`)
+    }
+
+    return order;
   }
 }
