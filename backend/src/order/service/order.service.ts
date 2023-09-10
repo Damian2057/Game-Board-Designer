@@ -11,6 +11,7 @@ import { AdvancedUpdateOrderCommand } from "../model/command/advanced.update.ord
 import { Game } from "../../game/model/domain/game.entity";
 import { GameService } from "../../game/service/game.service";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { OrderStatus } from "../model/domain/order.status.enum";
 
 @Injectable()
 export class OrderService {
@@ -125,5 +126,9 @@ export class OrderService {
     }
 
     return order;
+  }
+
+  getAvailableOrdersStatuses(): OrderStatus[] {
+    return Object.values(OrderStatus);
   }
 }

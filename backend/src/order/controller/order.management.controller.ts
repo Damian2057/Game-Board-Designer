@@ -7,6 +7,7 @@ import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
+import { OrderStatus } from "../model/domain/order.status.enum";
 
 @Controller('order/management')
 export class OrderManagementController {
@@ -15,11 +16,15 @@ export class OrderManagementController {
     private readonly orderService: OrderService,
   ) {}
 
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
   @Post('claim/:id')
   async claimOrder(@GetCurrentUser() user, @Param('id') id: number): Promise<OrderDto> {
     return this.orderService.claimOrder(user, id);
   }
 
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
   @Get('my-orders')
   async getMyOrders(@GetCurrentUser() worker): Promise<OrderDto[]> {
     return this.orderService.getMyOrdersWorker(worker);
@@ -39,19 +44,32 @@ export class OrderManagementController {
     return this.orderService.getWorkerOrdersById(id);
   }
 
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
   @Get(':id')
   async getOrderById(@Param('id') id: number): Promise<OrderDto> {
     return this.orderService.getOrderDtoById(id);
   }
 
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
   @Delete('cancel/:id')
   async cancelOrder(@Param('id') id: number): Promise<OrderDto> {
     return this.orderService.cancelOrder(id);
   }
 
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
   @Put('advance-update')
   async advanceUpdateOrder(@Body() command: AdvancedUpdateOrderCommand): Promise<OrderDto> {
     return this.orderService.advanceUpdateOrder(command);
+  }
+
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get('available-statuses')
+  getAvailableOrdersStatuses(): OrderStatus[] {
+    return this.orderService.getAvailableOrdersStatuses();
   }
 
 }
