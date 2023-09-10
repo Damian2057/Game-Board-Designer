@@ -11,7 +11,6 @@ import { GameService } from "../../game/service/game.service";
 import { ContainerService } from "./container.service";
 import { BoxService } from "./box.service";
 import { ElementService } from "./element.service";
-import { ImageService } from "../../image/service/image.service";
 import { Game } from "../../game/model/domain/game.entity";
 
 @Injectable()
@@ -36,7 +35,7 @@ export class ProjectManagementService {
     await this.boxService.updatesAndFlush(newProject.box);
     const games: Game[] = [];
     for (const game of project.games) {
-      games.push(await this.gameService.getGameBoardById(game.id));
+      games.push(await this.gameService.getGameById(game.id));
     }
     newProject.games = games;
     newProject.user = user;

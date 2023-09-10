@@ -1,4 +1,4 @@
-export enum OrderStatusEnum {
+export enum OrderStatus {
   PENDING = 'PENDING',
   CLAIMED = 'CLAIMED',
   CANCELLED = 'CANCELLED',

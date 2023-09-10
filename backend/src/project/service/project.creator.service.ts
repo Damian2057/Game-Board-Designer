@@ -23,6 +23,7 @@ import { Order } from "../../order/model/domain/order.entity";
 
 @Injectable()
 export class ProjectCreatorService {
+
   constructor(
     @InjectRepository(Project)
     private readonly projectRepository: Repository<Project>,
@@ -42,7 +43,7 @@ export class ProjectCreatorService {
     await this.boxService.updatesAndFlush(project.box);
     const games: Game[] = [];
     for (const game of command.games) {
-      games.push(await this.gameService.getGameBoardById(game.id));
+      games.push(await this.gameService.getGameById(game.id));
     }
     project.games = games;
     if (command.order) {
@@ -267,7 +268,7 @@ export class ProjectCreatorService {
     if (command.games) {
       const games: Game[] = [];
       for (const game of command.games) {
-        games.push(await this.gameService.getGameBoardById(game.id));
+        games.push(await this.gameService.getGameById(game.id));
       }
       project.games = games;
     }
@@ -283,15 +284,19 @@ export class ProjectCreatorService {
   }
 
   private async assignOrderToProject(orderId: number): Promise<Order> {
-    if (await this.projectRepository.find({
-        where: {
-          order: {
-            id: orderId
-          }
+    const project: Project = await this.projectRepository.findOne({
+      relations: {
+        order: true,
+      },
+      where: {
+        order: {
+          id: orderId
         }
-    })) {
-      throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
+      }
+    });
+    if (project == null) {
+      return await this.orderService.getOrderById(orderId);
     }
-    return await this.orderService.getOrderById(orderId);
+    throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
   }
 }
