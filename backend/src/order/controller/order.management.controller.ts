@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Post, Put } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, Post, Put } from "@nestjs/common";
 import { OrderService } from "../service/order.service";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 
@@ -13,6 +13,16 @@ export class OrderManagementController {
   @Post('claim')
   async claimOrder(@GetCurrentUser() user) {
     return this.orderService.claimOrder(user);
+  }
+
+  @Get('my-orders')
+  async getMyOrders(@GetCurrentUser() user) {
+    return this.orderService.getMyOrdersWorker(user);
+  }
+
+  @Get(':id')
+  async getOrderById(@Param('id') id: number) {
+    return this.orderService.getOrderById(id);
   }
 
   @Delete('cancel/:id')

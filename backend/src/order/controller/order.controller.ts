@@ -13,7 +13,7 @@ export class OrderController {
 
   @Post('submit')
   async submitOrder(@GetCurrentUser() user, @Body() command: CreateOrderCommand) {
-    return this.orderService.submitOrder(user);
+    return this.orderService.submitOrder(user, command);
   }
 
   @Get('my-orders')
@@ -29,11 +29,6 @@ export class OrderController {
   @Get('all-orders')
   async getAllOrders() {
     return this.orderService.getAllOrders();
-  }
-
-  @Get(':id')
-  async getOrderById(@Param('id') id: number) {
-    return this.orderService.getOrderById(id);
   }
 
   @Put(':id')

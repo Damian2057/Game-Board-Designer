@@ -1,42 +1,71 @@
 import { Injectable } from '@nestjs/common';
 import { UpdateOrderCommand } from "../model/command/update.order.command";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Order } from "../model/domain/order.entity";
+import { Repository } from "typeorm";
+import { CreateOrderCommand } from "../model/command/create.order.command";
+import { User } from "../../users/model/domain/user.entity";
 
 @Injectable()
 export class OrderService {
 
+  constructor(
+    @InjectRepository(Order)
+    private readonly orderRepository: Repository<Order>,
+  ) {}
+
   async getOrderById(id: any) {
-    return undefined;
+    const order: Order = await this.orderRepository.findOne({
+      relations: {
+        game: true,
+        customer: true,
+        worker: true,
+        project: true,
+      },
+      where: {
+        id: id
+      }});
+    return order;
   }
 
-  submitOrder(user) {
+  async submitOrder(customer: User, command: CreateOrderCommand) {
     return Promise.resolve(undefined);
   }
 
-  getMyOrders(user) {
+  async getMyOrders(customer: User) {
+    return this.orderRepository.find({
+      relations: {
+
+      }
+    });
     return Promise.resolve(undefined);
   }
 
-  getUserOrders(id: number) {
+  async getUserOrders(id: number) {
     return Promise.resolve(undefined);
   }
 
-  getAllOrders() {
+  async getAllOrders() {
     return Promise.resolve(undefined);
   }
 
-  updateOrder(command: UpdateOrderCommand, id: number) {
+  async updateOrder(command: UpdateOrderCommand, id: number) {
     return Promise.resolve(undefined);
   }
 
-  claimOrder(user) {
+  async claimOrder(user) {
     return Promise.resolve(undefined);
   }
 
-  cancelOrder(id: number) {
+  async cancelOrder(id: number) {
     return Promise.resolve(undefined);
   }
 
-  staffUpdateOrder(command) {
+  async staffUpdateOrder(command) {
+    return Promise.resolve(undefined);
+  }
+
+  getMyOrdersWorker(user) {
     return Promise.resolve(undefined);
   }
 }

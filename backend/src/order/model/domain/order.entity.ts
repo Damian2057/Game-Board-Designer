@@ -30,6 +30,10 @@ export class Order extends AbstractEntity<Order> {
   })
   price: number;
 
+  @Column({ length: 200 })
+  @Length(3, 200)
+  address: string;
+
   @ManyToOne(() => Game, { nullable: false })
   @JoinColumn()
   game: Game;
