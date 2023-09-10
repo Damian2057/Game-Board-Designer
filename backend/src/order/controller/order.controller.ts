@@ -1,41 +1,43 @@
-import { Controller, Get, Post, Put } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put } from "@nestjs/common";
 import { OrderService } from "../service/order.service";
+import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
+import { UpdateOrderCommand } from "../model/command/update.order.command";
+import { CreateOrderCommand } from "../model/command/create.order.command";
 
 @Controller('order')
 export class OrderController {
 
   constructor(
     private readonly orderService: OrderService,
-  ) {
-  }
+  ) {}
 
   @Post('submit')
-  async submitOrder() {
-
+  async submitOrder(@GetCurrentUser() user, @Body() command: CreateOrderCommand) {
+    return this.orderService.submitOrder(user);
   }
 
   @Get('my-orders')
-  async getMyOrders() {
-
+  async getMyOrders(@GetCurrentUser() user) {
+    return this.orderService.getMyOrders(user);
   }
 
   @Get('user-orders/:id')
-  async getUserOrders() {
-
+  async getUserOrders(@Param('id') id: number) {
+    return this.orderService.getUserOrders(id);
   }
 
   @Get('all-orders')
   async getAllOrders() {
-
+    return this.orderService.getAllOrders();
   }
 
   @Get(':id')
-  async getOrderById() {
-
+  async getOrderById(@Param('id') id: number) {
+    return this.orderService.getOrderById(id);
   }
 
   @Put(':id')
-  async updateOrder() {
-
+  async updateOrder(@Body() command: UpdateOrderCommand, @Param('id') id: number) {
+    return this.orderService.updateOrder(command, id);
   }
 }

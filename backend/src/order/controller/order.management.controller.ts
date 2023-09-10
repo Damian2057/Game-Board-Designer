@@ -1,5 +1,6 @@
-import { Controller, Post } from "@nestjs/common";
+import { Body, Controller, Delete, Param, Post, Put } from "@nestjs/common";
 import { OrderService } from "../service/order.service";
+import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 
 @Controller('order/management')
 export class OrderManagementController {
@@ -10,18 +11,18 @@ export class OrderManagementController {
   }
 
   @Post('claim')
-  async claimOrder() {
-
+  async claimOrder(@GetCurrentUser() user) {
+    return this.orderService.claimOrder(user);
   }
 
-  @Post('cancel')
-  async cancelOrder() {
-
+  @Delete('cancel/:id')
+  async cancelOrder(@Param('id') id: number) {
+    return this.orderService.cancelOrder(id);
   }
 
-  @Post('staff-update')
-  async staffUpdateOrder() {
-
+  @Put('staff-update')
+  async staffUpdateOrder(@Body() command) {
+    return this.orderService.staffUpdateOrder(command);
   }
 
 }
