@@ -97,6 +97,9 @@ export class OrderService {
 
   async updateOrder(command: UpdateOrderCommand, id: number): Promise<OrderDto> {
     const order: Order = await this.getOrderById(id);
+    if (order.status !== OrderStatus.PENDING && order.status !== OrderStatus.CLAIMED) {
+      throw new IllegalArgumentException(`Order with id ${id} cannot be updated because it is already claimed.`);
+    }
     const updatedOrder: Order = await this.updateNotNullFields(order, command);
     return mapOrderToOrderDto(await this.orderRepository.save(updatedOrder));
   }
