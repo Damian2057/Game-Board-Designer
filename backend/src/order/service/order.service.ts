@@ -21,12 +21,12 @@ export class OrderService {
     private readonly gameService: GameService,
   ) {}
 
-  async getOrderDtoById(id: any): Promise<OrderDto> {
+  async getOrderDtoById(id: number): Promise<OrderDto> {
     const order: Order = await this.getOrderById(id);
     return mapOrderToOrderDto(order);
   }
 
-  async submitOrder(customer: User, command: CreateOrderCommand) {
+  async submitOrder(customer: User, command: CreateOrderCommand): Promise<OrderDto> {
     const order: Order = mapOrderCreateCommandToOrder(command);
     order.customer = customer;
     const game: Game = await this.gameService.getGameById(command.game.id);
@@ -39,7 +39,7 @@ export class OrderService {
     return await this.getCustomerOrdersById(customer.id);
   }
 
-  async getCustomerOrdersById(id: number) {
+  async getCustomerOrdersById(id: number): Promise<OrderDto[]> {
     const orders: Order[] = await this.orderRepository.find({
       relations: {
         game: true,
@@ -56,38 +56,7 @@ export class OrderService {
     return orders.map(order => mapOrderToOrderDto(order));
   }
 
-  async getAllOrders() {
-    const orders: Order[] = await this.orderRepository.find({
-      relations: {
-        game: true,
-        customer: true,
-        worker: true,
-        project: true,
-      }
-    });
-    return orders.map(order => mapOrderToOrderDto(order));
-  }
-
-  async updateOrder(command: UpdateOrderCommand, id: number) {
-    return Promise.resolve(undefined);
-  }
-
-  async claimOrder(worker: User, id: number) {
-    const order: Order = await this.getOrderById(id);
-    order.worker = worker;
-    const updatedOrder: Order = await this.orderRepository.save(order);
-    return mapOrderToOrderDto(updatedOrder);
-  }
-
-  async cancelOrder(id: number) {
-    return Promise.resolve(undefined);
-  }
-
-  async advanceUpdateOrder(command: AdvancedUpdateOrderCommand) {
-    return Promise.resolve(undefined);
-  }
-
-  async getMyOrdersWorker(worker: User) {
+  async getWorkerOrdersById(id: number): Promise<OrderDto[]> {
     const orders: Order[] = await this.orderRepository.find({
       relations: {
         game: true,
@@ -97,11 +66,46 @@ export class OrderService {
       },
       where: {
         worker: {
-          id: worker.id
+          id: id
         }
       }
     });
     return orders.map(order => mapOrderToOrderDto(order));
+  }
+
+  async getAllOrders(): Promise<OrderDto[]> {
+    const orders: Order[] = await this.orderRepository.find({
+      relations: {
+        game: true,
+        customer: true,
+        worker: true,
+        project: true,
+      }
+    });
+    return orders.map(order => mapOrderToOrderDto(order));
+  }
+
+  async claimOrder(worker: User, id: number): Promise<OrderDto> {
+    const order: Order = await this.getOrderById(id);
+    order.worker = worker;
+    const updatedOrder: Order = await this.orderRepository.save(order);
+    return mapOrderToOrderDto(updatedOrder);
+  }
+
+  async updateOrder(command: UpdateOrderCommand, id: number): Promise<OrderDto> {
+    return Promise.resolve(undefined);
+  }
+
+  async cancelOrder(id: number): Promise<OrderDto> {
+    return Promise.resolve(undefined);
+  }
+
+  async advanceUpdateOrder(command: AdvancedUpdateOrderCommand): Promise<OrderDto> {
+    return Promise.resolve(undefined);
+  }
+
+  async getMyOrdersWorker(worker: User): Promise<OrderDto[]> {
+    return await this.getWorkerOrdersById(worker.id);
   }
 
   async getOrderById(id: number): Promise<Order> {

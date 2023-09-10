@@ -31,13 +31,6 @@ export class OrderController {
 
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard)
-  @Get('orders-customer/:id')
-  async getUserOrders(@Param('id') id: number): Promise<OrderDto[]> {
-    return this.orderService.getCustomerOrdersById(id);
-  }
-
-  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
-  @UseGuards(JwtGuard, RolesGuard)
   @Get('all-orders')
   async getAllOrders(): Promise<OrderDto[]> {
     return this.orderService.getAllOrders();
