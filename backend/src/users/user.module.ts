@@ -8,10 +8,11 @@ import { HelloController } from "./controller/hello.controller";
 import { BullModule } from "@nestjs/bull";
 import { CODE_SEND_EMAIL } from "../util/bullMQ/queue";
 import { CodeActivatorConsumer } from "./service/consumer/code.activator.consumer";
+import { CodeEntity } from "./model/domain/code.entity";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User]),
+    TypeOrmModule.forFeature([User, CodeEntity]),
     AuthModule,
     BullModule.registerQueue({
       name: CODE_SEND_EMAIL

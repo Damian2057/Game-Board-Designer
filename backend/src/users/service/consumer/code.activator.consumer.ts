@@ -4,6 +4,9 @@ import { Job } from "bull";
 import { Logger } from "@nestjs/common";
 import { MailerService } from "@nestjs-modules/mailer";
 import * as process from "process";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import { CodeEntity } from "../../model/domain/code.entity";
 
 const crypto = require('crypto');
 
@@ -14,21 +17,24 @@ export class CodeActivatorConsumer {
 
   constructor(
     private readonly mailerService: MailerService,
+    @InjectRepository(CodeEntity)
+    private readonly codeRepository: Repository<CodeEntity>
   ) {}
 
   @Process()
   async sendEmail(job: Job<any>) {
-    console.log(job.data)
+    const code: string = this.generateCode(job.data.email)
     this.mailerService.sendMail({
       to: job.data.email,
       from: process.env.SMTP_FROM,
       subject: 'Code Activator',
-      text: 'Activation code: ' + this.generateCode(job.data.email),
+      text: `Activation code: ${code}`,
     }).then(() => {
-      this.logger.log('Email sent to: ' + job.data.email);
+      this.logger.log('Activation email sent to: ' + job.data.email);
     }).catch((error) => {
       this.logger.error(error);
     });
+    await this.codeRepository.save(new CodeEntity(code, job.data.email, new Date().toISOString().slice(0, 10)));
   }
 
   private generateCode(email: string): string {
