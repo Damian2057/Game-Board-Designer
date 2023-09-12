@@ -1,1 +1,1 @@
-export const TRANSPORT_QUEUE = 'transcode';
+export const CODE_SEND_EMAIL = 'CODE_SEND_EMAIL';

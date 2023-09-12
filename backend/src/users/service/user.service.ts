@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Inject, Injectable } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -15,13 +15,17 @@ import { UserRole } from "../model/domain/user.role.enum";
 import { UserAlreadyExistsException } from "../../exceptions/type/user.already.exists.exception";
 import { SetFilter } from "../../util/SetFilter";
 import { Result } from "../../util/pojo/Result";
+import { Queue } from "bull";
+import { InjectQueue } from "@nestjs/bull";
+import { CODE_SEND_EMAIL } from "../../util/bullMQ/queue";
 
 @Injectable()
 export class UserService {
 
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    @InjectQueue(CODE_SEND_EMAIL) private readonly sendEmailQueue: Queue
   ) {}
 
   async findAll(): Promise<UserDto[]> {
@@ -53,9 +57,12 @@ export class UserService {
     throw new UserNotFound();
   }
 
-  async create(command: UserRegisterCommand): Promise<Result> {
+  async register(command: UserRegisterCommand): Promise<Result> {
     if (await this.findOneByEmail(command.email) == null) {
       await this.userRepository.save(await mapUserCommandToUser(command));
+      this.sendEmailQueue.add({
+        email: command.email
+      });
       return new Result({affected: 1})
     }
     throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');

@@ -18,7 +18,7 @@ export class UserController {
 
   @Post('register')
   register(@Body() command: UserRegisterCommand): Promise<Result> {
-    return this.userService.create(command);
+    return this.userService.register(command);
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
