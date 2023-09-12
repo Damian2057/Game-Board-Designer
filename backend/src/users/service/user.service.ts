@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, Logger } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -15,13 +15,24 @@ import { UserRole } from "../model/domain/user.role.enum";
 import { UserAlreadyExistsException } from "../../exceptions/type/user.already.exists.exception";
 import { SetFilter } from "../../util/SetFilter";
 import { Result } from "../../util/pojo/Result";
+import { Queue } from "bull";
+import { InjectQueue } from "@nestjs/bull";
+import { CODE_SEND_EMAIL } from "../../util/bullMQ/queue";
+import { UserActivateCommand } from "../model/command/user.activate.command";
+import { CodeEntity } from "../model/domain/code.entity";
+import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 
 @Injectable()
 export class UserService {
 
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     @InjectRepository(User)
-    private readonly userRepository: Repository<User>
+    private readonly userRepository: Repository<User>,
+    @InjectRepository(CodeEntity)
+    private readonly codeRepository: Repository<CodeEntity>,
+    @InjectQueue(CODE_SEND_EMAIL) private readonly sendEmailQueue: Queue
   ) {}
 
   async findAll(): Promise<UserDto[]> {
@@ -53,9 +64,12 @@ export class UserService {
     throw new UserNotFound();
   }
 
-  async create(command: UserRegisterCommand): Promise<Result> {
+  async register(command: UserRegisterCommand): Promise<Result> {
     if (await this.findOneByEmail(command.email) == null) {
       await this.userRepository.save(await mapUserCommandToUser(command));
+      this.sendEmailQueue.add({
+        email: command.email
+      });
       return new Result({affected: 1})
     }
     throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');
@@ -138,5 +152,32 @@ export class UserService {
       user.role = getEnumValueByName(UserRole, command.role);
     }
     return user;
+  }
+
+  async activate(command: UserActivateCommand) {
+    const code = await this.codeRepository.findOneBy({ code: command.code });
+    if (code == null) {
+      throw new IllegalArgumentException('Code not found!');
+    }
+    if (code.code != command.code) {
+      throw new IllegalArgumentException('Code is incorrect!');
+    }
+    if (this.isValid(code)) {
+      await this.codeRepository.delete(code);
+      throw new IllegalArgumentException('Code is expired!');
+    }
+    const user = await this.userRepository.findOneBy({ email: code.email });
+    user.isActive = true;
+    await this.userRepository.save(user);
+    await this.codeRepository.delete(code);
+    this.logger.log(`User ${user.username} activated!`);
+  }
+
+  private isValid(code: CodeEntity): boolean {
+    const currentTime = new Date();
+    const codeDate = new Date(code.createdAt);
+    const timeDifference = currentTime.getTime() - codeDate.getTime();
+    const hoursDifference = timeDifference / (1000 * 60 * 60);
+    return hoursDifference > 2;
   }
 }

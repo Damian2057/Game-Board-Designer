@@ -13,7 +13,8 @@ export class AuthService {
 
   constructor(private readonly jwtService: JwtService,
               @Inject(forwardRef(() => UserService))
-              private userService: UserService) {}
+              private userService: UserService
+  ) {}
 
   async login(command: AuthLoginCommand): Promise<AuthTokenDto> {
     const user = await this.userService.findOneByUsername(command.username);

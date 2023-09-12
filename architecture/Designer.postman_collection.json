@@ -12,8 +12,54 @@
 				{
 					"name": "register",
 					"request": {
-						"method": "GET",
-						"header": []
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Bobadd\",\r\n    \"password\": \"12345678\",\r\n    \"email\": \"asdsaadad@gmail.com\",\r\n    \"phoneNumber\": \"479999999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/register",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "activate",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"code\": \"f2d4441280aee5b118333c2c5ceac6a569ee0bb23ff5fad8e6118826ddb8cb56\",\r\n    \"email\": \"asdsaadad@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/activate",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"activate"
+							]
+						}
 					},
 					"response": []
 				},
