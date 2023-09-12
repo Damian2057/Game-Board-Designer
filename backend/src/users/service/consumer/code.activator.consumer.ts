@@ -40,7 +40,7 @@ export class CodeActivatorConsumer {
   private generateCode(email: string): string {
     const hash = crypto.createHash('sha256');
     hash.update(email);
-    return hash.digest('hex');
+    return hash.digest('hex').slice(0, 6);
   }
 
 }
