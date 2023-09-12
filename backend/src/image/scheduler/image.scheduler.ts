@@ -25,12 +25,12 @@ export class ImageScheduler {
     const imagesToDelete = await this.getImagesToDelete();
     this.logger.debug(`Found ${imagesToDelete.length} images to delete`);
 
-    imagesToDelete.forEach(async image => {
+    for (const image of imagesToDelete) {
       await this.imageRepository.delete(image.id);
       const path = `${process.env.MULTER_STORAGE_PATH}\\${image.filename}`;
       deleteFileFromDisk(path);
       this.logger.debug(`Deleted image with id: ${image.id}`);
-    });
+    }
   }
 
   private async getImagesToDelete(): Promise<ImageEntity[]> {
