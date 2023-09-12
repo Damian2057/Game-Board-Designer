@@ -25,7 +25,7 @@ import { MailerModule } from "@nestjs-modules/mailer";
       transport: {
         host: process.env.SMTP_HOST,
         port: parseInt(process.env.SMTP_PORT || '587'),
-        secure: false,
+        secure: true,
         ignoreTLS: true,
         auth: {
           user: process.env.SMTP_USER,
