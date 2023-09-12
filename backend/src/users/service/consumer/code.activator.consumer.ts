@@ -34,7 +34,7 @@ export class CodeActivatorConsumer {
     }).catch((error) => {
       this.logger.error(error);
     });
-    await this.codeRepository.save(new CodeEntity(code, job.data.email, new Date().toISOString().slice(0, 10)));
+    await this.codeRepository.save(new CodeEntity(code, job.data.email, new Date().toISOString()));
   }
 
   private generateCode(email: string): string {
