@@ -7,6 +7,7 @@ import { AuthTokenDto } from "../model/dto/auth.token.dto";
 import * as process from "process";
 import { IncorrectLoginCredentialsException } from "../../exceptions/type/incorrect.login.credentials.exception";
 import { comparePasswords } from "../util/util.functions";
+import { UserActivateCommand } from "../model/command/user.activate.command";
 
 @Injectable()
 export class AuthService {
@@ -38,5 +39,9 @@ export class AuthService {
     return this.jwtService.signAsync({
       user,
       expiresIn: process.env.JWT_REFRESH_EXPIRATION_TIME});
+  }
+
+  async activate(command: UserActivateCommand): Promise<void> {
+
   }
 }
