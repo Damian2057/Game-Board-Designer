@@ -7,14 +7,14 @@ import { AuthTokenDto } from "../model/dto/auth.token.dto";
 import * as process from "process";
 import { IncorrectLoginCredentialsException } from "../../exceptions/type/incorrect.login.credentials.exception";
 import { comparePasswords } from "../util/util.functions";
-import { UserActivateCommand } from "../model/command/user.activate.command";
 
 @Injectable()
 export class AuthService {
 
   constructor(private readonly jwtService: JwtService,
               @Inject(forwardRef(() => UserService))
-              private userService: UserService) {}
+              private userService: UserService
+  ) {}
 
   async login(command: AuthLoginCommand): Promise<AuthTokenDto> {
     const user = await this.userService.findOneByUsername(command.username);
@@ -39,9 +39,5 @@ export class AuthService {
     return this.jwtService.signAsync({
       user,
       expiresIn: process.env.JWT_REFRESH_EXPIRATION_TIME});
-  }
-
-  async activate(command: UserActivateCommand): Promise<void> {
-
   }
 }

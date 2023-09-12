@@ -10,6 +10,7 @@ import { UserRegisterCommand } from "../model/command/user.register.command";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { HierarchyGuard } from "../guards/hierarchy.guard";
 import { Result } from "../../util/pojo/Result";
+import { UserActivateCommand } from "../model/command/user.activate.command";
 
 @Controller('user')
 export class UserController {
@@ -63,5 +64,10 @@ export class UserController {
                   @Query('phoneNumber') phoneNumber?: string,
                   @Query('id') id?: number): Promise<UserDto[]> {
     return this.userService.find(role, email, username, phoneNumber, id);
+  }
+
+  @Put('activate')
+  async activate(@Body() command: UserActivateCommand): Promise<void> {
+    return await this.userService.activate(command);
   }
 }
