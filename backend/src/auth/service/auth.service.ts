@@ -18,12 +18,20 @@ export class AuthService {
   async login(command: AuthLoginCommand) {
     const user = await this.userService.findOneByUsername(command.username);
     if (user && await comparePasswords(command.password, user.password) && user.isActive) {
-      return new AuthTokenDto(process.env.JWT_EXPIRATION_TIME, await this.createToken(user));
+      return new AuthTokenDto(process.env.JWT_EXPIRATION_TIME,
+        await this.createToken(user),
+        await this.refresh(user));
     }
     throw new IncorrectLoginCredentialsException();
   }
 
   private createToken(user: User) : Promise<string> {
     return this.jwtService.signAsync({user});
+  }
+
+  async refresh(user: User): Promise<string> {
+    return this.jwtService.signAsync({
+      user,
+      expiresIn: process.env.JWT_REFRESH_EXPIRATION_TIME});
   }
 }
