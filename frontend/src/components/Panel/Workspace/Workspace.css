@@ -1,0 +1,28 @@
+body .workspace {
+    background-color: #7D53DE;
+    height: 100vh;
+}
+
+.centered-td {
+    text-align: center !important;
+    padding-top: 1em !important;
+}
+
+@media (max-width: 767px) {
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .table-responsive table {
+        width: 100%;
+        min-width: 300px;
+    }
+}
+
+.button-workspace {
+    background-color: #7D53DE !important;
+    border-color: #7D53DE !important;
+    border-radius: 20px !important;
+    padding-inline: 1.5em !important;
+    font-weight: 600 !important;
+}
