@@ -1,34 +1,69 @@
 version: "3.8"
+volumes:
+    postgres_data:
+        driver: local
+
 services:
+    postgres:
+        container_name: GameBoard-Postgres
+        image: postgres
+        env_file: .env
+        environment:
+            POSTGRES_DB: ${POSTGRESQL_DB}
+            POSTGRES_USER: ${POSTGRESQL_USER}
+            POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
+        ports:
+            - ${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+#            - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+
+    redis:
+        container_name: GameBoard-Redis
+        image: redis:7.0.11
+        restart: unless-stopped
+        env_file: .env
+        ports:
+            - ${REDIS_LOCAL_PORT}:${REDIS_DOCKER_PORT}
+        healthcheck:
+            test: [ "CMD", "redis-cli", "ping" ]
+            interval: 1s
+            timeout: 3s
+            retries: 30
+
     backend:
         image: designer/backend
+        env_file: .env
         build:
             context: backend
             dockerfile: DockerFile
         ports:
             - "8080:3000"
+        depends_on:
+            postgres:
+                condition: service_healthy
+            redis:
+                condition: service_healthy
+        volumes:
+            - .:/designer/backend
+            - /designer/backend/node_modules
 
     frontend:
         image: designer/frontend
+        env_file: .env
         build:
             context: frontend
             dockerfile: DockerFile
-        env_file: .env
         ports:
             - '3000:3000'
+        depends_on:
+            backend:
+                condition: service_healthy
         volumes:
             - .:/designer/frontend
             - /designer/frontend/node_modules
-        #        depends_on:
-        #            backend:
-        #                condition: service_started
-
-    postgres:
-        image: postgres:10.4
-        env_file: .env
-        ports:
-            - "35000:5432"
-        environment:
-            POSTGRES_USER: user
-            POSTGRES_PASSWORD: password
-            POSTGRES_DB: db

@@ -1,0 +1,17 @@
+body .order {
+    background-color: #7D53DE;
+    height: 100vh;
+}
+
+.order-button {
+    background-color: #7D53DE !important;
+    border-color: #7D53DE !important;
+    border-radius: 50px !important;
+    font-weight: 600 !important;
+}
+
+.order-form-label {
+    text-align: start !important;
+    margin-top: 0.8em !important;
+    font-weight: 500;
+}

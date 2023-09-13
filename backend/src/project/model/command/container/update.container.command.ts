@@ -1,0 +1,12 @@
+import { PropertyDto } from "../../dto/property.dto";
+import { ElementDto } from "../../dto/element.dto";
+
+export class UpdateContainerCommand {
+  name: string;
+  description: string;
+  notes: string[];
+  quantity: number;
+  imageIds: number[];
+  properties: PropertyDto[];
+  elements: ElementDto[];
+}
