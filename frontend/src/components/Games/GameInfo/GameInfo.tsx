@@ -21,7 +21,7 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
             </div>
             <Modal.Body className='game-info rounded'>
                 <Carousel data-bs-theme="dark">
-                    <img src={game.img} alt={game.name} style={{ width: '100%', height: '100%' }} />
+                    <img src={game.img} alt={game.title} style={{ width: '100%', height: '100%' }} />
                 </Carousel>
                 <Row className='mt-3 align-items-center'>
                     <Col xs={8}>
