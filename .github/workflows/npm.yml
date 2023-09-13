@@ -13,7 +13,7 @@ jobs:
   backend:
     name: Backend build test
     runs-on: ubuntu-latest
-    if: contains(github.event.ref, 'refs/heads/dev_backend')
+
     services:
       postgres:
         image: postgres
@@ -52,7 +52,6 @@ jobs:
   frontend:
     name: frontend build test
     runs-on: ubuntu-latest
-    if: contains(github.event.ref, 'refs/heads/dev_frontend')
 
     steps:
       - name: Checkout Repository
