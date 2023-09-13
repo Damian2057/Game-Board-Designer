@@ -1,0 +1,58 @@
+.button-filter {
+    background-color: #7D53DE !important;
+    border-color: #7D53DE !important;
+    border-radius: 20px !important;
+}
+
+.form-select {
+    background-color: #7D53DE !important;
+    border-color: #7D53DE !important;
+    color: white !important;
+}
+
+.tag {
+    background-color: #F2F4F8;
+    border-radius: 20px;
+    margin-right: 2em;
+    margin-bottom: 2em;
+    font-weight: 500;
+    padding: 0.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.game-col {
+    margin-bottom: 2em;
+    position: relative;
+    display: inline-block;
+}
+
+.image-card {
+    position: absolute;
+    bottom: 2%;
+    left: 5%;
+    width: 90%;
+    background-color: #7D53DE;
+    color: white;
+    padding: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    border-radius: 20px;
+}
+
+.game-col:hover .image-card {
+    display: block;
+}
+
+.button-card {
+    background-color: white !important;
+    border-color: white !important;
+    border-radius: 20px !important;
+    color: #7D53DE !important;
+    margin: 1em;
+    padding-inline: 3em !important;
+    font-weight: 600 !important;
+}

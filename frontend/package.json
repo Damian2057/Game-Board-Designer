@@ -28,7 +28,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "vite",
+    "start": "vite --port 3000 --open",
     "build": "tsc && vite build",
     "serve": "vite preview",
     "test": "react-scripts test",
@@ -53,6 +53,7 @@
     ]
   },
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "tailwindcss": "^3.3.3"
   }
 }

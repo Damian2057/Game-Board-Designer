@@ -1,0 +1,19 @@
+.icon-position {
+    display: flex;
+    justify-content: end;
+}
+
+.icon-circle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background-color: #F2F4F8;
+    margin: 1em;
+}
+
+.icon-circle:hover {
+    cursor: pointer;
+}

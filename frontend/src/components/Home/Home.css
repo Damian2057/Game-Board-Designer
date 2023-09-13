@@ -1,0 +1,132 @@
+.text-dsc {
+    position: absolute;
+    color: #7D53DE;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    font-weight: 700;
+    font-size: 50px;
+}
+
+.p-dsc {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    padding: 3em;
+    font-size: large;
+}
+
+.button-games {
+    border-radius: 20px !important;
+    background-color: #7D53DE !important;
+    border-color: #7D53DE !important;
+    position: absolute;
+    left: 50%;
+    top: 70%;
+    transform: translate(-50%, -50%);
+    font-size: larger !important;
+    font-weight: 500 !important;
+}
+
+.featured-categories,
+.trending-games {
+    background-color: #7D53DE;
+    padding-top: 3rem !important;
+    padding-bottom: 3rem !important;
+}
+
+.circle {
+    width: 48px;
+    height: 48px;
+    background-color: white;
+    border-radius: 50%;
+    margin: auto;
+}
+
+.category-text {
+    color: white;
+    font-weight: 500;
+    margin-bottom: 2rem;
+}
+
+.game-link {
+    color: #7D53DE !important;
+    font-weight: 500;
+}
+
+.trending-games-dsc {
+    color: white;
+    font-weight: 500;
+}
+
+.trending-games-container {
+    color: white !important;
+}
+
+.shaded-text-price {
+    opacity: 75%;
+    font-size: medium;
+}
+
+.button-all-games {
+    border-radius: 20px !important;
+    color: black !important;
+    background-color: white !important;
+    border-color: white !important;
+    font-size: larger !important;
+    font-weight: 500 !important;
+}
+
+.game-img {
+    height: auto !important;
+    width: auto !important;
+    max-width: 100%;
+    object-fit: contain;
+}
+
+@media (max-width: 1082px) {
+    .p-dsc {
+        font-size: medium;
+        margin-top: 3rem;
+        padding: 2rem;
+    }
+
+    .button-games {
+        margin-top: 4rem;
+    }
+}
+
+@media (max-width: 547px) {
+    .text-dsc {
+        margin-top: -2rem;
+    }
+
+    .p-dsc {
+        font-size: medium;
+        margin-top: 4rem;
+        padding: 0;
+    }
+
+    .button-games {
+        margin-top: 6rem;
+    }
+}
+
+@media (max-width: 450px) {
+    .p-dsc {
+        font-size: medium;
+        margin-top: 6rem;
+        padding: 0 !important;
+    }
+
+    .button-games {
+        margin-top: 8rem;
+    }
+
+    .trending-games-dsc {
+        padding: 0.5rem;
+    }
+}

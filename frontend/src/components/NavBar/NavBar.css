@@ -1,0 +1,29 @@
+.nav-link.active {
+    border-color: #7D53DE !important;
+}
+
+.nav-link:hover {
+    border-color: #7D53DE !important;
+}
+
+.nav-button {
+    color: white !important;
+    background-color: #7D53DE !important;
+    border-radius: 20px !important;
+}
+
+.nav-brand {
+    margin-right: 3.2em !important;
+}
+
+@media (max-width: 991px) {
+    body .pe-5 {
+        padding-right: 0rem !important;
+        padding-top: 1rem;
+        padding-bottom: 1rem;
+    }
+
+    .nav-brand {
+        margin-right: 0em !important;
+    }
+}
