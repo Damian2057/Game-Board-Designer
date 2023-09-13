@@ -2079,6 +2079,47 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "update-about Copy",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/configuration/update/about",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"configuration",
+								"update",
+								"about"
+							],
+							"query": [
+								{
+									"key": "phoneNumber",
+									"value": "12321312312",
+									"disabled": true
+								},
+								{
+									"key": "email",
+									"value": "dsadsadas",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
