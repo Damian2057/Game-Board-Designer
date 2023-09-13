@@ -10,6 +10,7 @@ import GameInfo from '../GameInfo/GameInfo';
 import { Link } from 'react-router-dom';
 import './Games.css'
 import axios from "axios";
+import {Api} from "../../../connector/api";
 
 function Games() {
     const categories = ['Strategy', 'Party', 'Cooperative', 'Eurogames', 'Abstract', 'Family']
@@ -49,9 +50,6 @@ function Games() {
     //     })
     // }
     //
-    // React.useEffect(() => {
-    //     fetchAllGames();
-    // }, [])
 
 
     const handleChange = (e: any) => {

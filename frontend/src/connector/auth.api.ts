@@ -1,3 +1,8 @@
+import {AuthToken} from "../model/auth/auth.token";
+import axios from "axios";
+import toast from "react-hot-toast";
+import * as process from "process";
+
 export class AuthApi {
 
     static getAuthToken(): string | null {
@@ -12,5 +17,21 @@ export class AuthApi {
         localStorage.removeItem('token');
     }
 
+    static login(username: string, password: string): Promise<AuthToken> {
+        console.log(import.meta.env.VITE_URL + '/auth/login')
+        return axios.post(import.meta.env.VITE_URL + '/auth/login', {
+            username: username,
+            password: password
+        }).then(res => {
+            return res.data;
+        });
+    }
 
+    static refresh(refreshToken: string): Promise<AuthToken> {
+        return axios.post(import.meta.env.VITE_URL + '/auth/refresh', {
+            refreshToken: refreshToken
+        }).then(res => {
+            return res.data;
+        });
+    }
 }
