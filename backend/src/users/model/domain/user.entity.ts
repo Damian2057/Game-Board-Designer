@@ -21,7 +21,7 @@ export class User extends AbstractEntity<User> {
   @IsEmail()
   email: string
 
-  @Column({ length: 9 })
+  @Column({ length: 20 })
   phoneNumber: string
 
   @Column({
