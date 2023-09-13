@@ -23,7 +23,7 @@ export class UserApi {
         });
     }
 
-    static getAllUsers(): Promise<User> {
+    static getAllUsers(): Promise<User[]> {
         return axios.get(`${import.meta.env.VITE_URL}/user/all`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -53,7 +53,7 @@ export class UserApi {
         });
     }
 
-    static findUser(data: any): Promise<User> {
+    static findUser(data: any): Promise<User[]> {
         const queryParams = {};
 
         for (const key in data) {
