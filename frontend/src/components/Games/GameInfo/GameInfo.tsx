@@ -3,6 +3,7 @@ import { Modal, Button, Row, Col, Carousel, Form } from 'react-bootstrap';
 import { GrClose } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 import './GameInfo.css'
+import {Api} from "../../../connector/api";
 
 interface GameInfoProps {
     game: any;
@@ -10,6 +11,15 @@ interface GameInfoProps {
 }
 
 const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
+
+    // React.useEffect(() => {
+    //    Api.user.findUser({
+    //             id: 1
+    //    }).then((res) => {
+    //           console.log(res);
+    //    });
+    // });
+
     return (
         <Modal show={true} onHide={onClose}>
             <div className='icon-position' style={{ backgroundColor: '#7D53DE' }}>
