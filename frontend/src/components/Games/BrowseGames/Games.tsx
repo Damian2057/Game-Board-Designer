@@ -5,18 +5,20 @@ import Col from 'react-bootstrap/Col';
 import Button from 'react-bootstrap/Button';
 import React from 'react';
 import { Container } from 'react-bootstrap';
-import { BsSearch } from 'react-icons/bs'
-import { BsXLg } from 'react-icons/bs'
+import {BsSearch, BsXLg} from 'react-icons/bs'
 import GameInfo from '../GameInfo/GameInfo';
 import { Link } from 'react-router-dom';
 import './Games.css'
+import axios from "axios";
+import {Api} from "../../../connector/api";
 
 function Games() {
     const categories = ['Strategy', 'Party', 'Cooperative', 'Eurogames', 'Abstract', 'Family']
     const [category, setCategory] = React.useState('');
     const [searchQuery, setSearchQuery] = React.useState('');
-    const [tags, setTags] = React.useState([]);
+    const [tags, setTags] = React.useState([] as any);
     const [selectedGame, setSelectedGame] = React.useState<any | null>(null);
+    // const [games, setGames] = React.useState([] as any);
 
     const games = [
         { id: 1, name: 'Chess', img: '/src/assets/board_game.avif', tags: ['Strategy', 'Family'], description: 'Marvellous game', price: 50 },
@@ -25,12 +27,37 @@ function Games() {
         { id: 4, name: 'Scrabble', img: '/src/assets/board_game.avif', tags: ['Party', 'Family'], description: 'Marvellous game', price: 40 }
     ]
 
+    // const fetchAllGames = () => {
+    //     axios.get('http://localhost:3001/game/all')
+    //         .then(res => {
+    //             const responseGames = res.data;
+    //             setGames(responseGames);
+    //         }).catch(err => {
+    //             console.log(err);
+    //     })
+    // }
+    //
+    // React.useEffect(() => {
+    //     fetchAllGames();
+    // }, [])
+    //
+    // const getImg = () => {
+    //     axios.get('http://localhost:3001/image/get/1')
+    //         .then(res => {
+    //
+    //         }).catch(err => {
+    //             console.log(err);
+    //     })
+    // }
+    //
+
+
     const handleChange = (e: any) => {
         const selectedValue = e.target.value;
 
         if (!tags.includes(selectedValue)) {
             setCategory(selectedValue);
-            setTags(prevTags => [...prevTags, selectedValue]);
+            setTags((prevTags: any) => [...prevTags, selectedValue]);
         }
     }
 

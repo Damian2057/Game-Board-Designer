@@ -3,6 +3,7 @@ import { Modal, Button, Row, Col, Carousel, Form } from 'react-bootstrap';
 import { GrClose } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 import './GameInfo.css'
+import {Api} from "../../../connector/api";
 
 interface GameInfoProps {
     game: any;
@@ -10,6 +11,14 @@ interface GameInfoProps {
 }
 
 const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
+
+    // React.useEffect(() => {
+    //     Api.auth.setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIkMmIkMTIkNHpzMzlIRWEyOTlaQzBIY1NRbEVJZWFWR2NqU2FpSUFqT0xiMVk3RTZ2SzFyeHJjL1diNS4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInBob25lTnVtYmVyIjoiOTk5OTk5OTk5Iiwicm9sZSI6ImFkbWluIiwiaXNBY3RpdmUiOnRydWV9LCJpYXQiOjE2OTQ2MzYzMDUsImV4cCI6MTY5NzIyODMwNX0.2bB4RxkF1-NUKH8YGNB-0y0FNcslTlfjTgLJO5QbJPo")
+    //    Api.image.uploadImage(game.img).then((res) => {
+    //         console.log(res);
+    //     });
+    // });
+
     return (
         <Modal show={true} onHide={onClose}>
             <div className='icon-position' style={{ backgroundColor: '#7D53DE' }}>
@@ -21,7 +30,7 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
             </div>
             <Modal.Body className='game-info rounded'>
                 <Carousel data-bs-theme="dark">
-                    <img src={game.img} alt={game.name} style={{ width: '100%', height: '100%' }} />
+                    <img src={game.img} alt={game.title} style={{ width: '100%', height: '100%' }} />
                 </Carousel>
                 <Row className='mt-3 align-items-center'>
                     <Col xs={8}>

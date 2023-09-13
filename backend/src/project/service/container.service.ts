@@ -61,7 +61,7 @@ export class ContainerService {
     for (const container of project.containers) {
       affected.push(await this.deleteContainerById(container.id));
     }
-    const allSuccessful = affected.every(result => result.result === "success");
+    const allSuccessful = affected.every(result => result.message === "success");
     return allSuccessful ? new Result({affected: 1}) : new Result({affected: 0});
   }
 
