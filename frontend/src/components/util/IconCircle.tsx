@@ -3,10 +3,6 @@ import './IconCircle.css'
 
 const IconCircle = ({ path }) => {
 
-    // const goBack = () => {
-    //     window.history.go(-1);
-    // }
-
     return (
         <div className='icon-position'>
             <a /*onClick={goBack}*/ href={path}>
