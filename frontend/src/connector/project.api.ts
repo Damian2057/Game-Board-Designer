@@ -1,6 +1,7 @@
 import axios from "axios";
 import {Box} from "../model/project/box";
 import {Element} from "../model/project/element";
+import {Container} from "../model/project/container";
 export class ProjectApi {
 
     static createBox(data: any): Promise<Box> {
@@ -167,6 +168,84 @@ export class ProjectApi {
 
     static deleteElement(id: number): Promise<any> {
         return axios.delete(`${import.meta.env.VITE_URL}/element/delete-element/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static updateContainer(id: number, data: any): Promise<Container> {
+        return axios.put(`${import.meta.env.VITE_URL}/container/update-container/${id}`, {
+            name: data.name,
+            description: data.description,
+            notes: data.notes,
+            quantity: data.quantity,
+            imageIds: data.imageIds,
+            properties: data.properties,
+            elements: data.elements,
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+                return res.data;
+        });
+    }
+
+    static addContainerToProject(id: number, data: any): Promise<Container[]> {
+        return axios.post(`${import.meta.env.VITE_URL}/container/add-container/${id}`, {
+            name: data.name,
+            description: data.description,
+            notes: data.notes,
+            quantity: data.quantity,
+            imageIds: data.imageIds,
+            properties: data.properties,
+            elements: data.elements,
+            status: data.status,
+            priority: data.priority,
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+                return res.data;
+        });
+    }
+
+    static getContainer(id: number): Promise<Container> {
+        return axios.get(`${import.meta.env.VITE_URL}/container/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+                return res.data;
+        });
+    }
+
+    static getContainerElements(id: number): Promise<Element[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/container/containers-elements/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+                return res.data;
+        });
+    }
+
+    static deleteContainer(id: number): Promise<any> {
+        return axios.delete(`${import.meta.env.VITE_URL}/container/delete-container/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static deleteProjectContainers(id: number): Promise<any> {
+        return axios.delete(`${import.meta.env.VITE_URL}/container/delete-containers/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
