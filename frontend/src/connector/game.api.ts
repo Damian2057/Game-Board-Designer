@@ -38,7 +38,7 @@ export class GameApi {
             price: data.price,
             tags: data.tags,
             components: data.components,
-            imagesIds: data.imagesIds,
+            imageIds: data.imageIds,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -54,7 +54,7 @@ export class GameApi {
             description: data.description,
             publicationDate: data.publicationDate,
             price: data.price,
-            imagesIds: data.imagesIds,
+            imageIds: data.imageIds,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')

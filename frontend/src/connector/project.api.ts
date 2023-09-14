@@ -2,6 +2,7 @@ import axios from "axios";
 import {Box} from "../model/project/box";
 import {Element} from "../model/project/element";
 import {Container} from "../model/project/container";
+import {Project} from "../model/project/project";
 export class ProjectApi {
 
     static createBox(data: any): Promise<Box> {
@@ -246,6 +247,93 @@ export class ProjectApi {
 
     static deleteProjectContainers(id: number): Promise<any> {
         return axios.delete(`${import.meta.env.VITE_URL}/container/delete-containers/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getAllProjectsForGame(id: number): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/all-projects/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getAllProjects(): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/all`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getProjectContainers(id: number): Promise<Container[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/containers/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getProjectElements(id: number): Promise<Element[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/elements/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getProjectAllTemplates(): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/all-projects-template`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static completeProject(id: number): Promise<Project> {
+        return axios.put(`${import.meta.env.VITE_URL}/project/complete-project/${id}`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getProject(id: number): Promise<Project> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static updateProject(id: number, data: any): Promise<Project> {
+        return axios.put(`${import.meta.env.VITE_URL}/project/update-project/${id}`, {
+            name: data.name,
+            description: data.description,
+            notes: data.notes,
+            games: data.games,
+            imageIds: data.imageIds,
+            order: data.order,
+        }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
