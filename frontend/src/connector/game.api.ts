@@ -17,6 +17,7 @@ export class GameApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
@@ -37,7 +38,7 @@ export class GameApi {
             price: data.price,
             tags: data.tags,
             components: data.components,
-            imagesIds: data.imagesIds,
+            imageIds: data.imageIds,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -53,7 +54,7 @@ export class GameApi {
             description: data.description,
             publicationDate: data.publicationDate,
             price: data.price,
-            imagesIds: data.imagesIds,
+            imageIds: data.imageIds,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -104,6 +105,7 @@ export class GameApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
@@ -184,6 +186,7 @@ export class GameApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
