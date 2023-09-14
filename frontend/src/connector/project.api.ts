@@ -341,4 +341,117 @@ export class ProjectApi {
             return res.data;
         });
     }
+
+    static createProjectTemplate(data: any): Promise<Project> {
+        return axios.post(`${import.meta.env.VITE_URL}/project/create-new-project-template`, {
+            name: data.name,
+            description: data.description,
+            notes: data.notes,
+            box: data.box,
+            containers: data.containers,
+            elements: data.elements,
+            games: data.games,
+            imageIds: data.imageIds
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static startProject(id: number): Promise<Project> {
+        return axios.post(`${import.meta.env.VITE_URL}/project/start-new-project/${id}`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static assignProjectToMe(id: number): Promise<Project> {
+        return axios.put(`${import.meta.env.VITE_URL}/project/assign-project/${id}`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static assignProjectToUser(id: number, userId: number): Promise<Project> {
+        return axios.put(`${import.meta.env.VITE_URL}/project/assign-project-to-user/${id}`, {}, {
+            params: {
+                userId: userId
+            },
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static getMyProjects(): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/my-projects`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data
+        });
+    }
+
+    static getMyCompletedProjects(): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/my-completed-projects`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data
+        });
+    }
+
+    static getMyOnGoingProjects(): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/my-ongoing-projects`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data
+        });
+    }
+
+    static getAllProjectsForUser(id: number): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/all-projects/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data
+        });
+    }
+
+    static getAllCompletedProjectsForUser(id: number): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/all-completed-projects/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data
+        });
+    }
+
+    static getAllOnGoingProjectsForUser(id: number): Promise<Project[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/all-ongoing-projects/${id}`, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data
+        });
+    }
+
 }
