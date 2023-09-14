@@ -58,6 +58,7 @@ export class UserApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }

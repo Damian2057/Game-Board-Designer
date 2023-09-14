@@ -17,6 +17,7 @@ export class GameApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
@@ -104,6 +105,7 @@ export class GameApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
@@ -184,6 +186,7 @@ export class GameApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
