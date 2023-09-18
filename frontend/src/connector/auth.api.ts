@@ -20,7 +20,7 @@ export class AuthApi {
         localStorage.setItem('token', token);
     }
 
-    static setUser(user: User): void {
+    static setUser(user: User | undefined): void {
         localStorage.setItem('user', JSON.stringify(user));
     }
 

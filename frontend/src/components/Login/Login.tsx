@@ -19,12 +19,12 @@ function Login() {
         Api.auth.login(email, password).then(response => {
             Api.auth.setAuthToken(response.token);
             Api.auth.setRefreshToken(response.refresh);
+            Api.auth.setUser(response.user);
             toast.success(`Welcome back, ${response.user?.username}!`, { icon: "👋" });
             setTimeout(() => {
                 window.location.href = '/';
             }, 2000);
         }).catch(err => {
-            console.log(err.response.data.message);
             toast.error(`${err.response.data.message}`, { icon: "💀" })
         })
     };
