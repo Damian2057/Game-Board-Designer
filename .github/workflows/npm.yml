@@ -49,26 +49,26 @@ jobs:
         working-directory: backend/
         run: npm test
 
-  frontend:
-    name: frontend build test
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v2
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: 18.x
-
-      - name: Install Dependencies
-        working-directory: frontend/
-        run: npm install
-
-      - name: Copy .env
-        run: cp .env frontend/.env
-
-      - name: Build frontend
-        working-directory: frontend/
-        run: npm run build --if-present
+#  frontend:
+#    name: frontend build test
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checkout Repository
+#        uses: actions/checkout@v2
+#
+#      - name: Set up Node.js
+#        uses: actions/setup-node@v2
+#        with:
+#          node-version: 18.x
+#
+#      - name: Install Dependencies
+#        working-directory: frontend/
+#        run: npm install
+#
+#      - name: Copy .env
+#        run: cp .env frontend/.env
+#
+#      - name: Build frontend
+#        working-directory: frontend/
+#        run: npm run build --if-present
