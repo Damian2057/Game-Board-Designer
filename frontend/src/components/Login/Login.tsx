@@ -9,11 +9,13 @@ import './Login.css'
 import {Api} from "../../connector/api";
 import React, {useState} from "react";
 import toast, {Toaster} from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const navigate = useNavigate();
 
     const sendLoginRequest = () => {
         Api.auth.login(email, password).then(response => {
@@ -22,7 +24,7 @@ function Login() {
             Api.auth.setUser(response.user);
             toast.success(`Welcome back, ${response.user?.username}!`, { icon: "👋" });
             setTimeout(() => {
-                window.location.href = '/';
+                navigate('/');
             }, 2000);
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })

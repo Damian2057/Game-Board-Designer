@@ -14,10 +14,9 @@ export class UserApi {
         });
     }
 
-    static activateUser(data: any): Promise<void> {
-        return axios.post(`${import.meta.env.VITE_URL}/user/activate`, {
-            code: data.code,
-            email: data.email,
+    static activateUser(code: string): Promise<void> {
+        return axios.put(`${import.meta.env.VITE_URL}/user/activate`, {
+            code: code,
         }).then(res => {
             return res.data;
         });
