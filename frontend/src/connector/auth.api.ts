@@ -15,8 +15,10 @@ export class AuthApi {
         localStorage.setItem('token', token);
     }
 
-    static setRefreshToken(token: string): void {
-        localStorage.setItem('refreshToken', token);
+    static setRefreshToken(token: string | undefined): void {
+        if (typeof token === "string") {
+            localStorage.setItem('refreshToken', token);
+        }
     }
 
     static removeAuthToken(): void {

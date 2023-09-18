@@ -3,8 +3,6 @@ import { Modal, Button, Row, Col, Carousel, Form } from 'react-bootstrap';
 import { GrClose } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 import './GameInfo.css'
-import {Api} from "../../../connector/api";
-import toast from "react-hot-toast";
 
 interface GameInfoProps {
     game: any;

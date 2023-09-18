@@ -7,6 +7,7 @@ import { AuthTokenDto } from "../model/dto/auth.token.dto";
 import * as process from "process";
 import { IncorrectLoginCredentialsException } from "../../exceptions/type/incorrect.login.credentials.exception";
 import { comparePasswords } from "../util/util.functions";
+import { mapUserToUserDto } from "../../users/util/util.functions";
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,8 @@ export class AuthService {
     if (user && await comparePasswords(command.password, user.password) && user.isActive) {
       return new AuthTokenDto(process.env.JWT_EXPIRATION_TIME,
         await this.createToken(user),
-        await this.refresh(user));
+        await this.refresh(user),
+        mapUserToUserDto(user));
     }
     throw new IncorrectLoginCredentialsException();
   }
