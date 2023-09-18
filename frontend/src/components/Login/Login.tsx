@@ -6,10 +6,34 @@ import { Container } from 'react-bootstrap';
 import Button from 'react-bootstrap/Button';
 import IconCircle from '../util/IconCircle';
 import './Login.css'
+import {Api} from "../../connector/api";
+import React, {useState} from "react";
+import toast, {Toaster} from "react-hot-toast";
+import {useNavigate} from "react-router-dom";
 
 function Login() {
+
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const navigate = useNavigate();
+
+    const sendLoginRequest = () => {
+        Api.auth.login(email, password).then(response => {
+            Api.auth.setAuthToken(response.token);
+            Api.auth.setRefreshToken(response.refresh);
+            Api.auth.setUser(response.user);
+            toast.success(`Welcome back, ${response.user?.username}!`, { icon: "👋" });
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        })
+    };
+
     return (
         <div className="login">
+            <Toaster />
             <Container>
                 <Card className='shadow border-white' style={{
                     position: 'absolute',
@@ -29,7 +53,12 @@ function Login() {
                                         Email
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type='e-mail' placeholder="example@mail.com" />
+                                        <Form.Control
+                                            type='email'
+                                            placeholder="example@mail.com"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                        />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group controlId="loginPassword">
@@ -37,11 +66,18 @@ function Login() {
                                         Password
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type="password" placeholder="Password" />
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                        />
                                     </Col>
                                 </Form.Group>
                                 <Col lg={10} xs={10} className='mx-auto mb-5'>
-                                    <Button type="submit" className='login-button'>Sign In</Button>
+                                    <Button type="button" className='login-button' onClick={sendLoginRequest}>
+                                        Sign In
+                                    </Button>
                                 </Col>
                             </Form>
                         </Col>

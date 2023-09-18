@@ -157,9 +157,6 @@ export class UserService {
   async activate(command: UserActivateCommand) {
     const code = await this.codeRepository.findOneBy({ code: command.code });
     if (code == null) {
-      throw new IllegalArgumentException('Code not found!');
-    }
-    if (code.code != command.code) {
       throw new IllegalArgumentException('Code is incorrect!');
     }
     if (this.isValid(code)) {

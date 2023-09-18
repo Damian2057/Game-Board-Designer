@@ -3,21 +3,20 @@ import {User} from "../model/user/user";
 
 export class UserApi {
 
-    static registerUser(data: any) {
+    static registerUser(username: string, password: string, email: string, phoneNumber: string): Promise<void> {
         return axios.post(`${import.meta.env.VITE_URL}/user/register`, {
-            username: data.username,
-            password: data.password,
-            email: data.email,
-            phoneNumber: data.phoneNumber
+            username: username,
+            password: password,
+            email: email,
+            phoneNumber: phoneNumber
         }).then(res => {
             return res.data;
         });
     }
 
-    static activateUser(data: any): Promise<void> {
-        return axios.post(`${import.meta.env.VITE_URL}/user/activate`, {
-            code: data.code,
-            email: data.email,
+    static activateUser(code: string): Promise<void> {
+        return axios.put(`${import.meta.env.VITE_URL}/user/activate`, {
+            code: code,
         }).then(res => {
             return res.data;
         });
