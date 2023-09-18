@@ -1,10 +1,15 @@
 import {AuthToken} from "../model/auth/auth.token";
 import axios from "axios";
+import {User} from "../model/user/user";
 
 export class AuthApi {
 
     static getAuthToken(): string | null {
         return localStorage.getItem('token');
+    }
+
+    static getUser(): User | null {
+        return JSON.parse(localStorage.getItem('user') ?? '{}');
     }
 
     static getRefreshToken(): string | null {
@@ -13,6 +18,10 @@ export class AuthApi {
 
     static setAuthToken(token: string): void {
         localStorage.setItem('token', token);
+    }
+
+    static setUser(user: User): void {
+        localStorage.setItem('user', JSON.stringify(user));
     }
 
     static setRefreshToken(token: string | undefined): void {
@@ -24,6 +33,7 @@ export class AuthApi {
     static removeAuthToken(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
+        localStorage.removeItem('user');
     }
 
     static login(username: string, password: string): Promise<AuthToken> {
