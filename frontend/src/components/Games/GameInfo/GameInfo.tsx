@@ -4,6 +4,7 @@ import { GrClose } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 import './GameInfo.css'
 import {Api} from "../../../connector/api";
+import toast from "react-hot-toast";
 
 interface GameInfoProps {
     game: any;
@@ -13,9 +14,11 @@ interface GameInfoProps {
 const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
 
     // React.useEffect(() => {
-    //     Api.auth.setAuthToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImlkIjoxLCJ1c2VybmFtZSI6ImFkbWluIiwicGFzc3dvcmQiOiIkMmIkMTIkNHpzMzlIRWEyOTlaQzBIY1NRbEVJZWFWR2NqU2FpSUFqT0xiMVk3RTZ2SzFyeHJjL1diNS4iLCJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInBob25lTnVtYmVyIjoiOTk5OTk5OTk5Iiwicm9sZSI6ImFkbWluIiwiaXNBY3RpdmUiOnRydWV9LCJpYXQiOjE2OTQ2MzYzMDUsImV4cCI6MTY5NzIyODMwNX0.2bB4RxkF1-NUKH8YGNB-0y0FNcslTlfjTgLJO5QbJPo")
     //    Api.image.uploadImage(game.img).then((res) => {
     //         console.log(res);
+    //     }).catch((err) => {
+    //         console.log(err);
+    //         toast.error("Error uploading image");
     //     });
     // });
 

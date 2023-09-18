@@ -7,12 +7,21 @@ export class AuthApi {
         return localStorage.getItem('token');
     }
 
+    static getRefreshToken(): string | null {
+        return localStorage.getItem('refreshToken');
+    }
+
     static setAuthToken(token: string): void {
         localStorage.setItem('token', token);
     }
 
+    static setRefreshToken(token: string): void {
+        localStorage.setItem('refreshToken', token);
+    }
+
     static removeAuthToken(): void {
         localStorage.removeItem('token');
+        localStorage.removeItem('refreshToken');
     }
 
     static login(username: string, password: string): Promise<AuthToken> {
