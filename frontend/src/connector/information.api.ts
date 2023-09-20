@@ -1,8 +1,9 @@
 import axios from "axios";
+import {Information} from "../model/information/information";
 
 export class InformationApi {
 
-    static getInformation() {
+    static getInformation(): Promise<Information> {
         return axios.get(`${import.meta.env.VITE_URL}/configuration/about`)
             .then(res => {
                 return res.data;

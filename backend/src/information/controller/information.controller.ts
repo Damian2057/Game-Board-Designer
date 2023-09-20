@@ -18,8 +18,11 @@ export class InformationController {
   @Put('update/about')
   async updatePhone(@Query('address') address?: string,
                     @Query('phoneNumber') phoneNumber?: string,
-                    @Query('email') email?: string): Promise<InformationDto> {
-    return this.informationService.updateAbout(address, phoneNumber, email);
+                    @Query('email') email?: string,
+                    @Query('about') about?: string,
+                    @Query('mission') mission?: string,
+                    @Query('facebook') facebook?: string): Promise<InformationDto> {
+    return this.informationService.updateAbout(address, phoneNumber, email, about, mission, facebook);
   }
 
   @Get('about')

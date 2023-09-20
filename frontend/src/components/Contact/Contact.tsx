@@ -5,11 +5,27 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import {BsTelephone, BsGeoAlt, BsEnvelope} from 'react-icons/bs';
 import './Contact.css'
+import React, {useState} from "react";
+import {Information} from "../../model/information/information";
+import {Api} from "../../connector/api";
+import toast, {Toaster} from "react-hot-toast";
 
 function Contact() {
+
+    const [information, setInformation] = useState({} as Information);
+
+    React.useEffect(() => {
+        Api.information.getInformation().then(res => {
+            setInformation(res)
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        })
+    }, [])
+
     return (
         <div className="Contact">
             <NavBar />
+            <Toaster />
             <Container className='mt-5'>
                 <Card className='shadow border-white'>
                     <Row>
@@ -19,17 +35,17 @@ function Contact() {
                                 <div className='contact-item text-start'>
                                     <span>
                                         <BsGeoAlt size={30} />
-                                        <span> </span>al. Politechniki 123, Łódź, Poland</span>
+                                        <span> </span>{information.address}</span>
                                 </div>
                                 <div className='contact-item text-start'>
                                     <span>
                                         <BsTelephone size={30} />
-                                        <span> </span>(+1) 123 456 7890</span>
+                                        <span> </span>{information.phoneNumber}</span>
                                 </div>
                                 <div className='contact-item text-start'>
                                     <span>
                                         <BsEnvelope size={30} />
-                                        <span> </span>example@gmail.com
+                                        <span> </span>{information.email}
                                     </span>
                                 </div>
                             </div>
