@@ -81,7 +81,7 @@ function Home() {
                             <Col lg="4" key={index}>
                                 <div>
                                     <div className='flex justify-center items-center'>
-                                        <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
+                                        <img className='game-img' src={Api.image.getImageUrl(game.imageIds[0])} alt={`game_image_${index}`} style={{ maxWidth: '344px' }} />
                                     </div>
                                     <h4 className='mt-2'>{game.title}</h4>
                                     <h5 className='shaded-text-price'>{game.price}{game.currency}</h5>
