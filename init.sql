@@ -49,10 +49,6 @@ VALUES
 
 ALTER TABLE image_entity AUTO_INCREMENT = 5;
 
-INSERT INTO information (id, address, "phoneNumber", email)
-VALUES
-    (1, '123 Main St, Anytown, USA', '555-555-5555', 'gameFlow@gmal.com');
-
 INSERT INTO "user" (id, username, password, email, "phoneNumber", role, "isActive")
 VALUES
     (1, 'admin', '$2b$12$4zs39HEa299ZC0HcSQlEIeaVGcjSaiIAjOLb1Y7E6vK1rxrc/Wb5.', 'admin@gmail.com', '555555555', 'admin', true),
