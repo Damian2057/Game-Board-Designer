@@ -28,6 +28,10 @@ export class Game extends AbstractEntity<Game> {
   })
   price: number
 
+  @Column({ length: 20, nullable: true })
+  @Length(2, 20)
+  currency: string
+
   @ManyToMany(() => Tag, tag => tag.game)
   @JoinTable()
   tags: Tag[]

@@ -4,4 +4,5 @@ export class UpdateGameCommand {
   publicationDate: string
   price: number
   imageIds: number[]
+  currency: string
 }

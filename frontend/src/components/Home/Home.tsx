@@ -10,21 +10,32 @@ import React, {useState} from "react";
 import {Api} from "../../connector/api";
 import {Tag} from "../../model/game/tag";
 import {AiFillTags} from "react-icons/ai";
+import {Game} from "../../model/game/game";
+import toast, {Toaster} from "react-hot-toast";
 
 function Home() {
 
     const maxTags = 6;
     const [tags, setTags] = useState<Tag[]>([]);
+    const [games, setGames] = useState<Game[]>([]);
 
     React.useEffect(() => {
         Api.game.getAllTags().then((tags) => {
             setTags(tags);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
+        Api.order.getTrendingGames().then((games) => {
+            setGames(games);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
         });
     }, []);
 
     return (
         <div className="Home">
             <NavBar />
+            <Toaster />
             <section className='section-dsc' style={{
                 backgroundImage: `url(${diceImage})`,
                 backgroundSize: 'cover',
@@ -66,33 +77,17 @@ function Home() {
                 <p>Explore the hottest and most popular games taking the gaming world by storm in our 'Trending Games' spotlight.</p>
                 <Container className='mt-5 trending-games-container'>
                     <Row>
-                        <Col lg="4">
-                            <div>
-                                <div className='flex justify-center items-center'>
-                                    <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
+                        {games.map((game, index) => (
+                            <Col lg="4" key={index}>
+                                <div>
+                                    <div className='flex justify-center items-center'>
+                                        <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
+                                    </div>
+                                    <h4 className='mt-2'>{game.title}</h4>
+                                    <h5 className='shaded-text-price'>{game.price}{game.currency}</h5>
                                 </div>
-                                <h4 className='mt-2'>Catan</h4>
-                                <h5 className='shaded-text-price'>100$</h5>
-                            </div>
-                        </Col>
-                        <Col lg="4">
-                            <div>
-                                <div className='flex justify-center items-center'>
-                                    <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
-                                </div>
-                                <h4 className='mt-2'>Splendor</h4>
-                                <h5 className='shaded-text-price'>100$</h5>
-                            </div>
-                        </Col>
-                        <Col lg="4">
-                            <div>
-                                <div className='flex justify-center items-center'>
-                                    <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
-                                </div>
-                                <h4 className='mt-2'>Dixit</h4>
-                                <h5 className='shaded-text-price'>100$</h5>
-                            </div>
-                        </Col>
+                            </Col>
+                        ))}
                     </Row>
                 </Container>
                 <Button href="/games" className='all-down-button px-4 mt-4'>View All Games</Button>

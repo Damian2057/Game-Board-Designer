@@ -209,6 +209,9 @@ export class GameService {
     if (command.imageIds) {
       boardGame.imageIds = command.imageIds;
     }
+    if (command.currency) {
+      boardGame.currency = command.currency;
+    }
     return boardGame;
   }
 

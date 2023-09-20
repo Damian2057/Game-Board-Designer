@@ -8,6 +8,7 @@ export interface Game extends Entity {
     description: string;
     publicationDate: string;
     price: number;
+    currency: string;
     tags: Tag[];
     components: Component[];
     imageIds: number[];

@@ -9,12 +9,12 @@ VALUES
 
 ALTER TABLE tag AUTO_INCREMENT = 7;
 
-INSERT INTO game (id, title, description, "publicationDate", price, "imageIds")
+INSERT INTO game (id, title, description, "publicationDate", price, currency, "imageIds")
 VALUES
-    (1, 'Catan', 'Catan is a multiplayer board game in which players assume the roles of settlers, each attempting to build and develop holdings while trading and acquiring resources.', '1995-10-01', 49.99, '{1,2}'),
-    (2, 'Pandemic', 'Pandemic is a cooperative board game in which players work as a team to treat infections around the world while gathering resources for cures.', '2008-01-01', 39.99, '{1,2}'),
-    (3, 'Magic: The Gathering', 'Magic: The Gathering is a collectible and digital collectible card game created by Richard Garfield.', '1993-08-01', 19.99, '{1,2}'),
-    (4, 'Dungeons & Dragons', 'Dungeons & Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.', '1974-01-01', 29.99, '{1,2}');
+    (1, 'Catan', 'Catan is a multiplayer board game in which players assume the roles of settlers, each attempting to build and develop holdings while trading and acquiring resources.', '1995-10-01', 49.99, '$', '{1,2}'),
+    (2, 'Pandemic', 'Pandemic is a cooperative board game in which players work as a team to treat infections around the world while gathering resources for cures.', '2008-01-01', 39.99, '$', '{1,2}'),
+    (3, 'Magic: The Gathering', 'Magic: The Gathering is a collectible and digital collectible card game created by Richard Garfield.', '1993-08-01', 19.99, '$', '{1,2}'),
+    (4, 'Dungeons & Dragons', 'Dungeons & Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.', '1974-01-01', 29.99, '$', '{1,2}');
 
 ALTER TABLE game AUTO_INCREMENT = 5;
 

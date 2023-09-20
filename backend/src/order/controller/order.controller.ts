@@ -44,7 +44,7 @@ export class OrderController {
   }
 
   @Get('trending-games')
-  async getTrendingGames(): Promise<OrderDto[]> {
+  async getTrendingGames(): Promise<any[]> {
     return this.orderService.getTrendingGames();
   }
 }

@@ -5,7 +5,11 @@ import { Order } from "../model/domain/order.entity";
 import { Repository } from "typeorm";
 import { CreateOrderCommand } from "../model/command/create.order.command";
 import { User } from "../../users/model/domain/user.entity";
-import { getRandomElement, mapOrderCreateCommandToOrder, mapOrderToOrderDto } from "../util/util.functions";
+import {
+  getRandomElements,
+  mapOrderCreateCommandToOrder,
+  mapOrderToOrderDto
+} from "../util/util.functions";
 import { OrderDto } from "../model/dto/order.dto";
 import { AdvancedUpdateOrderCommand } from "../model/command/advanced.update.order.command";
 import { Game } from "../../game/model/domain/game.entity";
@@ -156,7 +160,7 @@ export class OrderService {
       .getRawMany();
 
     if (games.length === 0 || games.length < 3) {
-      games = getRandomElement(await this.gameService.findAll() as any);
+      games = getRandomElements(await this.gameService.findAll(),3);
     }
 
     return games;

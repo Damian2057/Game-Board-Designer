@@ -35,11 +35,14 @@ export function mapOrderCreateCommandToOrder(command: CreateOrderCommand): Order
   return order;
 }
 
-export function getRandomElement<T>(array: T[]): T | undefined {
-  if (array.length === 0) {
-    return undefined;
+export function getRandomElements<T>(list: T[], n: number): T[] {
+  if (n >= list.length) {
+    return list.slice();
   }
-
-  const randomIndex = Math.floor(Math.random() * array.length);
-  return array[randomIndex];
+  const shuffledList = list.slice();
+  for (let i = shuffledList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledList[i], shuffledList[j]] = [shuffledList[j], shuffledList[i]];
+  }
+  return shuffledList.slice(0, n);
 }
