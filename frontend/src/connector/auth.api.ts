@@ -30,7 +30,7 @@ export class AuthApi {
         }
     }
 
-    static removeAuthToken(): void {
+    static removeData(): void {
         localStorage.removeItem('token');
         localStorage.removeItem('refreshToken');
         localStorage.removeItem('user');
@@ -51,5 +51,13 @@ export class AuthApi {
         }).then(res => {
             return res.data;
         });
+    }
+
+    static isEmployee() {
+        const user = this.getUser();
+        if (user == null) {
+            return false;
+        }
+        return user.role === 'employee' || user.role === 'admin';
     }
 }

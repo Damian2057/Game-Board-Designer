@@ -1,14 +1,13 @@
-import { Container } from 'react-bootstrap';
-import NavBar from '../NavBar/NavBar';
-import Card from 'react-bootstrap/Card';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import {BsTelephone, BsGeoAlt, BsEnvelope} from 'react-icons/bs';
-import './Contact.css'
+import NavBar from "../NavBar/NavBar";
+import {Container} from "react-bootstrap";
+import Card from "react-bootstrap/Card";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import {BsEnvelope, BsGeoAlt, BsTelephone} from "react-icons/bs";
 
-function Contact() {
+function Profile() {
     return (
-        <div className="Contact">
+        <div className="Profile">
             <NavBar />
             <Container className='mt-5'>
                 <Card className='shadow border-white'>
@@ -50,4 +49,4 @@ function Contact() {
     );
 }
 
-export default Contact;
+export default Profile;
