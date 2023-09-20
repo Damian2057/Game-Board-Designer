@@ -36,9 +36,9 @@ export class AuthApi {
         localStorage.removeItem('user');
     }
 
-    static login(username: string, password: string): Promise<AuthToken> {
+    static login(email: string, password: string): Promise<AuthToken> {
         return axios.post(`${import.meta.env.VITE_URL}/auth/login`, {
-            username: username,
+            email: email,
             password: password
         }).then(res => {
             return res.data;
@@ -59,5 +59,13 @@ export class AuthApi {
             return false;
         }
         return user.role === 'employee' || user.role === 'admin';
+    }
+
+    static isAdmin() {
+        const user = this.getUser();
+        if (user == null) {
+            return false;
+        }
+        return user.role === 'admin';
     }
 }

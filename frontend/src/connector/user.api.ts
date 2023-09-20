@@ -74,11 +74,12 @@ export class UserApi {
         });
     }
 
-    static selfUpdate(data: any): Promise<User> {
+    static selfUpdate(username: any, phoneNumber: any, email: any, password: any): Promise<User> {
         return axios.put(`${import.meta.env.VITE_URL}/user/self_update`, {
-            username: data.username,
-            password: data.password,
-            phoneNumber: data.phoneNumber,
+            username: username,
+            password: password,
+            phoneNumber: phoneNumber,
+            email: email,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
