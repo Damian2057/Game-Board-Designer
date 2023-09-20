@@ -19,6 +19,10 @@ export class CreateGameCommand {
   @Min(0)
   price: number
 
+  @IsString()
+  @Length(2, 20)
+  currency: string
+
   @ArrayMinSize(1)
   tags: TagDto[]
 

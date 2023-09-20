@@ -24,6 +24,10 @@ export class ImageApi {
         });
     }
 
+    static getImageUrl(id: number): string {
+        return `${import.meta.env.VITE_URL}/image/get/${id}`;
+    }
+
     static async getImages(): Promise<Image[]> {
         return axios.get(`${import.meta.env.VITE_URL}/image/all`, {
             headers: {

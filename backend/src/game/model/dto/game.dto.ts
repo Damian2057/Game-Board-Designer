@@ -7,6 +7,7 @@ export class GameDto {
   description: string;
   publicationDate: string;
   price: number;
+  currency: string;
   tags: TagDto[];
   components: ComponentDto[];
   imageIds: number[];

@@ -42,4 +42,9 @@ export class OrderController {
   async updateOrder(@Body() command: UpdateOrderCommand, @Param('id') id: number): Promise<OrderDto> {
     return this.orderService.updateOrder(command, id);
   }
+
+  @Get('trending-games')
+  async getTrendingGames(): Promise<any[]> {
+    return this.orderService.getTrendingGames();
+  }
 }

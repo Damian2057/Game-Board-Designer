@@ -5,7 +5,11 @@ import { Order } from "../model/domain/order.entity";
 import { Repository } from "typeorm";
 import { CreateOrderCommand } from "../model/command/create.order.command";
 import { User } from "../../users/model/domain/user.entity";
-import { mapOrderCreateCommandToOrder, mapOrderToOrderDto } from "../util/util.functions";
+import {
+  getRandomElements,
+  mapOrderCreateCommandToOrder,
+  mapOrderToOrderDto
+} from "../util/util.functions";
 import { OrderDto } from "../model/dto/order.dto";
 import { AdvancedUpdateOrderCommand } from "../model/command/advanced.update.order.command";
 import { Game } from "../../game/model/domain/game.entity";
@@ -13,6 +17,8 @@ import { GameService } from "../../game/service/game.service";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { OrderStatus } from "../model/domain/order.status.enum";
 import { UserService } from "../../users/service/user.service";
+import { GameDto } from "../../game/model/dto/game.dto";
+import { mapGameToGameDto } from "../../game/util/util.functions";
 
 @Injectable()
 export class OrderService {
@@ -142,6 +148,22 @@ export class OrderService {
 
   getAvailableOrdersStatuses(): OrderStatus[] {
     return Object.values(OrderStatus);
+  }
+
+  async getTrendingGames(): Promise<any[]> {
+    let games: any[] = await this.orderRepository.createQueryBuilder("order")
+      .select("order.game", "game")
+      .addSelect("COUNT(order.game)", "count")
+      .groupBy("order.game")
+      .orderBy("count", "DESC")
+      .limit(3)
+      .getRawMany();
+
+    if (games.length === 0 || games.length < 3) {
+      games = getRandomElements(await this.gameService.findAll(),3);
+    }
+
+    return games;
   }
 
   private async updateNotNullFields(order: Order, command: any): Promise<Order> {

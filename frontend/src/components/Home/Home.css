@@ -63,7 +63,7 @@
 }
 
 .trending-games-container {
-    color: white !important;
+    color: #000000 !important;
 }
 
 .shaded-text-price {
@@ -86,6 +86,13 @@
     max-width: 100%;
     object-fit: contain;
 }
+
+.all-down-button {
+    color: white !important;
+    background-color: #7D53DE !important;
+    border-radius: 20px !important;
+}
+
 
 @media (max-width: 1082px) {
     .p-dsc {

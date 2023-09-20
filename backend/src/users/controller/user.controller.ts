@@ -51,7 +51,7 @@ export class UserController {
 
   @Get('self')
   @UseGuards(JwtGuard)
-  getCurrentUser(@GetCurrentUser() user): UserDto {
+  getCurrentUser(@GetCurrentUser() user): Promise<UserDto> {
     return this.userService.me(user);
   }
 

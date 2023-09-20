@@ -18,7 +18,7 @@ export class AuthService {
   ) {}
 
   async login(command: AuthLoginCommand): Promise<AuthTokenDto> {
-    const user = await this.userService.findOneByUsername(command.username);
+    const user = await this.userService.findOneByEmail(command.email);
     if (user && await comparePasswords(command.password, user.password) && user.isActive) {
       return new AuthTokenDto(process.env.JWT_EXPIRATION_TIME,
         await this.createToken(user),

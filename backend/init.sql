@@ -7,12 +7,16 @@ VALUES
     (5, 'Role-Playing'),
     (6, 'Classic');
 
-INSERT INTO game (id, title, description, "publicationDate", price, "imageIds")
+ALTER TABLE tag AUTO_INCREMENT = 7;
+
+INSERT INTO game (id, title, description, "publicationDate", price, currency, "imageIds")
 VALUES
-    (1, 'Catan', 'Catan is a multiplayer board game in which players assume the roles of settlers, each attempting to build and develop holdings while trading and acquiring resources.', '1995-10-01', 49.99, '{1,2}'),
-    (2, 'Pandemic', 'Pandemic is a cooperative board game in which players work as a team to treat infections around the world while gathering resources for cures.', '2008-01-01', 39.99, '{1,2}'),
-    (3, 'Magic: The Gathering', 'Magic: The Gathering is a collectible and digital collectible card game created by Richard Garfield.', '1993-08-01', 19.99, '{1,2}'),
-    (4, 'Dungeons & Dragons', 'Dungeons & Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.', '1974-01-01', 29.99, '{1,2}');
+    (1, 'Catan', 'Catan is a multiplayer board game in which players assume the roles of settlers, each attempting to build and develop holdings while trading and acquiring resources.', '1995-10-01', 49.99, '$', '{1,2}'),
+    (2, 'Pandemic', 'Pandemic is a cooperative board game in which players work as a team to treat infections around the world while gathering resources for cures.', '2008-01-01', 39.99, '$', '{1,2}'),
+    (3, 'Magic: The Gathering', 'Magic: The Gathering is a collectible and digital collectible card game created by Richard Garfield.', '1993-08-01', 19.99, '$', '{1,2}'),
+    (4, 'Dungeons & Dragons', 'Dungeons & Dragons is a fantasy tabletop role-playing game originally designed by Gary Gygax and Dave Arneson.', '1974-01-01', 29.99, '$', '{1,2}');
+
+ALTER TABLE game AUTO_INCREMENT = 5;
 
 INSERT INTO game_tags_tag ("gameId", "tagId")
 VALUES
@@ -34,6 +38,8 @@ VALUES
     (5, 'Cards', 1, 3),
     (6, 'Dice', 1, 4);
 
+ALTER  TABLE component AUTO_INCREMENT = 7;
+
 INSERT INTO image_entity (id, filename, mimeType)
 VALUES
     (1, '12dcdbbdb8e2919fbffc55c146192407', 'image/jpeg'),
@@ -41,9 +47,7 @@ VALUES
     (3, '104a6664ff1c36442922c8754d1ccf75', 'image/jpeg'),
     (4, 'c121e17775623d358a6cec2410be7779', 'image/jpeg');
 
-INSERT INTO information (id, address, "phoneNumber", email)
-VALUES
-    (1, '123 Main St, Anytown, USA', '555-555-5555', 'gameFlow@gmal.com');
+ALTER TABLE image_entity AUTO_INCREMENT = 5;
 
 INSERT INTO "user" (id, username, password, email, "phoneNumber", role, "isActive")
 VALUES
@@ -52,12 +56,16 @@ VALUES
     (3, 'inactive', '$2b$12$4zs39HEa299ZC0HcSQlEIeaVGcjSaiIAjOLb1Y7E6vK1rxrc/Wb5.', 'user2@gmai.com', '444444445', 'user', false),
     (4, 'employee', '$2b$12$4zs39HEa299ZC0HcSQlEIeaVGcjSaiIAjOLb1Y7E6vK1rxrc/Wb5.', 'employee@gmail.com', '555555554', 'employee', true);
 
+ALTER TABLE "user" AUTO_INCREMENT = 5;
+
 INSERT INTO box (id, status, priority, name, description, notes, "imageIds", type)
 VALUES
     (1, 'TODO', 'C', 'catanBox', 'catan box desc', '{catan box notes}', '{1,2}', 'box'),
     (2, 'TODO', 'C', 'pandemicBox', 'pandemic box desc', '{pandemic box notes}', '{1,2}', 'box'),
     (3, 'TODO', 'C', 'magicBox', 'magic box desc', '{magic box notes}', '{1,2}', 'box'),
     (4, 'TODO', 'C', 'dndBox', 'dnd box desc', '{dnd box notes}', '{1,2}', 'box');
+
+ALTER TABLE box AUTO_INCREMENT = 5;
 
 INSERT INTO property (id, name, value, "boxId")
 VALUES
@@ -81,6 +89,8 @@ VALUES
     (3, 'magic project', 'Project for magic game', true, '{magic project notes}', '{1,2}', false, 3),
     (4, 'dnd project', 'Project for dnd game', true, '{dnd project notes}', '{1,2}', false, 4);
 
+ALTER TABLE project AUTO_INCREMENT = 5;
+
 INSERT INTO project_games_game ("projectId", "gameId")
 VALUES
     (1, 1),
@@ -94,6 +104,8 @@ VALUES
     (2, 'TODO', 'C', 'Box 2', 'Box for cards', '{empty}', 2, '{1,2}', 'container', 2),
     (3, 'TODO', 'C', 'Box 3', 'Box for cards', '{empty}', 2, '{1,2}', 'container', 3),
     (4, 'TODO', 'C', 'Box 4', 'Box for cards', '{empty}', 2, '{1,2}', 'container', 4);
+
+ALTER TABLE container AUTO_INCREMENT = 5;
 
 INSERT INTO property (id, name, value, "containerId")
 VALUES
@@ -139,6 +151,8 @@ VALUES
     (7, 'TODO', 'C', 'Dice', 'Dice for game', '{empty}', 3, '{1,2}', 'element', 3),
     (8, 'TODO', 'C', 'Dice', 'Dice for game', '{empty}', 3, '{1,2}', 'element', 4);
 
+ALTER TABLE element AUTO_INCREMENT = 9;
+
 INSERT INTO property (id, name, value, "elementId")
 VALUES
     (37, 'length', '3', 5),
@@ -153,3 +167,5 @@ VALUES
     (46, 'length', '3', 8),
     (47, 'width', '3', 8),
     (48, 'height', '3', 8);
+
+ALTER TABLE property AUTO_INCREMENT = 49;

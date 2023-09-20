@@ -33,6 +33,9 @@ export function mapGameToGameDto(game: Game) {
   gameDto.tags = game.tags.map(tag => mapTagToTagDto(tag));
   gameDto.components = game.components.map(component => mapComponentToComponentDto(component));
   gameDto.imageIds = game.imageIds;
+  if (game.currency) {
+    gameDto.currency = game.currency;
+  }
   return gameDto;
 }
 

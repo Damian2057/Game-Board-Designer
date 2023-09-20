@@ -5,13 +5,37 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { Link } from "react-router-dom";
 import './Home.css'
+import React, {useState} from "react";
+import {Api} from "../../connector/api";
+import {Tag} from "../../model/game/tag";
+import {AiFillTags} from "react-icons/ai";
+import {Game} from "../../model/game/game";
+import toast, {Toaster} from "react-hot-toast";
 
 function Home() {
+
+    const maxTags = 6;
+    const [tags, setTags] = useState<Tag[]>([]);
+    const [games, setGames] = useState<Game[]>([]);
+
+    React.useEffect(() => {
+        Api.game.getAllTags().then((tags) => {
+            setTags(tags);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
+        Api.order.getTrendingGames().then((games) => {
+            setGames(games);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
+    }, []);
+
     return (
         <div className="Home">
             <NavBar />
+            <Toaster />
             <section className='section-dsc' style={{
                 backgroundImage: `url(${diceImage})`,
                 backgroundSize: 'cover',
@@ -31,109 +55,49 @@ function Home() {
                 }}>Featured Categories</h1>
                 <Container className='mt-5'>
                     <Row>
-                        <Col lg={2} md={4} sm={6}>
-                            <div>
-                                <div className='circle'></div>
-                                <div className='category-text'>Strategy</div>
-                            </div>
-                        </Col>
-                        <Col lg={2} md={4} sm={6}>
-                            <div>
-                                <div className='circle'></div>
-                                <div className='category-text'>Party</div>
-                            </div>
-                        </Col>
-                        <Col lg={2} md={4} sm={6}>
-                            <div>
-                                <div className='circle'></div>
-                                <div className='category-text'>Cooperative</div>
-                            </div>
-                        </Col>
-                        <Col lg={2} md={4} sm={6}>
-                            <div>
-                                <div className='circle'></div>
-                                <div className='category-text'>Eurogames</div>
-                            </div>
-                        </Col>
-                        <Col lg={2} md={4} sm={6}>
-                            <div>
-                                <div className='circle'></div>
-                                <div className='category-text'>Abstract</div>
-                            </div>
-                        </Col>
-                        <Col lg={2} md={4} sm={6}>
-                            <div>
-                                <div className='circle'></div>
-                                <div className='category-text'>Family</div>
-                            </div>
-                        </Col>
+                        {tags.slice(0, maxTags).map((tag, index) => (
+                            <Col lg={2} md={4} sm={6} key={index}>
+                                <div>
+                                    <div className='circle items-center'>
+                                        <AiFillTags size={45} />
+                                    </div>
+                                    <div className='category-text'>{tag.name}</div>
+                                </div>
+                            </Col>
+                        ))}
                     </Row>
+                    <span className='mt-4 category-text'>And more...</span>
                 </Container>
             </section>
             <section className='week-highlights py-5'>
                 <h1 style={{
                     fontSize: '50px',
                     fontWeight: 'bold'
-                }}>This Week Highlights</h1>
-                <p>Stay updated with the most exciting and noteworthy events, news, and achievements of the week in our exclusive 'This Week Highlights' roundup.</p>
-                <Container className='mt-5'>
+                }}>Trending Games</h1>
+                <p>Explore the hottest and most popular games taking the gaming world by storm in our 'Trending Games' spotlight.</p>
+                <Container className='mt-5 trending-games-container'>
                     <Row>
-                        <Col>
-                            <div>
-                                <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '100%' }} />
-                                <h3 className='mt-4'>Strategy</h3>
-                                <Link className='game-link' to={'/'}>See more</Link>
-                            </div>
-                        </Col>
-                        <Col>
-                            <div>
-                                <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '100%' }} />
-                                <h3 className='mt-4'>2 player games</h3>
-                                <Link className='game-link' to={'/'}>See more</Link>
-                            </div>
-                        </Col>
+                        {games.map((game, index) => (
+                            <Col lg="4" key={index}>
+                                <div>
+                                    <div className='flex justify-center items-center'>
+                                        <img className='game-img' src={Api.image.getImageUrl(game.imageIds[0])} alt={`game_image_${index}`} style={{ maxWidth: '344px' }} />
+                                    </div>
+                                    <h4 className='mt-2'>{game.title}</h4>
+                                    <h5 className='shaded-text-price'>{game.price}{game.currency}</h5>
+                                </div>
+                            </Col>
+                        ))}
                     </Row>
                 </Container>
+                <Button href="/games" className='all-down-button px-4 mt-4'>View All Games</Button>
             </section>
             <section className='trending-games'>
                 <h1 style={{
                     fontSize: '50px',
                     color: 'white',
                     fontWeight: 'bold'
-                }}>Trending Games</h1>
-                <p className='trending-games-dsc'>Explore the hottest and most popular games taking the gaming world by storm in our 'Trending Games' spotlight.</p>
-                <Container className='mt-5 trending-games-container'>
-                    <Row>
-                        <Col lg="4">
-                            <div>
-                                <div className='flex justify-center items-center'>
-                                    <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
-                                </div>
-                                <h4 className='mt-2'>Catan</h4>
-                                <h5 className='shaded-text-price'>100$</h5>
-                            </div>
-                        </Col>
-                        <Col lg="4">
-                            <div>
-                                <div className='flex justify-center items-center'>
-                                    <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
-                                </div>
-                                <h4 className='mt-2'>Splendor</h4>
-                                <h5 className='shaded-text-price'>100$</h5>
-                            </div>
-                        </Col>
-                        <Col lg="4">
-                            <div>
-                                <div className='flex justify-center items-center'>
-                                    <img className='game-img' src="./src/assets/board_game.avif" alt="game_1" style={{ maxWidth: '344px' }} />
-                                </div>
-                                <h4 className='mt-2'>Dixit</h4>
-                                <h5 className='shaded-text-price'>100$</h5>
-                            </div>
-                        </Col>
-                    </Row>
-                </Container>
-                <Button href="/games" className='button-all-games px-4 mt-4'>View All Games</Button>
+                }}></h1>
             </section>
             <Footer />
         </div>

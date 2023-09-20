@@ -1,5 +1,6 @@
 import axios from "axios";
 import {Order} from "../model/order/order";
+import {Game} from "../model/game/game";
 
 export class OrderApi {
 
@@ -138,4 +139,9 @@ export class OrderApi {
         })
     }
 
+    static getTrendingGames(): Promise<Game[]> {
+        return axios.get(`${import.meta.env.VITE_URL}/order/trending-games`).then(res => {
+            return res.data;
+        })
+    }
 }

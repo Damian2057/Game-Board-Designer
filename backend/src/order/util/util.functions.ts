@@ -34,3 +34,15 @@ export function mapOrderCreateCommandToOrder(command: CreateOrderCommand): Order
   order.address = command.address;
   return order;
 }
+
+export function getRandomElements<T>(list: T[], n: number): T[] {
+  if (n >= list.length) {
+    return list.slice();
+  }
+  const shuffledList = list.slice();
+  for (let i = shuffledList.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledList[i], shuffledList[j]] = [shuffledList[j], shuffledList[i]];
+  }
+  return shuffledList.slice(0, n);
+}

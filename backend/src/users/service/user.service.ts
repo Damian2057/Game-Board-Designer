@@ -48,20 +48,12 @@ export class UserService {
     throw new UserNotFound();
   }
 
-  async findOneByEmail(email: string) {
+  async findOneByEmail(email: string): Promise<User> {
     const user: User = await this.userRepository.findOneBy({email: email});
-    if (user != null) {
-      return mapUserToUserDto(user);
-    }
-    return null;
-  }
-
-  async findOneByUsername(username: string): Promise<User> {
-    const user: User = await this.userRepository.findOneBy({username: username});
     if (user != null) {
       return user;
     }
-    throw new UserNotFound();
+    return null;
   }
 
   async register(command: UserRegisterCommand): Promise<Result> {
@@ -75,15 +67,16 @@ export class UserService {
     throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');
   }
 
-  me(user): UserDto {
-    if (user != null) {
-      return mapUserToUserDto(user);
+  async me(user: User): Promise<UserDto> {
+    const currentUser: User = await this.findOneByEmail(user.email)
+    if (currentUser != null) {
+      return mapUserToUserDto(currentUser);
     }
     throw new UserNotFound();
   }
 
   async selfUpdate(user: User, command: UserUpdateCommand): Promise<UserDto> {
-    user = this.updateNotNullFields(user, command);
+    user = await this.updateNotNullFields(user, command);
     const updated: User = await this.userRepository.save(user);
     return mapUserToUserDto(updated);
   }
@@ -93,7 +86,7 @@ export class UserService {
       if (user == null) {
         throw new UserNotFound();
       }
-      user = this.updateNotNullFields(user, command);
+      user = await this.updateNotNullFields(user, command);
       const updated: User = await this.userRepository.save(user);
       return mapUserToUserDto(updated);
   }
@@ -138,7 +131,7 @@ export class UserService {
     return Object.values(UserRole)
   }
 
-  private updateNotNullFields(user: User, command: UserUpdateCommand): User {
+  private async updateNotNullFields(user: User, command: UserUpdateCommand): Promise<User> {
     if (command.username != null) {
       user.username = command.username;
     }
@@ -147,6 +140,13 @@ export class UserService {
     }
     if (command.password != null) {
       user.password = command.password;
+    }
+    if (command.email != null) {
+      if (await this.findOneByEmail(command.email) == null) {
+        user.email = command.email;
+      } else {
+        throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');
+      }
     }
     if (command.role != null) {
       user.role = getEnumValueByName(UserRole, command.role);
