@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { GameService } from "../service/game.service";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
@@ -8,6 +8,7 @@ import { GameDto } from "../model/dto/game.dto";
 import { CreateGameCommand } from "../model/command/create.game.command";
 import { UpdateGameCommand } from "../model/command/update.game.command";
 import { Result } from "../../util/pojo/Result";
+import { Pagination } from "nestjs-typeorm-paginate";
 
 @Controller('game')
 export class GameController {
@@ -17,6 +18,13 @@ export class GameController {
   @Get('all')
   getAllBoardGames(): Promise<GameDto[]> {
     return this.boardGameService.findAll();
+  }
+
+  @Get('all/paged')
+  async getAllBoardGamesPaged(@Query('page', ParseIntPipe) page: number,
+                              @Query('limit', ParseIntPipe) limit: number,
+                              @Query('tags') tags?: string): Promise<Pagination<GameDto>> {
+    return this.boardGameService.findAllPaged(page, limit, tags ? tags.split(',') : []);
   }
 
   @Get(':id')
