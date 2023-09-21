@@ -14,6 +14,7 @@ import { GameDto } from "../model/dto/game.dto";
 import { ImageEntity } from "../../image/model/domain/image.entity";
 import { ImageDownloadException } from "../../exceptions/type/image.download.exception";
 import { Result } from "../../util/pojo/Result";
+import { paginate, Pagination } from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class GameService {
@@ -252,5 +253,18 @@ export class GameService {
   async findById(id: number): Promise<GameDto> {
     const game: Game = await this.getGameById(id);
     return mapGameToGameDto(game);
+  }
+
+  async findAllPaged(page: number = 1,
+                     limit: number = 10,
+                     tags: string[] = []): Promise<Pagination<Game>> {
+    const queryBuilder = this.boardGameRepository.createQueryBuilder('game')
+
+    if (tags.length > 0) {
+      queryBuilder.innerJoin('game.tags', 'tag');
+      queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
+    }
+
+    return await paginate<Game>(queryBuilder, { page, limit });
   }
 }
