@@ -9,7 +9,7 @@ export interface Game extends Entity {
     publicationDate: string;
     price: number;
     currency: string;
-    tags: Tag[];
+    tags?: Tag[];
     components: Component[];
     imageIds: number[];
 }
