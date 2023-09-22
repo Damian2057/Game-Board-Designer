@@ -37,7 +37,7 @@ export class GameApi {
         const config = {
             params: queryParams,
         };
-        return axios.get(`${import.meta.env.VITE_URL}/game/find`, config)
+        return axios.get(`${import.meta.env.VITE_URL}/game/find/by`, config)
             .then(res => {
             return res.data;
         });

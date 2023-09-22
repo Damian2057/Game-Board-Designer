@@ -9,70 +9,83 @@ import {BsSearch, BsXLg} from 'react-icons/bs'
 import GameInfo from '../GameInfo/GameInfo';
 import { Link } from 'react-router-dom';
 import './Games.css'
-import axios from "axios";
+import {Game} from "../../../model/game/game";
+import {Tag} from "../../../model/game/tag";
 import {Api} from "../../../connector/api";
+import toast, {Toaster} from "react-hot-toast";
 
 function Games() {
-    const categories = ['Strategy', 'Party', 'Cooperative', 'Eurogames', 'Abstract', 'Family']
-    const [category, setCategory] = React.useState('');
-    const [searchQuery, setSearchQuery] = React.useState('');
-    const [tags, setTags] = React.useState([] as any);
-    const [selectedGame, setSelectedGame] = React.useState<any | null>(null);
-    // const [games, setGames] = React.useState([] as any);
 
-    const games = [
-        { id: 1, name: 'Chess', img: '/src/assets/board_game.avif', tags: ['Strategy', 'Family'], description: 'Marvellous game', price: 50 },
-        { id: 2, name: 'Checkers', img: '/src/assets/board_game.avif', tags: ['Party', 'Family'], description: 'Marvellous game', price: 80 },
-        { id: 3, name: 'Monopoly', img: '/src/assets/board_game.avif', tags: ['Strategy', 'Party', 'Family'], description: 'Marvellous game', price: 45 },
-        { id: 4, name: 'Scrabble', img: '/src/assets/board_game.avif', tags: ['Party', 'Family'], description: 'Marvellous game', price: 40 }
-    ]
+    const [tags, setTags] = React.useState([] as Tag[]);
+    const [games, setGames] = React.useState([] as Game[]);
+    const [originalGames, setOriginalGames] = React.useState([] as Game[]);
 
-    // const fetchAllGames = () => {
-    //     axios.get('http://localhost:3001/game/all')
-    //         .then(res => {
-    //             const responseGames = res.data;
-    //             setGames(responseGames);
-    //         }).catch(err => {
-    //             console.log(err);
-    //     })
-    // }
-    //
-    // React.useEffect(() => {
-    //     fetchAllGames();
-    // }, [])
-    //
-    // const getImg = () => {
-    //     axios.get('http://localhost:3001/image/get/1')
-    //         .then(res => {
-    //
-    //         }).catch(err => {
-    //             console.log(err);
-    //     })
-    // }
-    //
+    const [searchTitle, setSearchTitle] = React.useState('');
+    const [selectedTags, setSelectedTags] = React.useState([] as Tag[]);
+    const [selectedGame, setSelectedGame] = React.useState<Game | null>(null);
 
+
+
+    React.useEffect(() => {
+        fetchTags();
+        fetchGames();
+    }, []);
+
+    const fetchTags = () => {
+        Api.game.getAllTags()
+            .then((tags) => {
+                setTags(tags);
+            })
+            .catch((err) => {
+                toast.error(`${err.response.data.message}`, { icon: "💀" });
+            });
+    };
+
+    const fetchGames = () => {
+        Api.game.getAllGames()
+            .then((games) => {
+                setGames(games);
+                setOriginalGames(games);
+            })
+            .catch((err) => {
+                toast.error(`${err.response.data.message}`, { icon: "💀" });
+            });
+    };
 
     const handleChange = (e: any) => {
-        const selectedValue = e.target.value;
-
-        if (!tags.includes(selectedValue)) {
-            setCategory(selectedValue);
-            setTags((prevTags: any) => [...prevTags, selectedValue]);
+        const name = e.target.value;
+        const selectedTag = tags.find(tag => tag.name === name);
+        if (!selectedTags.includes(selectedTag as Tag)) {
+            if (selectedTag) {
+                selectedTags.push(selectedTag);
+                setSelectedTags(selectedTags);
+            }
         }
     }
 
     const handleSubmit = (e: any) => {
         e.preventDefault();
+        if (selectedTags.length == 0 && searchTitle.length == 0) {
+            fetchGames();
+            return;
+        }
         const data = {
-            searchQuery: searchQuery,
-            category: tags
+            title: searchTitle.length == 0 ? null : searchTitle,
+            tags: selectedTags.map(tag => tag.name).join(',')
         };
-        const json = JSON.stringify(data);
-        console.log(json);
+        Api.game.findGame(data).then((res) => {
+            if (res.length == 0) {
+                fetchGames();
+                toast.error(`No games found`)
+            }
+            setGames(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
     };
 
     const handleRemoveTag = (tagToRemove: any) => {
-        setTags(prevTags => prevTags.filter(tag => tag !== tagToRemove));
+        setSelectedTags((prevTags: Tag[]) => prevTags.filter(tag => tag !== tagToRemove));
     };
 
     const handleGameClick = (game: any) => {
@@ -82,17 +95,18 @@ function Games() {
     return (
         <div className="Games">
             <NavBar />
+            <Toaster />
             <Container>
                 <Form className='filter-form mt-5' onSubmit={handleSubmit}>
                     <Row>
                         <Col lg={4} className='mb-4'>
-                            <Form.Control type='text' placeholder='Search' onChange={e => setSearchQuery(e.target.value)} />
+                            <Form.Control type='text' placeholder='Search' onChange={e => setSearchTitle(e.target.value)} />
                         </Col>
                         <Col lg={3} className='mb-4'>
                             <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleChange}>
                                 <option disabled value={''}>Choose tags</option>
-                                {categories.map(item => {
-                                    return (<option key={item} value={item}>{item}</option>)
+                                {tags.map(item => {
+                                    return (<option key={item.id} value={item.name}>{item.name}</option>)
                                 })}
                             </Form.Select>
                         </Col>
@@ -102,18 +116,18 @@ function Games() {
                     </Row>
                 </Form>
                 <Row className='d-flex justify-content-start '>
-                    {Array.isArray(tags) && tags.length > 0 ? (
-                        tags.map(tag => {
-                            return <Col lg={2} className='tag ps-4' key={tag}>{tag}<BsXLg className='ms-3' onClick={() => handleRemoveTag(tag)} /></Col>
+                    {Array.isArray(selectedTags) && selectedTags.length > 0 ? (
+                        selectedTags.map(tag => {
+                            return <Col lg={2} className='tag ps-4' key={tag.id}>{tag.name}<BsXLg className='ms-3' onClick={() => handleRemoveTag(tag)} /></Col>
                         }))
                         : (
                             <div></div>
                         )}
                 </Row>
                 <Row className='d-flex justify-content-center text-center'>{games.map(game => {
-                    return <Col lg={6} className='game-col' key={game.id}> <img src={game.img} alt="Game Img" style={{ width: '100%', height: '100%' }} />
+                    return <Col lg={6} className='game-col' key={game.id}> <img src={Api.image.getImageUrl(game.imageIds[0])} alt="Game Img" style={{ width: '100%', height: '100%' }} />
                         <div className="image-card">
-                            <div className='fs-3 fw-bold'>{game.name}</div>
+                            <div className='fs-3 fw-bold'>{game.title}</div>
                             <Row>
                                 <Col>
                                     <Button className='button-card' onClick={() => handleGameClick(game)}>Info</Button>
