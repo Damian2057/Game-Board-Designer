@@ -6,6 +6,7 @@ import {Api} from "../../connector/api";
 import {PiUserListBold} from "react-icons/pi";
 import {FaRegUserCircle} from "react-icons/fa";
 import {TbLayoutDashboard} from "react-icons/tb";
+import {FiShoppingCart} from "react-icons/fi";
 
 export const NavBar = () => {
 
@@ -46,6 +47,13 @@ export const NavBar = () => {
                             <Nav.Item>
                                 <Nav.Link as={Link} to="/profile" eventKey="/profile">
                                     <FaRegUserCircle size={24} />
+                                </Nav.Link>
+                            </Nav.Item>
+                        )}
+                        {isUserLoggedIn && (
+                            <Nav.Item>
+                                <Nav.Link as={Link} to="/my-orders" eventKey="/my-orders">
+                                    <FiShoppingCart size={24} />
                                 </Nav.Link>
                             </Nav.Item>
                         )}

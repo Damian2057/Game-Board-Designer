@@ -15,7 +15,8 @@ import ManageEmployees from './components/Panel/ManageEmployees/ManageEmployees'
 import EmployeePanel from './components/Panel/EmployeePanel/EmployeePanel';
 import NewSchema from './components/Panel/NewSchema/NewScheme';
 import './App.css';
-import Profile from "./components/Profile/Profile";
+import Profile from "./components/Personal/Profile/Profile";
+import MyOrders from "./components/Personal/MyOrders/MyOrders";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/my-orders" element={<MyOrders />} />
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/order' element={<Order />} />
