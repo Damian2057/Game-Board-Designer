@@ -4,4 +4,5 @@ export class UpdateOrderCommand {
   email: string;
   description: string;
   address: string;
+  city: string;
 }

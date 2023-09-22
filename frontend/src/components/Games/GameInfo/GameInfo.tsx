@@ -3,22 +3,16 @@ import { Modal, Button, Row, Col, Carousel, Form } from 'react-bootstrap';
 import { GrClose } from "react-icons/gr";
 import { Link } from 'react-router-dom';
 import './GameInfo.css'
+import {Game} from "../../../model/game/game";
+import {Api} from "../../../connector/api";
+import {AiFillTags} from "react-icons/ai";
 
 interface GameInfoProps {
-    game: any;
+    game: Game;
     onClose: () => void;
 }
 
 const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
-
-    // React.useEffect(() => {
-    //    Api.image.uploadImage(game.img).then((res) => {
-    //         console.log(res);
-    //     }).catch((err) => {
-    //         console.log(err);
-    //         toast.error("Error uploading image");
-    //     });
-    // });
 
     return (
         <Modal show={true} onHide={onClose}>
@@ -31,27 +25,53 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
             </div>
             <Modal.Body className='game-info rounded'>
                 <Carousel data-bs-theme="dark">
-                    <img src={game.img} alt={game.title} style={{ width: '100%', height: '100%' }} />
+                    {game.imageIds.map((image, index) => (
+                        <Carousel.Item key={index}>
+                            <img
+                                src={Api.image.getImageUrl(image)}
+                                alt={`Game Img ${index}`}
+                                style={{ width: '100%', height: '100%' }}
+                            />
+                        </Carousel.Item>
+                    ))}
                 </Carousel>
                 <Row className='mt-3 align-items-center'>
                     <Col xs={8}>
-                        <Modal.Title className='fs-2 fw-bold text-white'>{game.name}</Modal.Title>
+                        <Modal.Title className='fs-2 fw-bold text-white'>{game.title}</Modal.Title>
                     </Col>
                     <Col xs={4} className='d-flex justify-content-end'>
                         <Link to="/order" state={{ game: game }}><Button className='button-card'>Order</Button></Link>
                     </Col>
                 </Row>
                 <Row className='gap-2'>
-                    {game.tags.map(tag => {
-                        return <Col lg={2} className='info-tag text-uppercase' key={tag}>{tag}</Col>
-                    })}
+                    <table className="tags-table">
+                        <thead>
+                        <tr>
+                            <th>Tags:</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {game.tags?.map((tag, index) => (
+                            <tr key={tag.id}>
+                                <td className="tag-cell">
+                                    <div className="tag-content">
+                                        <AiFillTags size={30} />
+                                        <span>{tag.name}</span>
+                                    </div>
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
                 </Row>
-                <Form.Control
-                    as="textarea"
-                    disabled
-                    placeholder={game.description}
-                    style={{ height: '100px' }}
-                />
+                <Row className='mt-3'>
+                    <Form.Control
+                        as="textarea"
+                        disabled
+                        placeholder={game.description}
+                        style={{ height: '100px', margin: '1rem 0' }}
+                    />
+                </Row>
             </Modal.Body>
         </Modal>
     );

@@ -41,6 +41,7 @@ export class OrderService {
     const game: Game = await this.gameService.getGameById(command.game.id);
     order.game = game;
     order.price = game.price;
+    order.currency = game.currency;
     return mapOrderToOrderDto(await this.orderRepository.save(order));
   }
 
@@ -188,7 +189,18 @@ export class OrderService {
     if (command.status) {
       order.status = command.status;
     }
-
+    if (command.city) {
+      order.city = command.city;
+    }
+    if (command.firstName) {
+      order.firstName = command.firstName;
+    }
+    if (command.lastName) {
+      order.lastName = command.lastName;
+    }
+    if (command.currency) {
+      order.currency = command.currency;
+    }
     return order;
   }
 }

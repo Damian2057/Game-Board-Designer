@@ -32,6 +32,9 @@ export function mapOrderCreateCommandToOrder(command: CreateOrderCommand): Order
   order.email = command.email;
   order.description = command.description;
   order.address = command.address;
+  order.firstName = command.firstName;
+  order.lastName = command.lastName;
+  order.city = command.city;
   return order;
 }
 

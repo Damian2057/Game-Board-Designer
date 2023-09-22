@@ -1,5 +1,5 @@
 import { GameDto } from "../../../game/model/dto/game.dto";
-import { Length, Min } from "class-validator";
+import { Length } from "class-validator";
 
 export class CreateOrderCommand {
 
@@ -12,11 +12,17 @@ export class CreateOrderCommand {
   @Length(0, 2000)
   description: string;
 
-  @Min(0)
-  price: number;
-
   @Length(3, 100)
   address: string;
+
+  @Length(2, 50)
+  firstName: string;
+
+  @Length(2, 50)
+  lastName: string;
+
+  @Length(2, 50)
+  city: string;
 
   game: GameDto;
 }

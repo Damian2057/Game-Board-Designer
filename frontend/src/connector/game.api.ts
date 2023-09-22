@@ -2,12 +2,25 @@ import {Game} from "../model/game/game";
 import axios from "axios";
 import {Tag} from "../model/game/tag";
 import {Component} from "../model/game/component";
+import {Page} from "../model/page";
 
 export class GameApi {
 
     static getAllGames(): Promise<Game[]> {
         return axios.get(`${import.meta.env.VITE_URL}/game/all`)
             .then(res => {
+            return res.data;
+        });
+    }
+
+    static getAllGamesPage(page: number, limit: number, tags: string): Promise<Page<Game>> {
+        return axios.get(`${import.meta.env.VITE_URL}/game/all/paged`, {
+            params: {
+                page: page,
+                limit: limit,
+                tags: tags
+            }
+        }).then(res => {
             return res.data;
         });
     }
@@ -24,7 +37,7 @@ export class GameApi {
         const config = {
             params: queryParams,
         };
-        return axios.get(`${import.meta.env.VITE_URL}/game/find`, config)
+        return axios.get(`${import.meta.env.VITE_URL}/game/find/by`, config)
             .then(res => {
             return res.data;
         });
