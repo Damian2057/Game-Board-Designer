@@ -2,14 +2,34 @@
     background-color: #7D53DE !important;
 }
 
-.info-tag {
-    background-color: #F2F4F8;
-    border-radius: 20px;
-    margin-top: 1em !important;
-    margin-bottom: 1em;
-    font-weight: 500;
-    padding: 0.4rem;
+.tags-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tags-table th,
+.tags-table td {
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.tags-table th,
+.tags-table td {
+    color: white;
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.tag-cell {
+    padding: 8px 12px;
+}
+
+.tag-content {
     display: flex;
     align-items: center;
-    justify-content: center;
+}
+
+.tag-content span {
+    margin-left: 10px;
 }

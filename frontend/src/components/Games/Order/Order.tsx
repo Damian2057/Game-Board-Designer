@@ -8,7 +8,8 @@ import IconCircle from "../../util/IconCircle";
 import './Order.css'
 
 const Order: React.FC = () => {
-    const location = useLocation<{ state: { game } }>();
+    const location = useLocation();
+
     const { game } = location.state;
 
     if (!game) {
@@ -39,7 +40,7 @@ const Order: React.FC = () => {
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td>{game.name}</td>
+                                        <td>{game.title}</td>
                                         <td>1</td>
                                         <td>${game.price}</td>
                                     </tr>
@@ -54,7 +55,7 @@ const Order: React.FC = () => {
                                         First Name
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type='text' placeholder='User'></Form.Control>
+                                        <Form.Control type='text' placeholder='firstname'></Form.Control>
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Col} >
@@ -62,7 +63,7 @@ const Order: React.FC = () => {
                                         Last Name
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type='text' placeholder='Name'></Form.Control>
+                                        <Form.Control type='text' placeholder='lastname'></Form.Control>
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Col} >
@@ -81,7 +82,7 @@ const Order: React.FC = () => {
                                             Address
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
-                                            <Form.Control type='text' placeholder='Wolczanska 123'></Form.Control>
+                                            <Form.Control type='text' placeholder='address'></Form.Control>
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -91,7 +92,7 @@ const Order: React.FC = () => {
                                             Phone number
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
-                                            <Form.Control type='number' placeholder='123123123'></Form.Control>
+                                            <Form.Control type='number' placeholder='999 999 999'></Form.Control>
                                         </Col>
                                     </Form.Group>
                                 </Col>

@@ -34,6 +34,22 @@ export class Order extends AbstractEntity<Order> {
   @Length(3, 200)
   address: string;
 
+  @Column({ length: 50 })
+  @Length(2, 50)
+  firstName: string;
+
+  @Column({ length: 50 })
+  @Length(2, 50)
+  lastName: string;
+
+  @Column({ length: 50 })
+  @Length(2, 50)
+  city: string;
+
+  @Column({ length: 20, nullable: true })
+  @Length(2, 20)
+  currency: string;
+
   @ManyToOne(() => Game, { nullable: false })
   @JoinColumn()
   game: Game;

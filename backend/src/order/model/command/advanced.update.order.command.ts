@@ -7,4 +7,7 @@ export class AdvancedUpdateOrderCommand extends UpdateOrderCommand {
   price: number;
   worker: UserDto;
   status: OrderStatus;
+  firstName: string;
+  lastName: string;
+  currency: string;
 }

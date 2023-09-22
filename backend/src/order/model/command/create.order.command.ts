@@ -18,5 +18,14 @@ export class CreateOrderCommand {
   @Length(3, 100)
   address: string;
 
+  @Length(2, 50)
+  firstName: string;
+
+  @Length(2, 50)
+  lastName: string;
+
+  @Length(2, 50)
+  city: string;
+
   game: GameDto;
 }
