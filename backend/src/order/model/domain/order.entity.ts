@@ -2,7 +2,7 @@ import { AbstractEntity } from "../../../database/abstract.entity";
 import { Game } from "../../../game/model/domain/game.entity";
 import { User } from "../../../users/model/domain/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToOne } from "typeorm";
-import { IsString, Length, Min } from "class-validator";
+import { Length, Min } from "class-validator";
 import { NumericTransformer } from "../../../users/util/NumericTransformer";
 import { OrderStatus } from "./order.status.enum";
 import { Project } from "../../../project/model/domain/project.entity";
@@ -19,7 +19,7 @@ export class Order extends AbstractEntity<Order> {
   email: string;
 
   @Column({ length: 2000 })
-  @Length(3, 2000)
+  @Length(0, 2000)
   description: string;
 
   @Min(0)

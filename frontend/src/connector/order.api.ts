@@ -4,13 +4,18 @@ import {Game} from "../model/game/game";
 
 export class OrderApi {
 
-    static submitOrder(data: any): Promise<Order> {
+    static submitOrder(firstName: string, lastName: string, city: string, address: string, phoneNumber: string, comment: string, gameId: number, email: string): Promise<Order> {
         return axios.post(`${import.meta.env.VITE_URL}/order/submit`, {
-            phone: data.phone,
-            email: data.email,
-            description: data.description,
-            address: data.address,
-            game: data.game,
+            phone: phoneNumber,
+            email: email,
+            description: comment,
+            address: address,
+            firstName: firstName,
+            lastName: lastName,
+            city: city,
+            game: {
+                id: gameId
+            }
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')

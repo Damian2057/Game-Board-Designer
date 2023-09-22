@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { useLocation } from 'react-router-dom';
 import { Card, Button, Table, Container, FloatingLabel } from "react-bootstrap";
 import Row from 'react-bootstrap/Row';
@@ -6,18 +6,40 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import IconCircle from "../../util/IconCircle";
 import './Order.css'
+import {Api} from "../../../connector/api";
+import toast, {Toaster} from "react-hot-toast";
 
 const Order: React.FC = () => {
     const location = useLocation();
 
     const { game } = location.state;
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [city, setCity] = useState('');
+    const [address, setAddress] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState('');
+    const [comment, setComment] = useState('');
+    const [email, setEmail] = useState('');
 
     if (!game) {
         return <div>Game not found</div>;
     }
 
+    const sendOrderRequest = () => {
+        Api.order.submitOrder(firstName, lastName, city, address, phoneNumber, comment, game.id, email).then(() => {
+            toast.success('Successfully ordered!', { icon: "👋" });
+        }).catch(err => {
+            if (err.response.data.statusCode === 400) {
+                toast.error(`The entered order data is not correct.`, { icon: "💀" })
+            } else {
+                toast.error(`${err.response.data.message}`, { icon: "💀" })
+            }
+        });
+    };
+
     return (
         <div className="order">
+            <Toaster />
             <Container>
                 <Card className='shadow border-white' style={{
                     position: 'absolute',
@@ -55,7 +77,11 @@ const Order: React.FC = () => {
                                         First Name
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type='text' placeholder='firstname'></Form.Control>
+                                        <Form.Control
+                                            type='text'
+                                            placeholder='firstname'
+                                            onChange={(e) => setFirstName(e.target.value)}
+                                        />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Col} >
@@ -63,7 +89,11 @@ const Order: React.FC = () => {
                                         Last Name
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type='text' placeholder='lastname'></Form.Control>
+                                        <Form.Control
+                                            type='text'
+                                            placeholder='lastname'
+                                            onChange={(e) => setLastName(e.target.value)}
+                                        />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Col} >
@@ -71,7 +101,11 @@ const Order: React.FC = () => {
                                         City
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
-                                        <Form.Control type='text' placeholder='City'></Form.Control>
+                                        <Form.Control
+                                            type='text'
+                                            placeholder='City'
+                                            onChange={(e) => setCity(e.target.value)}
+                                        />
                                     </Col>
                                 </Form.Group>
                             </Row>
@@ -82,7 +116,11 @@ const Order: React.FC = () => {
                                             Address
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
-                                            <Form.Control type='text' placeholder='address'></Form.Control>
+                                            <Form.Control
+                                                type='text'
+                                                placeholder='address'
+                                                onChange={(e) => setAddress(e.target.value)}
+                                            />
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -92,7 +130,25 @@ const Order: React.FC = () => {
                                             Phone number
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
-                                            <Form.Control type='number' placeholder='999 999 999'></Form.Control>
+                                            <Form.Control
+                                                type='tel'
+                                                placeholder='999 999 999'
+                                                onChange={(e) => setPhoneNumber(e.target.value)}
+                                            />
+                                        </Col>
+                                    </Form.Group>
+                                </Col>
+                                <Col>
+                                    <Form.Group>
+                                        <Form.Label column sm={10} xs={10} className='order-form-label'>
+                                            Email
+                                        </Form.Label>
+                                        <Col sm={10} xs={10} className='mx-auto'>
+                                            <Form.Control
+                                                type='text'
+                                                placeholder='yourEmail@domain.com'
+                                                onChange={(e) => setEmail(e.target.value)}
+                                            />
                                         </Col>
                                     </Form.Group>
                                 </Col>
@@ -100,12 +156,17 @@ const Order: React.FC = () => {
                             <Row>
                                 <Col md={11} sm={10} xs={10} className="mt-4 mx-auto" >
                                     <FloatingLabel controlId="floatingInputGrid" label="Comments">
-                                        <Form.Control type="text" placeholder="Leave a comment here" style={{ height: '80' }} />
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Leave a comment here"
+                                            style={{ height: '80' }}
+                                            onChange={(e) => setComment(e.target.value)}
+                                        />
                                     </FloatingLabel>
                                 </Col>
                             </Row>
                             <Col lg={3} className="mt-4 mx-auto">
-                                <Button type="submit" className="order-button py-2 px-4">Submit order</Button>
+                                <Button type="button" className="order-button py-2 px-4" onClick={sendOrderRequest}>Submit order</Button>
                             </Col>
                         </Form>
                     </Card.Body>
