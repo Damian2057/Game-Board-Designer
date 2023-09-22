@@ -1,4 +1,4 @@
-import NavBar from "../NavBar/NavBar";
+import NavBar from "../../NavBar/NavBar";
 import {Container} from "react-bootstrap";
 import Card from "react-bootstrap/Card";
 import Row from "react-bootstrap/Row";
@@ -9,7 +9,7 @@ import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
 import {PiUserListBold} from "react-icons/pi";
 import {RiLockPasswordFill} from "react-icons/ri";
-import {Api} from "../../connector/api";
+import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 
 function Profile() {
