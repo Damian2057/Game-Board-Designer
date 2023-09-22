@@ -18,7 +18,6 @@ function Games() {
 
     const [tags, setTags] = React.useState([] as Tag[]);
     const [games, setGames] = React.useState([] as Game[]);
-    const [originalGames, setOriginalGames] = React.useState([] as Game[]);
 
     const [searchTitle, setSearchTitle] = React.useState('');
     const [selectedTags, setSelectedTags] = React.useState([] as Tag[]);
@@ -45,7 +44,6 @@ function Games() {
         Api.game.getAllGames()
             .then((games) => {
                 setGames(games);
-                setOriginalGames(games);
             })
             .catch((err) => {
                 toast.error(`${err.response.data.message}`, { icon: "💀" });
