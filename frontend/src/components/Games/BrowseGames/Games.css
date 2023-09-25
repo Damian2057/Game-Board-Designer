@@ -56,3 +56,29 @@
     padding-inline: 3em !important;
     font-weight: 600 !important;
 }
+
+li a {
+    border-radius: 7px;
+    padding: 0.1rem 1rem;
+    border: gray 1px solid;
+    cursor: pointer;
+    color: #7D53DE !important;
+}
+li.previous a,
+li.next a,
+li.break a {
+    border-color: transparent;
+}
+li.active a {
+    background-color: #7D53DE !important;
+    border-color: transparent;
+    color: white !important;
+    min-width: 32px;
+}
+li.disabled a {
+    color: grey;
+}
+li.disable,
+li.disabled a {
+    cursor: default;
+}

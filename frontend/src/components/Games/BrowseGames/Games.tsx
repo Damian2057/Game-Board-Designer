@@ -13,17 +13,18 @@ import {Game} from "../../../model/game/game";
 import {Tag} from "../../../model/game/tag";
 import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
+import ReactPaginate from "react-paginate";
 
 function Games() {
 
+    const itemsPerPage = 2;
     const [tags, setTags] = React.useState([] as Tag[]);
     const [games, setGames] = React.useState([] as Game[]);
 
     const [searchTitle, setSearchTitle] = React.useState('');
     const [selectedTags, setSelectedTags] = React.useState([] as Tag[]);
     const [selectedGame, setSelectedGame] = React.useState<Game | null>(null);
-
-
+    const [pageCount, setPageCount] = React.useState(itemsPerPage);
 
     React.useEffect(() => {
         fetchTags();
@@ -41,13 +42,13 @@ function Games() {
     };
 
     const fetchGames = () => {
-        Api.game.getAllGames()
-            .then((games) => {
-                setGames(games);
-            })
-            .catch((err) => {
-                toast.error(`${err.response.data.message}`, { icon: "💀" });
-            });
+        Api.game.getPagingGames(1, itemsPerPage).then((res) => {
+            setGames(res.items);
+            setPageCount(res.meta.totalPages);
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
     };
 
     const handleChange = (e: any) => {
@@ -67,18 +68,14 @@ function Games() {
             fetchGames();
             return;
         }
-        const data = {
-            title: searchTitle.length == 0 ? null : searchTitle,
-            tags: selectedTags.map(tag => tag.name).join(',')
-        };
-        Api.game.findGame(data).then((res) => {
-            if (res.length == 0) {
-                fetchGames();
-                toast.error(`No games found`)
-            }
-            setGames(res);
+        const title = searchTitle.length == 0 ? "" : searchTitle;
+        const tags = selectedTags.map(tag => tag.name).join(',');
+        Api.game.getPagingGames(1, itemsPerPage, tags, title).then((res) => {
+            setGames(res.items);
+            setPageCount(res.meta.totalPages);
+            window.scrollTo(0, 0);
         }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" })
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
         });
     };
 
@@ -89,6 +86,16 @@ function Games() {
     const handleGameClick = (game: any) => {
         setSelectedGame(game);
     };
+
+    const handlePageClick = (data: any) => {
+        Api.game.getPagingGames(data.selected + 1, itemsPerPage).then((res) => {
+            setGames(res.items);
+            setPageCount(res.meta.totalPages);
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
 
     return (
         <div className="Games">
@@ -144,8 +151,28 @@ function Games() {
                         />
                     )}
                 </Row>
-                <div>
-                    <Button className='button-filter'>See more games</Button>
+                <div className="pagination flex justify-center items-center">
+                    {pageCount > 1 && (
+                        <ReactPaginate
+                            previousLabel="previous"
+                            nextLabel="next"
+                            breakLabel="..."
+                            breakClassName="page-item"
+                            breakLinkClassName="page-link"
+                            pageCount={pageCount}
+                            pageRangeDisplayed={4}
+                            marginPagesDisplayed={2}
+                            onPageChange={handlePageClick}
+                            containerClassName="pagination justify-content-center"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            activeClassName="active"
+                        />
+                    )}
                 </div>
                 <div className='flex items-center justify-center'>
                     <img src="/src/assets/logo_GBD.png" alt="GBD Logo" style={{ maxWidth: '463px' }} />

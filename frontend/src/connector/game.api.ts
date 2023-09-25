@@ -25,6 +25,19 @@ export class GameApi {
         });
     }
 
+    static getPagingGames(page: number, limit: number, tags?: string, title?: string): Promise<Page<Game>> {
+        return axios.get(`${import.meta.env.VITE_URL}/game/all/paged`, {
+            params: {
+                page: page,
+                limit: limit,
+                tags: tags,
+                title: title,
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
     static findGame(data: any): Promise<Game[]> {
         const queryParams = {};
 
