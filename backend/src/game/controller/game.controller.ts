@@ -23,8 +23,9 @@ export class GameController {
   @Get('all/paged')
   async getAllBoardGamesPaged(@Query('page', ParseIntPipe) page: number,
                               @Query('limit', ParseIntPipe) limit: number,
-                              @Query('tags') tags?: string): Promise<Pagination<GameDto>> {
-    return this.boardGameService.findAllPaged(page, limit, tags ? tags.split(',') : []);
+                              @Query('tags') tags?: string,
+                              @Query('title') title?: string): Promise<Pagination<GameDto>> {
+    return this.boardGameService.findAllPaged(page, limit, tags ? tags.split(',') : [], title);
   }
 
   @Get(':id')
