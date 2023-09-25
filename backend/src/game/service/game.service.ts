@@ -261,12 +261,16 @@ export class GameService {
 
   async findAllPaged(page: number = 1,
                      limit: number = 10,
-                     tags: string[] = []): Promise<Pagination<Game>> {
+                     tags: string[] = [],
+                     title: string = ""): Promise<Pagination<Game>> {
     const queryBuilder = this.gameRepository.createQueryBuilder('game')
 
     if (tags.length > 0) {
       queryBuilder.innerJoin('game.tags', 'tag');
       queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
+    }
+    if (title.length > 0) {
+      queryBuilder.andWhere('game.title LIKE :title', { title: `%${title}%` });
     }
 
     return await paginate<Game>(queryBuilder, { page, limit });
