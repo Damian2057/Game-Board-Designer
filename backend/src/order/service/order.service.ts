@@ -152,7 +152,7 @@ export class OrderService {
   }
 
   async getTrendingGames(): Promise<any[]> {
-    let games: any[] = await this.orderRepository.createQueryBuilder("order")
+    let gamesId: any[] = await this.orderRepository.createQueryBuilder("order")
       .select("order.game", "game")
       .addSelect("COUNT(order.game)", "count")
       .groupBy("order.game")
@@ -160,11 +160,15 @@ export class OrderService {
       .limit(3)
       .getRawMany();
 
-    if (games.length === 0 || games.length < 3) {
-      games = getRandomElements(await this.gameService.findAll(),3);
+    if (gamesId.length === 0 || gamesId.length < 3) {
+      return getRandomElements(await this.gameService.findAll(),3);
+    } else {
+      const games: Game[] = [];
+      for (const game of gamesId) {
+        games.push(await this.gameService.getGameById(game.game));
+      }
+      return games.map(game => mapGameToGameDto(game));
     }
-
-    return games;
   }
 
   private async updateNotNullFields(order: Order, command: any): Promise<Order> {

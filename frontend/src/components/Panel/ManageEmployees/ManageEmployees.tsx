@@ -4,25 +4,27 @@ import { GrClose } from "react-icons/gr";
 import toast, { Toaster } from 'react-hot-toast';
 import IconCircle from '../../util/IconCircle'
 import './ManageEmployees.css'
+import {Api} from "../../../connector/api";
+import {User} from "../../../model/user/user";
+import EmployeeInfo from "./Modals/EmployeeInfo";
 
 export default function ManageEmployees() {
 
-    const initialEmployees = [
-        { id: 1, firstName: 'John', lastName: 'Smith', isAdmin: false },
-        { id: 2, firstName: 'Jane', lastName: 'Brown', isAdmin: false },
-        { id: 3, firstName: 'Angelina', lastName: 'Jones', isAdmin: false },
-        { id: 4, firstName: 'Robert', lastName: 'Williams', isAdmin: false },
-        { id: 5, firstName: 'Mariah', lastName: 'Murphy', isAdmin: false },
-        { id: 6, firstName: 'Michael', lastName: 'Walsh', isAdmin: false },
-        { id: 7, firstName: 'Cameron', lastName: 'Anderson', isAdmin: false },
-        { id: 8, firstName: 'Hannah', lastName: 'Wilson', isAdmin: false }
-    ]
-
-    const [employees, setEmployees] = useState(initialEmployees);
-    const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState();
+    const [employees, setEmployees] = useState([] as User[]);
+    const [selectedEmployeeInfo, setSelectedEmployeeInfo] = React.useState<User | null>(null);
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [editedEmployee, setEditedEmployee] = useState<{ id: number; firstName: string; lastName: string, isAdmin: boolean } | null>(null);
+    const [editedEmployee, setEditedEmployee] = useState<User | null>(null);
+
+    React.useEffect(() => {
+        Api.user.findUser({
+            roles: 'admin,employee'
+        }).then(res => {
+            setEmployees(res)
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
+    }, []);
 
     const handleOpenAddEmployeeModal = () => {
         setAddShowModal(true);
@@ -32,23 +34,23 @@ export default function ManageEmployees() {
     };
 
     const handleAddNewEmployee = (newEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
-        setEmployees([...employees, newEmployee]);
+        // setEmployees([...employees, newEmployee]);
     };
 
     const handleEmployeeInfo = (employee: any) => {
         setSelectedEmployeeInfo(employee);
     };
 
-    const handleEditEmployee = (employee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
-        setEditedEmployee(employee);
-        setShowEditModal(true);
-    };
+    // const handleEditEmployee = (employee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
+    //     setEditedEmployee(employee);
+    //     setShowEditModal(true);
+    // };
 
     const handleSaveEditedEmployee = (editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
         const updatedEmployees = employees.map((employee) =>
             employee.id === editedEmployee.id ? editedEmployee : employee
         );
-        setEmployees(updatedEmployees);
+        // setEmployees(updatedEmployees);
         setEditedEmployee(null);
         setShowEditModal(false);
     };
@@ -82,6 +84,7 @@ export default function ManageEmployees() {
                                     <thead>
                                         <tr className='uppercase'>
                                             <th>Name</th>
+                                            <th>Role</th>
                                             <th>Details</th>
                                             <th>Edit</th>
                                             <th>Deactivate</th>
@@ -90,12 +93,13 @@ export default function ManageEmployees() {
                                     <tbody>
                                         {employees.map((employee) => (
                                             <tr key={employee.id}>
-                                                <td className='centered-td'>{employee.firstName} {employee.lastName}</td>
+                                                <td className='centered-td'>{employee.username}</td>
+                                                <td className='centered-td'>{employee.role}</td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleEmployeeInfo(employee)}>Info</Button>
                                                 </td>
                                                 <td>
-                                                    <Button className='button-workspace' onClick={() => handleEditEmployee(employee)}>Edit</Button>
+                                                    <Button className='button-workspace' onClick={() => {}}>Edit</Button>
                                                 </td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleEmployeeDeactivate(employee.id)}>Deactivate</Button>
@@ -111,12 +115,12 @@ export default function ManageEmployees() {
                                     </tbody>
                                 </Table>
                                 <NewEmployeeModal show={showAddModal} onClose={handleCloseAddEmployeeModal} onSave={handleAddNewEmployee} />
-                                <EmployeeEdit
-                                    show={showEditModal}
-                                    onClose={() => setShowEditModal(false)}
-                                    onSave={handleSaveEditedEmployee}
-                                    editedEmployee={editedEmployee || { id: 0, firstName: '', lastName: '', isAdmin: false }}
-                                />
+                                {/*<EmployeeEdit*/}
+                                {/*    show={showEditModal}*/}
+                                {/*    onClose={() => setShowEditModal(false)}*/}
+                                {/*    onSave={handleSaveEditedEmployee}*/}
+                                {/*    editedEmployee={editedEmployee || { id: 0, firstName: '', lastName: '', isAdmin: false }}*/}
+                                {/*/>*/}
                             </Col>
                         </div>
                     </Card.Body>
@@ -124,50 +128,6 @@ export default function ManageEmployees() {
             </Container>
         </div>
     )
-}
-
-interface EmployeeInfoProps {
-    employee: any;
-    onClose: () => void;
-}
-
-const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
-    return (
-        <Modal show={true} onHide={onClose} className='text-white' style={{}}>
-            <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
-                <a onClick={onClose} >
-                    <div className='icon-circle' >
-                        <GrClose />
-                    </div>
-                </a>
-            </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Employee info</Modal.Title>
-            <div className='game-info rounded'>
-                <Modal.Body className=' fs-5 rounded-md'>
-                    <Form as={Col} lg={8} className='mx-auto mb-5'>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>First Name:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee.firstName} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>Last Name:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee.lastName} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <span>
-                                <Form.Label className='fw-bold'>Role:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee.isAdmin ? 'Admin' : 'Employee'} />
-                            </span>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
 }
 
 interface EmployeeEditProps {
