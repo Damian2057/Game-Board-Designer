@@ -1,7 +1,9 @@
 import { Card } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import './ContentCard.css'
-const ContentCard = ({ linkTo, icon, count, title, description }) => {
+import React from "react";
+import {ContentCardProps} from "./Props/ContentCardProps";
+const ContentCard: React.FC<ContentCardProps> = ({ linkTo, icon, count, title, description }) => {
 
     const navigate = useNavigate();
 
@@ -19,7 +21,6 @@ const ContentCard = ({ linkTo, icon, count, title, description }) => {
             <Card.Body>
                 <div className="text-start flex gap-3 items-center">
                     {icon}
-                    <span className="fs-4 fw-bold">{count}</span>
                 </div>
                 <div className="py-2">
                     <span className="fs-3 fw-bold">{title}</span>
