@@ -18,6 +18,7 @@ import './App.css';
 import Profile from "./components/Personal/Profile/Profile";
 import MyOrders from "./components/Personal/MyOrders/MyOrders";
 import CustomOptionPanel from "./components/Panel/Custom/CustomOptionPanel";
+import ManageGames from "./components/Panel/ManageGames/ManageGames";
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
           <Route path='/panel/workspace' element={<Workspace />} />
           <Route path='/panel/projects' element={<Projects />} />
           <Route path='/panel/manage' element={<ManageEmployees />} />
+          <Route path='/panel/manage/games' element={<ManageGames />} />
           <Route path='/panel/scheme' element={<NewSchema />} />
         </Routes>
       </BrowserRouter>
