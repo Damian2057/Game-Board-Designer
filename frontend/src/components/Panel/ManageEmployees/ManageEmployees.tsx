@@ -39,7 +39,7 @@ export default function ManageEmployees() {
     };
 
     const handleAddNewEmployee = (newEmployee: User | null) => {
-        // setEmployees([...employees, newEmployee]);
+        fetchEmployees();
     };
 
     const handleEmployeeInfo = (employee: any) => {
@@ -125,7 +125,11 @@ export default function ManageEmployees() {
                                         )}
                                     </tbody>
                                 </Table>
-                                <NewEmployeeModal show={showAddModal} onClose={handleCloseAddEmployeeModal} onSave={handleAddNewEmployee} />
+                                <NewEmployeeModal
+                                    show={showAddModal}
+                                    onClose={handleCloseAddEmployeeModal}
+                                    onSave={handleAddNewEmployee}
+                                />
                                 <EmployeeEdit
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}

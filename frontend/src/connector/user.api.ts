@@ -14,6 +14,23 @@ export class UserApi {
         });
     }
 
+    static createUser(data: any): Promise<void> {
+        return axios.post(`${import.meta.env.VITE_URL}/user/create`, {
+            username: data.username,
+            password: data.password,
+            email: data.email,
+            phoneNumber: data.phoneNumber,
+            role: data.role,
+            isActive: data.isActive
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
     static activateUser(code: string): Promise<void> {
         return axios.put(`${import.meta.env.VITE_URL}/user/activate`, {
             code: code,

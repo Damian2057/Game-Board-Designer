@@ -19,7 +19,7 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [isActivated, setIsActivated] = useState(true);
-    const [selectedRole, setSelectedRole] = useState('');
+    const [selectedRole, setSelectedRole] = useState('employee');
 
     useEffect(() => {
         Api.user.getRoles().then(res => {
@@ -30,11 +30,20 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
     }, []);
 
     const handleSave = () => {
-        // onSave({ id: Date.now(), firstName, lastName, isAdmin });
-        // setFirstName('');
-        // setLastName('');
-        // setIsAdmin(false);
-        // onClose();
+        Api.user.createUser({
+            username: userName,
+            password: password,
+            email: email,
+            phoneNumber: phone,
+            role: selectedRole,
+            isActive: isActivated
+        }).then(() => {
+            toast.success(`Employee ${userName} successfully created`, { icon: "👏" });
+            onSave(null);
+            onClose();
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
     };
 
     return (
