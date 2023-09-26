@@ -105,7 +105,7 @@ function Profile() {
                                             </div>
                                         </div>
                                         <div className="mt-2">
-                                            <Form.Control type='password' value='' onChange={(e) => setPassword(e.target.value)}/>
+                                            <Form.Control type='password' value={password} onChange={(e) => setPassword(e.target.value)}/>
                                         </div>
                                     </div>
                                     <Col lg={10} xs={10} className='mx-auto mb-5'>

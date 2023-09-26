@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import {Form} from "react-bootstrap";
 import {ToggleComponentProps} from "../Props/ToggleComponentProps";
 
-const ToggleComponent: React.FC<ToggleComponentProps> = ({ label, initialValue, onChange }) => {
+const ToggleComponent: React.FC<ToggleComponentProps> = ({ label, initialValue, labels, onChange }) => {
     const [value, setValue] = useState(initialValue);
 
     const handleChange = () => {
@@ -12,7 +12,7 @@ const ToggleComponent: React.FC<ToggleComponentProps> = ({ label, initialValue, 
 
     return (
         <div className='mt-4'>
-            <Form.Group controlId={`${label}Toggle`}>
+            <Form.Group controlId={`${label}Toggle`} className="d-flex align-items-center">
                 <Form.Check
                     type="switch"
                     id={`${label.toLowerCase()}Switch`}
@@ -20,10 +20,10 @@ const ToggleComponent: React.FC<ToggleComponentProps> = ({ label, initialValue, 
                     checked={value}
                     onChange={handleChange}
                 />
-                <p className='fw-bold'>{value ? 'Admin' : 'Employee'}</p>
+                <div className="mx-2"></div>
+                <span className='fw-bold'>{value ? labels[0] : labels[1]}</span>
             </Form.Group>
         </div>
-
     );
 };
 

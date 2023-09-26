@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Button, Card, Col, Container, Table, Modal, Form } from 'react-bootstrap'
 import { GrClose } from "react-icons/gr";
 import toast, { Toaster } from 'react-hot-toast';
@@ -7,6 +7,7 @@ import './ManageEmployees.css'
 import {Api} from "../../../connector/api";
 import {User} from "../../../model/user/user";
 import EmployeeInfo from "./Modals/EmployeeInfo";
+import EmployeeEdit from "./Modals/EmployeeEdit";
 
 export default function ManageEmployees() {
 
@@ -41,18 +42,18 @@ export default function ManageEmployees() {
         setSelectedEmployeeInfo(employee);
     };
 
-    // const handleEditEmployee = (employee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
-    //     setEditedEmployee(employee);
-    //     setShowEditModal(true);
-    // };
+    const handleEditEmployee = (employee: User) => {
+        setEditedEmployee(employee);
+        setShowEditModal(true);
+    };
 
-    const handleSaveEditedEmployee = (editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
-        const updatedEmployees = employees.map((employee) =>
-            employee.id === editedEmployee.id ? editedEmployee : employee
-        );
-        // setEmployees(updatedEmployees);
-        setEditedEmployee(null);
-        setShowEditModal(false);
+    const handleSaveEditedEmployee = (editedEmployee: User | null) => {
+        // const updatedEmployees = employees.map((employee) =>
+        //     employee.id === editedEmployee.id ? editedEmployee : employee
+        // );
+        // // setEmployees(updatedEmployees);
+        // setEditedEmployee(null);
+        // setShowEditModal(false);
     };
 
     const handleEmployeeDeactivate = (employeeIdToRemove: any) => {
@@ -99,7 +100,7 @@ export default function ManageEmployees() {
                                                     <Button className='button-workspace' onClick={() => handleEmployeeInfo(employee)}>Info</Button>
                                                 </td>
                                                 <td>
-                                                    <Button className='button-workspace' onClick={() => {}}>Edit</Button>
+                                                    <Button className='button-workspace' onClick={() => handleEditEmployee(employee)}>Edit</Button>
                                                 </td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleEmployeeDeactivate(employee.id)}>Deactivate</Button>
@@ -115,12 +116,12 @@ export default function ManageEmployees() {
                                     </tbody>
                                 </Table>
                                 <NewEmployeeModal show={showAddModal} onClose={handleCloseAddEmployeeModal} onSave={handleAddNewEmployee} />
-                                {/*<EmployeeEdit*/}
-                                {/*    show={showEditModal}*/}
-                                {/*    onClose={() => setShowEditModal(false)}*/}
-                                {/*    onSave={handleSaveEditedEmployee}*/}
-                                {/*    editedEmployee={editedEmployee || { id: 0, firstName: '', lastName: '', isAdmin: false }}*/}
-                                {/*/>*/}
+                                <EmployeeEdit
+                                    show={showEditModal}
+                                    onClose={() => setShowEditModal(false)}
+                                    onSave={handleSaveEditedEmployee}
+                                    editedEmployee={editedEmployee ?? null}
+                                />
                             </Col>
                         </div>
                     </Card.Body>
@@ -128,69 +129,6 @@ export default function ManageEmployees() {
             </Container>
         </div>
     )
-}
-
-interface EmployeeEditProps {
-    show: boolean;
-    onClose: () => void;
-    onSave: (editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => void;
-    editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean };
-}
-
-const EmployeeEdit: React.FC<EmployeeEditProps> = ({ show, onClose, onSave, editedEmployee }) => {
-
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-        setFirstName(editedEmployee.firstName);
-        setLastName(editedEmployee.lastName);
-        setIsAdmin(editedEmployee.isAdmin);
-    }, [editedEmployee]);
-
-
-    const handleSave = () => {
-        onSave({ id: editedEmployee.id, firstName, lastName, isAdmin });
-        onClose();
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} className='text-white'>
-            <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
-                <a onClick={onClose} >
-                    <div className='icon-circle' >
-                        <GrClose />
-                    </div>
-                </a>
-            </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit employee</Modal.Title>
-            <div className='game-info rounded'>
-                <Modal.Body className=' fs-5 rounded-md'>
-                    <Form as={Col} lg={8} className='mx-auto mb-5'>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>First Name:</Form.Label>
-                                <Form.Control type='text' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>Last Name:</Form.Label>
-                                <Form.Control type='text' value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <div className='flex justify-center items-center'>
-                            <ToggleComponent label="Role" initialValue={isAdmin} onChange={setIsAdmin} />
-                        </div>
-                        <div className='flex justify-center items-center mt-4'>
-                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
-                        </div>
-                    </Form>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
 }
 
 interface NewEmployeeModalProps {

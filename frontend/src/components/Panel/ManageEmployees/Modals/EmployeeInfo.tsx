@@ -37,14 +37,12 @@ const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
                         </Form.Group>
                         <Form.Group>
                             <div>
-                                <Form.Label className='fw-bold'>Active:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee?.isActive ? 'Yes' : 'No'} />
+                                <Form.Label className='fw-bold'>Active: {employee?.isActive ? 'Yes' : 'No'}</Form.Label>
                             </div>
                         </Form.Group>
                         <Form.Group>
                             <span>
-                                <Form.Label className='fw-bold'>Role:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee?.role} />
+                                <Form.Label className='fw-bold'>Role: {employee?.role}</Form.Label>
                             </span>
                         </Form.Group>
                     </Form>
