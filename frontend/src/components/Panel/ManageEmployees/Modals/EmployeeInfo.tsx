@@ -2,6 +2,9 @@ import React from "react";
 import {Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {EmployeeInfoProps} from "../Props/EmployeeInfoProps";
+import {PiUserListBold} from "react-icons/pi";
+import {BsEnvelope, BsTelephone} from "react-icons/bs";
+import {MdAdminPanelSettings} from "react-icons/md";
 
 const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
     return (
@@ -19,31 +22,67 @@ const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
                         <Form.Group>
                             <div>
-                                <Form.Label className='fw-bold'>Username:</Form.Label>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <PiUserListBold size={30} />
+                                        </div>
+                                        <div>
+                                            UserName:
+                                        </div>
+                                    </div>
+                                </Form.Label>
                                 <Form.Control type='text' readOnly disabled placeholder={employee?.username} />
                             </div>
                         </Form.Group>
                         <Form.Group>
                             <div>
-                                <Form.Label className='fw-bold'>Email:</Form.Label>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <BsEnvelope size={30} />
+                                        </div>
+                                        <div>
+                                            Email:
+                                        </div>
+                                    </div>
+                                </Form.Label>
                                 <Form.Control type='text' readOnly disabled placeholder={employee?.email} />
                             </div>
                         </Form.Group>
                         <Form.Group>
                             <div>
-                                <Form.Label className='fw-bold'>Phone Number:</Form.Label>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <BsTelephone size={30} />
+                                        </div>
+                                        <div>
+                                            Phone number:
+                                        </div>
+                                    </div>
+                                </Form.Label>
                                 <Form.Control type='text' readOnly disabled placeholder={employee?.phoneNumber} />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <MdAdminPanelSettings size={30} />
+                                        </div>
+                                        <div>
+                                            Role: {employee?.role}
+                                        </div>
+                                    </div>
+                                </Form.Label>
                             </div>
                         </Form.Group>
                         <Form.Group>
                             <div>
                                 <Form.Label className='fw-bold'>Active: {employee?.isActive ? 'Yes' : 'No'}</Form.Label>
                             </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <span>
-                                <Form.Label className='fw-bold'>Role: {employee?.role}</Form.Label>
-                            </span>
                         </Form.Group>
                     </Form>
                 </Modal.Body>
