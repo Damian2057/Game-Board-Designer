@@ -11,6 +11,7 @@ import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { HierarchyGuard } from "../guards/hierarchy.guard";
 import { Result } from "../../util/pojo/Result";
 import { UserActivateCommand } from "../model/command/user.activate.command";
+import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
 
 @Controller('user')
 export class UserController {
@@ -45,7 +46,7 @@ export class UserController {
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
   @Put('update/:id')
-  updateUserById(@Param('id') id: number, @Body() command: UserUpdateCommand): Promise<UserDto> {
+  updateUserById(@Param('id') id: number, @Body() command: AdvancedUserUpdateCommand): Promise<UserDto> {
     return this.userService.updateById(id, command);
   }
 

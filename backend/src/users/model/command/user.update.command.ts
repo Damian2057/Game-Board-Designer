@@ -3,5 +3,4 @@ export class UserUpdateCommand {
     password: string;
     phoneNumber: string;
     email: string;
-    role?: string;
 }

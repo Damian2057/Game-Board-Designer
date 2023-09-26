@@ -21,6 +21,7 @@ import { CODE_SEND_EMAIL } from "../../util/bullMQ/queue";
 import { UserActivateCommand } from "../model/command/user.activate.command";
 import { CodeEntity } from "../model/domain/code.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
 
 @Injectable()
 export class UserService {
@@ -81,7 +82,7 @@ export class UserService {
     return mapUserToUserDto(updated);
   }
 
-  async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
+  async updateById(id: number, command: AdvancedUserUpdateCommand): Promise<UserDto> {
       let user: User = await this.findOne(id);
       if (user == null) {
         throw new UserNotFound();
@@ -134,7 +135,7 @@ export class UserService {
     return Object.values(UserRole)
   }
 
-  private async updateNotNullFields(user: User, command: UserUpdateCommand): Promise<User> {
+  private async updateNotNullFields(user: User, command: any): Promise<User> {
     if (command.username != null) {
       user.username = command.username;
     }
@@ -153,6 +154,9 @@ export class UserService {
     }
     if (command.role != null) {
       user.role = getEnumValueByName(UserRole, command.role);
+    }
+    if (command.isActive != null) {
+      user.isActive = command.isActive;
     }
     return user;
   }

@@ -90,11 +90,14 @@ export class UserApi {
     }
 
     static updateUser(id: number, data: any): Promise<User> {
+        console.log(data);
         return axios.put(`${import.meta.env.VITE_URL}/user/update/${id}`, {
             username: data.username,
             password: data.password,
             phoneNumber: data.phoneNumber,
             role: data.role,
+            email: data.email,
+            isActive: data.isActive,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
