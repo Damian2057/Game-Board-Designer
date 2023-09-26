@@ -34,11 +34,12 @@ function MyOrders() {
         setShowEditModal(true);
     };
 
-    const handleSaveEditedOrder = (editedOrder: Order) => {
-        const updatedOrders = orders.map((order) =>
-            order.id === editedOrder.id ? editedOrder : order
-        );
-        setOrders(updatedOrders);
+    const handleSaveEditedOrder = () => {
+        Api.order.getMyOrders().then((orders) => {
+            setOrders(orders);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
         setEditedOrder(null);
         setShowEditModal(false);
     };

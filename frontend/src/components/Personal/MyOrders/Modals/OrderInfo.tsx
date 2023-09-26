@@ -38,6 +38,13 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                 <Row className='gap-2 text-white'>
                     <Col xs={0}>
                         <div className="tag-content">
+                            <span>Email: {order.email}</span>
+                        </div>
+                    </Col>
+                </Row>
+                <Row className='gap-2 text-white'>
+                    <Col xs={0}>
+                        <div className="tag-content">
                             <span>Address: {order.address}</span>
                         </div>
                     </Col>
@@ -45,7 +52,7 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                 <Row className='gap-2 text-white'>
                     <Col xs={0}>
                         <div className="tag-content">
-                            <span>Email: {order.email}</span>
+                            <span>City: {order.city}</span>
                         </div>
                     </Col>
                 </Row>

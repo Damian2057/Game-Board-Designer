@@ -13,6 +13,7 @@ export function mapOrderToOrderDto(order: Order) {
   orderDto.price = order.price;
   orderDto.address = order.address;
   orderDto.game = order.game;
+  orderDto.city = order.city;
   orderDto.status = order.status;
   if (order.customer) {
     orderDto.customer = mapUserToUserDto(order.customer);

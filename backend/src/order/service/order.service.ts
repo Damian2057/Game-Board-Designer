@@ -186,6 +186,9 @@ export class OrderService {
     if (command.worker) {
       order.worker = await this.userService.findOne(command.worker.id);
     }
+    if (command.city) {
+      order.city = command.city;
+    }
     if (command.status) {
       order.status = command.status;
     }
