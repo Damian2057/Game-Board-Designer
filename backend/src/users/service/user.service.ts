@@ -4,7 +4,7 @@ import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRegisterCommand } from "../model/command/user.register.command";
 import {
-  getEnumValueByName,
+  getEnumValueByName, mapAdvancedUserCommandToUser,
   mapUserCommandToUser,
   mapUserToUserDto
 } from "../util/util.functions";
@@ -22,6 +22,7 @@ import { UserActivateCommand } from "../model/command/user.activate.command";
 import { CodeEntity } from "../model/domain/code.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
+import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
 
 @Injectable()
 export class UserService {
@@ -183,5 +184,13 @@ export class UserService {
     const timeDifference = currentTime.getTime() - codeDate.getTime();
     const hoursDifference = timeDifference / (1000 * 60 * 60);
     return hoursDifference > 2;
+  }
+
+  async create(command: AdvancedUserCreateCommand) {
+    if (await this.findOneByEmail(command.email) == null) {
+      await this.userRepository.save(await mapAdvancedUserCommandToUser(command));
+      return new Result({affected: 1})
+    }
+    throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');
   }
 }

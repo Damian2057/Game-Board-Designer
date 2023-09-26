@@ -12,6 +12,7 @@ import { HierarchyGuard } from "../guards/hierarchy.guard";
 import { Result } from "../../util/pojo/Result";
 import { UserActivateCommand } from "../model/command/user.activate.command";
 import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
+import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
 
 @Controller('user')
 export class UserController {
@@ -21,6 +22,13 @@ export class UserController {
   @Post('register')
   register(@Body() command: UserRegisterCommand): Promise<Result> {
     return this.userService.register(command);
+  }
+
+  @HasRoles(UserRole.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('create')
+  createAccount(@Body() command: AdvancedUserCreateCommand): Promise<Result> {
+    return this.userService.create(command);
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
