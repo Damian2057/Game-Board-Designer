@@ -10,15 +10,16 @@ export default function ManageGames() {
     const [showAddModal, setAddShowModal] = useState(false);
 
     function handleOpenAddGameModal() {
-
+        setAddShowModal(true);
     }
 
     function handleCloseAddGameModal() {
-
+        setAddShowModal(false);
     }
 
     function handleAddNewGame() {
-
+        toast.success(`Game added successfully`, {icon: "👏"});
+        handleCloseAddGameModal();
     }
 
     return (
@@ -35,10 +36,10 @@ export default function ManageGames() {
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
                         <p className='font-bold fs-2'>Games</p>
-                        <TableWithPaging />
                         <div>
                             <Button className='button-workspace my-4' onClick={handleOpenAddGameModal}>Add new game</Button>
                         </div>
+                        <TableWithPaging />
                     </Card.Body>
                 </Card>
                 <NewEmployeeModal

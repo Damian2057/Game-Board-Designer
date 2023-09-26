@@ -11,7 +11,6 @@ const TableWithPaging = () => {
 
     const itemsPerPage = 2;
 
-    const [currentPage, setCurrentPage] = useState(0);
     const [games, setGames] = useState([] as Game[]);
     const [pageCount, setPageCount] = useState(0);
 
