@@ -19,7 +19,6 @@ const ContentCard = ({ linkTo, icon, count, title, description }) => {
             <Card.Body>
                 <div className="text-start flex gap-3 items-center">
                     {icon}
-                    <span className="fs-4 fw-bold">{count}</span>
                 </div>
                 <div className="py-2">
                     <span className="fs-3 fw-bold">{title}</span>

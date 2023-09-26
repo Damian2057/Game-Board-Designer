@@ -17,6 +17,7 @@ import NewSchema from './components/Panel/NewSchema/NewScheme';
 import './App.css';
 import Profile from "./components/Personal/Profile/Profile";
 import MyOrders from "./components/Personal/MyOrders/MyOrders";
+import CustomOptionPanel from "./components/Panel/Custom/CustomOptionPanel";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
           <Route path='/order' element={<Order />} />
           <Route path='/panel/workspace/board' element={<Board />} />
           <Route path='/panel/admin' element={<AdminPanel />} />
+          <Route path='/panel/custom' element={<CustomOptionPanel />} />
           <Route path='/panel/employee' element={<EmployeePanel />} />
           <Route path='/panel/workspace' element={<Workspace />} />
           <Route path='/panel/projects' element={<Projects />} />

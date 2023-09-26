@@ -12,23 +12,19 @@ export class InformationApi {
 
     static updateInformation(data: any) {
         const queryParams = {};
-
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
                 // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
-        const config = {
+        return axios.put(`${import.meta.env.VITE_URL}/configuration/update/about`, null, {
             params: queryParams,
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
-        };
-
-        return axios.put(`${import.meta.env.VITE_URL}/configuration/update/about`, config)
-            .then(res => {
-                return res.data;
-            });
+        }).then(res => {
+            return res.data;
+        });
     }
 }
