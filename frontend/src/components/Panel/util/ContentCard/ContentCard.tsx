@@ -1,7 +1,9 @@
 import { Card } from "react-bootstrap";
 import { useNavigate } from 'react-router-dom';
 import './ContentCard.css'
-const ContentCard = ({ linkTo, icon, count, title, description }) => {
+import React from "react";
+import {ContentCardProps} from "./Props/ContentCardProps";
+const ContentCard: React.FC<ContentCardProps> = ({ linkTo, icon, count, title, description }) => {
 
     const navigate = useNavigate();
 

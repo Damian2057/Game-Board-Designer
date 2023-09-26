@@ -1,5 +1,5 @@
 import { Col, Row } from "react-bootstrap";
-import ContentCard from "../ContentCard";
+import ContentCard from "../util/ContentCard/ContentCard";
 import NavBar from "../../NavBar/NavBar";
 import React from "react";
 
