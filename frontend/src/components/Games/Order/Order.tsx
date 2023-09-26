@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import { useLocation } from 'react-router-dom';
+import {useLocation, useNavigate} from 'react-router-dom';
 import { Card, Button, Table, Container, FloatingLabel } from "react-bootstrap";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -13,6 +13,7 @@ const Order: React.FC = () => {
     const location = useLocation();
 
     const { game } = location.state;
+    const navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [city, setCity] = useState('');
@@ -28,6 +29,9 @@ const Order: React.FC = () => {
     const sendOrderRequest = () => {
         Api.order.submitOrder(firstName, lastName, city, address, phoneNumber, comment, game.id, email).then(() => {
             toast.success('Successfully ordered!', { icon: "👋" });
+            setTimeout(() => {
+                navigate('/');
+            }, 2000);
         }).catch(err => {
             if (err.response.data.statusCode === 400) {
                 toast.error(`The entered order data is not correct.`, { icon: "💀" })

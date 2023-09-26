@@ -18,7 +18,7 @@ function Register() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate()
+    const navigate = useNavigate();
     const [showActivateCodeModal, setShowActivateCodeModal] = useState(false);
 
     const sendRegistrationRequest = () => {
