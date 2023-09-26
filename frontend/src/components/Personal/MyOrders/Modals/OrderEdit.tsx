@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {OrderEditProps} from "./OrderEditProps";
+import {OrderEditProps} from "../Props/OrderEditProps";
 
 const OrderEdit: React.FC<OrderEditProps> = ({ show, onClose, onSave, editedOrder }) => {
 

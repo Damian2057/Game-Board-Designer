@@ -6,8 +6,8 @@ import Card from "react-bootstrap/Card";
 import Col from "react-bootstrap/Col";
 import {Order} from "../../../model/order/order";
 import {Api} from "../../../connector/api";
-import OrderInfo from "./OrderInfo";
-import OrderEdit from "./OrderEdit";
+import OrderInfo from "./Modals/OrderInfo";
+import OrderEdit from "./Modals/OrderEdit";
 
 function MyOrders() {
 

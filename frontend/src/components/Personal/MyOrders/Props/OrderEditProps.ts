@@ -1,4 +1,4 @@
-import {Order} from "../../../model/order/order";
+import {Order} from "../../../../model/order/order";
 
 export interface OrderEditProps {
     show: boolean;

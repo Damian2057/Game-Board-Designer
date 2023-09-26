@@ -8,7 +8,7 @@ export interface Order extends Entity {
     email: string;
     description: string;
     price: number;
-    game?: Game;
+    game: Game;
     address: string;
     customer?: User;
     worker?: User;
