@@ -50,6 +50,7 @@ export class OrderApi {
             phone: data.phone,
             email: data.email,
             description: data.description,
+            city: data.city,
             address: data.address,
         }, {
             headers: {

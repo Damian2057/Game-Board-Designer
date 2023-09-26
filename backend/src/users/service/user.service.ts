@@ -4,7 +4,7 @@ import { User } from "../model/domain/user.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { UserRegisterCommand } from "../model/command/user.register.command";
 import {
-  getEnumValueByName,
+  getEnumValueByName, mapAdvancedUserCommandToUser,
   mapUserCommandToUser,
   mapUserToUserDto
 } from "../util/util.functions";
@@ -21,6 +21,8 @@ import { CODE_SEND_EMAIL } from "../../util/bullMQ/queue";
 import { UserActivateCommand } from "../model/command/user.activate.command";
 import { CodeEntity } from "../model/domain/code.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
+import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
 
 @Injectable()
 export class UserService {
@@ -81,7 +83,7 @@ export class UserService {
     return mapUserToUserDto(updated);
   }
 
-  async updateById(id: number, command: UserUpdateCommand): Promise<UserDto> {
+  async updateById(id: number, command: AdvancedUserUpdateCommand): Promise<UserDto> {
       let user: User = await this.findOne(id);
       if (user == null) {
         throw new UserNotFound();
@@ -91,14 +93,17 @@ export class UserService {
       return mapUserToUserDto(updated);
   }
 
-  async find(role: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
+  async find(roles: string, email: string, username: string, phoneNumber: string, id: number): Promise<UserDto[]> {
     const users = new SetFilter();
-    if (role != null) {
-      const result = await this.userRepository.createQueryBuilder("user")
-        .where("user.role = :role",
-          {role: getEnumValueByName(UserRole, role)})
-        .getMany();
-      result.forEach(user => users.add(user));
+    if (roles != null) {
+      const split = roles.split(',');
+      for (const role of split) {
+        const result = await this.userRepository.createQueryBuilder("user")
+          .where("user.role = :role",
+            {role: getEnumValueByName(UserRole, role)})
+          .getMany();
+        result.forEach(user => users.add(user));
+      }
     }
     if (email != null) {
       const result = await this.userRepository.findOneBy({email: email});
@@ -131,7 +136,7 @@ export class UserService {
     return Object.values(UserRole)
   }
 
-  private async updateNotNullFields(user: User, command: UserUpdateCommand): Promise<User> {
+  private async updateNotNullFields(user: User, command: any): Promise<User> {
     if (command.username != null) {
       user.username = command.username;
     }
@@ -150,6 +155,9 @@ export class UserService {
     }
     if (command.role != null) {
       user.role = getEnumValueByName(UserRole, command.role);
+    }
+    if (command.isActive != null) {
+      user.isActive = command.isActive;
     }
     return user;
   }
@@ -176,5 +184,13 @@ export class UserService {
     const timeDifference = currentTime.getTime() - codeDate.getTime();
     const hoursDifference = timeDifference / (1000 * 60 * 60);
     return hoursDifference > 2;
+  }
+
+  async create(command: AdvancedUserCreateCommand) {
+    if (await this.findOneByEmail(command.email) == null) {
+      await this.userRepository.save(await mapAdvancedUserCommandToUser(command));
+      return new Result({affected: 1})
+    }
+    throw new UserAlreadyExistsException('User with email: ' + command.email + ' already exists!');
   }
 }

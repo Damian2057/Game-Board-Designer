@@ -2,6 +2,8 @@ import { UserRegisterCommand } from "../model/command/user.register.command";
 import { User } from "../model/domain/user.entity";
 import { UserDto } from "../model/dto/user.dto";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
+import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
+import { UserRole } from "../model/domain/user.role.enum";
 const bcrypt = require('bcrypt');
 
 export async function mapUserCommandToUser(command: UserRegisterCommand): Promise<User> {
@@ -10,6 +12,17 @@ export async function mapUserCommandToUser(command: UserRegisterCommand): Promis
   user.password = await hashPassword(command.password);
   user.phoneNumber = command.phoneNumber;
   user.username = command.username;
+  return user;
+}
+
+export async function mapAdvancedUserCommandToUser(command: AdvancedUserCreateCommand): Promise<User> {
+  const user = new User();
+  user.email = command.email;
+  user.password = await hashPassword(command.password);
+  user.phoneNumber = command.phoneNumber;
+  user.username = command.username;
+  user.role = getEnumValueByName(UserRole, command.role);
+  user.isActive = command.isActive;
   return user;
 }
 

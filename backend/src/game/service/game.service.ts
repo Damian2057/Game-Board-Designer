@@ -264,9 +264,9 @@ export class GameService {
                      tags: string[] = [],
                      title: string = ""): Promise<Pagination<Game>> {
     const queryBuilder = this.gameRepository.createQueryBuilder('game')
+    queryBuilder.leftJoinAndSelect('game.tags', 'tag');
 
     if (tags.length > 0) {
-      queryBuilder.innerJoin('game.tags', 'tag');
       queryBuilder.andWhere('tag.name IN (:...tags)', { tags });
     }
     if (title.length > 0) {

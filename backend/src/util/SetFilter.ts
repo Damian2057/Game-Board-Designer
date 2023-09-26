@@ -10,7 +10,6 @@ export class SetFilter {
   add(value: any): void {
     if (value != null && this.set.has(JSON.stringify(value)) === false) {
       this.set.add(JSON.stringify(value));
-      console.log(this.set)
     }
   }
 

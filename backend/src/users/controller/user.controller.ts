@@ -11,6 +11,8 @@ import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { HierarchyGuard } from "../guards/hierarchy.guard";
 import { Result } from "../../util/pojo/Result";
 import { UserActivateCommand } from "../model/command/user.activate.command";
+import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
+import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
 
 @Controller('user')
 export class UserController {
@@ -20,6 +22,13 @@ export class UserController {
   @Post('register')
   register(@Body() command: UserRegisterCommand): Promise<Result> {
     return this.userService.register(command);
+  }
+
+  @HasRoles(UserRole.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Post('create')
+  createAccount(@Body() command: AdvancedUserCreateCommand): Promise<Result> {
+    return this.userService.create(command);
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
@@ -45,7 +54,7 @@ export class UserController {
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
   @UseGuards(JwtGuard, RolesGuard, HierarchyGuard)
   @Put('update/:id')
-  updateUserById(@Param('id') id: number, @Body() command: UserUpdateCommand): Promise<UserDto> {
+  updateUserById(@Param('id') id: number, @Body() command: AdvancedUserUpdateCommand): Promise<UserDto> {
     return this.userService.updateById(id, command);
   }
 
@@ -58,11 +67,12 @@ export class UserController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
-  getUsersByFiler(@Query('role') role?: string,
+  getUsersByFiler(@Query('roles') role?: string,
                   @Query('email') email?: string,
                   @Query('username') username?: string,
                   @Query('phoneNumber') phoneNumber?: string,
-                  @Query('id') id?: number): Promise<UserDto[]> {
+                  @Query('id') id?: number,
+                  @Query('roles') roles?: string): Promise<UserDto[]> {
     return this.userService.find(role, email, username, phoneNumber, id);
   }
 

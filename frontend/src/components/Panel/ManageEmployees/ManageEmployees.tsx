@@ -1,28 +1,35 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Card, Col, Container, Table, Modal, Form } from 'react-bootstrap'
-import { GrClose } from "react-icons/gr";
+import React, { useState } from 'react'
+import { Button, Card, Col, Container, Table } from 'react-bootstrap'
 import toast, { Toaster } from 'react-hot-toast';
 import IconCircle from '../../util/IconCircle'
 import './ManageEmployees.css'
+import {Api} from "../../../connector/api";
+import {User} from "../../../model/user/user";
+import EmployeeInfo from "./Modals/EmployeeInfo";
+import EmployeeEdit from "./Modals/EmployeeEdit";
+import NewEmployeeModal from "./Modals/NewEmployeeModal";
 
 export default function ManageEmployees() {
 
-    const initialEmployees = [
-        { id: 1, firstName: 'John', lastName: 'Smith', isAdmin: false },
-        { id: 2, firstName: 'Jane', lastName: 'Brown', isAdmin: false },
-        { id: 3, firstName: 'Angelina', lastName: 'Jones', isAdmin: false },
-        { id: 4, firstName: 'Robert', lastName: 'Williams', isAdmin: false },
-        { id: 5, firstName: 'Mariah', lastName: 'Murphy', isAdmin: false },
-        { id: 6, firstName: 'Michael', lastName: 'Walsh', isAdmin: false },
-        { id: 7, firstName: 'Cameron', lastName: 'Anderson', isAdmin: false },
-        { id: 8, firstName: 'Hannah', lastName: 'Wilson', isAdmin: false }
-    ]
-
-    const [employees, setEmployees] = useState(initialEmployees);
-    const [selectedEmployeeInfo, setSelectedEmployeeInfo] = useState();
+    const [employees, setEmployees] = useState([] as User[]);
+    const [selectedEmployeeInfo, setSelectedEmployeeInfo] = React.useState<User | null>(null);
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [editedEmployee, setEditedEmployee] = useState<{ id: number; firstName: string; lastName: string, isAdmin: boolean } | null>(null);
+    const [editedEmployee, setEditedEmployee] = useState<User | null>(null);
+
+    React.useEffect(() => {
+        fetchEmployees();
+    }, []);
+
+    const fetchEmployees = () => {
+        Api.user.findUser({
+            roles: 'admin,employee'
+        }).then(res => {
+            setEmployees(res)
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
+    }
 
     const handleOpenAddEmployeeModal = () => {
         setAddShowModal(true);
@@ -31,32 +38,36 @@ export default function ManageEmployees() {
         setAddShowModal(false);
     };
 
-    const handleAddNewEmployee = (newEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
-        setEmployees([...employees, newEmployee]);
+    const handleAddNewEmployee = (newEmployee: User | null) => {
+        fetchEmployees();
     };
 
     const handleEmployeeInfo = (employee: any) => {
         setSelectedEmployeeInfo(employee);
     };
 
-    const handleEditEmployee = (employee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
+    const handleEditEmployee = (employee: User) => {
         setEditedEmployee(employee);
         setShowEditModal(true);
     };
 
-    const handleSaveEditedEmployee = (editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => {
-        const updatedEmployees = employees.map((employee) =>
-            employee.id === editedEmployee.id ? editedEmployee : employee
-        );
-        setEmployees(updatedEmployees);
+    const handleSaveEditedEmployee = (editedEmployee: User | null) => {
+        fetchEmployees();
         setEditedEmployee(null);
         setShowEditModal(false);
     };
 
-    const handleEmployeeDeactivate = (employeeIdToRemove: any) => {
-        const updatedEmployees = employees.filter(employee => employee.id !== employeeIdToRemove);
-        setEmployees(updatedEmployees);
-        toast.success('Employee deactivated', { icon: "💀" })
+    const handleEmployeeDeactivate = (employeeId: number, activate: boolean) => {
+        const flag: boolean = !activate;
+        console.log(flag);
+        Api.user.updateUser(employeeId, {
+            isActive: flag
+        }).then(res => {
+            fetchEmployees();
+            toast.success('Employee changed', { icon: "💀" });
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
     };
 
     return (
@@ -81,16 +92,18 @@ export default function ManageEmployees() {
                                 <Table striped bordered hover>
                                     <thead>
                                         <tr className='uppercase'>
-                                            <th>Name</th>
+                                            <th>Username</th>
+                                            <th>Role</th>
                                             <th>Details</th>
                                             <th>Edit</th>
-                                            <th>Deactivate</th>
+                                            <th>Activation</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         {employees.map((employee) => (
                                             <tr key={employee.id}>
-                                                <td className='centered-td'>{employee.firstName} {employee.lastName}</td>
+                                                <td className='centered-td'>{employee.username}</td>
+                                                <td className='centered-td'>{employee.role}</td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleEmployeeInfo(employee)}>Info</Button>
                                                 </td>
@@ -98,7 +111,9 @@ export default function ManageEmployees() {
                                                     <Button className='button-workspace' onClick={() => handleEditEmployee(employee)}>Edit</Button>
                                                 </td>
                                                 <td>
-                                                    <Button className='button-workspace' onClick={() => handleEmployeeDeactivate(employee.id)}>Deactivate</Button>
+                                                    <Button className='button-workspace' onClick={() => handleEmployeeDeactivate(employee.id, employee.isActive)}>
+                                                        {employee.isActive ? 'Deactivate' : 'Activate'}
+                                                    </Button>
                                                 </td>
                                             </tr>
                                         ))}
@@ -110,12 +125,16 @@ export default function ManageEmployees() {
                                         )}
                                     </tbody>
                                 </Table>
-                                <NewEmployeeModal show={showAddModal} onClose={handleCloseAddEmployeeModal} onSave={handleAddNewEmployee} />
+                                <NewEmployeeModal
+                                    show={showAddModal}
+                                    onClose={handleCloseAddEmployeeModal}
+                                    onSave={handleAddNewEmployee}
+                                />
                                 <EmployeeEdit
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}
                                     onSave={handleSaveEditedEmployee}
-                                    editedEmployee={editedEmployee || { id: 0, firstName: '', lastName: '', isAdmin: false }}
+                                    editedEmployee={editedEmployee ?? null}
                                 />
                             </Col>
                         </div>
@@ -125,206 +144,3 @@ export default function ManageEmployees() {
         </div>
     )
 }
-
-interface EmployeeInfoProps {
-    employee: any;
-    onClose: () => void;
-}
-
-const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
-    return (
-        <Modal show={true} onHide={onClose} className='text-white' style={{}}>
-            <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
-                <a onClick={onClose} >
-                    <div className='icon-circle' >
-                        <GrClose />
-                    </div>
-                </a>
-            </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Employee info</Modal.Title>
-            <div className='game-info rounded'>
-                <Modal.Body className=' fs-5 rounded-md'>
-                    <Form as={Col} lg={8} className='mx-auto mb-5'>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>First Name:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee.firstName} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>Last Name:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee.lastName} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <span>
-                                <Form.Label className='fw-bold'>Role:</Form.Label>
-                                <Form.Control type='text' readOnly disabled placeholder={employee.isAdmin ? 'Admin' : 'Employee'} />
-                            </span>
-                        </Form.Group>
-                    </Form>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-}
-
-interface EmployeeEditProps {
-    show: boolean;
-    onClose: () => void;
-    onSave: (editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => void;
-    editedEmployee: { id: number; firstName: string; lastName: string, isAdmin: boolean };
-}
-
-const EmployeeEdit: React.FC<EmployeeEditProps> = ({ show, onClose, onSave, editedEmployee }) => {
-
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    useEffect(() => {
-        setFirstName(editedEmployee.firstName);
-        setLastName(editedEmployee.lastName);
-        setIsAdmin(editedEmployee.isAdmin);
-    }, [editedEmployee]);
-
-
-    const handleSave = () => {
-        onSave({ id: editedEmployee.id, firstName, lastName, isAdmin });
-        onClose();
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} className='text-white'>
-            <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
-                <a onClick={onClose} >
-                    <div className='icon-circle' >
-                        <GrClose />
-                    </div>
-                </a>
-            </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit employee</Modal.Title>
-            <div className='game-info rounded'>
-                <Modal.Body className=' fs-5 rounded-md'>
-                    <Form as={Col} lg={8} className='mx-auto mb-5'>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>First Name:</Form.Label>
-                                <Form.Control type='text' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>Last Name:</Form.Label>
-                                <Form.Control type='text' value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <div className='flex justify-center items-center'>
-                            <ToggleComponent label="Role" initialValue={isAdmin} onChange={setIsAdmin} />
-                        </div>
-                        <div className='flex justify-center items-center mt-4'>
-                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
-                        </div>
-                    </Form>
-                </Modal.Body>
-            </div>
-        </Modal>
-    );
-}
-
-interface NewEmployeeModalProps {
-    show: boolean;
-    onClose: () => void;
-    onSave: (employee: { id: number; firstName: string; lastName: string, isAdmin: boolean }) => void;
-}
-
-const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSave }) => {
-    const [firstName, setFirstName] = useState('');
-    const [lastName, setLastName] = useState('');
-    const [isAdmin, setIsAdmin] = useState(false);
-
-    const handleSave = () => {
-        onSave({ id: Date.now(), firstName, lastName, isAdmin });
-        setFirstName('');
-        setLastName('');
-        setIsAdmin(false);
-        onClose();
-    };
-
-    return (
-        <Modal show={show} onHide={onClose} className='text-white'>
-            <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
-                <a onClick={onClose} >
-                    <div className='icon-circle' >
-                        <GrClose />
-                    </div>
-                </a>
-            </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Add employee</Modal.Title>
-            <Modal.Body>
-                <Form as={Col} lg={8} className='mx-auto mb-5'>
-                    <Form.Group>
-                        <div>
-                            <Form.Label className='fw-bold'>First Name:</Form.Label>
-                            <Form.Control type='text'
-                                placeholder="Enter first name"
-                                value={firstName}
-                                onChange={(e) => setFirstName(e.target.value)} />
-                        </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <div>
-                            <Form.Label className='fw-bold'>Last Name:</Form.Label>
-                            <Form.Control type='text'
-                                placeholder="Enter last name"
-                                value={lastName}
-                                onChange={(e) => setLastName(e.target.value)} />
-                        </div>
-                    </Form.Group>
-                    <Form.Group>
-                        <div className='flex justify-center items-center'>
-                            <ToggleComponent label="Role" initialValue={isAdmin} onChange={setIsAdmin} />
-                        </div>
-                    </Form.Group>
-                    <div className='flex justify-center items-center mt-4'>
-                        <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px', paddingInline: '3rem' }}>
-                            Add</Button>
-                    </div>
-                </Form>
-            </Modal.Body>
-        </Modal>
-    );
-};
-
-
-interface ToggleComponentProps {
-    label: string;
-    initialValue: boolean;
-    onChange: (value: boolean) => void;
-}
-
-const ToggleComponent: React.FC<ToggleComponentProps> = ({ label, initialValue, onChange }) => {
-    const [value, setValue] = useState(initialValue);
-
-    const handleChange = () => {
-        setValue(!value);
-        onChange(!value);
-    };
-
-    return (
-        <div className='mt-4'>
-            <Form.Group controlId={`${label}Toggle`}>
-                <Form.Check
-                    type="switch"
-                    id={`${label.toLowerCase()}Switch`}
-                    label={label}
-                    checked={value}
-                    onChange={handleChange}
-                />
-                <p className='fw-bold'>{value ? 'Admin' : 'Employee'}</p>
-            </Form.Group>
-        </div>
-
-    );
-};
