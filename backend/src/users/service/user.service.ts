@@ -23,6 +23,10 @@ import { CodeEntity } from "../model/domain/code.entity";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
 import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
+import { paginate, Pagination } from "nestjs-typeorm-paginate";
+import { Game } from "../../game/model/domain/game.entity";
+import { GameDto } from "../../game/model/dto/game.dto";
+import { mapGameToGameDto } from "../../game/util/util.functions";
 
 @Injectable()
 export class UserService {
@@ -130,6 +134,30 @@ export class UserService {
       }
     }
     return Array.from(users.get()).map(user => mapUserToUserDto(user));
+  }
+
+  async findPaged(page: number = 1,
+                  limit: number = 10,
+                  roles: string,
+                  email: string,
+                  username: string,
+                  phoneNumber: string,
+                  id: number): Promise<Pagination<UserDto>> {
+    const queryBuilder = this.userRepository.createQueryBuilder('user');
+    queryBuilder.orWhere('user.email LIKE :email', { email: `%${email}%` });
+    queryBuilder.orWhere('user.username LIKE :username', { username: `%${username}%` });
+    queryBuilder.orWhere('user.phoneNumber LIKE :phoneNumber', { phoneNumber: `%${phoneNumber}%` });
+    queryBuilder.orWhere('user.id = :id', { id: id });
+    if (roles != null) {
+      const split = roles.split(',');
+      for (const role of split) {
+        queryBuilder.orWhere("user.role = :role",
+          {role: getEnumValueByName(UserRole, role)})
+      }
+    }
+    const pages = await paginate<User>(queryBuilder, { page, limit });
+
+    return new Pagination<UserDto>(pages.items.map(user => mapUserToUserDto(user)), pages.meta);
   }
 
   getRoles(): UserRole[] {

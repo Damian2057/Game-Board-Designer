@@ -4,8 +4,8 @@ import ReactPaginate from 'react-paginate';
 import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
 import {Game} from "../../../../model/game/game";
-import GameInfo from "../../../Games/GameInfo/GameInfo";
 import GameEditModal from "./GameEditModal";
+import GameInfoModal from "./GameInfoModal";
 
 const TableWithPaging = () => {
 
@@ -84,7 +84,7 @@ const TableWithPaging = () => {
                             </tr>
                         ))}
                         {selectedGameInfo && (
-                            <GameInfo
+                            <GameInfoModal
                                 game={selectedGameInfo}
                                 onClose={() => setSelectedGameInfo(null)}
                             />

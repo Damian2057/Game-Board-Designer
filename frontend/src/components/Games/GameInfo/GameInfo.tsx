@@ -23,7 +23,6 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
                     </div>
                 </a>
             </div>
-            <Row style={{padding: '20px'}}>
                 <Col className='d-flex justify-content-center'>
                     <Modal.Body className='game-info rounded'>
                         <Carousel data-bs-theme="dark">
@@ -73,35 +72,6 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
                         </Row>
                     </Modal.Body>
                 </Col>
-                <Col lg={6}>
-                    <Row className='gap-2'>
-                        <table className="tags-table">
-                            <thead>
-                            <tr>
-                                <th>Components</th>
-                                <th>Quantity</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            {game.components?.map((component, index) => (
-                                <tr key={component.id}>
-                                    <td className="tag-cell">
-                                        <div className="tag-content">
-                                            <span>{component.name}</span>
-                                        </div>
-                                    </td>
-                                    <td className="tag-cell">
-                                        <div className="tag-content">
-                                            <span>{component.quantity}</span>
-                                        </div>
-                                    </td>
-                                </tr>
-                            ))}
-                            </tbody>
-                        </table>
-                    </Row>
-                </Col>
-            </Row>
         </Modal>
     );
 }
