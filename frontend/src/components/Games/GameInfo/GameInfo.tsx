@@ -23,7 +23,7 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
                     </div>
                 </a>
             </div>
-            <Row>
+            <Row style={{padding: '20px'}}>
                 <Col className='d-flex justify-content-center'>
                     <Modal.Body className='game-info rounded'>
                         <Carousel data-bs-theme="dark">

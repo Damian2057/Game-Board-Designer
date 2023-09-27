@@ -54,10 +54,11 @@ function Games() {
     const handleChange = (e: any) => {
         const name = e.target.value;
         const selectedTag = tags.find(tag => tag.name === name);
-        if (!selectedTags.includes(selectedTag as Tag)) {
+        if (!selectedTags.find(tag => tag.name === name)) {
             if (selectedTag) {
                 selectedTags.push(selectedTag);
                 setSelectedTags(selectedTags);
+                fetchTags();
             }
         }
     }

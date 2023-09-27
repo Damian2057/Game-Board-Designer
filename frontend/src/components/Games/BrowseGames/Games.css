@@ -58,9 +58,7 @@
 }
 
 li a {
-    border-radius: 7px;
     padding: 0.1rem 1rem;
-    border: gray 1px solid;
     cursor: pointer;
     color: #7D53DE !important;
 }
