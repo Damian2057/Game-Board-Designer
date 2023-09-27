@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import toast, {Toaster} from "react-hot-toast";
-import {Button, Card, Col, Container, Table} from "react-bootstrap";
+import {Button, Card, Container} from "react-bootstrap";
 import IconCircle from "../../util/IconCircle";
 import NewEmployeeModal from "../ManageEmployees/Modals/NewEmployeeModal";
 import TableWithPaging from "./Modals/TableWithPaging";

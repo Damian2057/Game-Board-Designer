@@ -1,5 +1,6 @@
 import axios from "axios";
 import {User} from "../model/user/user";
+import {Page} from "../model/page";
 
 export class UserApi {
 
@@ -89,6 +90,30 @@ export class UserApi {
             .then(res => {
             return res.data;
         });
+    }
+
+    static findUserPage(page: number, limit: number,data: any): Promise<Page<User>> {
+        const queryParams: { [key: string]: any } = {};
+
+        for (const key in data) {
+            if (data.hasOwnProperty(key) && data[key] !== null) {
+                // @ts-ignore
+                queryParams[key] = data[key];
+            }
+        }
+        queryParams['page'] = page;
+        queryParams['limit'] = limit;
+        const config = {
+            params: queryParams,
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        };
+
+        return axios.get(`${import.meta.env.VITE_URL}/user/find/paged`, config)
+            .then(res => {
+                return res.data;
+            });
     }
 
     static selfUpdate(username: any, phoneNumber: any, email: any, password: any): Promise<User> {

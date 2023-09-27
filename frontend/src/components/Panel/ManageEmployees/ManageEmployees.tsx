@@ -29,6 +29,13 @@ export default function ManageEmployees() {
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })
         });
+        Api.user.findUserPage(1,2, {
+            roles: 'admin,employee'
+        }).then(res => {
+            console.log(res);
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
     }
 
     const handleOpenAddEmployeeModal = () => {
