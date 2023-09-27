@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {BsXLg} from "react-icons/bs";
 import {NewGameModalProps} from "../Props/NewGameModalProps";
@@ -7,8 +7,11 @@ import {Tag} from "../../../../model/game/tag";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Component} from "../../../../model/game/component";
+import NewComponentModal from "./NewComponentModal";
 
 const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) => {
+
+    const [showAddModal, setAddShowModal] = useState(false);
 
     const [tags, setTags] = React.useState([] as Tag[]);
     const [selectedTags, setSelectedTags] = React.useState([] as Tag[]);
@@ -121,11 +124,21 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
     }
 
     function addComponent() {
-
+        setAddShowModal(true);
     }
 
     function handleRemoveComponent(component: Component) {
+        setComponents(prevComponent => prevComponent.filter(comp => comp !== component));
+    }
 
+    function handleCloseAddComponentModal() {
+        setAddShowModal(false);
+    }
+
+    function handleAddNewComponent(component: Component) {
+        toast.success(`Component added successfully`, {icon: "👏"});
+        setComponents((prevComponents) => [...prevComponents, component]);
+        handleCloseAddComponentModal();
     }
 
     return (
@@ -271,7 +284,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                         </thead>
                                         <tbody>
                                         {components.map((component, index) => (
-                                            <tr key={component.id}>
+                                            <tr key={index}>
                                                 <td className="tag-cell">
                                                     <div className="tag-content">
                                                         <span>{component.name}</span>
@@ -306,6 +319,11 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                             >Create</Button>
                         </Form>
                     </Card.Body>
+                    <NewComponentModal
+                        show={showAddModal}
+                        onClose={handleCloseAddComponentModal}
+                        onSave={handleAddNewComponent}
+                    />
                 </Card>
             </Container>
         </div>

@@ -2,7 +2,6 @@ import React, {useState} from "react";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import IconCircle from "../../util/IconCircle";
-import NewEmployeeModal from "../ManageEmployees/Modals/NewEmployeeModal";
 import {Game} from "../../../model/game/game";
 import {Api} from "../../../connector/api";
 import GameInfoModal from "./Modals/GameInfoModal";
@@ -106,7 +105,7 @@ export default function ManageGames() {
                                         <tr key={game.id}>
                                             <td className='centered-td'>{game.id}</td>
                                             <td className='centered-td'>{game.title}</td>
-                                            <td className='centered-td'>{game.price}</td>
+                                            <td className='centered-td'>{game.price} {game.currency}</td>
                                             <td>
                                                 <Button className='button-workspace' onClick={() => handleGameInfo(game)}>Info</Button>
                                             </td>
