@@ -8,6 +8,7 @@ import {Api} from "../../../connector/api";
 import GameInfoModal from "./Modals/GameInfoModal";
 import GameEditModal from "./Modals/GameEditModal";
 import ReactPaginate from "react-paginate";
+import NewGameModal from "./Modals/NewGameModal";
 
 export default function ManageGames() {
 
@@ -151,11 +152,13 @@ export default function ManageGames() {
                         activeClassName="active"
                     />
                 </Card>
-                <NewEmployeeModal
-                    show={showAddModal}
-                    onClose={handleCloseAddGameModal}
-                    onSave={handleAddNewGame}
-                />
+                {showAddModal && (
+                    <NewGameModal
+                        show={showAddModal}
+                        onClose={handleCloseAddGameModal}
+                        onSave={handleAddNewGame}
+                    />
+                )}
             </Container>
         </div>
     )
