@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ILike, Repository } from "typeorm";
 import { Game } from "../model/domain/game.entity";
@@ -262,7 +262,7 @@ export class GameService {
   async findAllPaged(page: number = 1,
                      limit: number = 10,
                      tags: string[] = [],
-                     title: string = ""): Promise<Pagination<Game>> {
+                     title: string = ""): Promise<Pagination<GameDto>> {
     const queryBuilder = this.gameRepository.createQueryBuilder('game')
     queryBuilder.leftJoinAndSelect('game.tags', 'tag');
     queryBuilder.leftJoinAndSelect('game.components', 'component');
@@ -273,7 +273,8 @@ export class GameService {
     if (title.length > 0) {
       queryBuilder.andWhere('game.title LIKE :title', { title: `%${title}%` });
     }
+    const pages = await paginate<Game>(queryBuilder, { page, limit });
 
-    return await paginate<Game>(queryBuilder, { page, limit });
+    return new Pagination<GameDto>(pages.items.map(game => mapGameToGameDto(game)), pages.meta);
   }
 }

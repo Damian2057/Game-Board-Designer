@@ -76,7 +76,7 @@ function CustomOptionPanel() {
                         <p className='font-bold fs-2'>Options</p>
                     </Card.Body>
                     <Row>
-                        <Col className='d-flex justify-content-center align-items-center'>
+                        <Col className='d-flex justify-content-center align-items-start'>
                             <div>
                                 <Form>
                                     <div className='contact-item text-start'>
@@ -134,7 +134,7 @@ function CustomOptionPanel() {
                                 </Form>
                             </div>
                         </Col>
-                        <Col className='d-flex justify-content-center align-items-center'>
+                        <Col className='d-flex justify-content-center align-items-start'>
                             <div>
                                 <Form>
                                     <div className='contact-item text-start'>

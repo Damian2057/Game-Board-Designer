@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { UserService } from "../service/user.service";
 import { HasRoles } from "../../auth/decorator/role.decorator";
 import { RolesGuard } from "../../auth/guard/roles.guard";
@@ -13,6 +13,7 @@ import { Result } from "../../util/pojo/Result";
 import { UserActivateCommand } from "../model/command/user.activate.command";
 import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
 import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
+import { Pagination } from "nestjs-typeorm-paginate";
 
 @Controller('user')
 export class UserController {
@@ -67,13 +68,25 @@ export class UserController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Get('find')
-  getUsersByFiler(@Query('roles') role?: string,
+  getUsersByFiler(@Query('roles') roles?: string,
                   @Query('email') email?: string,
                   @Query('username') username?: string,
                   @Query('phoneNumber') phoneNumber?: string,
-                  @Query('id') id?: number,
-                  @Query('roles') roles?: string): Promise<UserDto[]> {
-    return this.userService.find(role, email, username, phoneNumber, id);
+                  @Query('id') id?: number): Promise<UserDto[]> {
+    return this.userService.find(roles, email, username, phoneNumber, id);
+  }
+
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get('find/paged')
+  getUsersByFilerPaged(@Query('page', ParseIntPipe) page: number,
+                  @Query('limit', ParseIntPipe) limit: number,
+                  @Query('roles') roles?: string,
+                  @Query('email') email?: string,
+                  @Query('username') username?: string,
+                  @Query('phoneNumber') phoneNumber?: string,
+                  @Query('id') id?: number): Promise<Pagination<UserDto>> {
+    return this.userService.findPaged(page, limit, roles, email, username, phoneNumber, id);
   }
 
   @Put('activate')
