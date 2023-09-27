@@ -3,11 +3,9 @@ import {Image} from "../model/image/image";
 
 export class ImageApi {
 
-    static async uploadImage(image: File): Promise<Image | any> {
-        const formData = new FormData();
-        formData.append("image", image);
+    static async uploadImage(formData: FormData): Promise<Image[]> {
 
-        axios.post(`${import.meta.env.VITE_URL}/image/upload`, formData, {
+        return axios.post(`${import.meta.env.VITE_URL}/image/upload`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
