@@ -1,9 +1,9 @@
 import React, {useState} from "react";
 import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {BsEnvelope} from "react-icons/bs";
-import {PiUserListBold} from "react-icons/pi";
 import {NewComponentModalProps} from "../Props/NewComponentModalProps";
+import {FaSortAmountDownAlt} from "react-icons/fa";
+import {VscSymbolNamespace} from "react-icons/vsc";
 
 const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, onSave }) => {
 
@@ -36,10 +36,10 @@ const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, on
                             <Form.Label className='fw-bold'>
                                 <div className='flex flex-row gap-2 items-center'>
                                     <div>
-                                        <BsEnvelope size={30} />
+                                        <VscSymbolNamespace size={30} />
                                     </div>
                                     <div>
-                                        Email:
+                                        Component name:
                                     </div>
                                 </div>
                             </Form.Label>
@@ -54,16 +54,16 @@ const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, on
                             <Form.Label className='fw-bold'>
                                 <div className='flex flex-row gap-2 items-center'>
                                     <div>
-                                        <PiUserListBold size={30} />
+                                        <FaSortAmountDownAlt size={30} />
                                     </div>
                                     <div>
-                                        UserName:
+                                        Quantity:
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='number'
-                                          value={quantity}
-                                          placeholder="Enter username"
+                                          value={isNaN(quantity) ? '' : quantity.toString()}
+                                          placeholder="Enter quantity"
                                           onChange={(e) => setQuantity(parseFloat(e.target.value))} />
                         </div>
                     </Form.Group>
