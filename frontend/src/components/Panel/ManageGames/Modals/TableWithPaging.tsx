@@ -1,26 +1,24 @@
 import React, { useState } from 'react';
 import {Button, Col, Table} from 'react-bootstrap';
 import ReactPaginate from 'react-paginate';
-import EmployeeInfo from "../../ManageEmployees/Modals/EmployeeInfo";
-import EmployeeEdit from "../../ManageEmployees/Modals/EmployeeEdit";
 import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
 import {Game} from "../../../../model/game/game";
+import GameInfo from "../../../Games/GameInfo/GameInfo";
+import GameEditModal from "./GameEditModal";
 
 const TableWithPaging = () => {
 
-    const itemsPerPage = 2;
+    const itemsPerPage = 8;
 
     const [games, setGames] = useState([] as Game[]);
     const [pageCount, setPageCount] = useState(0);
+    const [selectedGameInfo, setSelectedGameInfo] = useState<Game | null>(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editedGame, setEditedGame] = useState<Game | null>(null);
 
     React.useEffect(() => {
-        Api.game.getPagingGames(1, itemsPerPage).then((res) => {
-            setGames(res.items);
-            setPageCount(res.meta.totalPages);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
+        fetchGames();
     }, []);
 
     const handlePageClick = (data: any) => {
@@ -33,12 +31,28 @@ const TableWithPaging = () => {
         });
     };
 
-    function handleGameInfo(game: Game) {
+    const fetchGames = () => {
+        Api.game.getPagingGames(1, itemsPerPage).then((res) => {
+            setGames(res.items);
+            setPageCount(res.meta.totalPages);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
 
+    function handleGameInfo(game: Game) {
+        setSelectedGameInfo(game)
     }
 
     function handleEditGame(game: Game) {
+        setShowEditModal(true)
+        setEditedGame(game)
+    }
 
+    function handleSaveEditedGame() {
+        setShowEditModal(false)
+        setEditedGame(null)
+        fetchGames()
     }
 
     return (
@@ -69,20 +83,20 @@ const TableWithPaging = () => {
                                 </td>
                             </tr>
                         ))}
-                        {/*{selectedEmployeeInfo && (*/}
-                        {/*    <EmployeeInfo*/}
-                        {/*        employee={selectedEmployeeInfo}*/}
-                        {/*        onClose={() => setSelectedEmployeeInfo(null)}*/}
-                        {/*    />*/}
-                        {/*)}*/}
+                        {selectedGameInfo && (
+                            <GameInfo
+                                game={selectedGameInfo}
+                                onClose={() => setSelectedGameInfo(null)}
+                            />
+                        )}
                         </tbody>
                     </Table>
-                    {/*<EmployeeEdit*/}
-                    {/*    show={showEditModal}*/}
-                    {/*    onClose={() => setShowEditModal(false)}*/}
-                    {/*    onSave={handleSaveEditedEmployee}*/}
-                    {/*    editedEmployee={editedEmployee ?? null}*/}
-                    {/*/>*/}
+                    <GameEditModal
+                        show={showEditModal}
+                        onClose={() => setShowEditModal(false)}
+                        onSave={handleSaveEditedGame}
+                        editedGame={editedGame ?? null}
+                    />
                 </Col>
             </div>
             <ReactPaginate
