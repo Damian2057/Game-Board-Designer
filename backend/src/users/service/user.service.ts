@@ -149,11 +149,8 @@ export class UserService {
     queryBuilder.orWhere('user.phoneNumber LIKE :phoneNumber', { phoneNumber: `%${phoneNumber}%` });
     queryBuilder.orWhere('user.id = :id', { id: id });
     if (roles != null) {
-      const split = roles.split(',');
-      for (const role of split) {
-        queryBuilder.orWhere("user.role = :role",
-          {role: getEnumValueByName(UserRole, role)})
-      }
+      const splitRoles = roles.split(',');
+      queryBuilder.orWhere('user.role IN (:...roles)', { roles: splitRoles })
     }
     const pages = await paginate<User>(queryBuilder, { page, limit });
 

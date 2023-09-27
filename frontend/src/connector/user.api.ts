@@ -97,7 +97,6 @@ export class UserApi {
 
         for (const key in data) {
             if (data.hasOwnProperty(key) && data[key] !== null) {
-                // @ts-ignore
                 queryParams[key] = data[key];
             }
         }
@@ -132,7 +131,6 @@ export class UserApi {
     }
 
     static updateUser(id: number, data: any): Promise<User> {
-        console.log(data);
         return axios.put(`${import.meta.env.VITE_URL}/user/update/${id}`, {
             username: data.username,
             password: data.password,

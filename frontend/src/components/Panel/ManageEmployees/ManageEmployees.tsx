@@ -8,10 +8,14 @@ import {User} from "../../../model/user/user";
 import EmployeeInfo from "./Modals/EmployeeInfo";
 import EmployeeEdit from "./Modals/EmployeeEdit";
 import NewEmployeeModal from "./Modals/NewEmployeeModal";
+import ReactPaginate from "react-paginate";
 
 export default function ManageEmployees() {
 
+    const itemsPerPage = 8;
+
     const [employees, setEmployees] = useState([] as User[]);
+    const [pageCount, setPageCount] = useState(0);
     const [selectedEmployeeInfo, setSelectedEmployeeInfo] = React.useState<User | null>(null);
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
@@ -21,20 +25,27 @@ export default function ManageEmployees() {
         fetchEmployees();
     }, []);
 
-    const fetchEmployees = () => {
-        Api.user.findUser({
+    const handlePageClick = (data: any) => {
+        Api.user.findUserPage(data.selected + 1, itemsPerPage, {
             roles: 'admin,employee'
-        }).then(res => {
-            setEmployees(res)
-        }).catch(err => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        }).then((res) => {
+            setEmployees(res.items);
+            setPageCount(res.meta.totalPages);
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
         });
-        Api.user.findUserPage(1,2, {
+    };
+
+    const fetchEmployees = () => {
+        Api.user.findUserPage(1, itemsPerPage, {
             roles: 'admin,employee'
-        }).then(res => {
-            console.log(res);
-        }).catch(err => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        }).then((res) => {
+            setEmployees(res.items);
+            setPageCount(res.meta.totalPages);
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
         });
     }
 
@@ -66,7 +77,6 @@ export default function ManageEmployees() {
 
     const handleEmployeeDeactivate = (employeeId: number, activate: boolean) => {
         const flag: boolean = !activate;
-        console.log(flag);
         Api.user.updateUser(employeeId, {
             isActive: flag
         }).then(res => {
@@ -100,6 +110,7 @@ export default function ManageEmployees() {
                                     <thead>
                                         <tr className='uppercase'>
                                             <th>Username</th>
+                                            <th>Email</th>
                                             <th>Role</th>
                                             <th>Details</th>
                                             <th>Edit</th>
@@ -110,6 +121,7 @@ export default function ManageEmployees() {
                                         {employees.map((employee) => (
                                             <tr key={employee.id}>
                                                 <td className='centered-td'>{employee.username}</td>
+                                                <td className='centered-td'>{employee.email}</td>
                                                 <td className='centered-td'>{employee.role}</td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleEmployeeInfo(employee)}>Info</Button>
@@ -145,6 +157,25 @@ export default function ManageEmployees() {
                                 />
                             </Col>
                         </div>
+                        <ReactPaginate
+                            previousLabel="previous"
+                            nextLabel="next"
+                            breakLabel="..."
+                            breakClassName="page-item"
+                            breakLinkClassName="page-link"
+                            pageCount={pageCount}
+                            pageRangeDisplayed={4}
+                            marginPagesDisplayed={2}
+                            onPageChange={handlePageClick}
+                            containerClassName="pagination justify-content-center"
+                            pageClassName="page-item"
+                            pageLinkClassName="page-link"
+                            previousClassName="page-item"
+                            previousLinkClassName="page-link"
+                            nextClassName="page-item"
+                            nextLinkClassName="page-link"
+                            activeClassName="active"
+                        />
                     </Card.Body>
                 </Card>
             </Container>
