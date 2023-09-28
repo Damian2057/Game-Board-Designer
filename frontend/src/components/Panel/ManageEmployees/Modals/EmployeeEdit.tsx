@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {EmployeeEditProps} from "../Props/EmployeeEditProps";
+import {UserEditProps} from "../Props/UserEditProps";
 import ToggleComponent from "./ToggleComponent";
 import {Api} from "../../../../connector/api";
 import {RiLockPasswordFill} from "react-icons/ri";
@@ -10,7 +10,7 @@ import {PiUserListBold} from "react-icons/pi";
 import {MdAdminPanelSettings} from "react-icons/md";
 import toast from "react-hot-toast";
 
-const EmployeeEdit: React.FC<EmployeeEditProps> = ({ show, onClose, onSave, editedEmployee }) => {
+const EmployeeEdit: React.FC<UserEditProps> = ({ name, show, onClose, onSave, editedEmployee }) => {
 
     const [userName, setUserName] = useState<string>('');
     const [roles, setRoles] = useState<string[]>([]);
@@ -69,7 +69,7 @@ const EmployeeEdit: React.FC<EmployeeEditProps> = ({ show, onClose, onSave, edit
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit employee</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit {name}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>

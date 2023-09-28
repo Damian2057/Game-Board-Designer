@@ -30,13 +30,13 @@ function EmployeePanel() {
             }}>
                 <Row className="w-100">
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/projects'} icon={todoIcon} count={5} title={'Projects TODO'} description={'contain order projects by clients to claim'} />
+                        <ContentCard linkTo={'/panel/projects'} icon={todoIcon} title={'Projects TODO'} description={'contain order projects by clients to claim'} />
                     </Col>
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} count={2} title={'WorkSpace'} description={'view your claimed projects'} />
+                        <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} title={'WorkSpace'} description={'view your claimed projects'} />
                     </Col>
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/scheme'} icon={newSchemaIcon} count={5} title={'Create new scheme'} description={'create a new game'} />
+                        <ContentCard linkTo={'/panel/scheme'} icon={newSchemaIcon} title={'Create new scheme'} description={'create a new game'} />
                     </Col>
                 </Row>
             </div>

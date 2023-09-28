@@ -138,6 +138,7 @@ export default function ManageEmployees() {
                                         ))}
                                         {selectedEmployeeInfo && (
                                             <EmployeeInfo
+                                                name={"Employee"}
                                                 employee={selectedEmployeeInfo}
                                                 onClose={() => setSelectedEmployeeInfo(null)}
                                             />
@@ -150,6 +151,7 @@ export default function ManageEmployees() {
                                     onSave={handleAddNewEmployee}
                                 />
                                 <EmployeeEdit
+                                    name={"employee"}
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}
                                     onSave={handleSaveEditedEmployee}

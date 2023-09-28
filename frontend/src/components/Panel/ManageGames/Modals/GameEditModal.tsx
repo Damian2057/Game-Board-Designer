@@ -1,5 +1,4 @@
-import React, {useEffect, useState} from "react";
-import {EmployeeEditProps} from "../../ManageEmployees/Props/EmployeeEditProps";
+import React, {useState} from "react";
 import {Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {PiUserListBold} from "react-icons/pi";
