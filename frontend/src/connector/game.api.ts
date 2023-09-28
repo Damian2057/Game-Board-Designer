@@ -102,7 +102,7 @@ export class GameApi {
     }
 
     static addTagToGame(gameId: number, tagId: number): Promise<Game> {
-        return axios.put(`${import.meta.env.VITE_URL}/game/${gameId}/add_tag/${tagId}`, {}, {
+        return axios.put(`${import.meta.env.VITE_URL}/game/${gameId}/add-tag/${tagId}`, {}, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
@@ -112,7 +112,7 @@ export class GameApi {
     }
 
     static removeTagFromGame(gameId: number, tagId: number): Promise<Game> {
-        return axios.put(`${import.meta.env.VITE_URL}/game/${gameId}/remove_tag/${tagId}`, {}, {
+        return axios.put(`${import.meta.env.VITE_URL}/game/${gameId}/remove-tag/${tagId}`, {}, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
