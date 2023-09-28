@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import './ContentCard.css'
 import React from "react";
 import {ContentCardProps} from "./Props/ContentCardProps";
-const ContentCard: React.FC<ContentCardProps> = ({ linkTo, icon, count, title, description }) => {
+const ContentCard: React.FC<ContentCardProps> = ({ linkTo, icon, title, description }) => {
 
     const navigate = useNavigate();
 

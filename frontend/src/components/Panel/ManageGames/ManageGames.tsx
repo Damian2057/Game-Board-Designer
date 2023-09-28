@@ -11,7 +11,7 @@ import NewGameModal from "./Modals/NewGameModal";
 
 export default function ManageGames() {
 
-    const itemsPerPage = 15;
+    const itemsPerPage = 14;
 
     const [games, setGames] = useState([] as Game[]);
     const [pageCount, setPageCount] = useState(0);

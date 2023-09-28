@@ -17,7 +17,7 @@ import ReactPaginate from "react-paginate";
 
 function Games() {
 
-    const itemsPerPage = 8;
+    const itemsPerPage = 11;
     const [tags, setTags] = React.useState([] as Tag[]);
     const [games, setGames] = React.useState([] as Game[]);
 
