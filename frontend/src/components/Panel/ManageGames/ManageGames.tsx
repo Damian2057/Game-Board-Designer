@@ -122,12 +122,6 @@ export default function ManageGames() {
                                     )}
                                     </tbody>
                                 </Table>
-                                <GameEditModal
-                                    show={showEditModal}
-                                    onClose={() => setShowEditModal(false)}
-                                    onSave={handleSaveEditedGame}
-                                    editedGame={editedGame ?? null}
-                                />
                             </Col>
                         </div>
                     </Card.Body>
@@ -156,6 +150,14 @@ export default function ManageGames() {
                         show={showAddModal}
                         onClose={handleCloseAddGameModal}
                         onSave={handleAddNewGame}
+                    />
+                )}
+                {showEditModal && (
+                    <GameEditModal
+                        show={showEditModal}
+                        onClose={() => setShowEditModal(false)}
+                        onSave={handleSaveEditedGame}
+                        editedGame={editedGame ?? null}
                     />
                 )}
             </Container>
