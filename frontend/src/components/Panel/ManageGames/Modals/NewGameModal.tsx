@@ -49,7 +49,6 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                 fetchTags();
             }
         }
-        console.log(selectedTags);
     }
 
     const handleRemoveTag = (tagToRemove: any) => {
@@ -61,8 +60,8 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
         setFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
         const imageURLs: string[] = [];
 
-        for (let i = 0; i < selectedFiles.length; i++) {
-            const imageURL = URL.createObjectURL(selectedFiles[i]);
+        for (const element of selectedFiles) {
+            const imageURL = URL.createObjectURL(element);
             imageURLs.push(imageURL);
         }
 
@@ -77,50 +76,41 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
     };
 
     function sendGameCreationRequest() {
-        if (imageIds.length === files.length) {
-            //send request
-        } else {
+        if (files.length != 0) {
             const formData = new FormData();
             files.forEach((file) => {
                 formData.append('file', file);
             });
-            console.log(formData);
-            Api.image.uploadImage(formData).then((images) => {
-                setImageIds((prevIds) => [...prevIds, ...images.map(image => image.id)]);
-            }).catch((err) => {
-                toast.error(`${err.response.data.message}`, { icon: "💀" });
+            Api.image.uploadImage(formData)
+                .then((images) => {
+                    const newImageIds = images.map((image) => image.id);
+                    setImageIds((prevIds) => [...prevIds, ...newImageIds]);
+                    setFiles([]);
+                    sendGameCreation();
+                }).catch((err) => {
+                toast.error(`${err.response.data.message}`, { icon: '💀' });
             });
-            // Api.game.uploadImage(formData)
-            //     .then((response) => {
-            //         setImageIds((prevIds) => [...prevIds, response.id]);
-            //         sendGameCreationRequest();
-            //     })
-            //     .catch((err) => {
-            //         toast.error(`${err.response.data.message}`, { icon: "💀" });
-            //     });
+        } else {
+            sendGameCreation();
         }
+    }
 
-
-        // const formData = new FormData();
-        // formData.append('title', title);
-        // formData.append('description', description);
-        // formData.append('price', price.toString());
-        // formData.append('publicationDate', publicationDate);
-        // formData.append('currency', currency);
-        // formData.append('components', JSON.stringify(components));
-        // formData.append('tags', JSON.stringify(selectedTags));
-        // for (let i = 0; i < files.length; i++) {
-        //     formData.append('files', files[i]);
-        // }
-        // Api.game.createGame(formData)
-        //     .then((response) => {
-        //         toast.success(`Game created successfully`, { icon: "👏" });
-        //         onSave(response);
-        //         onClose();
-        //     })
-        //     .catch((err) => {
-        //         toast.error(`${err.response.data.message}`, { icon: "💀" });
-        //     });
+    function sendGameCreation() {
+        Api.game.createGame({
+            title: title,
+            description: description,
+            price: price,
+            publicationDate: publicationDate,
+            currency: currency,
+            tags: selectedTags,
+            components: components,
+            imageIds: imageIds
+        }).then((game) => {
+            toast.success(`Game created successfully`, { icon: '👏' });
+            onSave(game);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: '💀' });
+        });
     }
 
     function addComponent() {

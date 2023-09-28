@@ -63,6 +63,7 @@ export class GameApi {
             publicationDate: data.publicationDate,
             price: data.price,
             tags: data.tags,
+            currency: data.currency,
             components: data.components,
             imageIds: data.imageIds,
         }, {
