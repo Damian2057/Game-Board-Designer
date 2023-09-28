@@ -1,12 +1,12 @@
 import React from "react";
 import {Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {EmployeeInfoProps} from "../Props/EmployeeInfoProps";
+import {UserInfoProps} from "../Props/UserInfoProps";
 import {PiUserListBold} from "react-icons/pi";
 import {BsEnvelope, BsTelephone} from "react-icons/bs";
 import {MdAdminPanelSettings} from "react-icons/md";
 
-const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
+const EmployeeInfo: React.FC<UserInfoProps> = ({ name, employee, onClose }) => {
     return (
         <Modal show={true} onHide={onClose} className='text-white' style={{}}>
             <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
@@ -16,7 +16,7 @@ const EmployeeInfo: React.FC<EmployeeInfoProps> = ({ employee, onClose }) => {
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Employee: {employee?.id}</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{name}: {employee?.id}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>

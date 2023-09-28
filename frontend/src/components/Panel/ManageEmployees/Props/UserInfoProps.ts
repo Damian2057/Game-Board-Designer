@@ -1,6 +1,7 @@
 import {User} from "../../../../model/user/user";
 
-export interface EmployeeInfoProps {
+export interface UserInfoProps {
+    name: string;
     employee: User | null;
     onClose: () => void;
 }

@@ -20,6 +20,7 @@ import MyOrders from "./components/Personal/MyOrders/MyOrders";
 import CustomOptionPanel from "./components/Panel/Custom/CustomOptionPanel";
 import ManageGames from "./components/Panel/ManageGames/ManageGames";
 import ManageTags from "./components/Panel/ManageTags/ManageTags";
+import ManageUsers from "./components/Panel/ManageUsers/ManageUsers";
 
 function App() {
   return (
@@ -45,7 +46,7 @@ function App() {
           <Route path='/panel/manage' element={<ManageEmployees />} />
           <Route path='/panel/manage/games' element={<ManageGames />} />
           <Route path='/panel/scheme' element={<NewSchema />} />
-          <Route path='/panel/manage/users' element={<NewSchema />} />
+          <Route path='/panel/manage/users' element={<ManageUsers />} />
           <Route path='/panel/manage/tags' element={<ManageTags />} />
         </Routes>
       </BrowserRouter>
