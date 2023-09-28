@@ -310,6 +310,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                         </Form>
                     </Card.Body>
                     <NewComponentModal
+                        game={null}
                         show={showAddModal}
                         onClose={handleCloseAddComponentModal}
                         onSave={handleAddNewComponent}

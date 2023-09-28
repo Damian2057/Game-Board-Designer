@@ -58,12 +58,26 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                 selectedTags.push(selectedTag);
                 setSelectedTags(selectedTags);
                 fetchTags();
+                if (editedGame && selectedTag.id) {
+                    Api.game.addTagToGame(editedGame?.id, selectedTag.id).then(() => {
+                        toast.success(`Tag added successfully`, {icon: "👏"});
+                    }).catch((err) => {
+                        toast.error(`${err.response.data.message}`, {icon: "💀"});
+                    });
+                }
             }
         }
     }
 
     const handleRemoveTag = (tagToRemove: any) => {
         setSelectedTags(prevTags => prevTags.filter(tag => tag !== tagToRemove));
+        if (editedGame && tagToRemove.id) {
+            Api.game.removeTagFromGame(editedGame?.id, tagToRemove.id).then(() => {
+                toast.success(`Tag removed successfully`, {icon: "👏"});
+            }).catch((err) => {
+                toast.error(`${err.response.data.message}`, {icon: "💀"});
+            });
+        }
     };
 
     const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,9 +131,18 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
     }
 
     function handleRemoveComponent(component: Component) {
-        setComponents(prevComponents =>
-            prevComponents.filter(comp => comp !== component)
-        );
+        if (editedGame && components.includes(component)) {
+            Api.game.deleteComponent(component.id)
+                .then(() => {
+                    toast.success(`Component removed successfully`, { icon: "👏" });
+                    setComponents((prevComponents) =>
+                        prevComponents.filter((comp) => comp !== component)
+                    );
+                })
+                .catch((err) => {
+                    toast.error(`${err.response.data.message}`, { icon: "💀" });
+                });
+        }
     }
 
     function handleCloseAddComponentModal() {
@@ -127,9 +150,16 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
     }
 
     function handleAddNewComponent(component: Component) {
-        toast.success(`Component added successfully`, {icon: "👏"});
-        setComponents((prevComponents) => [...prevComponents, component]);
-        handleCloseAddComponentModal();
+        if (!editedGame) {
+            return;
+        }
+        Api.game.createComponentForGame(editedGame?.id, component).then(() => {
+            toast.success(`Component added successfully`, {icon: "👏"});
+            setComponents((prevComponents) => [...prevComponents, component]);
+            handleCloseAddComponentModal();
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
     }
 
     function handleRemoveImage(imageId: number) {
@@ -350,7 +380,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                         paddingInline: '2rem',
                                         paddingBlock: '0.5rem'
                                     }}
-                            >Create</Button>
+                            >Save Data</Button>
                         </Form>
                     </Card.Body>
                     <NewComponentModal
