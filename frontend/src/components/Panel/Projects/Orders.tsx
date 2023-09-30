@@ -6,7 +6,7 @@ import OrderInfo from '../OrderInfo/OrderInfo';
 
 type Props = {}
 
-const Projects = (props: Props) => {
+const Orders = (props: Props) => {
 
     const initialProjects = [
         { id: 1, name: 'Catan', date: `${new Date().getDay()} - ${new Date().getMonth()} -  ${new Date().getFullYear()}`, status: 'in review', price: 30 },
@@ -39,7 +39,7 @@ const Projects = (props: Props) => {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Projects</p>
+                        <p className='font-bold fs-2'>Orders</p>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
@@ -82,4 +82,4 @@ const Projects = (props: Props) => {
     )
 }
 
-export default Projects
+export default Orders

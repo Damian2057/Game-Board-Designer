@@ -10,7 +10,7 @@ import Order from './components/Games/Order/Order';
 import Board from './components/Panel/Board/Board';
 import AdminPanel from './components/Panel/AdminPanel/AdminPanel';
 import Workspace from './components/Panel/Workspace/Workspace';
-import Projects from './components/Panel/Projects/Projects';
+import Orders from './components/Panel/Projects/Orders';
 import ManageEmployees from './components/Panel/ManageEmployees/ManageEmployees';
 import EmployeePanel from './components/Panel/EmployeePanel/EmployeePanel';
 import NewSchema from './components/Panel/NewSchema/NewScheme';
@@ -42,7 +42,7 @@ function App() {
           <Route path='/panel/custom' element={<CustomOptionPanel />} />
           <Route path='/panel/employee' element={<EmployeePanel />} />
           <Route path='/panel/workspace' element={<Workspace />} />
-          <Route path='/panel/projects' element={<Projects />} />
+          <Route path='/panel/orders' element={<Orders />} />
           <Route path='/panel/manage' element={<ManageEmployees />} />
           <Route path='/panel/manage/games' element={<ManageGames />} />
           <Route path='/panel/scheme' element={<NewSchema />} />
