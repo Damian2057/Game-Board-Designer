@@ -17,8 +17,8 @@ import { GameService } from "../../game/service/game.service";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { OrderStatus } from "../model/domain/order.status.enum";
 import { UserService } from "../../users/service/user.service";
-import { GameDto } from "../../game/model/dto/game.dto";
 import { mapGameToGameDto } from "../../game/util/util.functions";
+import { paginate, Pagination } from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class OrderService {
@@ -209,5 +209,21 @@ export class OrderService {
       order.currency = command.currency;
     }
     return order;
+  }
+
+  async findPaged(page: number = 1,
+                  limit: number = 10,
+                  OrderStatus: string): Promise<Pagination<OrderDto>> {
+    const queryBuilder = this.orderRepository.createQueryBuilder('order');
+    queryBuilder.leftJoinAndSelect('order.game', 'game');
+    queryBuilder.leftJoinAndSelect('order.customer', 'customer');
+    queryBuilder.leftJoinAndSelect('order.worker', 'worker');
+    if (OrderStatus) {
+      queryBuilder.where('order.status = :status', { status: OrderStatus });
+    }
+
+    const pages = await paginate<Order>(queryBuilder, { page, limit });
+
+    return new Pagination<OrderDto>(pages.items.map(order => mapOrderToOrderDto(order)), pages.meta);
   }
 }
