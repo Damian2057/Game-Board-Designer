@@ -34,6 +34,20 @@ export class Order extends AbstractEntity<Order> {
   @Length(3, 200)
   address: string;
 
+  @Column({
+    length: 50,
+    default: new Date().toISOString().slice(0, 10)
+  })
+  @Length(2, 50)
+  submittingDate: string;
+
+  @Column({
+    length: 50,
+    default: new Date().toISOString().slice(0, 10)
+  })
+  @Length(2, 50)
+  lastUpdate: string;
+
   @Column({ length: 50 })
   @Length(2, 50)
   firstName: string;

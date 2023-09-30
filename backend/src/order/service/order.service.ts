@@ -98,6 +98,8 @@ export class OrderService {
   async claimOrder(worker: User, id: number): Promise<OrderDto> {
     const order: Order = await this.getOrderById(id);
     order.worker = worker;
+    order.status = OrderStatus.CLAIMED;
+    order.lastUpdate = new Date().toISOString().slice(0, 10);
     const updatedOrder: Order = await this.orderRepository.save(order);
     return mapOrderToOrderDto(updatedOrder);
   }
@@ -114,6 +116,7 @@ export class OrderService {
   async cancelOrder(id: number): Promise<OrderDto> {
     const order: Order = await this.getOrderById(id);
     order.status = OrderStatus.CANCELLED;
+    order.lastUpdate = new Date().toISOString().slice(0, 10);
     const updatedOrder: Order = await this.orderRepository.save(order);
     return mapOrderToOrderDto(updatedOrder);
   }
@@ -208,6 +211,7 @@ export class OrderService {
     if (command.currency) {
       order.currency = command.currency;
     }
+    order.lastUpdate = new Date().toISOString().slice(0, 10)
     return order;
   }
 
