@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Put, Query, UseGuards } from "@nestjs/common";
 import { OrderService } from "../service/order.service";
 import { GetCurrentUser } from "../../auth/decorator/current.user.decorator";
 import { OrderDto } from "../model/dto/order.dto";
@@ -8,6 +8,7 @@ import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { OrderStatus } from "../model/domain/order.status.enum";
+import { Pagination } from "nestjs-typeorm-paginate";
 
 @Controller('order/management')
 export class OrderManagementController {
@@ -63,6 +64,15 @@ export class OrderManagementController {
   @Put('advance-update/:id')
   async advanceUpdateOrder(@Body() command: AdvancedUpdateOrderCommand, @Param('id') id: number): Promise<OrderDto> {
     return this.orderService.advanceUpdateOrder(command, id);
+  }
+
+  @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Get('find/paged')
+  async findPaged(@Query('page', ParseIntPipe) page: number,
+                  @Query('limit', ParseIntPipe) limit: number,
+                  @Query('status') status?: OrderStatus): Promise<Pagination<OrderDto>> {
+    return this.orderService.findPaged(page, limit, status);
   }
 
   @HasRoles(UserRole.ADMIN, UserRole.EMPLOYEE)

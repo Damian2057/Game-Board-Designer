@@ -31,7 +31,7 @@ export class User extends AbstractEntity<User> {
   })
   role: UserRole
 
-  @Column({ default: true })
+  @Column({ default: false })
   isActive: boolean
 
   @BeforeInsert()

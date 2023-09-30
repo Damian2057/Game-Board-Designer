@@ -67,7 +67,7 @@ export default function ManageUsers() {
             isActive: flag
         }).then(res => {
             fetchUsers();
-            toast.success('Employee changed', { icon: "💀" });
+            toast.success('User changed');
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })
         });
