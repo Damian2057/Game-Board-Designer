@@ -12,8 +12,10 @@ import {Tag} from "../../model/game/tag";
 import {AiFillTags} from "react-icons/ai";
 import {Game} from "../../model/game/game";
 import toast, {Toaster} from "react-hot-toast";
+import {useTranslation} from "react-i18next";
 
 function Home() {
+    const { t } = useTranslation();
 
     const maxTags = 6;
     const [tags, setTags] = useState<Tag[]>([]);
@@ -43,7 +45,7 @@ function Home() {
                 backgroundPosition: 'center',
                 height: '94vh',
             }}>
-                <h1 className='text-dsc'>Every game has a story</h1>
+                <h1 className='text-dsc'>{t('Evert game has a story')}</h1>
                 <p className='p-dsc'>Discover the captivating narratives woven into every gaming experience, where imagination and gameplay unite to create unforgettable stories.</p>
                 <Button href="/games" className='button-games px-4'>View games</Button>
             </section>

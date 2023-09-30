@@ -7,6 +7,7 @@ import {PiUserListBold} from "react-icons/pi";
 import {FaRegUserCircle} from "react-icons/fa";
 import {TbLayoutDashboard} from "react-icons/tb";
 import {FiShoppingCart} from "react-icons/fi";
+import LanguageSwitcher from "./LanguageSwitcher/LanguageSwitcher";
 
 export const NavBar = () => {
 
@@ -81,6 +82,9 @@ export const NavBar = () => {
                                 </Nav.Link>
                             </Nav.Item>
                         )}
+                        <Nav.Item className='flex flex-row items-center'>
+                            <LanguageSwitcher />
+                        </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
