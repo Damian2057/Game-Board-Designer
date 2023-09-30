@@ -1,6 +1,7 @@
 import axios from "axios";
 import {Order} from "../model/order/order";
 import {Game} from "../model/game/game";
+import {Page} from "../model/page";
 
 export class OrderApi {
 
@@ -147,6 +148,21 @@ export class OrderApi {
 
     static getTrendingGames(): Promise<Game[]> {
         return axios.get(`${import.meta.env.VITE_URL}/order/trending-games`).then(res => {
+            return res.data;
+        })
+    }
+
+    static findOrderPage(page: number, limit: number, data: any): Promise<Page<Order>> {
+        return axios.get(`${import.meta.env.VITE_URL}/order/management/find/paged`, {
+            params: {
+                page: page,
+                limit: limit,
+                status: data.status,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
             return res.data;
         })
     }

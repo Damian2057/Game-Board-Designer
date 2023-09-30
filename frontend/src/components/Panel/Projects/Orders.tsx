@@ -3,10 +3,20 @@ import { Button, Card, Col, Container, Table } from 'react-bootstrap'
 import toast, { Toaster } from 'react-hot-toast';
 import IconCircle from '../../util/IconCircle';
 import OrderInfo from '../OrderInfo/OrderInfo';
+import {Api} from "../../../connector/api";
+import {Order} from "../../../model/order/order";
 
 type Props = {}
 
 const Orders = (props: Props) => {
+
+    const itemsPerPage = 8;
+
+    const [orders, setOrders] = useState([] as Order[]);
+    const [pageCount, setPageCount] = useState(0);
+    const [selectedOrderInfo, setSelectedOrderInfo] = React.useState<Order | null>(null);
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editedOrder, setEditedOrder] = useState<Order | null>(null);
 
     const initialProjects = [
         { id: 1, name: 'Catan', date: `${new Date().getDay()} - ${new Date().getMonth()} -  ${new Date().getFullYear()}`, status: 'in review', price: 30 },
@@ -15,6 +25,19 @@ const Orders = (props: Props) => {
 
     const [projects, setProjects] = useState(initialProjects);
     const [selectedProject, setSelectedProject] = React.useState<any | null>(null);
+
+    React.useEffect(() => {
+        // Api.order.findOrderPage(1, 10, {
+        //     status: 'PENDING'
+        // }).then((res) => {
+        //     setProjects(res.items);
+        //     window.scrollTo(0, 0);
+        // }).catch((err) => {
+        //     toast.error(`${err.response.data.message}`, { icon: "💀" });
+        // });
+    }, []);
+
+
 
     const handleProjectInfo = (order: any) => {
         setSelectedProject(order);
