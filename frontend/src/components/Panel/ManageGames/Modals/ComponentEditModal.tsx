@@ -3,27 +3,30 @@ import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
 import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {TagEditProps} from "../Props/TagEditProps";
 import {MdDriveFileRenameOutline} from "react-icons/md";
+import {ComponentEditProps} from "../Props/ComponentEditProps";
 
-const TagEdit: React.FC<TagEditProps> = ({ show, onClose, onSave, editedTag }) => {
+const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSave, editedComponent }) => {
 
-    const [tagName, setTagName] = useState<string>('');
+    const [componentName, setComponentName] = useState<string>('');
+    const [quantity, setQuantity] = useState<number>(1);
 
 
     useEffect(() => {
-        if (editedTag) {
-            setTagName(editedTag.name);
+        if (editedComponent) {
+            setComponentName(editedComponent.name);
+            setQuantity(editedComponent.quantity)
         }
-    }, [editedTag]);
+    }, [editedComponent]);
 
 
     const handleSave = () => {
-        if (editedTag) {
-            Api.game.updateTag(editedTag.id, {
-                name: tagName,
-            }).then((tag) => {
-                onSave(tag);
+        if (editedComponent) {
+            Api.game.updateComponent(editedComponent.id, {
+                name: componentName,
+                quantity: quantity
+            }).then((component) => {
+                onSave(component);
                 toast.success('Successfully updated!', { icon: "👋" });
                 onClose();
             }).catch(err => {
@@ -53,11 +56,26 @@ const TagEdit: React.FC<TagEditProps> = ({ show, onClose, onSave, editedTag }) =
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Tag name:
+                                            Component name:
                                         </div>
                                     </div>
                                 </Form.Label>
-                                <Form.Control type='text' value={tagName} onChange={(e) => setTagName(e.target.value)} />
+                                <Form.Control type='text' value={componentName} onChange={(e) => setComponentName(e.target.value)} />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <MdDriveFileRenameOutline size={30} />
+                                        </div>
+                                        <div>
+                                            Component quantity:
+                                        </div>
+                                    </div>
+                                </Form.Label>
+                                <Form.Control type='text' value={quantity} onChange={(e) =>setQuantity(parseFloat(e.target.value))} />
                             </div>
                         </Form.Group>
                         <div className='flex justify-center items-center mt-4'>
@@ -70,4 +88,4 @@ const TagEdit: React.FC<TagEditProps> = ({ show, onClose, onSave, editedTag }) =
     );
 };
 
-export default TagEdit;
+export default ComponentEditModal;

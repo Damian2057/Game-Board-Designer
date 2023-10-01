@@ -17,4 +17,6 @@ export interface Order extends Entity {
     worker?: User;
     status: string;
     currency: string;
+    firstName: string;
+    lastName: string;
 }

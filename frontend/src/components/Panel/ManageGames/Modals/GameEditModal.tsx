@@ -8,7 +8,7 @@ import {Component} from "../../../../model/game/component";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import NewComponentModal from "./NewComponentModal";
-import ComponentEdit from "./ComponentEdit";
+import ComponentEditModal from "./ComponentEditModal";
 
 
 const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedGame }) => {
@@ -388,7 +388,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                         onClose={handleCloseAddComponentModal}
                         onSave={handleAddNewComponent}
                     />
-                    <ComponentEdit
+                    <ComponentEditModal
                         show={showEditModal}
                         onClose={() => setEditShowModal(false)}
                         onSave={handleEditComponentSave}

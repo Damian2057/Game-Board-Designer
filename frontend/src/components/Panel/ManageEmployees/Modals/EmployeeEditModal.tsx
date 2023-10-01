@@ -1,17 +1,16 @@
 import React, {useEffect, useState} from "react";
-import {UserEditProps} from "../../ManageEmployees/Props/UserEditProps";
-import {Api} from "../../../../connector/api";
-import toast from "react-hot-toast";
 import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {PiUserListBold} from "react-icons/pi";
-import {BsEnvelope, BsTelephone} from "react-icons/bs";
+import {UserEditProps} from "../Props/UserEditProps";
+import ToggleComponent from "./ToggleComponent";
+import {Api} from "../../../../connector/api";
 import {RiLockPasswordFill} from "react-icons/ri";
+import {BsEnvelope, BsTelephone} from "react-icons/bs";
+import {PiUserListBold} from "react-icons/pi";
 import {MdAdminPanelSettings} from "react-icons/md";
-import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
-import {OrderEditProps} from "../Props/OrderEditProps";
+import toast from "react-hot-toast";
 
-const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, editedOrder }) => {
+const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSave, editedEmployee }) => {
 
     const [userName, setUserName] = useState<string>('');
     const [roles, setRoles] = useState<string[]>([]);
@@ -175,4 +174,4 @@ const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, edit
     );
 };
 
-export default OrderEdit;
+export default EmployeeEditModal;

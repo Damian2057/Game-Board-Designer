@@ -18,6 +18,8 @@ export function mapOrderToOrderDto(order: Order) {
   orderDto.status = order.status;
   orderDto.submittingDate = order.submittingDate;
   orderDto.lastUpdate = order.lastUpdate;
+  orderDto.firstName = order.firstName;
+  orderDto.lastName = order.lastName;
   if (order.customer) {
     orderDto.customer = mapUserToUserDto(order.customer);
   }

@@ -2,10 +2,11 @@ import React, { useState } from 'react'
 import { Button, Card, Col, Container, Table } from 'react-bootstrap'
 import toast, { Toaster } from 'react-hot-toast';
 import IconCircle from '../../util/IconCircle';
-import OrderInfo from './Modals/OrderInfo';
+import OrderInfoModal from './Modals/OrderInfoModal';
 import {Api} from "../../../connector/api";
 import {Order} from "../../../model/order/order";
 import ReactPaginate from "react-paginate";
+import OrderEditModal from "./Modals/OrderEditModal";
 
 export default function Orders() {
 
@@ -50,11 +51,16 @@ export default function Orders() {
     }
 
     function handleOrderEdit(order: Order) {
-
+        setEditedOrder(order);
+        setShowEditModal(true);
     }
 
     function handleOrderInfo(order: Order) {
         setSelectedOrderInfo(order)
+    }
+
+    function handleSaveEditedOrder() {
+
     }
 
     return (
@@ -106,13 +112,20 @@ export default function Orders() {
                                         </tr>
                                     ))}
                                         {selectedOrderInfo && (
-                                            <OrderInfo
+                                            <OrderInfoModal
                                                 order={selectedOrderInfo}
                                                 onClose={() => setSelectedOrderInfo(null)}
                                             />
                                         )}
                                     </tbody>
                                 </Table>
+                                <OrderEditModal
+                                    name={"order"}
+                                    show={showEditModal}
+                                    onClose={() => setShowEditModal(false)}
+                                    onSave={handleSaveEditedOrder}
+                                    editedOrder={editedOrder}
+                                />
                             </Col>
                         </div>
                         <ReactPaginate

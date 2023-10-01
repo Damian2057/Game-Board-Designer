@@ -5,5 +5,5 @@ export interface OrderEditProps {
     show: boolean;
     onClose: () => void;
     onSave: (editedOrder: Order | null) => void;
-    editedOrder: Order
+    editedOrder: Order | null;
 }

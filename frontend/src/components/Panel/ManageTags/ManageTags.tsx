@@ -3,10 +3,10 @@ import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import IconCircle from "../../util/IconCircle";
-import EmployeeEdit from "../ManageEmployees/Modals/EmployeeEdit";
+import EmployeeEditModal from "../ManageEmployees/Modals/EmployeeEditModal";
 import {Tag} from "../../../model/game/tag";
-import TagEdit from "./Modals/TagEdit";
-import NewTag from "./Modals/NewTag";
+import TagEditModal from "./Modals/TagEditModal";
+import NewTagModal from "./Modals/NewTagModal";
 
 export default function ManageTags() {
 
@@ -88,12 +88,12 @@ export default function ManageTags() {
                                     ))}
                                     </tbody>
                                 </Table>
-                                <NewTag
+                                <NewTagModal
                                     show={showAddModal}
                                     onClose={handleCloseNewTagModal}
                                     onSave={handleAddNewEmployee}
                                 />
-                                <TagEdit
+                                <TagEditModal
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}
                                     onSave={handleSaveEditedEmployee}
