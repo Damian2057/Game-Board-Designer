@@ -3,11 +3,11 @@ import {Modal, Row, Col, Button} from 'react-bootstrap';
 import { GrClose } from "react-icons/gr";
 import {OrderInfoProps} from "../Props/OrderInfoProps";
 import {User} from "../../../../model/user/user";
-import EmployeeInfo from "../../ManageEmployees/Modals/EmployeeInfo";
+import EmployeeInfoModal from "../../ManageEmployees/Modals/EmployeeInfoModal";
 import GameInfo from "../../../Games/GameInfo/GameInfo";
 import {Game} from "../../../../model/game/game";
 
-const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
+const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
 
     const [selectedUserInfo, setSelectedUserInfo] = React.useState<User | null>(null);
     const [selectedGame, setSelectedGame] = React.useState<Game | null>(null);
@@ -80,7 +80,7 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                                     </td>
                                 </tr>
                                 {selectedUserInfo && (
-                                    <EmployeeInfo
+                                    <EmployeeInfoModal
                                         name={"User"}
                                         employee={selectedUserInfo}
                                         onClose={() => setSelectedUserInfo(null)}
@@ -114,4 +114,4 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
     )
 }
 
-export default OrderInfo
+export default OrderInfoModal

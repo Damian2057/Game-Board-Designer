@@ -12,7 +12,7 @@ import {FaAddressBook, FaUserAstronaut} from "react-icons/fa";
 import {BiSolidCity} from "react-icons/bi";
 import {GiPriceTag} from "react-icons/gi";
 
-const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, editedOrder }) => {
+const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, editedOrder }) => {
 
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
@@ -287,4 +287,4 @@ const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, edit
     );
 };
 
-export default OrderEdit;
+export default OrderEditModal;

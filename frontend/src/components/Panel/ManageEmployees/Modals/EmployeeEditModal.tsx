@@ -10,7 +10,7 @@ import {PiUserListBold} from "react-icons/pi";
 import {MdAdminPanelSettings} from "react-icons/md";
 import toast from "react-hot-toast";
 
-const EmployeeEdit: React.FC<UserEditProps> = ({ name, show, onClose, onSave, editedEmployee }) => {
+const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSave, editedEmployee }) => {
 
     const [userName, setUserName] = useState<string>('');
     const [roles, setRoles] = useState<string[]>([]);
@@ -174,4 +174,4 @@ const EmployeeEdit: React.FC<UserEditProps> = ({ name, show, onClose, onSave, ed
     );
 };
 
-export default EmployeeEdit;
+export default EmployeeEditModal;

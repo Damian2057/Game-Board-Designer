@@ -6,7 +6,7 @@ import {GrClose} from "react-icons/gr";
 import {NewTagProps} from "../Props/NewTagProps";
 import {AiFillTags} from "react-icons/ai";
 
-const NewTag: React.FC<NewTagProps> = ({ show, onClose, onSave }) => {
+const NewTagModal: React.FC<NewTagProps> = ({ show, onClose, onSave }) => {
 
     const [tagName, setTagName] = useState<string>('');
 
@@ -62,4 +62,4 @@ const NewTag: React.FC<NewTagProps> = ({ show, onClose, onSave }) => {
     );
 };
 
-export default NewTag;
+export default NewTagModal;

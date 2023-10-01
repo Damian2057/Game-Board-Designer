@@ -6,7 +6,7 @@ import {PiUserListBold} from "react-icons/pi";
 import {BsEnvelope, BsTelephone} from "react-icons/bs";
 import {MdAdminPanelSettings} from "react-icons/md";
 
-const EmployeeInfo: React.FC<UserInfoProps> = ({ name, employee, onClose }) => {
+const EmployeeInfoModal: React.FC<UserInfoProps> = ({ name, employee, onClose }) => {
     return (
         <Modal show={true} onHide={onClose} className='text-white' style={{}}>
             <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
@@ -91,4 +91,4 @@ const EmployeeInfo: React.FC<UserInfoProps> = ({ name, employee, onClose }) => {
     );
 };
 
-export default EmployeeInfo;
+export default EmployeeInfoModal;

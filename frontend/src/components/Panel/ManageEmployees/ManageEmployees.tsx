@@ -5,8 +5,8 @@ import IconCircle from '../../util/IconCircle'
 import './ManageEmployees.css'
 import {Api} from "../../../connector/api";
 import {User} from "../../../model/user/user";
-import EmployeeInfo from "./Modals/EmployeeInfo";
-import EmployeeEdit from "./Modals/EmployeeEdit";
+import EmployeeInfoModal from "./Modals/EmployeeInfoModal";
+import EmployeeEditModal from "./Modals/EmployeeEditModal";
 import NewEmployeeModal from "./Modals/NewEmployeeModal";
 import ReactPaginate from "react-paginate";
 
@@ -137,7 +137,7 @@ export default function ManageEmployees() {
                                             </tr>
                                         ))}
                                         {selectedEmployeeInfo && (
-                                            <EmployeeInfo
+                                            <EmployeeInfoModal
                                                 name={"Employee"}
                                                 employee={selectedEmployeeInfo}
                                                 onClose={() => setSelectedEmployeeInfo(null)}
@@ -150,7 +150,7 @@ export default function ManageEmployees() {
                                     onClose={handleCloseAddEmployeeModal}
                                     onSave={handleAddNewEmployee}
                                 />
-                                <EmployeeEdit
+                                <EmployeeEditModal
                                     name={"employee"}
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}

@@ -4,8 +4,8 @@ import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import IconCircle from "../../util/IconCircle";
-import EmployeeInfo from "../ManageEmployees/Modals/EmployeeInfo";
-import EmployeeEdit from "../ManageEmployees/Modals/EmployeeEdit";
+import EmployeeInfoModal from "../ManageEmployees/Modals/EmployeeInfoModal";
+import EmployeeEditModal from "../ManageEmployees/Modals/EmployeeEditModal";
 import ReactPaginate from "react-paginate";
 
 export default function ManageUsers() {
@@ -120,7 +120,7 @@ export default function ManageUsers() {
                                         </tr>
                                     ))}
                                     {selectedUserInfo && (
-                                        <EmployeeInfo
+                                        <EmployeeInfoModal
                                             name={"User"}
                                             employee={selectedUserInfo}
                                             onClose={() => setSelectedUserInfo(null)}
@@ -128,7 +128,7 @@ export default function ManageUsers() {
                                     )}
                                     </tbody>
                                 </Table>
-                                <EmployeeEdit
+                                <EmployeeEditModal
                                     name={"user"}
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}

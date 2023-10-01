@@ -3,7 +3,7 @@ import { Button, Card, Col, Container, Table } from 'react-bootstrap'
 import IconCircle from '../../util/IconCircle'
 import toast, { Toaster } from 'react-hot-toast';
 import './Workspace.css'
-import OrderInfo from '../Orders/Modals/OrderInfo';
+import OrderInfoModal from '../Orders/Modals/OrderInfoModal';
 
 function Workspace() {
 
@@ -70,7 +70,7 @@ function Workspace() {
                                             </tr>
                                         ))}
                                         {selectedOrder && (
-                                            <OrderInfo
+                                            <OrderInfoModal
                                                 order={selectedOrder}
                                                 onClose={() => setSelectedOrder(null)}
                                             />
