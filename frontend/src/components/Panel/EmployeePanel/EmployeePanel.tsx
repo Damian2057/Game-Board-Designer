@@ -30,7 +30,7 @@ function EmployeePanel() {
             }}>
                 <Row className="w-100">
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/projects'} icon={todoIcon} title={'Projects TODO'} description={'contain order projects by clients to claim'} />
+                        <ContentCard linkTo={'/panel/projects'} icon={todoIcon} title={'Orders TODO'} description={'contain order projects by clients to claim'} />
                     </Col>
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} title={'WorkSpace'} description={'view your claimed projects'} />

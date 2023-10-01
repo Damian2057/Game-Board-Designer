@@ -15,6 +15,8 @@ export function mapOrderToOrderDto(order: Order) {
   orderDto.game = order.game;
   orderDto.city = order.city;
   orderDto.status = order.status;
+  orderDto.submittingDate = order.submittingDate;
+  orderDto.lastUpdate = order.lastUpdate;
   if (order.customer) {
     orderDto.customer = mapUserToUserDto(order.customer);
   }

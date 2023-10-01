@@ -10,6 +10,8 @@ export class OrderDto {
   description: string;
   price: number;
   game: GameDto;
+  submittingDate: string;
+  lastUpdate: string;
   city: string;
   address: string;
   customer: UserDto;
