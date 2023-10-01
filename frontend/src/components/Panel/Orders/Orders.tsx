@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Button, Card, Col, Container, Table } from 'react-bootstrap'
 import toast, { Toaster } from 'react-hot-toast';
 import IconCircle from '../../util/IconCircle';
-import OrderInfo from '../OrderInfo/OrderInfo';
+import OrderInfo from './Modals/OrderInfo';
 import {Api} from "../../../connector/api";
 import {Order} from "../../../model/order/order";
 import ReactPaginate from "react-paginate";
@@ -16,7 +16,6 @@ export default function Orders() {
     const [selectedOrderInfo, setSelectedOrderInfo] = React.useState<Order | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [editedOrder, setEditedOrder] = useState<Order | null>(null);
-    const [selectedProject, setSelectedProject] = React.useState<any | null>(null);
 
     React.useEffect(() => {
         fetchOrders();
@@ -46,10 +45,6 @@ export default function Orders() {
         });
     }
 
-    const handleProjectInfo = (order: any) => {
-        setSelectedProject(order);
-    };
-
     function handleOrderClaim(order: Order) {
         
     }
@@ -59,7 +54,7 @@ export default function Orders() {
     }
 
     function handleOrderInfo(order: Order) {
-
+        setSelectedOrderInfo(order)
     }
 
     return (
@@ -110,10 +105,10 @@ export default function Orders() {
                                             </td>
                                         </tr>
                                     ))}
-                                        {selectedProject && (
+                                        {selectedOrderInfo && (
                                             <OrderInfo
-                                                order={selectedProject}
-                                                onClose={() => setSelectedProject(null)}
+                                                order={selectedOrderInfo}
+                                                onClose={() => setSelectedOrderInfo(null)}
                                             />
                                         )}
                                     </tbody>

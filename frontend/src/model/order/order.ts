@@ -13,7 +13,7 @@ export interface Order extends Entity {
     submittingDate: string;
     lastUpdate: string;
     address: string;
-    customer?: User;
+    customer: User;
     worker?: User;
     status: string;
 }
