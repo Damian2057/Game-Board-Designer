@@ -6,6 +6,7 @@ import OrderInfo from './Modals/OrderInfo';
 import {Api} from "../../../connector/api";
 import {Order} from "../../../model/order/order";
 import ReactPaginate from "react-paginate";
+import OrderEdit from "./Modals/OrderEdit";
 
 export default function Orders() {
 
@@ -50,11 +51,16 @@ export default function Orders() {
     }
 
     function handleOrderEdit(order: Order) {
-
+        setEditedOrder(order);
+        setShowEditModal(true);
     }
 
     function handleOrderInfo(order: Order) {
         setSelectedOrderInfo(order)
+    }
+
+    function handleSaveEditedOrder() {
+
     }
 
     return (
@@ -113,6 +119,13 @@ export default function Orders() {
                                         )}
                                     </tbody>
                                 </Table>
+                                <OrderEdit
+                                    name={"order"}
+                                    show={showEditModal}
+                                    onClose={() => setShowEditModal(false)}
+                                    onSave={handleSaveEditedOrder}
+                                    editedOrder={editedOrder}
+                                />
                             </Col>
                         </div>
                         <ReactPaginate

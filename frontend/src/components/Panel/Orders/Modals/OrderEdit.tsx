@@ -1,64 +1,77 @@
 import React, {useEffect, useState} from "react";
-import {UserEditProps} from "../../ManageEmployees/Props/UserEditProps";
 import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
 import {Button, Col, Form, Modal} from "react-bootstrap";
-import {GrClose} from "react-icons/gr";
+import {GrClose, GrStatusCriticalSmall, GrStatusInfo} from "react-icons/gr";
 import {PiUserListBold} from "react-icons/pi";
 import {BsEnvelope, BsTelephone} from "react-icons/bs";
-import {RiLockPasswordFill} from "react-icons/ri";
-import {MdAdminPanelSettings} from "react-icons/md";
-import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
+import {MdAdminPanelSettings, MdOutlineDescription} from "react-icons/md";
 import {OrderEditProps} from "../Props/OrderEditProps";
+import {User} from "../../../../model/user/user";
+import {FaAddressBook, FaUserAstronaut} from "react-icons/fa";
+import {BiSolidCity} from "react-icons/bi";
+import {GiPriceTag} from "react-icons/gi";
 
 const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, editedOrder }) => {
 
-    const [userName, setUserName] = useState<string>('');
-    const [roles, setRoles] = useState<string[]>([]);
-    const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
-    const [isActivated, setIsActivated] = useState(true);
-    const [selectedRole, setSelectedRole] = useState('');
-
+    const [description, setDescription] = useState('');
+    const [address, setAddress] = useState('');
+    const [city, setCity] = useState('');
+    const [price, setPrice] = useState(0);
+    const [firstName, setFirstName] = useState('');
+    const [lastName, setLastName] = useState('');
+    const [currency, setCurrency] = useState('');
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [status, setStatus] = useState<string[]>([]);
+    const [worker, setWorker] = useState<User>();
 
     useEffect(() => {
-        if (editedEmployee) {
-            Api.user.getRoles().then(res => {
-                setRoles(res);
-            }).catch(err => {
-                toast.error(`${err.response.data.message}`, { icon: "💀" })
-            });
-            setUserName(editedEmployee.username);
-            setEmail(editedEmployee.email);
-            setPhone(editedEmployee.phoneNumber);
-            setIsActivated(editedEmployee.isActive);
-            setSelectedRole(editedEmployee.role);
+        Api.order.getAvailableStatuses().then(res => {
+            setStatus(res);
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
+        if (!editedOrder) {
+            return;
         }
-    }, [editedEmployee]);
+        setEmail(editedOrder.email);
+        setPhone(editedOrder.phone);
+        setDescription(editedOrder.description);
+        setAddress(editedOrder.address);
+        setCity(editedOrder.city);
+        setPrice(editedOrder.price);
+        setFirstName(editedOrder.firstName);
+        setLastName(editedOrder.lastName);
+        setCurrency(editedOrder.currency);
+        setSelectedStatus(editedOrder.status);
+        setWorker(editedOrder.worker);
+
+    }, [editedOrder]);
 
 
     const handleSave = () => {
-        if (editedEmployee) {
-            let name = userName != editedEmployee.username ? userName : null;
-            let phoneNumber = phone != editedEmployee.phoneNumber ? phone : null;
-            let mail = email != editedEmployee.email ? email : null;
-            let pass = password != '' ? password : null;
-            Api.user.updateUser(editedEmployee.id, {
-                username: name,
-                phoneNumber: phoneNumber,
-                email: mail,
-                password: pass,
-                role: selectedRole,
-                isActive: isActivated
-            }).then((user) => {
-                onSave(user);
-                toast.success('Successfully updated!', { icon: "👋" });
-                onClose();
-            }).catch(err => {
-                toast.error(`${err.response.data.message}`, { icon: "💀" })
-            });
-        }
+        // if (editedEmployee) {
+        //     let name = userName != editedEmployee.username ? userName : null;
+        //     let phoneNumber = phone != editedEmployee.phoneNumber ? phone : null;
+        //     let mail = email != editedEmployee.email ? email : null;
+        //     let pass = password != '' ? password : null;
+        //     Api.user.updateUser(editedEmployee.id, {
+        //         username: name,
+        //         phoneNumber: phoneNumber,
+        //         email: mail,
+        //         password: pass,
+        //         role: selectedRole,
+        //         isActive: isActivated
+        //     }).then((user) => {
+        //         onSave(user);
+        //         toast.success('Successfully updated!', { icon: "👋" });
+        //         onClose();
+        //     }).catch(err => {
+        //         toast.error(`${err.response.data.message}`, { icon: "💀" })
+        //     });
+        // }
     };
 
     return (
@@ -82,11 +95,26 @@ const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, edit
                                             <PiUserListBold size={30} />
                                         </div>
                                         <div>
-                                            UserName:
+                                            FirstName:
                                         </div>
                                     </div>
                                 </Form.Label>
-                                <Form.Control type='text' value={userName} onChange={(e) => setUserName(e.target.value)} />
+                                <Form.Control type='text' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <PiUserListBold size={30} />
+                                        </div>
+                                        <div>
+                                            LastName:
+                                        </div>
+                                    </div>
+                                </Form.Label>
+                                <Form.Control type='text' value={lastName} onChange={(e) => setLastName(e.target.value)} />
                             </div>
                         </Form.Group>
                         <Form.Group>
@@ -124,17 +152,49 @@ const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, edit
                                 <Form.Label className='fw-bold'>
                                     <div className='flex flex-row gap-2 items-center'>
                                         <div>
-                                            <RiLockPasswordFill size={30} />
+                                            <FaAddressBook size={30} />
                                         </div>
                                         <div>
-                                            Password:
+                                            Address:
+                                        </div>
+                                    </div>
+                                </Form.Label>
+                                <Form.Control type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <BiSolidCity size={30} />
+                                        </div>
+                                        <div>
+                                            City:
+                                        </div>
+                                    </div>
+                                </Form.Label>
+                                <Form.Control type='text' value={city} onChange={(e) => setCity(e.target.value)} />
+                            </div>
+                        </Form.Group>
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <MdOutlineDescription size={30} />
+                                        </div>
+                                        <div>
+                                            Description:
                                         </div>
                                     </div>
                                 </Form.Label>
                                 <Form.Control
-                                    type='password'
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
+                                    as="textarea"
+                                    rows={3}
+                                    placeholder='Game description'
+                                    value={description}
+                                    onChange={(e) => setDescription(e.target.value)}
                                 />
                             </div>
                         </Form.Group>
@@ -143,28 +203,80 @@ const OrderEdit: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, edit
                                 <Form.Label className='fw-bold'>
                                     <div className='flex flex-row gap-2 items-center'>
                                         <div>
-                                            <MdAdminPanelSettings size={30} />
+                                            <GiPriceTag size={30} />
                                         </div>
                                         <div>
-                                            Role:
+                                            Price:
+                                        </div>
+                                    </div>
+                                </Form.Label>
+                                <Form.Control
+                                    type='number'
+                                    placeholder='Game price'
+                                    value={isNaN(price) ? '' : price.toString()}
+                                    onChange={(e) => setPrice(parseFloat(e.target.value))}
+                                    step="any"
+                                />
+                            </div>
+                        </Form.Group>
+                        <Form.Group className='mt-3'>
+                            <Form.Select className='form-select ' aria-label="Currency selector" defaultValue={currency} onChange={(e) => setCurrency(e.target.value)}>
+                                <option disabled value={''}>Choose currency</option>
+                                <option value={'PLN'}>PLN</option>
+                                <option value={'EUR'}>EUR</option>
+                                <option value={'USD'}>USD</option>
+                            </Form.Select>
+                        </Form.Group>
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <GrStatusCriticalSmall size={30} />
+                                        </div>
+                                        <div>
+                                            Status:
                                         </div>
                                     </div>
                                 </Form.Label>
                                 <Form.Control
                                     as="select"
-                                    value={selectedRole}
-                                    onChange={(e) => setSelectedRole(e.target.value)}
-                                >{roles.map((role) => (
-                                    <option key={role} value={role}>
-                                        {role}
+                                    value={selectedStatus}
+                                    onChange={(e) => setSelectedStatus(e.target.value)}
+                                >{status.map((stat) => (
+                                    <option key={stat} value={stat}>
+                                        {stat}
                                     </option>
                                 ))}
                                 </Form.Control>
                             </div>
                         </Form.Group>
-                        <div className='flex justify-center items-center'>
-                            <ToggleComponent label="Active: " initialValue={isActivated}  onChange={setIsActivated}  labels={['Yes', 'No']}/>
-                        </div>
+
+                        <Form.Group>
+                            <div>
+                                <Form.Label className='fw-bold'>
+                                    <div className='flex flex-row gap-2 items-center'>
+                                        <div>
+                                            <FaUserAstronaut size={30} />
+                                        </div>
+                                        <div>
+                                            Assigned to:
+                                        </div>
+                                    </div>
+                                </Form.Label>
+                                <Form.Control
+                                    as="select"
+                                    value={worker?.username}
+                                    onChange={(e) => setSelectedStatus(e.target.value)}
+                                >{status.map((stat) => (
+                                    <option key={stat} value={stat}>
+                                        {stat}
+                                    </option>
+                                ))}
+                                </Form.Control>
+                            </div>
+                        </Form.Group>
+
                         <div className='flex justify-center items-center mt-4'>
                             <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
                         </div>

@@ -19,4 +19,6 @@ export class OrderDto {
   status: OrderStatus;
   project: ProjectDto;
   currency: string;
+  firstName: string;
+  lastName: string;
 }

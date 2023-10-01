@@ -12,7 +12,8 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
     const [selectedUserInfo, setSelectedUserInfo] = React.useState<User | null>(null);
     const [selectedGame, setSelectedGame] = React.useState<Game | null>(null);
 
-    const handleUserInfo = (user: User) => {
+    const handleUserInfo = (user: User | undefined) => {
+        if (!user) return;
         setSelectedUserInfo(user);
     };
 
@@ -87,6 +88,12 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                                 )}
                                 </tbody>
                             </table>
+                        </Row>
+                        <Row className='gap-2'>
+                            <div>
+                                <span className='fw-bold'>Assigned to:</span>
+                                <Button className='button-workspace' onClick={() => handleUserInfo(order.worker)}>{order.worker ? order.worker?.username : "None"}</Button>
+                            </div>
                         </Row>
                         <Row className='gap-2'>
                             <div>
