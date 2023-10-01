@@ -18,4 +18,5 @@ export class OrderDto {
   worker: UserDto;
   status: OrderStatus;
   project: ProjectDto;
+  currency: string;
 }

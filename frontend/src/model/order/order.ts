@@ -16,4 +16,5 @@ export interface Order extends Entity {
     customer: User;
     worker?: User;
     status: string;
+    currency: string;
 }

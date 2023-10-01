@@ -38,7 +38,7 @@ const OrderInfo: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                         <Row className='mt-3 align-items-center'>
                             <Col xs={8}>
                                 <div>
-                                    <span className='fw-bold'>Price:</span> ${order.price}
+                                    <span className='fw-bold'>Price:</span> {order.price}{order.currency}
                                 </div>
                                 <div>
                                     <span className='fw-bold'>Submitting Date:</span> {order.submittingDate}
