@@ -10,10 +10,13 @@ export class OrderDto {
   description: string;
   price: number;
   game: GameDto;
+  submittingDate: string;
+  lastUpdate: string;
   city: string;
   address: string;
   customer: UserDto;
   worker: UserDto;
   status: OrderStatus;
   project: ProjectDto;
+  currency: string;
 }

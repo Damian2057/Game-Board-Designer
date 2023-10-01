@@ -10,8 +10,11 @@ export interface Order extends Entity {
     price: number;
     city: string;
     game: Game;
+    submittingDate: string;
+    lastUpdate: string;
     address: string;
-    customer?: User;
+    customer: User;
     worker?: User;
     status: string;
+    currency: string;
 }

@@ -1,7 +1,6 @@
 import React from 'react';
-import { Modal, Button, Row, Col, Carousel, Form } from 'react-bootstrap';
+import { Modal, Row, Col, Carousel, Form } from 'react-bootstrap';
 import { GrClose } from "react-icons/gr";
-import { Link } from 'react-router-dom';
 import './GameInfo.css'
 import {Game} from "../../../model/game/game";
 import {Api} from "../../../connector/api";
@@ -42,25 +41,27 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
                             </Col>
                         </Row>
                         <Row className='gap-2'>
-                            <table className="tags-table">
-                                <thead>
-                                <tr>
-                                    <th>Tags:</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                {game.tags?.map((tag, index) => (
-                                    <tr key={tag.id}>
-                                        <td className="tag-cell">
-                                            <div className="tag-content">
-                                                <AiFillTags size={30} />
-                                                <span>{tag.name}</span>
-                                            </div>
-                                        </td>
+                            {game.tags && (
+                                <table className="tags-table">
+                                    <thead>
+                                    <tr>
+                                        <th>Tags:</th>
                                     </tr>
-                                ))}
-                                </tbody>
-                            </table>
+                                    </thead>
+                                    <tbody>
+                                    {game.tags?.map((tag, index) => (
+                                        <tr key={tag.id}>
+                                            <td className="tag-cell">
+                                                <div className="tag-content">
+                                                    <AiFillTags size={30} />
+                                                    <span>{tag.name}</span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    ))}
+                                    </tbody>
+                                </table>
+                            )}
                         </Row>
                         <Row className='mt-3'>
                             <Form.Control

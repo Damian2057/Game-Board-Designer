@@ -10,7 +10,7 @@ import Order from './components/Games/Order/Order';
 import Board from './components/Panel/Board/Board';
 import AdminPanel from './components/Panel/AdminPanel/AdminPanel';
 import Workspace from './components/Panel/Workspace/Workspace';
-import Orders from './components/Panel/Projects/Orders';
+import Orders from './components/Panel/Orders/Orders';
 import ManageEmployees from './components/Panel/ManageEmployees/ManageEmployees';
 import EmployeePanel from './components/Panel/EmployeePanel/EmployeePanel';
 import NewSchema from './components/Panel/NewSchema/NewScheme';
