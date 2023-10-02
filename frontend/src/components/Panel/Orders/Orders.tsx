@@ -61,6 +61,19 @@ export default function Orders() {
     const handleWithStatusOrders = (e: any) => {
         const status = e.target.value;
         setSelectedStatus(status);
+        fetchOrdersByStatus(status);
+    }
+
+    function handleOrderClaim(order: Order) {
+        Api.order.claimOrder(order.id).then((res) => {
+            toast.success(`Order ${order.id} claimed`, { icon: "👏" });
+            fetchOrdersByStatus(selectedStatus);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
+
+    const fetchOrdersByStatus = (status: string) => {
         Api.order.findOrderPage(1, itemsPerPage, {
             status: status
         }).then((res) => {
@@ -70,10 +83,6 @@ export default function Orders() {
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, { icon: "💀" });
         });
-    }
-
-    function handleOrderClaim(order: Order) {
-        
     }
 
     function handleOrderEdit(order: Order) {
@@ -86,15 +95,7 @@ export default function Orders() {
     }
 
     function handleSaveEditedOrder() {
-        Api.order.findOrderPage(1, itemsPerPage, {
-            status: selectedStatus
-        }).then((res) => {
-            setOrders(res.items);
-            setPageCount(res.meta.totalPages)
-            window.scrollTo(0, 0);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
+        fetchOrdersByStatus(selectedStatus);
     }
 
     return (
