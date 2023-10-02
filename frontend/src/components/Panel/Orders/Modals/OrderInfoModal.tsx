@@ -59,6 +59,12 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                             <div>
                                 <span className='fw-bold'>User data:</span>
                             </div>
+                            <div>
+                                <span className='fw-bold'>First name:</span> {order.firstName}
+                            </div>
+                            <div>
+                                <span className='fw-bold'>Last name:</span> {order.lastName}
+                            </div>
                             <table className="tags-table">
                                 <thead>
                                 <tr>

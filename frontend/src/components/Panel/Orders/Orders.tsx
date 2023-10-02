@@ -7,6 +7,7 @@ import {Api} from "../../../connector/api";
 import {Order} from "../../../model/order/order";
 import ReactPaginate from "react-paginate";
 import OrderEditModal from "./Modals/OrderEditModal";
+import Form from "react-bootstrap/Form";
 
 export default function Orders() {
 
@@ -17,9 +18,12 @@ export default function Orders() {
     const [selectedOrderInfo, setSelectedOrderInfo] = React.useState<Order | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
     const [editedOrder, setEditedOrder] = useState<Order | null>(null);
+    const [selectedStatus, setSelectedStatus] = useState('');
+    const [statuses, setStatuses] = useState([] as string[]);
 
     React.useEffect(() => {
         fetchOrders();
+        fetchStatuses();
     }, []);
 
     const fetchOrders = ()=> {
@@ -34,9 +38,31 @@ export default function Orders() {
         });
     }
 
+    const fetchStatuses = () => {
+        Api.order.getAvailableStatuses().then((res) => {
+            setStatuses(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
+
     const handlePageClick = (data: any) => {
         Api.order.findOrderPage(data.selected + 1, itemsPerPage, {
             status: 'PENDING'
+        }).then((res) => {
+            setOrders(res.items);
+            setPageCount(res.meta.totalPages)
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
+
+    const handleWithStatusOrders = (e: any) => {
+        const status = e.target.value;
+        setSelectedStatus(status);
+        Api.order.findOrderPage(1, itemsPerPage, {
+            status: status
         }).then((res) => {
             setOrders(res.items);
             setPageCount(res.meta.totalPages)
@@ -60,7 +86,15 @@ export default function Orders() {
     }
 
     function handleSaveEditedOrder() {
-
+        Api.order.findOrderPage(1, itemsPerPage, {
+            status: selectedStatus
+        }).then((res) => {
+            setOrders(res.items);
+            setPageCount(res.meta.totalPages)
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
     }
 
     return (
@@ -77,6 +111,14 @@ export default function Orders() {
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
                         <p className='font-bold fs-2'>Orders</p>
+                        <Col lg={3} className='mb-4'>
+                            <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleWithStatusOrders}>
+                                <option disabled value={''}>Choose status</option>
+                                {statuses.map(item => {
+                                    return (<option key={item} value={item}>{item}</option>)
+                                })}
+                            </Form.Select>
+                        </Col>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
