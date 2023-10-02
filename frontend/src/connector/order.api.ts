@@ -104,13 +104,21 @@ export class OrderApi {
 
     static advanceUpdateOrder(id: number, data: any): Promise<Order> {
         return axios.put(`${import.meta.env.VITE_URL}/order/management/advance-update/${id}`, {
+            firstName: data.firstName,
+            lastName: data.lastName,
             phone: data.phone,
             email: data.email,
             description: data.description,
             address: data.address,
             price: data.price,
+            city: data.city,
+            currency: data.currency,
             worker: data.worker,
             status: data.status,
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
         }).then(res => {
             return res.data;
         });

@@ -61,26 +61,39 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
 
 
     const handleSave = () => {
-        // if (editedEmployee) {
-        //     let name = userName != editedEmployee.username ? userName : null;
-        //     let phoneNumber = phone != editedEmployee.phoneNumber ? phone : null;
-        //     let mail = email != editedEmployee.email ? email : null;
-        //     let pass = password != '' ? password : null;
-        //     Api.user.updateUser(editedEmployee.id, {
-        //         username: name,
-        //         phoneNumber: phoneNumber,
-        //         email: mail,
-        //         password: pass,
-        //         role: selectedRole,
-        //         isActive: isActivated
-        //     }).then((user) => {
-        //         onSave(user);
-        //         toast.success('Successfully updated!', { icon: "👋" });
-        //         onClose();
-        //     }).catch(err => {
-        //         toast.error(`${err.response.data.message}`, { icon: "💀" })
-        //     });
-        // }
+        if (!editedOrder) {
+            return;
+        }
+        let first = firstName != editedOrder.firstName ? firstName : null;
+        let last = lastName != editedOrder.lastName ? lastName : null;
+        let mail = email != editedOrder.email ? email : null;
+        let phoneNum = phone != editedOrder.phone ? phone : null;
+        let desc = description != editedOrder.description ? description : null;
+        let addr = address != editedOrder.address ? address : null;
+        let cit = city != editedOrder.city ? city : null;
+        let pri = price != editedOrder.price ? price : null;
+        let cur = currency != editedOrder.currency ? currency : null;
+        let stat = selectedStatus != editedOrder.status ? selectedStatus : null;
+        let work = worker != editedOrder.worker ? worker : null;
+        Api.order.advanceUpdateOrder(editedOrder.id, {
+            firstName: first,
+            lastName: last,
+            email: mail,
+            phone: phoneNum,
+            description: desc,
+            address: addr,
+            city: cit,
+            price: pri,
+            currency: cur,
+            status: stat,
+            worker: work
+        }).then((order) => {
+            onSave(order);
+            toast.success('Successfully updated!', { icon: "👋" });
+            onClose();
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
     };
 
     const handleChange = (e: any) => {
