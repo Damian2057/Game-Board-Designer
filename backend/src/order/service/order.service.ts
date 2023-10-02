@@ -192,6 +192,7 @@ export class OrderService {
     }
     if (command.worker) {
       order.worker = await this.userService.findOne(command.worker.id);
+      order.status = OrderStatus.CLAIMED;
     }
     if (command.city) {
       order.city = command.city;

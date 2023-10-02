@@ -105,7 +105,6 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
         if (worker) {
             setWorker(worker);
         }
-        console.log(worker);
     }
 
 
