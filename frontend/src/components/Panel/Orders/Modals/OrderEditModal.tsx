@@ -2,15 +2,16 @@ import React, {useEffect, useState} from "react";
 import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
 import {Button, Col, Form, Modal} from "react-bootstrap";
-import {GrClose, GrStatusCriticalSmall, GrStatusInfo} from "react-icons/gr";
+import {GrClose, GrStatusCriticalSmall} from "react-icons/gr";
 import {PiUserListBold} from "react-icons/pi";
 import {BsEnvelope, BsTelephone} from "react-icons/bs";
-import {MdAdminPanelSettings, MdOutlineDescription} from "react-icons/md";
+import {MdOutlineDescription} from "react-icons/md";
 import {OrderEditProps} from "../Props/OrderEditProps";
 import {User} from "../../../../model/user/user";
 import {FaAddressBook, FaUserAstronaut} from "react-icons/fa";
 import {BiSolidCity} from "react-icons/bi";
 import {GiPriceTag} from "react-icons/gi";
+import CustomSelect from "./CustomSelect";
 
 const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, editedOrder }) => {
 
@@ -25,6 +26,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
     const [currency, setCurrency] = useState('');
     const [selectedStatus, setSelectedStatus] = useState('');
     const [status, setStatus] = useState<string[]>([]);
+    const [employees, setEmployees] = useState<User[]>([]);
     const [worker, setWorker] = useState<User>();
 
     useEffect(() => {
@@ -36,6 +38,13 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
         if (!editedOrder) {
             return;
         }
+        Api.user.findUser({
+            roles: 'admin,employee'
+        }).then(res => {
+            setEmployees(res);
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        })
         setEmail(editedOrder.email);
         setPhone(editedOrder.phone);
         setDescription(editedOrder.description);
@@ -52,27 +61,52 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
 
 
     const handleSave = () => {
-        // if (editedEmployee) {
-        //     let name = userName != editedEmployee.username ? userName : null;
-        //     let phoneNumber = phone != editedEmployee.phoneNumber ? phone : null;
-        //     let mail = email != editedEmployee.email ? email : null;
-        //     let pass = password != '' ? password : null;
-        //     Api.user.updateUser(editedEmployee.id, {
-        //         username: name,
-        //         phoneNumber: phoneNumber,
-        //         email: mail,
-        //         password: pass,
-        //         role: selectedRole,
-        //         isActive: isActivated
-        //     }).then((user) => {
-        //         onSave(user);
-        //         toast.success('Successfully updated!', { icon: "👋" });
-        //         onClose();
-        //     }).catch(err => {
-        //         toast.error(`${err.response.data.message}`, { icon: "💀" })
-        //     });
-        // }
+        if (!editedOrder) {
+            return;
+        }
+        let first = firstName != editedOrder.firstName ? firstName : null;
+        let last = lastName != editedOrder.lastName ? lastName : null;
+        let mail = email != editedOrder.email ? email : null;
+        let phoneNum = phone != editedOrder.phone ? phone : null;
+        let desc = description != editedOrder.description ? description : null;
+        let addr = address != editedOrder.address ? address : null;
+        let cit = city != editedOrder.city ? city : null;
+        let pri = price != editedOrder.price ? price : null;
+        let cur = currency != editedOrder.currency ? currency : null;
+        let stat = selectedStatus != editedOrder.status ? selectedStatus : null;
+        let work = worker != editedOrder.worker ? worker : null;
+        Api.order.advanceUpdateOrder(editedOrder.id, {
+            firstName: first,
+            lastName: last,
+            email: mail,
+            phone: phoneNum,
+            description: desc,
+            address: addr,
+            city: cit,
+            price: pri,
+            currency: cur,
+            status: stat,
+            worker: work
+        }).then((order) => {
+            onSave(order);
+            toast.success('Successfully updated!', { icon: "👋" });
+            onClose();
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        });
     };
+
+    const handleChange = (e: any) => {
+        const name = e.target.value;
+        if (name == 'None') {
+            return;
+        }
+        const worker = employees.find(user => user.email === name);
+        if (worker) {
+            setWorker(worker);
+        }
+    }
+
 
     return (
         <Modal show={show} onHide={onClose} className='text-white'>
@@ -252,6 +286,26 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                             </div>
                         </Form.Group>
 
+                        {/*<Form.Group>*/}
+                        {/*    <div>*/}
+                        {/*        <Form.Label className='fw-bold'>*/}
+                        {/*            <div className='flex flex-row gap-2 items-center'>*/}
+                        {/*                <div>*/}
+                        {/*                    <FaUserAstronaut size={30} />*/}
+                        {/*                </div>*/}
+                        {/*                <div>*/}
+                        {/*                    Assigned to:*/}
+                        {/*                </div>*/}
+                        {/*            </div>*/}
+                        {/*        </Form.Label>*/}
+                        {/*        <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleChange}>*/}
+                        {/*            <option disabled value={''}>Choose tags</option>*/}
+                        {/*            {employees.map(item => {*/}
+                        {/*                return (<option key={item.id} value={item.email}>{item.email}</option>)*/}
+                        {/*            })}*/}
+                        {/*        </Form.Select>*/}
+                        {/*    </div>*/}
+                        {/*</Form.Group>*/}
                         <Form.Group>
                             <div>
                                 <Form.Label className='fw-bold'>
@@ -264,16 +318,11 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                         </div>
                                     </div>
                                 </Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    value={worker?.username}
-                                    onChange={(e) => setSelectedStatus(e.target.value)}
-                                >{status.map((stat) => (
-                                    <option key={stat} value={stat}>
-                                        {stat}
-                                    </option>
-                                ))}
-                                </Form.Control>
+                                <CustomSelect
+                                    value={worker ? worker.email : 'None'}
+                                    onChange={(e) => handleChange(e)}
+                                    employees={employees}
+                                />
                             </div>
                         </Form.Group>
 
