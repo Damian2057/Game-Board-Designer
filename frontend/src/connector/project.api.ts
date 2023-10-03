@@ -3,6 +3,7 @@ import {Box} from "../model/project/box";
 import {Element} from "../model/project/element";
 import {Container} from "../model/project/container";
 import {Project} from "../model/project/project";
+import {Page} from "../model/page";
 export class ProjectApi {
 
     static createBox(data: any): Promise<Box> {
@@ -454,4 +455,7 @@ export class ProjectApi {
         });
     }
 
+    static findProjectPage(number: number, itemsPerPage: number, param3: {isTemplate: boolean; isCompleted: boolean}): Promise<Page<Project>> {
+
+    }
 }

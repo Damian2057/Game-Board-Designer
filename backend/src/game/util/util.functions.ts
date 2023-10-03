@@ -30,8 +30,8 @@ export function mapGameToGameDto(game: Game) {
   gameDto.description = game.description;
   gameDto.publicationDate = game.publicationDate;
   gameDto.price = game.price;
-  gameDto.tags = game.tags.map(tag => mapTagToTagDto(tag));
-  gameDto.components = game.components.map(component => mapComponentToComponentDto(component));
+  gameDto.tags = game.tags?.map(tag => mapTagToTagDto(tag));
+  gameDto.components = game.components?.map(component => mapComponentToComponentDto(component));
   gameDto.imageIds = game.imageIds;
   if (game.currency) {
     gameDto.currency = game.currency;

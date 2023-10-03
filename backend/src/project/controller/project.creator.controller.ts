@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Put, Query, UseGuards } from "@nestjs/common";
 import { ProjectCreatorService } from "../service/project.creator.service";
 import { CreateProjectCommand } from "../model/command/project-creator/create.project.command";
 import { ProjectDto } from "../model/dto/project.dto";
@@ -10,6 +10,7 @@ import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { AuthorGuard } from "../guards/author.guard";
+import { Pagination } from "nestjs-typeorm-paginate";
 
 @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
 @UseGuards(JwtGuard, RolesGuard)
@@ -44,6 +45,16 @@ export class ProjectCreatorController {
   async getProjectById(@Param('projectId') projectId: number): Promise<ProjectDto> {
     return this.projectCreatorService.getProjectDtoById(projectId);
   }
+
+  @Get('find/paged')
+  async findPagedProjects(@Query('page', ParseIntPipe) page: number,
+                          @Query('limit', ParseIntPipe) limit: number,
+                          @Query('isTemplate') isTemplate: boolean,
+                          @Query('isCompleted') isCompleted: boolean,
+                          @Query('workerId') workerId: number): Promise<Pagination<ProjectDto>> {
+    return this.projectCreatorService.findPagedProjects(page, limit, isTemplate, isCompleted, workerId);
+  }
+
 
   @UseGuards(JwtGuard, RolesGuard, AuthorGuard)
   @Put('complete-project/:projectId')

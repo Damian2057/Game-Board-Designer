@@ -1,44 +1,64 @@
-import React from 'react'
-import {Button, Card, Carousel, Col, Container, Form, Row, Table} from 'react-bootstrap'
+import React, {useState} from 'react'
+import {Button, Card, Col, Container, Form, Table} from 'react-bootstrap'
 import './ManageProjec.css'
 import IconCircle from '../../util/IconCircle'
-import { BsXLg } from 'react-icons/bs'
-import {Toaster} from "react-hot-toast";
+import toast, {Toaster} from "react-hot-toast";
 import OrderInfoModal from "../Orders/Modals/OrderInfoModal";
 import OrderEditModal from "../Orders/Modals/OrderEditModal";
 import ReactPaginate from "react-paginate";
+import {Game} from "../../../model/game/game";
+import {User} from "../../../model/user/user";
+import {Project} from "../../../model/project/project";
+import {Api} from "../../../connector/api";
 
 export default function ManageProject() {
 
-    const categories = ['Strategy', 'Party', 'Cooperative', 'Eurogames', 'Abstract', 'Family']
-    const [category, setCategory] = React.useState('');
-    const [tags, setTags] = React.useState([]);
-    const [images, setImages] = React.useState([]);
+    const itemsPerPage = 8;
+    const [pageCount, setPageCount] = useState(0);
+    const [games, setGames] = useState([] as Game[]);
+    const [isTemplate, setIsTemplate] = useState(true);
+    const [isCompleted, setIsCompleted] = useState(false);
+    const [workers, setWorkers] = useState([] as User[]);
+    const [projects, setProjects] = useState([] as Project[]);
 
-    const handleChange = (e: any) => {
-        const selectedValue = e.target.value;
+    React.useEffect(() => {
+        fetchGames();
+        fetchWorkers();
+        fetchProjects();
+    });
 
-        if (!tags.includes(selectedValue)) {
-            setCategory(selectedValue);
-            setTags(prevTags => [...prevTags, selectedValue]);
-        }
+    function fetchGames() {
+        Api.game.getAllGames().then((res) => {
+            setGames(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
     }
 
-    const handleRemoveTag = (tagToRemove: any) => {
-        setTags(prevTags => prevTags.filter(tag => tag !== tagToRemove));
-    };
+    function fetchWorkers() {
+        Api.user.findUser({
+            roles: 'admin,employee'
+        }).then((res) => {
+            setWorkers(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
 
-    const handleImageSelect = (event) => {
-        const selectedFiles = event.target.files;
-        const imageURLs = [];
+    function fetchProjects() {
+        Api.project.findProjectPage(1, itemsPerPage, {
+            isTemplate: isTemplate,
+            isCompleted: isCompleted
+        }).then((res) => {
+            setProjects(res.items);
+            setPageCount(res.meta.totalPages)
+            window.scrollTo(0, 0);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
 
-        for (let i = 0; i < selectedFiles.length; i++) {
-            const imageURL = URL.createObjectURL(selectedFiles[i]);
-            imageURLs.push(imageURL);
-        }
 
-        setImages((prevImages) => [...prevImages, ...imageURLs]);
-    };
 
     return (
         <div className='ManageProject'>
