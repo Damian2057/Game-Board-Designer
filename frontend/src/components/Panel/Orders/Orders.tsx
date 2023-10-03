@@ -130,6 +130,7 @@ export default function Orders() {
                                             <th>Submit Date</th>
                                             <th>Last Update</th>
                                             <th>Status</th>
+                                            <th>Worker</th>
                                             <th>Edit</th>
                                             <th>Info</th>
                                             <th>Claim</th>
@@ -143,6 +144,7 @@ export default function Orders() {
                                             <td className='centered-td'>{order.submittingDate}</td>
                                             <td className='centered-td'>{order.lastUpdate}</td>
                                             <td className='centered-td'>{order.status}</td>
+                                            <td className='centered-td'>{order.worker ? order.worker.username : 'Not claimed'}</td>
                                             <td className='centered-td'>
                                                 <Button className='button-workspace' onClick={() => handleOrderEdit(order)}>Edit</Button>
                                             </td>
