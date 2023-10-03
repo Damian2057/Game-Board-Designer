@@ -13,7 +13,7 @@ import Workspace from './components/Panel/Workspace/Workspace';
 import Orders from './components/Panel/Orders/Orders';
 import ManageEmployees from './components/Panel/ManageEmployees/ManageEmployees';
 import EmployeePanel from './components/Panel/EmployeePanel/EmployeePanel';
-import NewSchema from './components/Panel/ManageProjects/NewScheme';
+import NewSchema from './components/Panel/ManageProjects/ManageProject';
 import './App.css';
 import Profile from "./components/Personal/Profile/Profile";
 import MyOrders from "./components/Personal/MyOrders/MyOrders";
