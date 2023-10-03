@@ -62,7 +62,7 @@ function AdminPanel() {
                         <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} title={'My WorkSpace'} description={'view your claimed projects'} />
                     </Col>
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/custom'} icon={customIcon} title={'Custom Options'} description={'configuration'} />
+                        <ContentCard linkTo={'/panel/custom'} icon={customIcon} title={'CustomOptions Options'} description={'configuration'} />
                     </Col>
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/scheme'} icon={newSchemaIcon} title={'Manage Projects'} description={'add or edit projects'} />

@@ -65,8 +65,8 @@ export const NavBar = () => {
                         </Nav.Item>
                     </Nav>
                     <Nav className="justify-content-end flex-grow-1" variant="pills" defaultActiveKey="/login">
-                        <Nav.Item>
-                            <Nav.Link className="nav-button px-5 fw-semibold" href={linkPath} onClick={isUserLoggedIn ? handleSignOut : noop}>{linkText}</Nav.Link>
+                        <Nav.Item className='flex flex-row items-center'>
+                            <LanguageSwitcher />
                         </Nav.Item>
                         {isEmployee && (
                             <Nav.Item>
@@ -82,8 +82,8 @@ export const NavBar = () => {
                                 </Nav.Link>
                             </Nav.Item>
                         )}
-                        <Nav.Item className='flex flex-row items-center'>
-                            <LanguageSwitcher />
+                        <Nav.Item>
+                            <Nav.Link className="nav-button px-5 fw-semibold" href={linkPath} onClick={isUserLoggedIn ? handleSignOut : noop}>{linkText}</Nav.Link>
                         </Nav.Item>
                     </Nav>
                 </Navbar.Collapse>
