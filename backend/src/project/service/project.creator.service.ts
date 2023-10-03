@@ -20,6 +20,7 @@ import { ElementService } from "./element.service";
 import { GameService } from "../../game/service/game.service";
 import { OrderService } from "../../order/service/order.service";
 import { Order } from "../../order/model/domain/order.entity";
+import { paginate, Pagination } from "nestjs-typeorm-paginate";
 
 @Injectable()
 export class ProjectCreatorService {
@@ -298,5 +299,31 @@ export class ProjectCreatorService {
       return await this.orderService.getOrderById(orderId);
     }
     throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
+  }
+
+  async findPagedProjects(page: number,
+                          limit: number,
+                          isTemplate: boolean,
+                          isCompleted: boolean,
+                          workerId: number): Promise<Pagination<ProjectDto>> {
+    const queryBuilder = this.projectRepository.createQueryBuilder('project')
+    queryBuilder.leftJoinAndSelect('project.order', 'order')
+    queryBuilder.leftJoinAndSelect('project.elements', 'elements')
+    queryBuilder.leftJoinAndSelect('project.containers', 'containers')
+    queryBuilder.leftJoinAndSelect('project.box', 'box')
+    queryBuilder.leftJoinAndSelect('project.games', 'games')
+    queryBuilder.leftJoinAndSelect('project.currentGame', 'currentGame')
+    if (isTemplate != undefined) {
+      queryBuilder.orWhere('project.isTemplate = :isTemplate', { isTemplate: isTemplate })
+    }
+    if (isCompleted != undefined) {
+      queryBuilder.orWhere('project.isCompleted = :isCompleted', { isCompleted: isCompleted })
+    }
+    if (workerId != undefined) {
+      queryBuilder.orWhere('project.user.id = :workerId', { workerId: workerId })
+    }
+    const pages = await paginate<Project>(queryBuilder, { page, limit });
+
+    return new Pagination<ProjectDto>(pages.items.map(game => mapProjectToProjectDto(game)), pages.meta);
   }
 }

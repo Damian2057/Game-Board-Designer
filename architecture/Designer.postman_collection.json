@@ -96,6 +96,33 @@
 					"response": []
 				},
 				{
+					"name": "create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"Bobadd\",\r\n    \"password\": \"12345678\",\r\n    \"email\": \"asdsaadad@gmail.com\",\r\n    \"phoneNumber\": \"479999999\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BASEURL}}/user/create",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "activate",
 					"request": {
 						"method": "PUT",
@@ -217,6 +244,24 @@
 					"response": []
 				},
 				{
+					"name": "find/paged",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/user/roles",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"user",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
 					"name": "update",
 					"request": {
 						"auth": {
@@ -318,7 +363,55 @@
 							"response": []
 						},
 						{
+							"name": "all-paged",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/all",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "find",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/game/find/by?id=4",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"game",
+										"find",
+										"by"
+									],
+									"query": [
+										{
+											"key": "title",
+											"value": "dasd",
+											"disabled": true
+										},
+										{
+											"key": "id",
+											"value": "4"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "find Copy",
 							"request": {
 								"method": "GET",
 								"header": [],
@@ -2143,7 +2236,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"phone\": \"your_phone_here\",\r\n  \"email\": \"your_email_here\",\r\n  \"description\": \"your_description_here\",\r\n  \"address\": \"your_address_here\",\r\n  \"game\": {\r\n    \"id\": 1\r\n  }\r\n}\r\n",
+							"raw": "{\r\n  \"phone\": \"444 444 444\",\r\n  \"email\": \"email@gmail.com\",\r\n  \"description\": \"Fast pleaseee\",\r\n  \"address\": \"ul. Testowa\",\r\n  \"firstName\": \"Damian\",\r\n  \"city\": \"LODZ\",\r\n  \"lastname\": \"Test\",\r\n  \"game\": {\r\n    \"id\": 1\r\n  }\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -2193,6 +2286,34 @@
 				},
 				{
 					"name": "all-orders",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/all-orders",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"all-orders"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find/paged",
 					"request": {
 						"auth": {
 							"type": "bearer",
@@ -2405,6 +2526,35 @@
 				},
 				{
 					"name": "cancel",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{TOKEN}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{BASEURL}}/order/management/orders-customer",
+							"host": [
+								"{{BASEURL}}"
+							],
+							"path": [
+								"order",
+								"management",
+								"orders-customer"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "trending-orders",
 					"request": {
 						"auth": {
 							"type": "bearer",

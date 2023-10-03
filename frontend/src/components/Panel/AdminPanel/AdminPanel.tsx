@@ -56,16 +56,16 @@ function AdminPanel() {
             }}>
                 <Row className="w-100">
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/orders'} icon={todoIcon} title={'Orders'} description={'contains orders'} />
+                        <ContentCard linkTo={'/panel/orders'} icon={todoIcon} title={'Manage Orders'} description={'contains orders'} />
                     </Col>
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} title={'WorkSpace'} description={'view your claimed projects'} />
+                        <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} title={'My WorkSpace'} description={'view your claimed projects'} />
                     </Col>
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/custom'} icon={customIcon} title={'Custom'} description={'custom'} />
+                        <ContentCard linkTo={'/panel/custom'} icon={customIcon} title={'CustomOptions Options'} description={'configuration'} />
                     </Col>
                     <Col lg={4}>
-                        <ContentCard linkTo={'/panel/scheme'} icon={newSchemaIcon} title={'Create new scheme'} description={'create a new game'} />
+                        <ContentCard linkTo={'/panel/scheme'} icon={newSchemaIcon} title={'Manage Projects'} description={'add or edit projects'} />
                     </Col>
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/manage'} icon={employeeManagementIcon} title={'Manage employees'} description={'add or edit employees'} />

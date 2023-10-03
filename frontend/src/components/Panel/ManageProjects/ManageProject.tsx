@@ -1,36 +1,57 @@
-import React, { useState } from 'react'
-import { Button, Card, Col, Container, Table } from 'react-bootstrap'
-import toast, { Toaster } from 'react-hot-toast';
-import IconCircle from '../../util/IconCircle';
-import OrderInfoModal from './Modals/OrderInfoModal';
-import {Api} from "../../../connector/api";
-import {Order} from "../../../model/order/order";
+import React, {useState} from 'react'
+import {Button, Card, Col, Container, Form, Table} from 'react-bootstrap'
+import './ManageProjec.css'
+import IconCircle from '../../util/IconCircle'
+import toast, {Toaster} from "react-hot-toast";
+import OrderInfoModal from "../Orders/Modals/OrderInfoModal";
+import OrderEditModal from "../Orders/Modals/OrderEditModal";
 import ReactPaginate from "react-paginate";
-import OrderEditModal from "./Modals/OrderEditModal";
-import Form from "react-bootstrap/Form";
+import {Game} from "../../../model/game/game";
+import {User} from "../../../model/user/user";
+import {Project} from "../../../model/project/project";
+import {Api} from "../../../connector/api";
 
-export default function Orders() {
+export default function ManageProject() {
 
     const itemsPerPage = 8;
-
-    const [orders, setOrders] = useState([] as Order[]);
     const [pageCount, setPageCount] = useState(0);
-    const [selectedOrderInfo, setSelectedOrderInfo] = React.useState<Order | null>(null);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [editedOrder, setEditedOrder] = useState<Order | null>(null);
-    const [selectedStatus, setSelectedStatus] = useState('');
-    const [statuses, setStatuses] = useState([] as string[]);
+    const [games, setGames] = useState([] as Game[]);
+    const [isTemplate, setIsTemplate] = useState(true);
+    const [isCompleted, setIsCompleted] = useState(false);
+    const [workers, setWorkers] = useState([] as User[]);
+    const [projects, setProjects] = useState([] as Project[]);
 
     React.useEffect(() => {
-        fetchOrders();
-        fetchStatuses();
-    }, []);
+        fetchGames();
+        fetchWorkers();
+        fetchProjects();
+    });
 
-    const fetchOrders = ()=> {
-        Api.order.findOrderPage(1, itemsPerPage, {
-            status: 'PENDING'
+    function fetchGames() {
+        Api.game.getAllGames().then((res) => {
+            setGames(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
+
+    function fetchWorkers() {
+        Api.user.findUser({
+            roles: 'admin,employee'
         }).then((res) => {
-            setOrders(res.items);
+            setWorkers(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
+    }
+
+    function fetchProjects() {
+        Api.project.findProjectPage(1, itemsPerPage, {
+            isTemplate: isTemplate,
+            isCompleted: isCompleted,
+            workerId: 0,
+        }).then((res) => {
+            setProjects(res.items);
             setPageCount(res.meta.totalPages)
             window.scrollTo(0, 0);
         }).catch((err) => {
@@ -38,68 +59,10 @@ export default function Orders() {
         });
     }
 
-    const fetchStatuses = () => {
-        Api.order.getAvailableStatuses().then((res) => {
-            setStatuses(res);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
 
-    const handlePageClick = (data: any) => {
-        Api.order.findOrderPage(data.selected + 1, itemsPerPage, {
-            status: 'PENDING'
-        }).then((res) => {
-            setOrders(res.items);
-            setPageCount(res.meta.totalPages)
-            window.scrollTo(0, 0);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
-
-    const handleWithStatusOrders = (e: any) => {
-        const status = e.target.value;
-        setSelectedStatus(status);
-        fetchOrdersByStatus(status);
-    }
-
-    function handleOrderClaim(order: Order) {
-        Api.order.claimOrder(order.id).then((res) => {
-            toast.success(`Order ${order.id} claimed`, { icon: "👏" });
-            fetchOrdersByStatus(selectedStatus);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
-
-    const fetchOrdersByStatus = (status: string) => {
-        Api.order.findOrderPage(1, itemsPerPage, {
-            status: status
-        }).then((res) => {
-            setOrders(res.items);
-            setPageCount(res.meta.totalPages)
-            window.scrollTo(0, 0);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
-
-    function handleOrderEdit(order: Order) {
-        setEditedOrder(order);
-        setShowEditModal(true);
-    }
-
-    function handleOrderInfo(order: Order) {
-        setSelectedOrderInfo(order)
-    }
-
-    function handleSaveEditedOrder() {
-        fetchOrdersByStatus(selectedStatus);
-    }
 
     return (
-        <div className='Orders' style={{ backgroundColor: '#7D53DE', height: '100vh' }}>
+        <div className='ManageProject'>
             <Toaster />
             <Container>
                 <Card className='shadow border-white' style={{
@@ -124,17 +87,17 @@ export default function Orders() {
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
-                                        <tr className='uppercase'>
-                                            <th>ID</th>
-                                            <th>Ordered game</th>
-                                            <th>Submit Date</th>
-                                            <th>Last Update</th>
-                                            <th>Status</th>
-                                            <th>Worker</th>
-                                            <th>Edit</th>
-                                            <th>Info</th>
-                                            <th>Claim</th>
-                                        </tr>
+                                    <tr className='uppercase'>
+                                        <th>ID</th>
+                                        <th>Ordered game</th>
+                                        <th>Submit Date</th>
+                                        <th>Last Update</th>
+                                        <th>Status</th>
+                                        <th>Worker</th>
+                                        <th>Edit</th>
+                                        <th>Info</th>
+                                        <th>Claim</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                     {orders.map((order) => (
@@ -156,12 +119,12 @@ export default function Orders() {
                                             </td>
                                         </tr>
                                     ))}
-                                        {selectedOrderInfo && (
-                                            <OrderInfoModal
-                                                order={selectedOrderInfo}
-                                                onClose={() => setSelectedOrderInfo(null)}
-                                            />
-                                        )}
+                                    {selectedOrderInfo && (
+                                        <OrderInfoModal
+                                            order={selectedOrderInfo}
+                                            onClose={() => setSelectedOrderInfo(null)}
+                                        />
+                                    )}
                                     </tbody>
                                 </Table>
                                 <OrderEditModal

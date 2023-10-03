@@ -3,6 +3,7 @@ import {Box} from "../model/project/box";
 import {Element} from "../model/project/element";
 import {Container} from "../model/project/container";
 import {Project} from "../model/project/project";
+import {Page} from "../model/page";
 export class ProjectApi {
 
     static createBox(data: any): Promise<Box> {
@@ -454,4 +455,20 @@ export class ProjectApi {
         });
     }
 
+    static findProjectPage(page: number, itemsPerPage: number, data: any): Promise<Page<Project>> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/paged`, {
+            params: {
+                page: page,
+                limit: itemsPerPage,
+                isTemplate: data.isTemplate ? data.isTemplate : null,
+                isCompleted: data.isCompleted ? data.isCompleted : null,
+                workerId: data.workerId ? data.workerId : null,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
 }

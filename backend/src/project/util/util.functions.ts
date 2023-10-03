@@ -30,7 +30,7 @@ export function mapBoxToBoxDto(box: Box): BoxDto {
   boxDto.name = box.name;
   boxDto.description = box.description;
   boxDto.notes = box.notes;
-  boxDto.properties = box.properties.map((property: Property) => mapPropertyToPropertyDto(property));
+  boxDto.properties = box.properties?.map((property: Property) => mapPropertyToPropertyDto(property));
   boxDto.imageIds = box.imageIds;
   boxDto.type = box.type;
   boxDto.status = box.status;
@@ -45,7 +45,7 @@ export function mapElementToElementDto(element: Element): ElementDto {
   elementDto.description = element.description;
   elementDto.notes = element.notes;
   elementDto.quantity = element.quantity;
-  elementDto.properties = element.properties.map((property: Property) => mapPropertyToPropertyDto(property));
+  elementDto.properties = element.properties?.map((property: Property) => mapPropertyToPropertyDto(property));
   elementDto.imageIds = element.imageIds;
   elementDto.type = element.type;
   elementDto.status = element.status;
@@ -61,8 +61,8 @@ export function mapContainerToContainerDto(container: Container): ContainerDto {
   containerDto.description = container.description;
   containerDto.quantity = container.quantity;
   containerDto.notes = container.notes;
-  containerDto.elements = container.elements.map((element: Element) => mapElementToElementDto(element));
-  containerDto.properties = container.properties.map((property: Property) => mapPropertyToPropertyDto(property));
+  containerDto.elements = container.elements?.map((element: Element) => mapElementToElementDto(element));
+  containerDto.properties = container.properties?.map((property: Property) => mapPropertyToPropertyDto(property));
   containerDto.imageIds = container.imageIds;
   containerDto.type = container.type;
   containerDto.status = container.status;
