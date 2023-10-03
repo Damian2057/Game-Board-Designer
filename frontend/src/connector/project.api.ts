@@ -455,7 +455,20 @@ export class ProjectApi {
         });
     }
 
-    static findProjectPage(number: number, itemsPerPage: number, param3: {isTemplate: boolean; isCompleted: boolean}): Promise<Page<Project>> {
-
+    static findProjectPage(page: number, itemsPerPage: number, data: any): Promise<Page<Project>> {
+        return axios.get(`${import.meta.env.VITE_URL}/project/paged`, {
+            params: {
+                page: page,
+                limit: itemsPerPage,
+                isTemplate: data.isTemplate ? data.isTemplate : null,
+                isCompleted: data.isCompleted ? data.isCompleted : null,
+                workerId: data.workerId ? data.workerId : null,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
     }
 }

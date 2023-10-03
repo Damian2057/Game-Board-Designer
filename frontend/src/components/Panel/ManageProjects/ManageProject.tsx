@@ -48,7 +48,8 @@ export default function ManageProject() {
     function fetchProjects() {
         Api.project.findProjectPage(1, itemsPerPage, {
             isTemplate: isTemplate,
-            isCompleted: isCompleted
+            isCompleted: isCompleted,
+            workerId: 0,
         }).then((res) => {
             setProjects(res.items);
             setPageCount(res.meta.totalPages)
