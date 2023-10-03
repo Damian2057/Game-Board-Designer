@@ -456,7 +456,7 @@ export class ProjectApi {
     }
 
     static findProjectPage(page: number, itemsPerPage: number, data: any): Promise<Page<Project>> {
-        return axios.get(`${import.meta.env.VITE_URL}/project/paged`, {
+        return axios.get(`${import.meta.env.VITE_URL}/project/find/paged`, {
             params: {
                 page: page,
                 limit: itemsPerPage,
