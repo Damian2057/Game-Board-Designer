@@ -456,13 +456,14 @@ export class ProjectApi {
     }
 
     static findProjectPage(page: number, itemsPerPage: number, data: any): Promise<Page<Project>> {
-        return axios.get(`${import.meta.env.VITE_URL}/project/paged`, {
+        return axios.get(`${import.meta.env.VITE_URL}/project/find/paged`, {
             params: {
                 page: page,
                 limit: itemsPerPage,
                 isTemplate: data.isTemplate ? data.isTemplate : null,
                 isCompleted: data.isCompleted ? data.isCompleted : null,
                 workerId: data.workerId ? data.workerId : null,
+                game: data.game ? data.game : null,
             },
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')

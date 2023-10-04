@@ -49,10 +49,11 @@ export class ProjectCreatorController {
   @Get('find/paged')
   async findPagedProjects(@Query('page', ParseIntPipe) page: number,
                           @Query('limit', ParseIntPipe) limit: number,
-                          @Query('isTemplate') isTemplate: boolean,
-                          @Query('isCompleted') isCompleted: boolean,
-                          @Query('workerId') workerId: number): Promise<Pagination<ProjectDto>> {
-    return this.projectCreatorService.findPagedProjects(page, limit, isTemplate, isCompleted, workerId);
+                          @Query('isTemplate') isTemplate?: boolean,
+                          @Query('isCompleted') isCompleted?: boolean,
+                          @Query('workerId') workerId?: number,
+                          @Query('game') game?: string): Promise<Pagination<ProjectDto>> {
+    return this.projectCreatorService.findPagedProjects(page, limit, isTemplate, isCompleted, workerId, game);
   }
 
 
