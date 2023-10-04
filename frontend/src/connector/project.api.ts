@@ -463,6 +463,7 @@ export class ProjectApi {
                 isTemplate: data.isTemplate ? data.isTemplate : null,
                 isCompleted: data.isCompleted ? data.isCompleted : null,
                 workerId: data.workerId ? data.workerId : null,
+                game: data.game ? data.game : null,
             },
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')

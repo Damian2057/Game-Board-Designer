@@ -14,6 +14,7 @@ export default function ManageProject() {
     const itemsPerPage = 8;
     const [pageCount, setPageCount] = useState(0);
     const [games, setGames] = useState([] as Game[]);
+    const [selectedGame, setSelectedGame] = useState<string | null>(null);
     const [workers, setWorkers] = useState([] as User[]);
     const [projects, setProjects] = useState([] as Project[]);
     const [isTemplate, setIsTemplate] = useState<boolean | null>(null);
@@ -21,9 +22,9 @@ export default function ManageProject() {
     const [workerId, setWorkerId] = useState<number | null>(null);
 
     React.useEffect(() => {
+        fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
         fetchGames();
         fetchWorkers();
-        fetchProjects();
     }, []);
 
     function fetchGames() {
@@ -44,11 +45,12 @@ export default function ManageProject() {
         });
     }
 
-    function fetchProjects() {
+    function fetchProjectParams(isTemplate: boolean | null, isCompleted: boolean | null, workerId: number | null, selectedGame: string | null) {
         Api.project.findProjectPage(1, itemsPerPage, {
             isTemplate: isTemplate,
             isCompleted: isCompleted,
-            workerId: workerId
+            workerId: workerId,
+            game: selectedGame
         }).then((res) => {
             setProjects(res.items);
             setPageCount(res.meta.totalPages)
@@ -58,10 +60,14 @@ export default function ManageProject() {
         });
     }
 
-
     function handleGameSelect(e: any) {
         const gameTitle = e.target.value;
-        console.log(gameTitle);
+        if (gameTitle == 'None') {
+            fetchProjectParams(isTemplate, isCompleted, workerId, null);
+            return;
+        }
+        setSelectedGame(gameTitle);
+        fetchProjectParams(isTemplate, isCompleted, workerId, gameTitle);
     }
 
     function handlePageClick(data: any) {
@@ -135,40 +141,8 @@ export default function ManageProject() {
                                             </td>
                                         </tr>
                                     ))}
-                                    {/*{orders.map((order) => (*/}
-                                    {/*    <tr key={order.id}>*/}
-                                    {/*        <td className='centered-td'>{order.id}</td>*/}
-                                    {/*        <td className='centered-td'>{order.game.title}</td>*/}
-                                    {/*        <td className='centered-td'>{order.submittingDate}</td>*/}
-                                    {/*        <td className='centered-td'>{order.lastUpdate}</td>*/}
-                                    {/*        <td className='centered-td'>{order.status}</td>*/}
-                                    {/*        <td className='centered-td'>{order.worker ? order.worker.username : 'Not claimed'}</td>*/}
-                                    {/*        <td className='centered-td'>*/}
-                                    {/*            <Button className='button-workspace' onClick={() => handleOrderEdit(order)}>Edit</Button>*/}
-                                    {/*        </td>*/}
-                                    {/*        <td className='centered-td'>*/}
-                                    {/*            <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>Info</Button>*/}
-                                    {/*        </td>*/}
-                                    {/*        <td className='centered-td'>*/}
-                                    {/*            <Button className='button-workspace' onClick={() => handleOrderClaim(order)}>Claim</Button>*/}
-                                    {/*        </td>*/}
-                                    {/*    </tr>*/}
-                                    {/*))}*/}
-                                    {/*{selectedOrderInfo && (*/}
-                                    {/*    <OrderInfoModal*/}
-                                    {/*        order={selectedOrderInfo}*/}
-                                    {/*        onClose={() => setSelectedOrderInfo(null)}*/}
-                                    {/*    />*/}
-                                    {/*)}*/}
                                     </tbody>
                                 </Table>
-                                {/*<OrderEditModal*/}
-                                {/*    name={"order"}*/}
-                                {/*    show={showEditModal}*/}
-                                {/*    onClose={() => setShowEditModal(false)}*/}
-                                {/*    onSave={handleSaveEditedOrder}*/}
-                                {/*    editedOrder={editedOrder}*/}
-                                {/*/>*/}
                             </Col>
                         </div>
                         <ReactPaginate

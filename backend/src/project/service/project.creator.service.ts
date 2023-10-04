@@ -324,7 +324,7 @@ export class ProjectCreatorService {
       queryBuilder.orWhere('project.user.id = :workerId', { workerId: workerId })
     }
     if (title != undefined) {
-      queryBuilder.where('games.title = :title', { title })
+      queryBuilder.orWhere('games.title = :title', { title })
     }
     const pages = await paginate<Project>(queryBuilder, { page, limit });
 
