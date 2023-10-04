@@ -8,6 +8,7 @@ import {Game} from "../../../model/game/game";
 import {User} from "../../../model/user/user";
 import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
+import ToggleComponent from "../ManageEmployees/Modals/ToggleComponent";
 
 export default function ManageProject() {
 
@@ -84,6 +85,35 @@ export default function ManageProject() {
         });
     }
 
+    function handleTemplateStatusSelect(e: any) {
+        const status = e.target.value;
+        const flag = status == 'Yes' ? true : false;
+        setIsTemplate(flag);
+        fetchProjectParams(flag, isCompleted, workerId, selectedGame);
+    }
+
+    function handleCompleteStatusSelect(e: any) {
+        const status = e.target.value;
+        const flag = status == 'Yes' ? true : false;
+        setIsCompleted(flag);
+        fetchProjectParams(isTemplate, flag, workerId, selectedGame);
+    }
+
+    function handleWorkerSelect(e: any) {
+        const email = e.target.value;
+        if (email == 'None') {
+            fetchProjectParams(isTemplate, isCompleted, null, selectedGame);
+            return;
+        }
+        const worker = workers.find(item => item.email == email);
+        if (!worker) {
+            toast.error(`Worker not found`, { icon: "💀" });
+            return;
+        }
+        setWorkerId(worker?.id);
+        fetchProjectParams(isTemplate, isCompleted, worker?.id, selectedGame);
+    }
+
     return (
         <div className='ManageProject'>
             <Toaster />
@@ -98,14 +128,33 @@ export default function ManageProject() {
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
                         <p className='font-bold fs-2'>Projects</p>
-                        <Col lg={3} className='mb-4'>
-                            <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
-                                <option disabled value={''}>Choose Game</option>
-                                <option value={'None'}>None</option>
-                                {games.map(item => {
-                                    return (<option key={item.id} value={item.title}>{item.title}</option>)
-                                })}
-                            </Form.Select>
+                        <Col lg={3} className='mb-4 d-flex justify-content-center align-items-center'>
+                            <div>
+                                <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
+                                    <option disabled value={''}>Choose Game</option>
+                                    <option value={'None'}>None</option>
+                                    {games.map(item => {
+                                        return (<option key={item.id} value={item.title}>{item.title}</option>)
+                                    })}
+                                </Form.Select>
+                                <Form.Select className='form-select' aria-label="Worker selector" defaultValue={''} onChange={handleWorkerSelect}>
+                                    <option disabled value={''}>Choose Worker</option>
+                                    <option value={'None'}>None</option>
+                                    {workers.map(item => {
+                                        return (<option key={item.id} value={item.email}>{item.email}</option>)
+                                    })}
+                                </Form.Select>
+                                <Form.Select className='form-select' aria-label="Template" defaultValue={''} onChange={handleTemplateStatusSelect}>
+                                    <option disabled value={''}>Choose Template Status</option>
+                                    <option value={'Yes'}>Yes</option>
+                                    <option value={'No'}>No</option>
+                                </Form.Select>
+                                <Form.Select className='form-select' aria-label="Complete" defaultValue={''} onChange={handleCompleteStatusSelect}>
+                                    <option disabled value={''}>Choose Complete Status</option>
+                                    <option value={'Yes'}>Yes</option>
+                                    <option value={'No'}>No</option>
+                                </Form.Select>
+                            </div>
                         </Col>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -117,8 +166,8 @@ export default function ManageProject() {
                                         <th>box</th>
                                         <th>containers</th>
                                         <th>elements</th>
-                                        <th>isTemplate</th>
-                                        <th>isCompleted</th>
+                                        <th>Template</th>
+                                        <th>Completed</th>
                                         <th>Info</th>
                                         <th>Edit</th>
                                     </tr>

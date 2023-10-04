@@ -315,16 +315,16 @@ export class ProjectCreatorService {
     queryBuilder.leftJoinAndSelect('project.games', 'games')
     queryBuilder.leftJoinAndSelect('project.currentGame', 'currentGame')
     if (isTemplate != undefined) {
-      queryBuilder.orWhere('project.isTemplate = :isTemplate', { isTemplate: isTemplate })
+      queryBuilder.andWhere('project.isTemplate = :isTemplate', { isTemplate: isTemplate })
     }
     if (isCompleted != undefined) {
-      queryBuilder.orWhere('project.isCompleted = :isCompleted', { isCompleted: isCompleted })
+      queryBuilder.andWhere('project.isCompleted = :isCompleted', { isCompleted: isCompleted })
     }
     if (workerId != undefined) {
-      queryBuilder.orWhere('project.user.id = :workerId', { workerId: workerId })
+      queryBuilder.andWhere('project.user.id = :workerId', { workerId: workerId })
     }
     if (title != undefined) {
-      queryBuilder.orWhere('games.title = :title', { title })
+      queryBuilder.andWhere('games.title = :title', { title })
     }
     const pages = await paginate<Project>(queryBuilder, { page, limit });
 
