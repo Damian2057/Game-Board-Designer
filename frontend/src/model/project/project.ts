@@ -4,7 +4,7 @@ import {Order} from "../order/order";
 import {User} from "../user/user";
 import {Element} from "./element";
 import {Box} from "./box";
-import {Container} from "react-dom";
+import {Container} from "./container";
 
 export interface Project extends Entity {
 

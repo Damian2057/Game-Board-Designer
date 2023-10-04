@@ -9,6 +9,8 @@ import {User} from "../../../model/user/user";
 import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
 import ToggleComponent from "../ManageEmployees/Modals/ToggleComponent";
+import GameInfoModal from "../ManageGames/Modals/GameInfoModal";
+import ProjectInfoModal from "./Modals/ProjectInfoModal";
 
 export default function ManageProject() {
 
@@ -21,6 +23,8 @@ export default function ManageProject() {
     const [isTemplate, setIsTemplate] = useState<boolean | null>(null);
     const [isCompleted, setIsCompleted] = useState<boolean | null>(null);
     const [workerId, setWorkerId] = useState<number | null>(null);
+
+    const [selectedProjectInfo, setSelectedProjectInfo] = useState<Project | null>();
 
     React.useEffect(() => {
         fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
@@ -114,6 +118,14 @@ export default function ManageProject() {
         fetchProjectParams(isTemplate, isCompleted, worker?.id, selectedGame);
     }
 
+    function handleProjectInfo(project: Project) {
+        setSelectedProjectInfo(project)
+    }
+
+    function handleProjectEdit(project: Project) {
+
+    }
+
     return (
         <div className='ManageProject'>
             <Toaster />
@@ -183,10 +195,10 @@ export default function ManageProject() {
                                             <td className='centered-td'>{project.isTemplate ? 'Yes' : 'No'}</td>
                                             <td className='centered-td'>{project.isCompleted ? 'Yes' : 'No'}</td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => {}}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>Info</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => {}}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleProjectEdit(project)}>Edit</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -215,6 +227,12 @@ export default function ManageProject() {
                         />
                     </Card.Body>
                 </Card>
+                {selectedProjectInfo && (
+                    <ProjectInfoModal
+                        project={selectedProjectInfo}
+                        onClose={() => setSelectedProjectInfo(null)}
+                    />
+                )}
             </Container>
         </div>
     )
