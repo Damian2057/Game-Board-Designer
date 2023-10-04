@@ -305,7 +305,8 @@ export class ProjectCreatorService {
                           limit: number,
                           isTemplate: boolean,
                           isCompleted: boolean,
-                          workerId: number): Promise<Pagination<ProjectDto>> {
+                          workerId: number,
+                          title: string): Promise<Pagination<ProjectDto>> {
     const queryBuilder = this.projectRepository.createQueryBuilder('project')
     queryBuilder.leftJoinAndSelect('project.order', 'order')
     queryBuilder.leftJoinAndSelect('project.elements', 'elements')
@@ -321,6 +322,9 @@ export class ProjectCreatorService {
     }
     if (workerId != undefined) {
       queryBuilder.orWhere('project.user.id = :workerId', { workerId: workerId })
+    }
+    if (title != undefined) {
+      queryBuilder.where('games.title = :title', { title })
     }
     const pages = await paginate<Project>(queryBuilder, { page, limit });
 
