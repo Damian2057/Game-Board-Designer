@@ -6,6 +6,7 @@ import {ProjectInfoProps} from "../Props/ProjectInfoProps";
 import ImageSliderModal from "./ImageSliderModal";
 import BoxInfoModal from "./box/BoxInfoModal";
 import ElementInfoModal from "./element/ElementInfoModal";
+import ContainerInfoModal from "./component/ComponentInfoModal";
 
 const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
@@ -13,6 +14,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
     const [showImageSliderModal, setShowImageSliderModal] = useState(false)
     const [showBoxModal, setShowBoxModal] = useState(false)
     const [selectedElement, setSelectedElement] = useState<any>()
+    const [selectedContainer, setSelectedContainer] = useState<any>()
 
     const handleClick=(index: number)=>{
         setNote(project.notes[index])
@@ -28,6 +30,10 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
     function handleShowElement(data: any) {
         setSelectedElement(data)
+    }
+
+    function handleShowContainer(data: any) {
+        setSelectedContainer(data)
     }
 
     return (
@@ -117,7 +123,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary">Show</Button></td>
+                                                    <td><Button variant="outline-primary" onClick={() => handleShowContainer(data)}>Show</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>
@@ -152,7 +158,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                     </Card.Body>
                     <ImageSliderModal
                         show={showImageSliderModal}
-                        project={project}
+                        imageIds={project.imageIds}
                         onClose={() => setShowImageSliderModal(false)}
                     />
                     <BoxInfoModal
@@ -167,17 +173,13 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                             show={true}
                         />
                     )}
-                    {/*<NewComponentModal*/}
-                    {/*    show={showAddModal}*/}
-                    {/*    onClose={handleCloseAddComponentModal}*/}
-                    {/*    onSave={handleAddNewComponent}*/}
-                    {/*/>*/}
-                    {/*<ComponentEditModal*/}
-                    {/*    show={showEditModal}*/}
-                    {/*    onClose={() => setEditShowModal(false)}*/}
-                    {/*    onSave={handleEditComponentSave}*/}
-                    {/*    editedComponent={editedComponent ?? null}*/}
-                    {/*/>*/}
+                    {selectedContainer && (
+                        <ContainerInfoModal
+                            container={selectedContainer}
+                            onClose={() => setSelectedContainer(null)}
+                            show={true}
+                        />
+                    )}
                 </Card>
             </Container>
         </div>

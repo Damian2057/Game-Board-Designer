@@ -4,7 +4,7 @@ import {Order} from "../order/order";
 import {User} from "../user/user";
 import {Element} from "./element";
 import {Box} from "./box";
-import {Container} from "./container";
+import {ContainerEntity} from "./containerEntity";
 
 export interface Project extends Entity {
 
@@ -12,7 +12,7 @@ export interface Project extends Entity {
     description: string;
     notes: string[];
     box: Box;
-    containers: Container[];
+    containers: ContainerEntity[];
     elements: Element[];
     games: Game[];
     currentGame?: Game;

@@ -53,6 +53,9 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                             <div>
                                 <span className='fw-bold'>Priority:</span> {selectedElement?.priority}
                             </div>
+                            <div>
+                                <span className='fw-bold'>Quantity:</span> {selectedElement?.quantity}
+                            </div>
                         </Col>
                     </Row>
                     <Row className='gap-2'>

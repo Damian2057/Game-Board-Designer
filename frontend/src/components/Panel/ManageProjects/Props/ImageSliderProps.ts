@@ -1,5 +1,5 @@
-import {ProjectInfoProps} from "./ProjectInfoProps";
-
-export interface ImageSliderProps extends ProjectInfoProps {
+export interface ImageSliderProps {
     show: boolean;
+    imageIds: number[];
+    onClose: () => void;
 }

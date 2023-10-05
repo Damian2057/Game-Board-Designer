@@ -4,7 +4,7 @@ import {GrClose} from "react-icons/gr";
 import {Api} from "../../../../connector/api";
 import {ImageSliderProps} from "../Props/ImageSliderProps";
 
-const ImageSliderModal: React.FC<ImageSliderProps> = ({ show, project, onClose }) => {
+const ImageSliderModal: React.FC<ImageSliderProps> = ({ show, imageIds, onClose }) => {
 
     return (
         <Modal show={show} onHide={onClose}>
@@ -18,7 +18,7 @@ const ImageSliderModal: React.FC<ImageSliderProps> = ({ show, project, onClose }
             <Col className='d-flex justify-content-center'>
                 <Modal.Body className='game-info rounded'>
                     <Carousel data-bs-theme="dark">
-                        {project.imageIds.map((image, index) => (
+                        {imageIds.map((image, index) => (
                             <Carousel.Item key={index}>
                                 <img
                                     src={Api.image.getImageUrl(image)}
