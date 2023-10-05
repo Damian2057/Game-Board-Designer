@@ -8,9 +8,8 @@ import {Game} from "../../../model/game/game";
 import {User} from "../../../model/user/user";
 import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
-import ToggleComponent from "../ManageEmployees/Modals/ToggleComponent";
-import GameInfoModal from "../ManageGames/Modals/GameInfoModal";
 import ProjectInfoModal from "./Modals/ProjectInfoModal";
+import ProjectEditModal from "./Modals/ProjectEditModal";
 
 export default function ManageProject() {
 
@@ -25,6 +24,9 @@ export default function ManageProject() {
     const [workerId, setWorkerId] = useState<number | null>(null);
 
     const [selectedProjectInfo, setSelectedProjectInfo] = useState<Project | null>();
+
+    const [showEditModal, setShowEditModal] = useState(false);
+    const [editedProject, setEditedProject] = useState<Project | null>(null);
 
     React.useEffect(() => {
         fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
@@ -91,14 +93,14 @@ export default function ManageProject() {
 
     function handleTemplateStatusSelect(e: any) {
         const status = e.target.value;
-        const flag = status == 'Yes' ? true : false;
+        const flag = status == 'Yes';
         setIsTemplate(flag);
         fetchProjectParams(flag, isCompleted, workerId, selectedGame);
     }
 
     function handleCompleteStatusSelect(e: any) {
         const status = e.target.value;
-        const flag = status == 'Yes' ? true : false;
+        const flag = status == 'Yes';
         setIsCompleted(flag);
         fetchProjectParams(isTemplate, flag, workerId, selectedGame);
     }
@@ -123,7 +125,14 @@ export default function ManageProject() {
     }
 
     function handleProjectEdit(project: Project) {
+        setShowEditModal(true)
+        setEditedProject(project)
+    }
 
+    function handleSaveEditedGame() {
+        setShowEditModal(false)
+        setEditedProject(null)
+        fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
     }
 
     return (
@@ -231,6 +240,14 @@ export default function ManageProject() {
                     <ProjectInfoModal
                         project={selectedProjectInfo}
                         onClose={() => setSelectedProjectInfo(null)}
+                    />
+                )}
+                {showEditModal && (
+                    <ProjectEditModal
+                        show={showEditModal}
+                        onClose={() => setShowEditModal(false)}
+                        onSave={handleSaveEditedGame}
+                        editedProject={editedProject ?? null}
                     />
                 )}
             </Container>
