@@ -5,12 +5,14 @@ import {GrClose} from "react-icons/gr";
 import {ProjectInfoProps} from "../Props/ProjectInfoProps";
 import ImageSliderModal from "./ImageSliderModal";
 import BoxInfoModal from "./box/BoxInfoModal";
+import ElementInfoModal from "./element/ElementInfoModal";
 
 const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
-    const [note, setNote]=useState(project.notes[0])
-    const [showImageSliderModal, setShowImageSliderModal]=useState(false)
-    const [showBoxModal, setShowBoxModal]=useState(false)
+    const [note, setNote] = useState(project.notes[0])
+    const [showImageSliderModal, setShowImageSliderModal] = useState(false)
+    const [showBoxModal, setShowBoxModal] = useState(false)
+    const [selectedElement, setSelectedElement] = useState<any>()
 
     const handleClick=(index: number)=>{
         setNote(project.notes[index])
@@ -22,6 +24,10 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
     function handleShowBox() {
         setShowBoxModal(true)
+    }
+
+    function handleShowElement(data: any) {
+        setSelectedElement(data)
     }
 
     return (
@@ -134,7 +140,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary">Show</Button></td>
+                                                    <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>Show</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>
@@ -154,6 +160,13 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                         onClose={() => setShowBoxModal(false)}
                         show={showBoxModal}
                     />
+                    {selectedElement && (
+                        <ElementInfoModal
+                            element={selectedElement}
+                            onClose={() => setSelectedElement(null)}
+                            show={true}
+                        />
+                    )}
                     {/*<NewComponentModal*/}
                     {/*    show={showAddModal}*/}
                     {/*    onClose={handleCloseAddComponentModal}*/}
