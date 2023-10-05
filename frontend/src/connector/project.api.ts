@@ -1,7 +1,7 @@
 import axios from "axios";
 import {Box} from "../model/project/box";
 import {Element} from "../model/project/element";
-import {Container} from "../model/project/container";
+import {ContainerEntity} from "../model/project/containerEntity";
 import {Project} from "../model/project/project";
 import {Page} from "../model/page";
 export class ProjectApi {
@@ -178,7 +178,7 @@ export class ProjectApi {
         });
     }
 
-    static updateContainer(id: number, data: any): Promise<Container> {
+    static updateContainer(id: number, data: any): Promise<ContainerEntity> {
         return axios.put(`${import.meta.env.VITE_URL}/container/update-container/${id}`, {
             name: data.name,
             description: data.description,
@@ -196,7 +196,7 @@ export class ProjectApi {
         });
     }
 
-    static addContainerToProject(id: number, data: any): Promise<Container[]> {
+    static addContainerToProject(id: number, data: any): Promise<ContainerEntity[]> {
         return axios.post(`${import.meta.env.VITE_URL}/container/add-container/${id}`, {
             name: data.name,
             description: data.description,
@@ -216,7 +216,7 @@ export class ProjectApi {
         });
     }
 
-    static getContainer(id: number): Promise<Container> {
+    static getContainer(id: number): Promise<ContainerEntity> {
         return axios.get(`${import.meta.env.VITE_URL}/container/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -276,7 +276,7 @@ export class ProjectApi {
         });
     }
 
-    static getProjectContainers(id: number): Promise<Container[]> {
+    static getProjectContainers(id: number): Promise<ContainerEntity[]> {
         return axios.get(`${import.meta.env.VITE_URL}/project/containers/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
