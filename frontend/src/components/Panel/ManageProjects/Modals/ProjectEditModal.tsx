@@ -9,8 +9,12 @@ import {BsXLg} from "react-icons/bs";
 import NewComponentModal from "../../ManageGames/Modals/NewComponentModal";
 import ComponentEditModal from "../../ManageGames/Modals/ComponentEditModal";
 import {ProjectEditProps} from "../Props/ProjectEditProps";
+import {Project} from "../../../../model/project/project";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
+
+    const [editedProj, setEditedProj] = useState<Project>();
+
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setEditShowModal] = useState(false);
@@ -26,28 +30,15 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [imageIds, setImageIds] = React.useState([] as number[]);
 
     React.useEffect(() => {
-        if (editedGame) {
-            setTitle(editedGame.title);
-            setDescription(editedGame.description);
-            setPrice(editedGame.price);
-            setPublicationDate(editedGame.publicationDate);
-            setCurrency(editedGame.currency);
-            setComponents(editedGame.components);
-            setImageIds(editedGame.imageIds);
-            setSelectedTags(editedGame.tags);
+        if (!editedProject) {
+            return;
         }
-        fetchTags();
-    }, [editedGame]);
-
-    const fetchTags = () => {
-        Api.game.getAllTags()
-            .then((tags) => {
-                setTags(tags);
-            })
-            .catch((err) => {
-                toast.error(`${err.response.data.message}`, { icon: "💀" });
-            });
-    };
+        Api.project.getProject(editedProject.id).then((res) => {
+            setEditedProj(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+    }, [editedProject]);
 
     const handleChange = (e: any) => {
         const name = e.target.value;
@@ -56,7 +47,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
             if (selectedTag) {
                 selectedTags.push(selectedTag);
                 setSelectedTags(selectedTags);
-                fetchTags();
                 if (editedGame && selectedTag.id) {
                     Api.game.addTagToGame(editedGame?.id, selectedTag.id).then(() => {
                         toast.success(`Tag added successfully`, {icon: "👏"});
