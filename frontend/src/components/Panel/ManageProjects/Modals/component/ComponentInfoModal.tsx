@@ -55,7 +55,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Project: {container.name}</p>
+                        <p className='font-bold fs-2 mb-12'>Container: {container.name}</p>
                         <Form>
                             <Row>
                                 <Col>
