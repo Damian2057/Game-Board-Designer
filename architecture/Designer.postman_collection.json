@@ -1036,6 +1036,34 @@
 							"response": []
 						},
 						{
+							"name": "find-paged",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{BASEURL}}/project/all",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"project",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
 							"name": "containers",
 							"request": {
 								"auth": {
@@ -1166,13 +1194,13 @@
 								"method": "GET",
 								"header": [],
 								"url": {
-									"raw": "{{BASEURL}}/project/all-projects-template",
+									"raw": "{{BASEURL}}/project/1",
 									"host": [
 										"{{BASEURL}}"
 									],
 									"path": [
 										"project",
-										"all-projects-template"
+										"1"
 									]
 								}
 							},
