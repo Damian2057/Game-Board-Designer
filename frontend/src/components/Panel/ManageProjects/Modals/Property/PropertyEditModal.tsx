@@ -26,8 +26,8 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                 name: name,
                 value: value
             }, editedProp.id).then((prop) => {
+                console.log(prop);
                 onSave(prop);
-                toast.success('Successfully updated!', { icon: "👋" });
                 onClose();
             }).catch(err => {
                 toast.error(`${err.response.data.message}`, { icon: "💀" })
@@ -44,7 +44,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit Tag</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit Property</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
@@ -56,7 +56,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Component name:
+                                            Property name:
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -71,7 +71,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Component quantity:
+                                            Property value:
                                         </div>
                                     </div>
                                 </Form.Label>

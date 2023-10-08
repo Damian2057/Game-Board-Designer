@@ -10,7 +10,9 @@ const BoxInfo: React.FC<BoxInfoProps> = ({ show, box, onClose }) => {
     const [selectedBox, setSelectedBox] = React.useState<Box>();
 
     React.useEffect(() => {
-       Api.project.getBox(box.id).then((box) => setSelectedBox(box));
+       Api.project.getBox(box.id).then((box) => {
+           setSelectedBox(box)
+       });
     });
 
     return (
@@ -60,7 +62,7 @@ const BoxInfo: React.FC<BoxInfoProps> = ({ show, box, onClose }) => {
                                 </tr>
                                 </thead>
                                 <tbody>
-                                {selectedBox?.properties?.map((prop, index) => (
+                                {selectedBox?.properties?.map((prop) => (
                                     <tr key={prop.id}>
                                         <td className="tag-cell">
                                             <div className="tag-content">

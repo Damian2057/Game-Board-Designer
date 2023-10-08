@@ -3,24 +3,23 @@ import {Api} from "../../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {BoxEditProps} from "../../Props/BoxEditProps";
-import {Component} from "../../../../../model/game/component";
 import {GrClose} from "react-icons/gr";
-import ComponentEditModal from "../../../ManageGames/Modals/ComponentEditModal";
 import {Property} from "../../../../../model/project/property";
 import NewPropertyModal from "../Property/NewPropertyModal";
+import PropertyEditModal from "../Property/PropertyEditModal";
 
 
 const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setEditShowModal] = useState(false);
-    const [editedComponent, setEditedComponent] = useState<Component | null>(null);
 
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [notes, setNotes] = React.useState([] as string[]);
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [properties, setProperties] = React.useState([] as Property[]);
+    const [editedProperty, setEditedProperty] = React.useState<Property | null>(null);
 
     React.useEffect(() => {
         if (editedBox) {
@@ -105,7 +104,6 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         if (editedBox) {
             Api.property.deleteProperty(prop.id)
                 .then(() => {
-                    toast.success(`Property removed successfully`, { icon: "👏" });
                     setProperties((prevProps) =>
                         prevProps.filter((property) => property !== prop)
                     );
@@ -138,13 +136,18 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
     }
 
     function handleEditProp(prop: Property) {
-        setEditedComponent(component);
+        setEditedProperty(prop);
         setEditShowModal(true);
     }
 
-    function handleEditComponentSave() {
-        fetchComponents();
-        setEditedComponent(null);
+    function handleEditPropSave() {
+        Api.project.getBox(editedBox?.id as number).then((box) => {
+            console.log(box);
+            setProperties(box.properties);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+        setEditedProperty(null);
         setEditShowModal(false);
     }
 
@@ -296,12 +299,11 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                         onClose={handleCloseAddPropertyModal}
                         onSave={handleAddNewProperty}
                     />
-                    <ComponentEditModal
+                    <PropertyEditModal
                         show={showEditModal}
                         onClose={() => setEditShowModal(false)}
-                        onSave={handleEditComponentSave}
-                        editedComponent={editedComponent ?? null}
-                    />
+                        onSave={handleEditPropSave}
+                        editedProp={editedProperty ?? null} />
                 </Card>
             </Container>
         </div>
