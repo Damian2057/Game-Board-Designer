@@ -1,6 +1,5 @@
 import React, {useState} from "react";
 import {Component} from "../../../../model/game/component";
-import {Tag} from "../../../../model/game/tag";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
@@ -10,24 +9,30 @@ import NewComponentModal from "../../ManageGames/Modals/NewComponentModal";
 import ComponentEditModal from "../../ManageGames/Modals/ComponentEditModal";
 import {ProjectEditProps} from "../Props/ProjectEditProps";
 import {Project} from "../../../../model/project/project";
+import {Game} from "../../../../model/game/game";
+import {Box} from "../../../../model/project/box";
+import {ContainerEntity} from "../../../../model/project/containerEntity";
+import {Element} from "../../../../model/project/element";
+import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
-
-    const [editedProj, setEditedProj] = useState<Project>();
-
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setEditShowModal] = useState(false);
     const [editedComponent, setEditedComponent] = useState<Component | null>(null);
-    const [tags, setTags] = React.useState([] as Tag[]);
-    const [selectedTags, setSelectedTags] = React.useState([] as Tag[]);
-    const [title, setTitle] = React.useState('');
+
+    const [editedProj, setEditedProj] = useState<Project>();
+    const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
-    const [price, setPrice] = React.useState(0);
-    const [publicationDate, setPublicationDate] = React.useState('');
-    const [currency, setCurrency] = React.useState('PLN');
-    const [components, setComponents] = React.useState([] as Component[]);
+    const [notes, setNotes] = React.useState([] as string[]);
+    const [isTemplate, setIsTemplate] = React.useState(false);
+    const [isCompleted, setIsCompleted] = React.useState(false);
+    const [games, setGames] = React.useState([] as Game[]);
+    const [selectedGames, setSelectedGames] = React.useState([] as Game[]);
+    const [box, setBox] = React.useState({} as Box);
     const [imageIds, setImageIds] = React.useState([] as number[]);
+    const [containers, setContainers] = React.useState([] as ContainerEntity[]);
+    const [elements, setElements] = React.useState([] as Element[]);
 
     React.useEffect(() => {
         if (!editedProject) {
@@ -35,37 +40,57 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         }
         Api.project.getProject(editedProject.id).then((res) => {
             setEditedProj(res);
+            setName(res.name);
+            setDescription(res.description);
+            setNotes(res.notes);
+            setIsTemplate(res.isTemplate);
+            setIsCompleted(res.isCompleted);
+            setSelectedGames(res.games);
+            setBox(res.box);
+            setImageIds(res.imageIds);
+            setContainers(res.containers);
+            setElements(res.elements);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
+        fetchGames();
     }, [editedProject]);
 
-    const handleChange = (e: any) => {
+    const fetchGames = () => {
+        Api.game.getAllGames().then((res) => {
+            setGames(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+    }
+
+    const handleGameChange = (e: any) => {
         const name = e.target.value;
-        const selectedTag = tags.find(tag => tag.name === name);
-        if (!selectedTags.find(tag => tag.name === name)) {
-            if (selectedTag) {
-                selectedTags.push(selectedTag);
-                setSelectedTags(selectedTags);
-                if (editedGame && selectedTag.id) {
-                    Api.game.addTagToGame(editedGame?.id, selectedTag.id).then(() => {
-                        toast.success(`Tag added successfully`, {icon: "👏"});
-                    }).catch((err) => {
-                        toast.error(`${err.response.data.message}`, {icon: "💀"});
-                    });
-                }
+        const selectGame = games.find(game => game.title === name);
+        if (!selectedGames.find(game => game.title === name)) {
+            if (selectGame) {
+                selectedGames.push(selectGame);
+                setSelectedGames(selectedGames);
+                fetchGames();
+                // if (editedProject && selectGame.id) {
+                //     // Api.game.addTagToGame(editedGame?.id, selectGame.id).then(() => {
+                //     //     toast.success(`Tag added successfully`, {icon: "👏"});
+                //     // }).catch((err) => {
+                //     //     toast.error(`${err.response.data.message}`, {icon: "💀"});
+                //     // });
+                // }
             }
         }
     }
 
-    const handleRemoveTag = (tagToRemove: any) => {
-        setSelectedTags(prevTags => prevTags.filter(tag => tag !== tagToRemove));
-        if (editedGame && tagToRemove.id) {
-            Api.game.removeTagFromGame(editedGame?.id, tagToRemove.id).then(() => {
-                toast.success(`Tag removed successfully`, {icon: "👏"});
-            }).catch((err) => {
-                toast.error(`${err.response.data.message}`, {icon: "💀"});
-            });
+    const handleRemoveGame = (gameToRemove: any) => {
+        setSelectedGames(prevGames => prevGames.filter(game => game !== gameToRemove));
+        if (editedProject && gameToRemove.id) {
+            // Api.game.removeTagFromGame(editedGame?.id, tagToRemove.id).then(() => {
+            //     toast.success(`Tag removed successfully`, {icon: "👏"});
+            // }).catch((err) => {
+            //     toast.error(`${err.response.data.message}`, {icon: "💀"});
+            // });
         }
     };
 
@@ -95,24 +120,25 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     function sendGameCreationRequest() {
-        if (!editedGame) {
-            return;
-        }
-        Api.game.updateGame(editedGame.id, {
-            title: title,
-            description: description,
-            price: price,
-            publicationDate: publicationDate,
-            currency: currency,
-            tags: selectedTags,
-            components: components,
-            imageIds: imageIds
-        }).then((game) => {
-            toast.success(`Game updated successfully`, {icon: "👏"});
-            onSave(game);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
+        console.log(imageIds);
+        // if (!editedGame) {
+        //     return;
+        // }
+        // Api.game.updateGame(editedGame.id, {
+        //     title: title,
+        //     description: description,
+        //     price: price,
+        //     publicationDate: publicationDate,
+        //     currency: currency,
+        //     tags: selectedTags,
+        //     components: components,
+        //     imageIds: imageIds
+        // }).then((game) => {
+        //     toast.success(`Game updated successfully`, {icon: "👏"});
+        //     onSave(game);
+        // }).catch((err) => {
+        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
+        // });
     }
 
     function addComponent() {
@@ -120,18 +146,18 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     }
 
     function handleRemoveComponent(component: Component) {
-        if (editedGame && components.includes(component)) {
-            Api.game.deleteComponent(component.id)
-                .then(() => {
-                    toast.success(`Component removed successfully`, { icon: "👏" });
-                    setComponents((prevComponents) =>
-                        prevComponents.filter((comp) => comp !== component)
-                    );
-                })
-                .catch((err) => {
-                    toast.error(`${err.response.data.message}`, { icon: "💀" });
-                });
-        }
+        // if (editedGame && components.includes(component)) {
+        //     Api.game.deleteComponent(component.id)
+        //         .then(() => {
+        //             toast.success(`Component removed successfully`, { icon: "👏" });
+        //             setComponents((prevComponents) =>
+        //                 prevComponents.filter((comp) => comp !== component)
+        //             );
+        //         })
+        //         .catch((err) => {
+        //             toast.error(`${err.response.data.message}`, { icon: "💀" });
+        //         });
+        // }
     }
 
     function handleCloseAddComponentModal() {
@@ -139,16 +165,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     }
 
     function handleAddNewComponent(component: Component) {
-        if (!editedGame) {
-            return;
-        }
-        Api.game.createComponentForGame(editedGame?.id, component).then(() => {
-            toast.success(`Component added successfully`, {icon: "👏"});
-            setComponents((prevComponents) => [...prevComponents, component]);
-            handleCloseAddComponentModal();
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
+        // if (!editedGame) {
+        //     return;
+        // }
+        // Api.game.createComponentForGame(editedGame?.id, component).then(() => {
+        //     toast.success(`Component added successfully`, {icon: "👏"});
+        //     setComponents((prevComponents) => [...prevComponents, component]);
+        //     handleCloseAddComponentModal();
+        // }).catch((err) => {
+        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
+        // });
     }
 
     function handleRemoveImage(imageId: number) {
@@ -166,14 +192,14 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     }
 
     function fetchComponents() {
-        if (!editedGame) {
-            return;
-        }
-        Api.game.getComponentsByGameId(editedGame.id).then((components) => {
-            setComponents(components);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
+        // if (!editedGame) {
+        //     return;
+        // }
+        // Api.game.getComponentsByGameId(editedGame.id).then((components) => {
+        //     setComponents(components);
+        // }).catch((err) => {
+        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
+        // });
     }
 
     function handleEditComponentSave() {
@@ -201,66 +227,50 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Game</p>
+                        <p className='font-bold fs-2 mb-12'>Edit Project</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Game title'
-                                            value={title}
-                                            onChange={(e) => setTitle(e.target.value)}
+                                            placeholder='Project name'
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group>
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Game description'
+                                            placeholder='Project description'
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
-                                        <Form.Control
-                                            type='number'
-                                            placeholder='Game price'
-                                            value={isNaN(price) ? '' : price.toString()}
-                                            onChange={(e) => setPrice(parseFloat(e.target.value))}
-                                            step="any"
-                                        />
+                                        <div className='flex justify-center items-center'>
+                                            <ToggleComponent label="Template: " initialValue={isTemplate}  onChange={setIsTemplate}  labels={['Yes', 'No']}/>
+                                        </div>
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
-                                        <Form.Control
-                                            type='date'
-                                            placeholder='Publication date'
-                                            value={publicationDate}
-                                            onChange={(e) => setPublicationDate(e.target.value)}
-                                        />
+                                        <div className='flex justify-center items-center'>
+                                            <ToggleComponent label="Completed: " initialValue={isCompleted}  onChange={setIsCompleted}  labels={['Yes', 'No']}/>
+                                        </div>
                                     </Form.Group>
-                                    <Form.Group className='mt-3'>
-                                        <Form.Select className='form-select ' aria-label="Currency selector" defaultValue={currency} onChange={(e) => setCurrency(e.target.value)}>
-                                            <option disabled value={''}>Choose currency</option>
-                                            <option value={'PLN'}>PLN</option>
-                                            <option value={'EUR'}>EUR</option>
-                                            <option value={'USD'}>USD</option>
-                                        </Form.Select>
-                                    </Form.Group>
-
                                     <Form.Group className='mt-3'>
                                         <Row className='d-flex justify-content-start mt-3'>
                                             <Col lg={4}>
-                                                <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleChange}>
-                                                    <option disabled value={''}>Choose tags</option>
-                                                    {tags.map(item => {
-                                                        return (<option key={item.id} value={item.name}>{item.name}</option>)
+                                                <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleGameChange}>
+                                                    <option disabled value={''}>Choose game</option>
+                                                    {games.map(item => {
+                                                        return (<option key={item.id} value={item.title}>{item.title}</option>)
                                                     })}
                                                 </Form.Select>
                                             </Col>
-                                            {Array.isArray(selectedTags) && selectedTags.length > 0 ? (
-                                                    selectedTags.map(tag => {
-                                                        return <Col lg={4} className='tag ps-3' key={tag.id}>{tag.name}<BsXLg className='' onClick={() => handleRemoveTag(tag)} /></Col>
+                                            {Array.isArray(selectedGames) && selectedGames.length > 0 ? (
+                                                    selectedGames.map(item => {
+                                                        return <Col lg={4} className='tag ps-3' key={item.id}>{item.title}<BsXLg className='' onClick={() => handleRemoveGame(item)} /></Col>
                                                     }))
                                                 : (
                                                     <div></div>
@@ -306,7 +316,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Components</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Box</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addComponent}
@@ -317,46 +327,41 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                                     paddingInline: '2rem',
                                                     paddingBlock: '0.5rem'
                                                 }}
-                                            >+</Button>
+                                            >Edit</Button>
                                         </div>
                                     </Col>
-
-                                    <Table striped bordered hover>
-                                        <thead>
-                                        <tr>
-                                            <th>Name:</th>
-                                            <th>Quantity:</th>
-                                            <th>Edit</th>
-                                            <th>Remove</th>
-                                        </tr>
-                                        </thead>
-                                        <tbody>
-                                        {components.map((component, index) => (
-                                            <tr key={index}>
-                                                <td className="tag-cell">
-                                                    <div className="tag-content">
-                                                        <span>{component.name}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="tag-cell">
-                                                    <div className="tag-content">
-                                                        <span>{component.quantity}</span>
-                                                    </div>
-                                                </td>
-                                                <td className="tag-cell">
-                                                    <div className="tag-content">
-                                                        <Button className='button-workspace' onClick={() => handleEditComponent(component)}>Edit</Button>
-                                                    </div>
-                                                </td>
-                                                <td className="tag-cell">
-                                                    <div className="tag-content">
-                                                        <Button className='button-workspace' onClick={() => handleRemoveComponent(component)}>-</Button>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                        </tbody>
-                                    </Table>
+                                    <Col xs={8}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Containers</Modal.Title>
+                                            <Button
+                                                type="button"
+                                                onClick={addComponent}
+                                                style={{
+                                                    backgroundColor: '#7D53DE',
+                                                    borderColor: '#7D53DE',
+                                                    borderRadius: '20px',
+                                                    paddingInline: '2rem',
+                                                    paddingBlock: '0.5rem'
+                                                }}
+                                            >Edit</Button>
+                                        </div>
+                                    </Col>
+                                    <Col xs={8}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Elements</Modal.Title>
+                                            <Button
+                                                type="button"
+                                                onClick={addComponent}
+                                                style={{
+                                                    backgroundColor: '#7D53DE',
+                                                    borderColor: '#7D53DE',
+                                                    borderRadius: '20px',
+                                                    paddingInline: '2rem',
+                                                    paddingBlock: '0.5rem'
+                                                }}
+                                            >Edit</Button>
+                                        </div>
+                                    </Col>
                                 </Col>
                             </Row>
                             <Button type="button"
