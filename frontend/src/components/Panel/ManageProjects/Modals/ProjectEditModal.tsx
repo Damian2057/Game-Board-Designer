@@ -2,11 +2,9 @@ import React, {useState} from "react";
 import {Component} from "../../../../model/game/component";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
-import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
+import {Button, Card, Carousel, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {BsXLg} from "react-icons/bs";
-import NewComponentModal from "../../ManageGames/Modals/NewComponentModal";
-import ComponentEditModal from "../../ManageGames/Modals/ComponentEditModal";
 import {ProjectEditProps} from "../Props/ProjectEditProps";
 import {Project} from "../../../../model/project/project";
 import {Game} from "../../../../model/game/game";
@@ -14,6 +12,7 @@ import {Box} from "../../../../model/project/box";
 import {ContainerEntity} from "../../../../model/project/containerEntity";
 import {Element} from "../../../../model/project/element";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
+import BoxEditModal from "./box/BoxEditModal";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
@@ -33,6 +32,9 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [containers, setContainers] = React.useState([] as ContainerEntity[]);
     const [elements, setElements] = React.useState([] as Element[]);
+
+    const [showBoxEditModal, setShowBoxEditModal] = React.useState(false);
+
 
     React.useEffect(() => {
         if (!editedProject) {
@@ -208,6 +210,14 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         setEditShowModal(false);
     }
 
+    function editBox() {
+       setShowBoxEditModal(true);
+    }
+
+    function handleEditBoxSave() {
+
+    }
+
     return (
         <div className='NewGameModal'>
             <Toaster />
@@ -319,7 +329,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Box</Modal.Title>
                                             <Button
                                                 type="button"
-                                                onClick={addComponent}
+                                                onClick={editBox}
                                                 style={{
                                                     backgroundColor: '#7D53DE',
                                                     borderColor: '#7D53DE',
@@ -377,17 +387,24 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                             >Save Data</Button>
                         </Form>
                     </Card.Body>
-                    <NewComponentModal
-                        show={showAddModal}
-                        onClose={handleCloseAddComponentModal}
-                        onSave={handleAddNewComponent}
-                    />
-                    <ComponentEditModal
-                        show={showEditModal}
-                        onClose={() => setEditShowModal(false)}
-                        onSave={handleEditComponentSave}
-                        editedComponent={editedComponent ?? null}
-                    />
+                    {showBoxEditModal && (
+                        <BoxEditModal
+                            onClose={() => setShowBoxEditModal(false)}
+                            onSave={handleEditBoxSave}
+                            editedBox={editedProj?.box ?? null}
+                        />
+                    )}
+                    {/*<NewComponentModal*/}
+                    {/*    show={showAddModal}*/}
+                    {/*    onClose={handleCloseAddComponentModal}*/}
+                    {/*    onSave={handleAddNewComponent}*/}
+                    {/*/>*/}
+                    {/*<ComponentEditModal*/}
+                    {/*    show={showEditModal}*/}
+                    {/*    onClose={() => setEditShowModal(false)}*/}
+                    {/*    onSave={handleEditComponentSave}*/}
+                    {/*    editedComponent={editedComponent ?? null}*/}
+                    {/*/>*/}
                 </Card>
             </Container>
         </div>

@@ -10,7 +10,6 @@ const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave })
     const [name, setName] = useState<string>('');
     const [quantity, setQuantity] = useState<number>(0);
 
-
     const handleSave = () => {
         onSave({
             name: name,

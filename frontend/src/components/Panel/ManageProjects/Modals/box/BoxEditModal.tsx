@@ -1,19 +1,16 @@
 import React, {useState} from "react";
-import {Game} from "../../../../../model/game/game";
 import {Api} from "../../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {BoxEditProps} from "../../Props/BoxEditProps";
 import {Component} from "../../../../../model/game/component";
-import {Tag} from "../../../../../model/game/tag";
 import {GrClose} from "react-icons/gr";
-import {BsXLg} from "react-icons/bs";
-import NewComponentModal from "../../../ManageGames/Modals/NewComponentModal";
 import ComponentEditModal from "../../../ManageGames/Modals/ComponentEditModal";
 import {Property} from "../../../../../model/project/property";
+import NewPropertyModal from "../Property/NewPropertyModal";
 
 
-const BoxEditModal: React.FC<BoxEditProps> = ({ show, onClose, onSave, editedBox }) => {
+const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setEditShowModal] = useState(false);
@@ -105,12 +102,12 @@ const BoxEditModal: React.FC<BoxEditProps> = ({ show, onClose, onSave, editedBox
     }
 
     function handleRemoveProp(prop: Property) {
-        if (editedGame && components.includes(component)) {
-            Api.game.deleteComponent(component.id)
+        if (editedBox) {
+            Api.property.deleteProperty(prop.id)
                 .then(() => {
-                    toast.success(`Component removed successfully`, { icon: "👏" });
-                    setComponents((prevComponents) =>
-                        prevComponents.filter((comp) => comp !== component)
+                    toast.success(`Property removed successfully`, { icon: "👏" });
+                    setProperties((prevProps) =>
+                        prevProps.filter((property) => property !== prop)
                     );
                 })
                 .catch((err) => {
@@ -119,21 +116,16 @@ const BoxEditModal: React.FC<BoxEditProps> = ({ show, onClose, onSave, editedBox
         }
     }
 
-    function handleCloseAddComponentModal() {
+    function handleCloseAddPropertyModal() {
         setAddShowModal(false);
     }
 
-    function handleAddNewComponent(component: Component) {
-        if (!editedGame) {
+    function handleAddNewProperty(prop: Property) {
+        if (!editedBox) {
             return;
         }
-        Api.game.createComponentForGame(editedGame?.id, component).then(() => {
-            toast.success(`Component added successfully`, {icon: "👏"});
-            setComponents((prevComponents) => [...prevComponents, component]);
-            handleCloseAddComponentModal();
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
+        setProperties((prevProps) => [...prevProps, prop]);
+        handleCloseAddPropertyModal();
     }
 
     function handleRemoveImage(imageId: number) {
@@ -175,7 +167,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({ show, onClose, onSave, editedBox
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Game</p>
+                        <p className='font-bold fs-2 mb-12'>Edit Box</p>
                         <Form>
                             <Row>
                                 <Col>
@@ -235,7 +227,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({ show, onClose, onSave, editedBox
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Components</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Properties</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addProp}
@@ -299,10 +291,10 @@ const BoxEditModal: React.FC<BoxEditProps> = ({ show, onClose, onSave, editedBox
                             >Save Data</Button>
                         </Form>
                     </Card.Body>
-                    <NewComponentModal
+                    <NewPropertyModal
                         show={showAddModal}
-                        onClose={handleCloseAddComponentModal}
-                        onSave={handleAddNewComponent}
+                        onClose={handleCloseAddPropertyModal}
+                        onSave={handleAddNewProperty}
                     />
                     <ComponentEditModal
                         show={showEditModal}
