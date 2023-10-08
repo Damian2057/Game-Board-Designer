@@ -5,6 +5,7 @@ import {GameApi} from "./game.api";
 import {OrderApi} from "./order.api";
 import {ProjectApi} from "./project.api";
 import {UserApi} from "./user.api";
+import {PropertyApi} from "./property.api";
 
 export class Api {
 
@@ -15,4 +16,5 @@ export class Api {
     static order = OrderApi;
     static project = ProjectApi;
     static user = UserApi;
+    static property = PropertyApi;
 }

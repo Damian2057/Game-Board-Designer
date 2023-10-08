@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, UseGuards } from "@nestjs/common";
+import { Body, Controller, Get, Param, Post, Put, UseGuards } from "@nestjs/common";
 import { CreateBoxCommand } from "../model/command/box/create.box.command";
 import { BoxService } from "../service/box.service";
 import { BoxDto } from "../model/dto/box.dto";
@@ -29,9 +29,9 @@ export class BoxController {
     return this.boxService.getAllBoxes();
   }
 
-  @Get(':boxId')
-  async getBoxById(@Body('boxId') boxId: number): Promise<BoxDto> {
-    return this.boxService.getBoxDtoById(boxId);
+  @Get(':id')
+  async getBoxById(@Param('id') id: number): Promise<BoxDto> {
+    return this.boxService.getBoxDtoById(id);
   }
 
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)

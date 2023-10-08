@@ -16,7 +16,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
     const [selectedElement, setSelectedElement] = useState<any>()
     const [selectedContainer, setSelectedContainer] = useState<any>()
 
-    const handleClick=(index: number)=>{
+    const handleClick=(index: number)=> {
         setNote(project.notes[index])
     }
 
