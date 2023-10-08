@@ -8,12 +8,12 @@ import {NewPropertyProps} from "../../Props/NewPropertyProps";
 const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave }) => {
 
     const [name, setName] = useState<string>('');
-    const [quantity, setQuantity] = useState<number>(0);
+    const [value, setValue] = useState<string>('');
 
     const handleSave = () => {
         onSave({
             name: name,
-            quantity: quantity
+            value: value
         });
         onClose();
     };
@@ -60,10 +60,10 @@ const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave })
                                     </div>
                                 </div>
                             </Form.Label>
-                            <Form.Control type='number'
-                                          value={isNaN(quantity) ? '' : quantity.toString()}
-                                          placeholder="Enter quantity"
-                                          onChange={(e) => setQuantity(parseFloat(e.target.value))} />
+                            <Form.Control type='text'
+                                          value={value}
+                                          placeholder="Enter value"
+                                          onChange={(e) => setValue(e.target.value)} />
                         </div>
                     </Form.Group>
                     <div className='flex justify-center items-center mt-4'>
