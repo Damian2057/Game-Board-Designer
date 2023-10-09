@@ -5,7 +5,6 @@ import {GrClose} from "react-icons/gr";
 import {UploadProps} from "./UploadProps";
 import {Api} from "../../connector/api";
 
-
 const UploadModal: React.FC<UploadProps> = ({show, onClose, onSave }) => {
 
     const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -19,6 +18,7 @@ const UploadModal: React.FC<UploadProps> = ({show, onClose, onSave }) => {
             Api.image.uploadImage(formData)
                 .then((images) => {
                     onSave(images);
+                    onClose();
                 }).catch((err) => {
                 toast.error(`${err.response.data.message}`, {icon: '💀'});
             });

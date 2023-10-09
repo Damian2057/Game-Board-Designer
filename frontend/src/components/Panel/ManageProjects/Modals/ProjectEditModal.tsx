@@ -14,6 +14,9 @@ import {Element} from "../../../../model/project/element";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 import BoxEditModal from "./box/BoxEditModal";
 import UploadModal from "../../../util/UploadModal";
+import {Image} from "../../../../model/image/image";
+import NotesModal from "../../../util/NotesModal";
+import {GiNotebook} from "react-icons/gi";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
@@ -21,6 +24,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [showEditModal, setEditShowModal] = useState(false);
     const [editedComponent, setEditedComponent] = useState<Component | null>(null);
 
+    const [showNotesModal, setShowNotesModal] = useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
     const [editedProj, setEditedProj] = useState<Project>();
     const [name, setName] = React.useState('');
@@ -116,10 +120,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     const handleClick = () => {
-        // const fileInput = document.querySelector('input[type=file]') as HTMLInputElement;
-        // if (fileInput) {
-        //     fileInput.click();
-        // }
         setUploadModalShow(true);
     };
 
@@ -220,8 +220,19 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
 
     }
 
-    function handleUploadImages(data: any) {
-        console.log(data);
+    function handleUploadImages(data: Image[] | null) {
+        if (!data) {
+            return;
+        }
+        const newImageIds = data.map((image) => image.id);
+        setImageIds((prevIds) => [...prevIds, ...newImageIds]);
+    }
+
+    function handleSaveNotes(data: string[] | null) {
+        if (!data) {
+            return;
+        }
+        setNotes(data);
     }
 
     return (
@@ -263,6 +274,29 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Button
+                                                type="button"
+                                                onClick={() => setShowNotesModal(true)}
+                                                style={{
+                                                    backgroundColor: '#7D53DE',
+                                                    borderColor: '#7D53DE',
+                                                    borderRadius: '20px',
+                                                    paddingInline: '2rem',
+                                                    paddingBlock: '0.5rem'
+                                                }}>
+                                                <div className='flex flex-row gap-2 items-center'>
+                                                    <div>
+                                                        <GiNotebook size={30} />
+                                                    </div>
+                                                    <div>
+                                                        Notes
+                                                    </div>
+                                                </div>
+                                            </Button>
+                                        </div>
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
                                         <div className='flex justify-center items-center'>
@@ -404,6 +438,12 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                         show={uploadModalShow}
                         onClose={() => setUploadModalShow(false)}
                         onSave={handleUploadImages}
+                    />
+                    <NotesModal
+                        show={showNotesModal}
+                        notes={editedProj?.notes ?? null}
+                        onClose={() => setShowNotesModal(false)}
+                        onSave={handleSaveNotes}
                     />
                     {/*<NewComponentModal*/}
                     {/*    show={showAddModal}*/}
