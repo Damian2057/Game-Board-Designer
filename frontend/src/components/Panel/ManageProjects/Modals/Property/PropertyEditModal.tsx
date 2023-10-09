@@ -26,7 +26,6 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                 name: name,
                 value: value
             }, editedProp.id).then((prop) => {
-                console.log(prop);
                 onSave(prop);
                 onClose();
             }).catch(err => {

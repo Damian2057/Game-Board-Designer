@@ -62,6 +62,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                 .then((images) => {
                     const newImageIds = images.map((image) => image.id);
                     setImageIds((prevIds) => [...prevIds, ...newImageIds]);
+                    console.log(imageIds);
                 }).catch((err) => {
                 toast.error(`${err.response.data.message}`, {icon: '💀'});
             });
@@ -142,7 +143,6 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
 
     function handleEditPropSave() {
         Api.project.getBox(editedBox?.id as number).then((box) => {
-            console.log(box);
             setProperties(box.properties);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});

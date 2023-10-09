@@ -13,6 +13,7 @@ import {ContainerEntity} from "../../../../model/project/containerEntity";
 import {Element} from "../../../../model/project/element";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 import BoxEditModal from "./box/BoxEditModal";
+import UploadModal from "../../../util/UploadModal";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
@@ -20,6 +21,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [showEditModal, setEditShowModal] = useState(false);
     const [editedComponent, setEditedComponent] = useState<Component | null>(null);
 
+    const [uploadModalShow, setUploadModalShow] = useState(false);
     const [editedProj, setEditedProj] = useState<Project>();
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -98,7 +100,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
 
     const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
         const selectedFiles: FileList | null = event.target.files;
-
         if (selectedFiles) {
             const formData = new FormData();
             for (const element of selectedFiles) {
@@ -115,10 +116,11 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     const handleClick = () => {
-        const fileInput = document.querySelector('input[type=file]') as HTMLInputElement;
-        if (fileInput) {
-            fileInput.click();
-        }
+        // const fileInput = document.querySelector('input[type=file]') as HTMLInputElement;
+        // if (fileInput) {
+        //     fileInput.click();
+        // }
+        setUploadModalShow(true);
     };
 
     function sendGameCreationRequest() {
@@ -218,6 +220,10 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
 
     }
 
+    function handleUploadImages(data: any) {
+        console.log(data);
+    }
+
     return (
         <div className='NewGameModal'>
             <Toaster />
@@ -289,13 +295,13 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        multiple
-                                        onChange={handleImageSelect}
-                                        style={{ display: 'none' }}
-                                    />
+                                    {/*<input*/}
+                                    {/*    type="file"*/}
+                                    {/*    accept="image/*"*/}
+                                    {/*    multiple*/}
+                                    {/*    onChange={handleImageSelect}*/}
+                                    {/*    style={{ display: 'none' }}*/}
+                                    {/*/>*/}
                                     <Button
                                         onClick={handleClick}
                                         style={{
@@ -394,6 +400,11 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                             editedBox={editedProj?.box ?? null}
                         />
                     )}
+                    <UploadModal
+                        show={uploadModalShow}
+                        onClose={() => setUploadModalShow(false)}
+                        onSave={handleUploadImages}
+                    />
                     {/*<NewComponentModal*/}
                     {/*    show={showAddModal}*/}
                     {/*    onClose={handleCloseAddComponentModal}*/}

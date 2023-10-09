@@ -2150,6 +2150,46 @@
 							"response": []
 						}
 					]
+				},
+				{
+					"name": "property",
+					"item": [
+						{
+							"name": "propery",
+							"request": {
+								"method": "GET",
+								"header": []
+							},
+							"response": []
+						},
+						{
+							"name": "update",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Change\",\r\n    \"value\": \"Test\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{BASEURL}}/property/20",
+									"host": [
+										"{{BASEURL}}"
+									],
+									"path": [
+										"property",
+										"20"
+									]
+								}
+							},
+							"response": []
+						}
+					]
 				}
 			]
 		},
