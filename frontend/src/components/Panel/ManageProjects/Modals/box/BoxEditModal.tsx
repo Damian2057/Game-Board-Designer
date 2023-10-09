@@ -10,6 +10,7 @@ import PropertyEditModal from "../Property/PropertyEditModal";
 import UploadModal from "../../../../util/UploadModal";
 import {Image} from "../../../../../model/image/image";
 import {FcHighPriority} from "react-icons/fc";
+import NotesModal from "../../../../util/NotesModal";
 
 
 const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => {
@@ -17,6 +18,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setEditShowModal] = useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
+    const [showNotesModal, setShowNotesModal] = useState(false);
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [notes, setNotes] = React.useState([] as string[]);
@@ -137,6 +139,13 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         setImageIds((prevIds) => [...prevIds, ...newImageIds]);
     }
 
+    function handleSaveNotes(data: string[] | null) {
+        if (!data) {
+            return;
+        }
+        setNotes(data);
+    }
+
     return (
         <div className='NewGameModal'>
             <Toaster />
@@ -176,6 +185,21 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <Button
+                                                type="button"
+                                                onClick={() => setShowNotesModal(true)}
+                                                style={{
+                                                    backgroundColor: '#7D53DE',
+                                                    borderColor: '#7D53DE',
+                                                    borderRadius: '20px',
+                                                    paddingInline: '2rem',
+                                                    paddingBlock: '0.5rem'
+                                                }}
+                                            >Notes</Button>
+                                        </div>
                                     </Form.Group>
                                     <Form.Group>
                                         <div>
@@ -336,6 +360,12 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                         onClose={() => setEditShowModal(false)}
                         onSave={handleEditPropSave}
                         editedProp={editedProperty ?? null} />
+                    <NotesModal
+                        show={showNotesModal}
+                        notes={editedBox?.notes ?? null}
+                        onClose={() => setShowNotesModal(false)}
+                        onSave={handleSaveNotes}
+                    />
                 </Card>
             </Container>
         </div>
