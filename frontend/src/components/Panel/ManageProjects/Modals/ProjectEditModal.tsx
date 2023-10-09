@@ -14,6 +14,7 @@ import {Element} from "../../../../model/project/element";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 import BoxEditModal from "./box/BoxEditModal";
 import UploadModal from "../../../util/UploadModal";
+import {Image} from "../../../../model/image/image";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
@@ -116,10 +117,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     const handleClick = () => {
-        // const fileInput = document.querySelector('input[type=file]') as HTMLInputElement;
-        // if (fileInput) {
-        //     fileInput.click();
-        // }
         setUploadModalShow(true);
     };
 
@@ -220,8 +217,12 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
 
     }
 
-    function handleUploadImages(data: any) {
-        console.log(data);
+    function handleUploadImages(data: Image[] | null) {
+        if (!data) {
+            return;
+        }
+        const newImageIds = data.map((image) => image.id);
+        setImageIds((prevIds) => [...prevIds, ...newImageIds]);
     }
 
     return (

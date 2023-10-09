@@ -7,13 +7,14 @@ import {GrClose} from "react-icons/gr";
 import {Property} from "../../../../../model/project/property";
 import NewPropertyModal from "../Property/NewPropertyModal";
 import PropertyEditModal from "../Property/PropertyEditModal";
+import UploadModal from "../../../../util/UploadModal";
 
 
 const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [showEditModal, setEditShowModal] = useState(false);
-
+    const [uploadModalShow, setUploadModalShow] = useState(false);
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
     const [notes, setNotes] = React.useState([] as string[]);
@@ -50,30 +51,8 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         }
     }
 
-    const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFiles: FileList | null = event.target.files;
-
-        if (selectedFiles) {
-            const formData = new FormData();
-            for (const element of selectedFiles) {
-                formData.append('file', element);
-            }
-            Api.image.uploadImage(formData)
-                .then((images) => {
-                    const newImageIds = images.map((image) => image.id);
-                    setImageIds((prevIds) => [...prevIds, ...newImageIds]);
-                    console.log(imageIds);
-                }).catch((err) => {
-                toast.error(`${err.response.data.message}`, {icon: '💀'});
-            });
-        }
-    };
-
     const handleClick = () => {
-        const fileInput = document.querySelector('input[type=file]') as HTMLInputElement;
-        if (fileInput) {
-            fileInput.click();
-        }
+        setUploadModalShow(true);
     };
 
     function sendGameCreationRequest() {
@@ -151,6 +130,10 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         setEditShowModal(false);
     }
 
+    function handleUploadImages() {
+
+    }
+
     return (
         <div className='NewGameModal'>
             <Toaster />
@@ -193,13 +176,6 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <input
-                                        type="file"
-                                        accept="image/*"
-                                        multiple
-                                        onChange={handleImageSelect}
-                                        style={{ display: 'none' }}
-                                    />
                                     <Button
                                         onClick={handleClick}
                                         style={{
@@ -294,6 +270,11 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                             >Save Data</Button>
                         </Form>
                     </Card.Body>
+                    <UploadModal
+                        show={uploadModalShow}
+                        onClose={() => setUploadModalShow(false)}
+                        onSave={handleUploadImages}
+                    />
                     <NewPropertyModal
                         show={showAddModal}
                         onClose={handleCloseAddPropertyModal}
