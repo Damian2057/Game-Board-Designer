@@ -4,13 +4,12 @@ import {NotesProps} from "./NotesProps";
 import {GrClose} from "react-icons/gr";
 
 const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
-    // Initialize the editedNotes state with the provided notes or an empty array
 
     React.useEffect(() => {
-        setEditedNotes(notes || []);
+        setEditedNotes(notes ?? []);
     }, [notes]);
 
-    const [editedNotes, setEditedNotes] = React.useState<string[]>(notes || []);
+    const [editedNotes, setEditedNotes] = React.useState<string[]>(notes ?? []);
 
     function handleChangeNotes(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, index: number) {
         const updatedNotes = [...editedNotes];
@@ -19,7 +18,8 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
     }
 
     function handleSave() {
-        onSave(editedNotes);
+        const nonEmptyNotes = editedNotes.filter((note) => note.trim() !== '');
+        onSave(nonEmptyNotes);
         onClose();
     }
 
@@ -45,6 +45,7 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
                 </a>
             </div>
             <Modal.Body className='fs-5 rounded-md'>
+                <p className='font-bold fs-2 mb-12'>Notes</p>
                 <Form as={Col} lg={8} className='mx-auto mb-5'>
                     <Col>
                         {editedNotes.map((note, index) => {
@@ -91,7 +92,15 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
                     </Col>
                 </Form>
             </Modal.Body>
-            <Button onClick={handleSave}>Save</Button>
+            <Button
+                onClick={handleSave}
+                style={{
+                    backgroundColor: '#ffffff',
+                    borderColor: '#ffffff',
+                    color: '#7D53DE',
+                }}
+            >Save
+            </Button>
         </Modal>
     );
 };
