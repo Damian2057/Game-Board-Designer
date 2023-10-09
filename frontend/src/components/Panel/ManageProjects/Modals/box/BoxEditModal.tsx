@@ -3,11 +3,13 @@ import {Api} from "../../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {BoxEditProps} from "../../Props/BoxEditProps";
-import {GrClose} from "react-icons/gr";
+import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {Property} from "../../../../../model/project/property";
 import NewPropertyModal from "../Property/NewPropertyModal";
 import PropertyEditModal from "../Property/PropertyEditModal";
 import UploadModal from "../../../../util/UploadModal";
+import {Image} from "../../../../../model/image/image";
+import {FcHighPriority} from "react-icons/fc";
 
 
 const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => {
@@ -21,6 +23,10 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [properties, setProperties] = React.useState([] as Property[]);
     const [editedProperty, setEditedProperty] = React.useState<Property | null>(null);
+    const [selectedPriority, setSelectedPriority] = React.useState('');
+    const [selectedStatus, setSelectedStatus] = React.useState('');
+    const [priorities, setPriorities] = React.useState([] as string[]);
+    const [statuses, setStatuses] = React.useState([] as string[]);
 
     React.useEffect(() => {
         if (editedBox) {
@@ -29,51 +35,44 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
             setNotes(editedBox.notes);
             setImageIds(editedBox.imageIds);
             setProperties(editedBox.properties);
+            setSelectedPriority(editedBox.priority);
+            setSelectedStatus(editedBox.status);
         }
+        Api.project.getAvailablePriorities().then((priorities) => {
+            setPriorities(priorities);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+        Api.project.getAvailableStatuses().then((statuses) => {
+            setStatuses(statuses);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
     }, [editedBox]);
-
-    const handleChange = (e: any) => {
-        const name = e.target.value;
-        const selectedTag = tags.find(tag => tag.name === name);
-        if (!selectedTags.find(tag => tag.name === name)) {
-            if (selectedTag) {
-                selectedTags.push(selectedTag);
-                setSelectedTags(selectedTags);
-                fetchTags();
-                if (editedGame && selectedTag.id) {
-                    Api.game.addTagToGame(editedGame?.id, selectedTag.id).then(() => {
-                        toast.success(`Tag added successfully`, {icon: "👏"});
-                    }).catch((err) => {
-                        toast.error(`${err.response.data.message}`, {icon: "💀"});
-                    });
-                }
-            }
-        }
-    }
 
     const handleClick = () => {
         setUploadModalShow(true);
     };
 
     function sendGameCreationRequest() {
-        if (!editedGame) {
-            return;
-        }
-        Api.game.updateGame(editedGame.id, {
-            title: title,
-            description: description,
-            price: price,
-            publicationDate: publicationDate,
-            currency: currency,
-            tags: selectedTags,
-            components: components,
-            imageIds: imageIds
-        }).then((game) => {
-            toast.success(`Game updated successfully`, {icon: "👏"});
-            onSave(game);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
+        // if (!editedGame) {
+        //     return;
+        // }
+        // Api.game.updateGame(editedGame.id, {
+        //     title: title,
+        //     description: description,
+        //     price: price,
+        //     publicationDate: publicationDate,
+        //     currency: currency,
+        //     tags: selectedTags,
+        //     components: components,
+        //     imageIds: imageIds
+        // }).then((game) => {
+        //     toast.success(`Game updated successfully`, {icon: "👏"});
+        //     onSave(game);
+        // }).catch((err) => {
+        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
+        // });
     }
 
     function addProp() {
@@ -130,8 +129,12 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         setEditShowModal(false);
     }
 
-    function handleUploadImages() {
-
+    function handleUploadImages(data: Image[] | null) {
+        if (!data) {
+            return;
+        }
+        const newImageIds = data.map((image) => image.id);
+        setImageIds((prevIds) => [...prevIds, ...newImageIds]);
     }
 
     return (
@@ -174,6 +177,65 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                     </Form.Group>
+                                    <Form.Group>
+                                        <div>
+                                            <Form.Label className='fw-bold'>
+                                                <div className='flex flex-row gap-2 items-center'>
+                                                    <div>
+                                                        <FcHighPriority size={30} />
+                                                    </div>
+                                                    <div>
+                                                        Priority:
+                                                    </div>
+                                                </div>
+                                            </Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                value={selectedPriority}
+                                                onChange={(e) => setSelectedPriority(e.target.value)}
+                                            >{priorities.map((prio) => (
+                                                <option key={prio} value={prio}>
+                                                    {prio}
+                                                </option>
+                                            ))}
+                                            </Form.Control>
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <div>
+                                            <Form.Label className='fw-bold'>
+                                                <div className='flex flex-row gap-2 items-center'>
+                                                    <div>
+                                                        <GrStatusUnknown size={30} />
+                                                    </div>
+                                                    <div>
+                                                        Status:
+                                                    </div>
+                                                </div>
+                                            </Form.Label>
+                                            <Form.Control
+                                                as="select"
+                                                value={selectedStatus}
+                                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                            >{statuses.map((stat) => (
+                                                <option key={stat} value={stat}>
+                                                    {stat}
+                                                </option>
+                                            ))}
+                                            </Form.Control>
+                                        </div>
+                                    </Form.Group>
+                                    <Button type="button"
+                                            onClick={sendGameCreationRequest}
+                                            style={{
+                                                backgroundColor: '#7D53DE',
+                                                borderColor: '#7D53DE',
+                                                borderRadius: '20px',
+                                                marginBottom: '1rem',
+                                                paddingInline: '2rem',
+                                                paddingBlock: '0.5rem'
+                                            }}
+                                    >Save Data</Button>
                                 </Col>
                                 <Col>
                                     <Button
@@ -257,17 +319,6 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                     </Table>
                                 </Col>
                             </Row>
-                            <Button type="button"
-                                    onClick={sendGameCreationRequest}
-                                    style={{
-                                        backgroundColor: '#7D53DE',
-                                        borderColor: '#7D53DE',
-                                        borderRadius: '20px',
-                                        marginBottom: '1rem',
-                                        paddingInline: '2rem',
-                                        paddingBlock: '0.5rem'
-                                    }}
-                            >Save Data</Button>
                         </Form>
                     </Card.Body>
                     <UploadModal

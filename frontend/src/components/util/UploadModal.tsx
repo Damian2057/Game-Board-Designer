@@ -5,7 +5,6 @@ import {GrClose} from "react-icons/gr";
 import {UploadProps} from "./UploadProps";
 import {Api} from "../../connector/api";
 
-
 const UploadModal: React.FC<UploadProps> = ({show, onClose, onSave }) => {
 
     const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
