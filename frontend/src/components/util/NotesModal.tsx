@@ -2,6 +2,7 @@ import React from "react";
 import {Button, Col, Form, Modal} from "react-bootstrap";
 import {NotesProps} from "./NotesProps";
 import {GrClose} from "react-icons/gr";
+import {GiNotebook} from "react-icons/gi";
 
 const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
 
@@ -41,6 +42,9 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
                 <a onClick={onClose} >
                     <div className='icon-circle' >
                         <GrClose />
+                    </div>
+                    <div>
+                        <GiNotebook size={30} />
                     </div>
                 </a>
             </div>

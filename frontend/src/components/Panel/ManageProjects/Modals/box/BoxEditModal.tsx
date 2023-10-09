@@ -11,6 +11,7 @@ import UploadModal from "../../../../util/UploadModal";
 import {Image} from "../../../../../model/image/image";
 import {FcHighPriority} from "react-icons/fc";
 import NotesModal from "../../../../util/NotesModal";
+import {GiNotebook} from "react-icons/gi";
 
 
 const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => {
@@ -197,8 +198,16 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                                     borderRadius: '20px',
                                                     paddingInline: '2rem',
                                                     paddingBlock: '0.5rem'
-                                                }}
-                                            >Notes</Button>
+                                                }}>
+                                                <div className='flex flex-row gap-2 items-center'>
+                                                    <div>
+                                                        <GiNotebook size={30} />
+                                                    </div>
+                                                    <div>
+                                                        Notes
+                                                    </div>
+                                                </div>
+                                            </Button>
                                         </div>
                                     </Form.Group>
                                     <Form.Group>
