@@ -58,24 +58,20 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
     };
 
     function sendGameCreationRequest() {
-        // if (!editedGame) {
-        //     return;
-        // }
-        // Api.game.updateGame(editedGame.id, {
-        //     title: title,
-        //     description: description,
-        //     price: price,
-        //     publicationDate: publicationDate,
-        //     currency: currency,
-        //     tags: selectedTags,
-        //     components: components,
-        //     imageIds: imageIds
-        // }).then((game) => {
-        //     toast.success(`Game updated successfully`, {icon: "👏"});
-        //     onSave(game);
-        // }).catch((err) => {
-        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-        // });
+        if  (!editedBox) {
+            return;
+        }
+        Api.project.updateBox(editedBox.id, {
+            name: name,
+            description: description,
+            notes: notes,
+            imageIds: imageIds
+        }).then((box) => {
+            toast.success(`Box updated successfully`, {icon: "👏"});
+            onSave(box);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
     }
 
     function addProp() {
@@ -268,7 +264,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                                 paddingInline: '2rem',
                                                 paddingBlock: '0.5rem'
                                             }}
-                                    >Save Data</Button>
+                                    >Done</Button>
                                 </Col>
                                 <Col>
                                     <Button

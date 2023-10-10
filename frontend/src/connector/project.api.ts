@@ -43,7 +43,7 @@ export class ProjectApi {
     }
 
     static updateBox(id: number, data: any): Promise<Box> {
-        return axios.put(`${import.meta.env.VITE_URL}/box/update/${id}`, {
+        return axios.put(`${import.meta.env.VITE_URL}/box/update-box/${id}`, {
             name: data.name,
             description: data.description,
             notes: data.notes,
@@ -53,7 +53,7 @@ export class ProjectApi {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }).then(res => {
-                return res.data;
+            return res.data;
         });
     }
 

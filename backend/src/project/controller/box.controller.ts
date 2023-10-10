@@ -37,7 +37,7 @@ export class BoxController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put('update-box/:boxId')
-  async updateBox(@Body() command: UpdateBoxCommand, @Body('boxId') boxId: number): Promise<BoxDto> {
+  async updateBox(@Body() command: UpdateBoxCommand, @Param('boxId') boxId: number): Promise<BoxDto> {
     return this.boxService.updateBox(command, boxId);
   }
 }
