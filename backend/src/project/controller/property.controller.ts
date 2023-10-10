@@ -18,7 +18,7 @@ export class PropertyController {
   @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
   @UseGuards(JwtGuard, RolesGuard)
   @Put(':id')
-  async updatePriority(@Body() command: UpdatePropertyCommand, @Param('id') id: number): Promise<any> {
+  async updateProperty(@Body() command: UpdatePropertyCommand, @Param('id') id: number): Promise<any> {
     return this.propertyService.updateProperty(command, id);
   }
 

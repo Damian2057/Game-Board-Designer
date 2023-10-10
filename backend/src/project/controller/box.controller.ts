@@ -7,6 +7,7 @@ import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
+import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
 @Controller('box')
 export class BoxController {
@@ -39,5 +40,12 @@ export class BoxController {
   @Put('update-box/:boxId')
   async updateBox(@Body() command: UpdateBoxCommand, @Param('boxId') boxId: number): Promise<BoxDto> {
     return this.boxService.updateBox(command, boxId);
+  }
+
+  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+  @UseGuards(JwtGuard, RolesGuard)
+  @Put('property-box/:boxId')
+  async addProperties(@Body() command: CreatePropertyCommand, @Param('boxId') boxId: number): Promise<BoxDto> {
+    return this.boxService.addProperty(command, boxId);
   }
 }
