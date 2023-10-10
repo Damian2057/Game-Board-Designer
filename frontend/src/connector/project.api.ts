@@ -68,7 +68,7 @@ export class ProjectApi {
     }
 
     static updateStatus(id: number, status: string, type: string): Promise<any> {
-        return axios.put(`${import.meta.env.VITE_URL}/box/update-status/${id}`, {
+        return axios.put(`${import.meta.env.VITE_URL}/status/update-status/${id}`, {
             status: status,
             type: type,
         }, {
@@ -465,6 +465,45 @@ export class ProjectApi {
                 workerId: data.workerId ? data.workerId : null,
                 game: data.game ? data.game : null,
             },
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static addPropertyToBox(id: number, data: any): Promise<Box> {
+        return axios.put(`${import.meta.env.VITE_URL}/box/property-box/${id}`, {
+            name: data.name,
+            value: data.value,
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static addPropertyToContainer(id: number, data: any): Promise<ContainerEntity> {
+        return axios.put(`${import.meta.env.VITE_URL}/container/property-container/${id}`, {
+            name: data.name,
+            value: data.value,
+        }, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
+
+    static addPropertyToElement(id: number, data: any): Promise<Element> {
+        return axios.put(`${import.meta.env.VITE_URL}/element/property-element/${id}`, {
+            name: data.name,
+            value: data.value,
+        }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
