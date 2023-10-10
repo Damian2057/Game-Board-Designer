@@ -30,4 +30,10 @@ export class Property extends AbstractEntity<Property> {
         onDelete: 'CASCADE',
     })
     element: Element;
+
+    constructor(name: string, value: string) {
+        super();
+        this.name = name;
+        this.value = value;
+    }
 }

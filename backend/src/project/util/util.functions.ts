@@ -136,12 +136,10 @@ export function mapContainerCommandToContainer(command: CreateContainerCommand):
 }
 
 export function mapPropertyDtoToProperty(propertyDto: PropertyDto): Property {
-  const property: Property = new Property();
+  const property: Property = new Property(propertyDto.name, propertyDto.value);
   if (propertyDto.id) {
     property.id = propertyDto.id;
   }
-  property.name = propertyDto.name;
-  property.value = propertyDto.value;
 
   return property;
 }

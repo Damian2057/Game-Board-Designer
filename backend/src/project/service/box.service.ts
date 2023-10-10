@@ -9,6 +9,7 @@ import { mapBoxToBoxDto } from "../util/util.functions";
 import { BoxDto } from "../model/dto/box.dto";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
 import { Property } from "../model/domain/property.entity";
+import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
 @Injectable()
 export class BoxService {
@@ -81,5 +82,12 @@ export class BoxService {
   async updatesAndFlush(box: Box) {
     await this.propertyRepository.save(box.properties);
     return await this.boxRepository.save(box);
+  }
+
+  async addProperty(command: CreatePropertyCommand, boxId: number) {
+    let box: Box = await this.getBoxById(boxId);
+    box.properties.push(new Property(command.name, command.value));
+    const updated = await this.updatesAndFlush(box);
+    return mapBoxToBoxDto(updated);
   }
 }
