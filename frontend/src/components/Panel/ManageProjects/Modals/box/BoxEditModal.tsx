@@ -100,7 +100,11 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         if (!editedBox) {
             return;
         }
-        setProperties((prevProps) => [...prevProps, prop]);
+        Api.project.addPropertyToBox(editedBox.id, prop).then((box) => {
+            setProperties(box.properties);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
         handleCloseAddPropertyModal();
     }
 
@@ -143,9 +147,24 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         setNotes(data);
     }
 
+    function handleSetSelectedPriority(value: string) {
+        Api.project.updatePriority(editedBox?.id as number, value, "box").then((box) => {
+            setSelectedPriority(box.priority);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+    }
+
+    function handlesetSelectedStatus(value: string) {
+        Api.project.updateStatus(editedBox?.id as number, value, "box").then((box) => {
+            setSelectedStatus(box.status);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+    }
+
     return (
         <div className='NewGameModal'>
-            <Toaster />
             <Container>
                 <Card className='shadow border-white' style={{
                     position: 'absolute',
@@ -221,7 +240,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                             <Form.Control
                                                 as="select"
                                                 value={selectedPriority}
-                                                onChange={(e) => setSelectedPriority(e.target.value)}
+                                                onChange={(e) => handleSetSelectedPriority(e.target.value)}
                                             >{priorities.map((prio) => (
                                                 <option key={prio} value={prio}>
                                                     {prio}
@@ -245,7 +264,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                             <Form.Control
                                                 as="select"
                                                 value={selectedStatus}
-                                                onChange={(e) => setSelectedStatus(e.target.value)}
+                                                onChange={(e) => handlesetSelectedStatus(e.target.value)}
                                             >{statuses.map((stat) => (
                                                 <option key={stat} value={stat}>
                                                     {stat}

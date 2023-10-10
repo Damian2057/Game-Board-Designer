@@ -34,7 +34,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [isCompleted, setIsCompleted] = React.useState(false);
     const [games, setGames] = React.useState([] as Game[]);
     const [selectedGames, setSelectedGames] = React.useState([] as Game[]);
-    const [box, setBox] = React.useState({} as Box);
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [containers, setContainers] = React.useState([] as ContainerEntity[]);
     const [elements, setElements] = React.useState([] as Element[]);
@@ -54,7 +53,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
             setIsTemplate(res.isTemplate);
             setIsCompleted(res.isCompleted);
             setSelectedGames(res.games);
-            setBox(res.box);
             setImageIds(res.imageIds);
             setContainers(res.containers);
             setElements(res.elements);
@@ -216,8 +214,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
        setShowBoxEditModal(true);
     }
 
-    function handleEditBoxSave() {
+    function handleEditBoxSave(box: Box | null) {
+        if (!editedProj) {
+            return;
+        }
 
+        if (box !== null) {
+            editedProj.box = box;
+        }
+
+        setShowBoxEditModal(false);
     }
 
     function handleUploadImages(data: Image[] | null) {
