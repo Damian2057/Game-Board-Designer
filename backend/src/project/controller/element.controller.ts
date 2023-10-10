@@ -8,6 +8,7 @@ import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
+import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
 @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
 @UseGuards(JwtGuard, RolesGuard)
@@ -41,5 +42,10 @@ export class ElementController {
   @Delete('delete-element/:elementId')
   async deleteElementById(@Param('elementId') elementId: number): Promise<Result> {
     return this.elementService.deleteElementById(elementId);
+  }
+
+  @Put('property-element/:elementId')
+  async addPropertyToElement(@Body() command: CreatePropertyCommand, @Param('elementId') elementId: number): Promise<ElementDto> {
+    return this.elementService.addPropertyToElement(command, elementId);
   }
 }

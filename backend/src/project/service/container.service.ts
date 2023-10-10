@@ -19,6 +19,7 @@ import { ContainerDto } from "../model/dto/container.dto";
 import { Project } from "../model/domain/project.entity";
 import { Property } from "../model/domain/property.entity";
 import { Result } from "../../util/pojo/Result";
+import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
 @Injectable()
 export class ContainerService {
@@ -165,5 +166,12 @@ export class ContainerService {
     }
 
     return container;
+  }
+
+  async addPropertyToContainer(command: CreatePropertyCommand, containerId: number) {
+    let container: Container = await this.getContainerById(containerId);
+    container.properties.push(new Property(command.name, command.value));
+    const updated = await this.updateAndFlush(container);
+    return mapContainerToContainerDto(updated);
   }
 }

@@ -9,6 +9,7 @@ import { HasRoles } from "../../auth/decorator/role.decorator";
 import { UserRole } from "../../users/model/domain/user.role.enum";
 import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
+import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
 @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
 @UseGuards(JwtGuard, RolesGuard)
@@ -47,5 +48,10 @@ export class ContainerController {
   @Delete('delete-containers/:projectId')
   async deleteAllContainersByProjectId(@Param('projectId') projectId: number): Promise<Result> {
     return this.containerService.deleteAllContainersByProjectId(projectId);
+  }
+
+  @Put('property-container/:containerId')
+  async addPropertyToContainer(@Body() command: CreatePropertyCommand, @Param('containerId') containerId: number): Promise<ContainerDto> {
+    return this.containerService.addPropertyToContainer(command, containerId);
   }
 }

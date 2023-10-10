@@ -9,6 +9,8 @@ import { JwtGuard } from "../../auth/guard/jwt.guard";
 import { RolesGuard } from "../../auth/guard/roles.guard";
 import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
+@HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
+@UseGuards(JwtGuard, RolesGuard)
 @Controller('box')
 export class BoxController {
 
@@ -16,15 +18,11 @@ export class BoxController {
     private readonly boxService: BoxService,
   ) {}
 
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
   @Post('create-new-box')
   async createNewBox(@Body() command: CreateBoxCommand): Promise<BoxDto> {
     return this.boxService.createNewBox(command);
   }
 
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
   @Get('all')
   async getAllBoxes(): Promise<BoxDto[]> {
     return this.boxService.getAllBoxes();
@@ -35,15 +33,11 @@ export class BoxController {
     return this.boxService.getBoxDtoById(id);
   }
 
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
   @Put('update-box/:boxId')
   async updateBox(@Body() command: UpdateBoxCommand, @Param('boxId') boxId: number): Promise<BoxDto> {
     return this.boxService.updateBox(command, boxId);
   }
 
-  @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
-  @UseGuards(JwtGuard, RolesGuard)
   @Put('property-box/:boxId')
   async addProperties(@Body() command: CreatePropertyCommand, @Param('boxId') boxId: number): Promise<BoxDto> {
     return this.boxService.addProperty(command, boxId);

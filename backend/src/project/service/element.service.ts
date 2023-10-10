@@ -6,12 +6,17 @@ import { Element } from "../model/domain/element.entity";
 import { Repository } from "typeorm";
 import { InjectRepository } from "@nestjs/typeorm";
 import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument.exception";
-import { mapElementCommandToElement, mapElementToElementDto, mapPropertyDtoToProperty } from "../util/util.functions";
+import {
+  mapElementCommandToElement,
+  mapElementToElementDto,
+  mapPropertyDtoToProperty
+} from "../util/util.functions";
 import { Result } from "../../util/pojo/Result";
 import { Project } from "../model/domain/project.entity";
 import { Container } from "../model/domain/container.entity";
 import { ImageService } from "../../image/service/image.service";
 import { Property } from "../model/domain/property.entity";
+import { CreatePropertyCommand } from "../model/command/property/create.property.command";
 
 @Injectable()
 export class ElementService {
@@ -161,5 +166,12 @@ export class ElementService {
       element.properties = command.properties.map(property => mapPropertyDtoToProperty(property));
     }
     return element;
+  }
+
+  async addPropertyToElement(command: CreatePropertyCommand, elementId: number) {
+    let element: Element = await this.getElementById(elementId);
+    element.properties.push(new Property(command.name, command.value));
+    const updated = await this.updateAndFlush(element);
+    return mapElementToElementDto(updated);
   }
 }
