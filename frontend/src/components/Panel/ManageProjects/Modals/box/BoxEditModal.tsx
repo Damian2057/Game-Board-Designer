@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import {Api} from "../../../../../connector/api";
-import toast, {Toaster} from "react-hot-toast";
+import toast from "react-hot-toast";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {BoxEditProps} from "../../Props/BoxEditProps";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
