@@ -67,7 +67,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
             notes: notes,
             imageIds: imageIds
         }).then((box) => {
-            toast.success(`Box updated successfully`, {icon: "👏"});
+            toast.success(`Box updated successfully!`, {icon: "👏"});
             onSave(box);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
