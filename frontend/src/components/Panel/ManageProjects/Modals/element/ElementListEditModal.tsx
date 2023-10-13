@@ -7,6 +7,7 @@ import {ElementEntity} from "../../../../../model/project/elementEntity";
 import {GrClose} from "react-icons/gr";
 import ElementInfoModal from "./ElementInfoModal";
 import NewElementModal from "./NewElementModal";
+import ElementEditModal from "./ElementEditModal";
 
 
 const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, editedElements, id }) => {
@@ -133,14 +134,13 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
                         id={id}
                     />
                 )}
-                {/*{showEditModal && (*/}
-                {/*    <GameEditModal*/}
-                {/*        show={showEditModal}*/}
-                {/*        onClose={() => setShowEditModal(false)}*/}
-                {/*        onSave={handleSaveEditedElement}*/}
-                {/*        editedGame={editedElement ?? null}*/}
-                {/*    />*/}
-                {/*)}*/}
+                {showEditModal && (
+                    <ElementEditModal
+                        onClose={() => setShowEditModal(false)}
+                        onSave={handleSaveEditedElement}
+                        editedElement={editedElement ?? null}
+                    />
+                )}
             </Container>
         </div>
     )
