@@ -1,8 +1,7 @@
 import React, {useState} from "react";
-import {Component} from "../../../../model/game/component";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
-import {Button, Card, Carousel, Col, Container, Form, Modal, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {BsXLg} from "react-icons/bs";
 import {ProjectEditProps} from "../Props/ProjectEditProps";
@@ -10,22 +9,17 @@ import {Project} from "../../../../model/project/project";
 import {Game} from "../../../../model/game/game";
 import {Box} from "../../../../model/project/box";
 import {ContainerEntity} from "../../../../model/project/containerEntity";
-import {Element} from "../../../../model/project/element";
+import {ElementEntity} from "../../../../model/project/elementEntity";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 import BoxEditModal from "./box/BoxEditModal";
-import UploadModal from "../../../util/UploadModal";
-import {Image} from "../../../../model/image/image";
 import NotesModal from "../../../util/NotesModal";
 import {GiNotebook} from "react-icons/gi";
+import ElementListEditModal from "./element/ElementListEditModal";
+import ImageDisplayModal from "../../../util/ImageDisplayModal";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
-    const [showAddModal, setAddShowModal] = useState(false);
-    const [showEditModal, setEditShowModal] = useState(false);
-    const [editedComponent, setEditedComponent] = useState<Component | null>(null);
-
     const [showNotesModal, setShowNotesModal] = useState(false);
-    const [uploadModalShow, setUploadModalShow] = useState(false);
     const [editedProj, setEditedProj] = useState<Project>();
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -36,9 +30,12 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [selectedGames, setSelectedGames] = React.useState([] as Game[]);
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [containers, setContainers] = React.useState([] as ContainerEntity[]);
-    const [elements, setElements] = React.useState([] as Element[]);
+    const [elements, setElements] = React.useState([] as ElementEntity[]);
 
     const [showBoxEditModal, setShowBoxEditModal] = React.useState(false);
+    const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
+    const [showContainersEditModal, setShowContainersEditModal] = React.useState(false);
+    const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -118,11 +115,11 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     const handleClick = () => {
-        setUploadModalShow(true);
+        setImageEditModalShow(true);
     };
 
     function sendGameCreationRequest() {
-        console.log(imageIds);
+        console.log("Saved");
         // if (!editedGame) {
         //     return;
         // }
@@ -143,42 +140,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         // });
     }
 
-    function addComponent() {
-        setAddShowModal(true);
-    }
-
-    function handleRemoveComponent(component: Component) {
-        // if (editedGame && components.includes(component)) {
-        //     Api.game.deleteComponent(component.id)
-        //         .then(() => {
-        //             toast.success(`Component removed successfully`, { icon: "👏" });
-        //             setComponents((prevComponents) =>
-        //                 prevComponents.filter((comp) => comp !== component)
-        //             );
-        //         })
-        //         .catch((err) => {
-        //             toast.error(`${err.response.data.message}`, { icon: "💀" });
-        //         });
-        // }
-    }
-
-    function handleCloseAddComponentModal() {
-        setAddShowModal(false);
-    }
-
-    function handleAddNewComponent(component: Component) {
-        // if (!editedGame) {
-        //     return;
-        // }
-        // Api.game.createComponentForGame(editedGame?.id, component).then(() => {
-        //     toast.success(`Component added successfully`, {icon: "👏"});
-        //     setComponents((prevComponents) => [...prevComponents, component]);
-        //     handleCloseAddComponentModal();
-        // }).catch((err) => {
-        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-        // });
-    }
-
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
@@ -186,11 +147,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
-    }
-
-    function handleEditComponent(component: Component) {
-        setEditedComponent(component);
-        setEditShowModal(true);
     }
 
     function fetchComponents() {
@@ -204,14 +160,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         // });
     }
 
-    function handleEditComponentSave() {
-        fetchComponents();
-        setEditedComponent(null);
-        setEditShowModal(false);
-    }
-
     function editBox() {
        setShowBoxEditModal(true);
+    }
+
+    function editElemets() {
+        setShowElementsEditModal(true);
+    }
+
+    function editContainers() {
+        setShowContainersEditModal(true);
     }
 
     function handleEditBoxSave(box: Box | null) {
@@ -226,19 +184,32 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         setShowBoxEditModal(false);
     }
 
-    function handleUploadImages(data: Image[] | null) {
-        if (!data) {
-            return;
-        }
-        const newImageIds = data.map((image) => image.id);
-        setImageIds((prevIds) => [...prevIds, ...newImageIds]);
-    }
-
     function handleSaveNotes(data: string[] | null) {
         if (!data) {
             return;
         }
         setNotes(data);
+    }
+
+    function handleEditElementsSave(elements: ElementEntity[] | null) {
+        if (!editedProj) {
+            return;
+        }
+        if (elements !== null) {
+            editedProj.elements = elements;
+        }
+        setShowElementsEditModal(false);
+    }
+
+    function handleSaveImages(imageIds: number[] | null) {
+        if (!editedProj) {
+            return;
+        }
+        if (!imageIds) {
+            return;
+        }
+        editedProj.imageIds = imageIds;
+        setImageEditModalShow(false);
     }
 
     return (
@@ -335,13 +306,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    {/*<input*/}
-                                    {/*    type="file"*/}
-                                    {/*    accept="image/*"*/}
-                                    {/*    multiple*/}
-                                    {/*    onChange={handleImageSelect}*/}
-                                    {/*    style={{ display: 'none' }}*/}
-                                    {/*/>*/}
                                     <Button
                                         onClick={handleClick}
                                         style={{
@@ -352,22 +316,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
-                                    <div>
-                                        <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
-                                            {imageIds.map((imageId, index) => (
-                                                <Carousel.Item key={index}>
-                                                    <img
-                                                        src={Api.image.getImageUrl(imageId)}
-                                                        alt={`Image ${index}`}
-                                                        style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
-                                                        className="mx-auto d-block"
-                                                    />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
-                                                </Carousel.Item>
-                                            ))}
-                                        </Carousel>
-                                    </div>
+                                    >Edit images</Button>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
@@ -391,7 +340,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Containers</Modal.Title>
                                             <Button
                                                 type="button"
-                                                onClick={addComponent}
+                                                onClick={editContainers}
                                                 style={{
                                                     backgroundColor: '#7D53DE',
                                                     borderColor: '#7D53DE',
@@ -407,7 +356,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Elements</Modal.Title>
                                             <Button
                                                 type="button"
-                                                onClick={addComponent}
+                                                onClick={editElemets}
                                                 style={{
                                                     backgroundColor: '#7D53DE',
                                                     borderColor: '#7D53DE',
@@ -440,10 +389,19 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                             editedBox={editedProj?.box ?? null}
                         />
                     )}
-                    <UploadModal
-                        show={uploadModalShow}
-                        onClose={() => setUploadModalShow(false)}
-                        onSave={handleUploadImages}
+                    {showElementsEditModal && (
+                        <ElementListEditModal
+                            onClose={() => setShowElementsEditModal(false)}
+                            onSave={handleEditElementsSave}
+                            editedElements={editedProj?.elements ?? null}
+                            id={editedProj?.id ?? null}
+                        />
+                    )}
+                    <ImageDisplayModal
+                        show={imageEditModalShow}
+                        onClose={() => setImageEditModalShow(false)}
+                        imageIds={editedProj?.imageIds ?? null}
+                        onSave={handleSaveImages}
                     />
                     <NotesModal
                         show={showNotesModal}
@@ -451,17 +409,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                         onClose={() => setShowNotesModal(false)}
                         onSave={handleSaveNotes}
                     />
-                    {/*<NewComponentModal*/}
-                    {/*    show={showAddModal}*/}
-                    {/*    onClose={handleCloseAddComponentModal}*/}
-                    {/*    onSave={handleAddNewComponent}*/}
-                    {/*/>*/}
-                    {/*<ComponentEditModal*/}
-                    {/*    show={showEditModal}*/}
-                    {/*    onClose={() => setEditShowModal(false)}*/}
-                    {/*    onSave={handleEditComponentSave}*/}
-                    {/*    editedComponent={editedComponent ?? null}*/}
-                    {/*/>*/}
                 </Card>
             </Container>
         </div>

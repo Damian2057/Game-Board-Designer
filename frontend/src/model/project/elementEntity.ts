@@ -2,7 +2,7 @@ import {Entity} from "../entity";
 import {Property} from "./property";
 import {TicketEntity} from "./ticket.entity";
 
-export interface Element extends Entity, TicketEntity {
+export interface ElementEntity extends Entity, TicketEntity {
     name: string;
     description: string;
     notes: string[];

@@ -3,11 +3,11 @@ import {Api} from "../../../../../connector/api";
 import {Carousel, Col, Form, Modal, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {ElementInfoProps} from "../../Props/ElementInfoProps";
-import {Element} from "../../../../../model/project/element";
+import {ElementEntity} from "../../../../../model/project/elementEntity";
 
 const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => {
 
-    const [selectedElement, setSelectedElement] = React.useState<Element>();
+    const [selectedElement, setSelectedElement] = React.useState<ElementEntity>();
     const [note, setNote] = useState(element.notes[0])
 
     React.useEffect(() => {

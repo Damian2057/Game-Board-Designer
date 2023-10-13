@@ -7,14 +7,14 @@ import ElementInfoModal from "../element/ElementInfoModal";
 import {ContainerInfoProps} from "../../Props/ContainerInfoProps";
 import {Api} from "../../../../../connector/api";
 import {ContainerEntity} from "../../../../../model/project/containerEntity";
-import {Element} from "../../../../../model/project/element";
+import {ElementEntity} from "../../../../../model/project/elementEntity";
 
 const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, show }) => {
 
     const [note, setNote] = useState(container.notes[0])
     const [showImageSliderModal, setShowImageSliderModal] = useState(false)
     const [selectedContainer, setSelectedContainer] = useState<ContainerEntity>()
-    const [selectedElement, setSelectedElement] = useState<Element | null>()
+    const [selectedElement, setSelectedElement] = useState<ElementEntity | null>()
 
     React.useEffect(() => {
         Api.project.getContainer(container.id).then((res) => {
