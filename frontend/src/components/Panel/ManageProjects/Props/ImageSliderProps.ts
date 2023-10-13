@@ -1,5 +1,5 @@
 export interface ImageSliderProps {
     show: boolean;
-    imageIds: number[];
+    imageIds: number[] | null;
     onClose: () => void;
 }

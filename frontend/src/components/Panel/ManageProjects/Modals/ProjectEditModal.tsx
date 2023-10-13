@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
-import {Button, Card, Carousel, Col, Container, Form, Modal, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Modal, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {BsXLg} from "react-icons/bs";
 import {ProjectEditProps} from "../Props/ProjectEditProps";
@@ -12,16 +12,14 @@ import {ContainerEntity} from "../../../../model/project/containerEntity";
 import {ElementEntity} from "../../../../model/project/elementEntity";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 import BoxEditModal from "./box/BoxEditModal";
-import UploadModal from "../../../util/UploadModal";
-import {Image} from "../../../../model/image/image";
 import NotesModal from "../../../util/NotesModal";
 import {GiNotebook} from "react-icons/gi";
 import ElementListEditModal from "./element/ElementListEditModal";
+import ImageDisplayModal from "../../../util/ImageDisplayModal";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
     const [showNotesModal, setShowNotesModal] = useState(false);
-    const [uploadModalShow, setUploadModalShow] = useState(false);
     const [editedProj, setEditedProj] = useState<Project>();
     const [name, setName] = React.useState('');
     const [description, setDescription] = React.useState('');
@@ -37,6 +35,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [showBoxEditModal, setShowBoxEditModal] = React.useState(false);
     const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
     const [showContainersEditModal, setShowContainersEditModal] = React.useState(false);
+    const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -116,7 +115,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     const handleClick = () => {
-        setUploadModalShow(true);
+        setImageEditModalShow(true);
     };
 
     function sendGameCreationRequest() {
@@ -185,14 +184,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         setShowBoxEditModal(false);
     }
 
-    function handleUploadImages(data: Image[] | null) {
-        if (!data) {
-            return;
-        }
-        const newImageIds = data.map((image) => image.id);
-        setImageIds((prevIds) => [...prevIds, ...newImageIds]);
-    }
-
     function handleSaveNotes(data: string[] | null) {
         if (!data) {
             return;
@@ -208,6 +199,17 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
             editedProj.elements = elements;
         }
         setShowElementsEditModal(false);
+    }
+
+    function handleSaveImages(imageIds: number[] | null) {
+        if (!editedProj) {
+            return;
+        }
+        if (!imageIds) {
+            return;
+        }
+        editedProj.imageIds = imageIds;
+        setImageEditModalShow(false);
     }
 
     return (
@@ -314,22 +316,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
-                                    <div>
-                                        <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
-                                            {imageIds.map((imageId, index) => (
-                                                <Carousel.Item key={index}>
-                                                    <img
-                                                        src={Api.image.getImageUrl(imageId)}
-                                                        alt={`Image ${index}`}
-                                                        style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
-                                                        className="mx-auto d-block"
-                                                    />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
-                                                </Carousel.Item>
-                                            ))}
-                                        </Carousel>
-                                    </div>
+                                    >Edit images</Button>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
@@ -410,10 +397,11 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                             id={editedProj?.id ?? null}
                         />
                     )}
-                    <UploadModal
-                        show={uploadModalShow}
-                        onClose={() => setUploadModalShow(false)}
-                        onSave={handleUploadImages}
+                    <ImageDisplayModal
+                        show={imageEditModalShow}
+                        onClose={() => setImageEditModalShow(false)}
+                        imageIds={editedProj?.imageIds ?? null}
+                        onSave={handleSaveImages}
                     />
                     <NotesModal
                         show={showNotesModal}
