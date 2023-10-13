@@ -1,6 +1,6 @@
 import {Entity} from "../entity";
 import {Property} from "./property";
-import {Element} from "./element";
+import {ElementEntity} from "./elementEntity";
 import {TicketEntity} from "./ticket.entity";
 
 export interface ContainerEntity extends Entity, TicketEntity {
@@ -8,7 +8,7 @@ export interface ContainerEntity extends Entity, TicketEntity {
     description: string;
     notes: string[];
     quantity: number;
-    elements: Element[];
+    elements: ElementEntity[];
     properties: Property[];
     imageIds: number[];
     type: string;

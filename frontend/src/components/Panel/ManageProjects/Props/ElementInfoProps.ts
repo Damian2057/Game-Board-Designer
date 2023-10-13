@@ -1,6 +1,6 @@
-import {Element} from "../../../../model/project/element";
+import {ElementEntity} from "../../../../model/project/elementEntity";
 export interface ElementInfoProps {
-    element: Element;
+    element: ElementEntity;
     onClose: () => void;
     show: boolean;
 }

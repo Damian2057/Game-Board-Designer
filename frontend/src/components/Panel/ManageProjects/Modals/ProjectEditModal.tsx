@@ -9,13 +9,14 @@ import {Project} from "../../../../model/project/project";
 import {Game} from "../../../../model/game/game";
 import {Box} from "../../../../model/project/box";
 import {ContainerEntity} from "../../../../model/project/containerEntity";
-import {Element} from "../../../../model/project/element";
+import {ElementEntity} from "../../../../model/project/elementEntity";
 import ToggleComponent from "../../ManageEmployees/Modals/ToggleComponent";
 import BoxEditModal from "./box/BoxEditModal";
 import UploadModal from "../../../util/UploadModal";
 import {Image} from "../../../../model/image/image";
 import NotesModal from "../../../util/NotesModal";
 import {GiNotebook} from "react-icons/gi";
+import ElementListEditModal from "./element/ElementListEditModal";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
@@ -31,7 +32,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [selectedGames, setSelectedGames] = React.useState([] as Game[]);
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [containers, setContainers] = React.useState([] as ContainerEntity[]);
-    const [elements, setElements] = React.useState([] as Element[]);
+    const [elements, setElements] = React.useState([] as ElementEntity[]);
 
     const [showBoxEditModal, setShowBoxEditModal] = React.useState(false);
     const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
@@ -197,6 +198,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
             return;
         }
         setNotes(data);
+    }
+
+    function handleEditElementsSave(elements: ElementEntity[] | null) {
+        if (!editedProj) {
+            return;
+        }
+        if (elements !== null) {
+            editedProj.elements = elements;
+        }
+        setShowElementsEditModal(false);
     }
 
     return (
@@ -389,6 +400,14 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                             onClose={() => setShowBoxEditModal(false)}
                             onSave={handleEditBoxSave}
                             editedBox={editedProj?.box ?? null}
+                        />
+                    )}
+                    {showElementsEditModal && (
+                        <ElementListEditModal
+                            onClose={() => setShowElementsEditModal(false)}
+                            onSave={handleEditElementsSave}
+                            editedElements={editedProj?.elements ?? null}
+                            id={editedProj?.id ?? null}
                         />
                     )}
                     <UploadModal
