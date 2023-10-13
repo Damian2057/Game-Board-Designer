@@ -2,12 +2,11 @@ import React, {useState} from "react";
 import {Api} from "../../../../../connector/api";
 import toast from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
-import NewGameModal from "../../../ManageGames/Modals/NewGameModal";
-import GameEditModal from "../../../ManageGames/Modals/GameEditModal";
 import {ElementsEditProps} from "../../Props/ElementsEditProps";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
 import {GrClose} from "react-icons/gr";
 import ElementInfoModal from "./ElementInfoModal";
+import NewElementModal from "./NewElementModal";
 
 
 const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, editedElements, id }) => {
@@ -54,8 +53,11 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
         setAddShowModal(false);
     }
 
-    function handleAddNewElement() {
-        toast.success(`Element added successfully`, {icon: "👏"});
+    function handleAddNewElement(elements: ElementEntity[] | null) {
+        if (elements === null) {
+            return;
+        }
+        setElements(elements)
         handleCloseAddElementModal();
     }
 
@@ -125,20 +127,20 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
                     />
                 )}
                 {showAddModal && (
-                    <NewGameModal
-                        show={showAddModal}
+                    <NewElementModal
                         onClose={handleCloseAddElementModal}
                         onSave={handleAddNewElement}
+                        id={id}
                     />
                 )}
-                {showEditModal && (
-                    <GameEditModal
-                        show={showEditModal}
-                        onClose={() => setShowEditModal(false)}
-                        onSave={handleSaveEditedElement}
-                        editedGame={editedElement ?? null}
-                    />
-                )}
+                {/*{showEditModal && (*/}
+                {/*    <GameEditModal*/}
+                {/*        show={showEditModal}*/}
+                {/*        onClose={() => setShowEditModal(false)}*/}
+                {/*        onSave={handleSaveEditedElement}*/}
+                {/*        editedGame={editedElement ?? null}*/}
+                {/*    />*/}
+                {/*)}*/}
             </Container>
         </div>
     )

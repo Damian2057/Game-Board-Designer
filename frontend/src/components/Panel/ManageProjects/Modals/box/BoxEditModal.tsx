@@ -57,7 +57,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
         setUploadModalShow(true);
     };
 
-    function sendGameCreationRequest() {
+    function sendBoxUpdateRequest() {
         if  (!editedBox) {
             return;
         }
@@ -274,7 +274,7 @@ const BoxEditModal: React.FC<BoxEditProps> = ({onClose, onSave, editedBox }) => 
                                         </div>
                                     </Form.Group>
                                     <Button type="button"
-                                            onClick={sendGameCreationRequest}
+                                            onClick={sendBoxUpdateRequest}
                                             style={{
                                                 backgroundColor: '#7D53DE',
                                                 borderColor: '#7D53DE',

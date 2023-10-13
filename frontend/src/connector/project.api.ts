@@ -131,7 +131,7 @@ export class ProjectApi {
     }
 
     static addElementToContainer(id: number, data: any): Promise<ElementEntity[]> {
-        return axios.put(`${import.meta.env.VITE_URL}/element/add-container-element/${id}`, {
+        return axios.post(`${import.meta.env.VITE_URL}/element/add-container-element/${id}`, {
             name: data.name,
             description: data.description,
             notes: data.notes,
@@ -150,7 +150,7 @@ export class ProjectApi {
     }
 
     static addElementToProject(id: number, data: any): Promise<ElementEntity[]> {
-        return axios.put(`${import.meta.env.VITE_URL}/element/add-project-element/${id}`, {
+        return axios.post(`${import.meta.env.VITE_URL}/element/add-project-element/${id}`, {
             name: data.name,
             description: data.description,
             notes: data.notes,
@@ -164,7 +164,7 @@ export class ProjectApi {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         }).then(res => {
-                return res.data;
+            return res.data;
         });
     }
 
