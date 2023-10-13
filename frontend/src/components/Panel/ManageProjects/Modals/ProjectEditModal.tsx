@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {Component} from "../../../../model/game/component";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Carousel, Col, Container, Form, Modal, Row} from "react-bootstrap";
@@ -20,10 +19,6 @@ import {GiNotebook} from "react-icons/gi";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
-    const [showAddModal, setAddShowModal] = useState(false);
-    const [showEditModal, setEditShowModal] = useState(false);
-    const [editedComponent, setEditedComponent] = useState<Component | null>(null);
-
     const [showNotesModal, setShowNotesModal] = useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
     const [editedProj, setEditedProj] = useState<Project>();
@@ -39,6 +34,8 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [elements, setElements] = React.useState([] as Element[]);
 
     const [showBoxEditModal, setShowBoxEditModal] = React.useState(false);
+    const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
+    const [showContainersEditModal, setShowContainersEditModal] = React.useState(false);
 
 
     React.useEffect(() => {
@@ -122,7 +119,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     };
 
     function sendGameCreationRequest() {
-        console.log(imageIds);
+        console.log("Saved");
         // if (!editedGame) {
         //     return;
         // }
@@ -143,42 +140,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         // });
     }
 
-    function addComponent() {
-        setAddShowModal(true);
-    }
-
-    function handleRemoveComponent(component: Component) {
-        // if (editedGame && components.includes(component)) {
-        //     Api.game.deleteComponent(component.id)
-        //         .then(() => {
-        //             toast.success(`Component removed successfully`, { icon: "👏" });
-        //             setComponents((prevComponents) =>
-        //                 prevComponents.filter((comp) => comp !== component)
-        //             );
-        //         })
-        //         .catch((err) => {
-        //             toast.error(`${err.response.data.message}`, { icon: "💀" });
-        //         });
-        // }
-    }
-
-    function handleCloseAddComponentModal() {
-        setAddShowModal(false);
-    }
-
-    function handleAddNewComponent(component: Component) {
-        // if (!editedGame) {
-        //     return;
-        // }
-        // Api.game.createComponentForGame(editedGame?.id, component).then(() => {
-        //     toast.success(`Component added successfully`, {icon: "👏"});
-        //     setComponents((prevComponents) => [...prevComponents, component]);
-        //     handleCloseAddComponentModal();
-        // }).catch((err) => {
-        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-        // });
-    }
-
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
@@ -186,11 +147,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
-    }
-
-    function handleEditComponent(component: Component) {
-        setEditedComponent(component);
-        setEditShowModal(true);
     }
 
     function fetchComponents() {
@@ -204,14 +160,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         // });
     }
 
-    function handleEditComponentSave() {
-        fetchComponents();
-        setEditedComponent(null);
-        setEditShowModal(false);
-    }
-
     function editBox() {
        setShowBoxEditModal(true);
+    }
+
+    function editElemets() {
+        setShowElementsEditModal(true);
+    }
+
+    function editContainers() {
+        setShowContainersEditModal(true);
     }
 
     function handleEditBoxSave(box: Box | null) {
@@ -335,13 +293,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    {/*<input*/}
-                                    {/*    type="file"*/}
-                                    {/*    accept="image/*"*/}
-                                    {/*    multiple*/}
-                                    {/*    onChange={handleImageSelect}*/}
-                                    {/*    style={{ display: 'none' }}*/}
-                                    {/*/>*/}
                                     <Button
                                         onClick={handleClick}
                                         style={{
@@ -391,7 +342,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Containers</Modal.Title>
                                             <Button
                                                 type="button"
-                                                onClick={addComponent}
+                                                onClick={editContainers}
                                                 style={{
                                                     backgroundColor: '#7D53DE',
                                                     borderColor: '#7D53DE',
@@ -407,7 +358,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Elements</Modal.Title>
                                             <Button
                                                 type="button"
-                                                onClick={addComponent}
+                                                onClick={editElemets}
                                                 style={{
                                                     backgroundColor: '#7D53DE',
                                                     borderColor: '#7D53DE',
@@ -451,17 +402,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                         onClose={() => setShowNotesModal(false)}
                         onSave={handleSaveNotes}
                     />
-                    {/*<NewComponentModal*/}
-                    {/*    show={showAddModal}*/}
-                    {/*    onClose={handleCloseAddComponentModal}*/}
-                    {/*    onSave={handleAddNewComponent}*/}
-                    {/*/>*/}
-                    {/*<ComponentEditModal*/}
-                    {/*    show={showEditModal}*/}
-                    {/*    onClose={() => setEditShowModal(false)}*/}
-                    {/*    onSave={handleEditComponentSave}*/}
-                    {/*    editedComponent={editedComponent ?? null}*/}
-                    {/*/>*/}
                 </Card>
             </Container>
         </div>
