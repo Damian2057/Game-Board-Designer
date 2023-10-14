@@ -64,7 +64,7 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
 
     function handleDeleteElement(elem: ElementEntity) {
         Api.project.deleteElement(elem.id).then((res) => {
-            toast.success(`Element ${elem.name} deleted`, {icon: "👻"});
+            toast.success(`Element ${elem.name} deleted`, {icon: "🗑️"});
             fetchElements();
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});

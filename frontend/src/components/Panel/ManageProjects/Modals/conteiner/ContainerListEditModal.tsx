@@ -32,11 +32,11 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
         });
     }
 
-    function handleElementInfo(containerEntity: ContainerEntity) {
+    function handleContainerInfo(containerEntity: ContainerEntity) {
         setSelectedContainerInfo(containerEntity)
     }
 
-    function handleEditElement(containerEntity: ContainerEntity) {
+    function handleContainerElement(containerEntity: ContainerEntity) {
         setShowEditModal(true)
         setEditedContainer(containerEntity)
     }
@@ -61,6 +61,15 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
         }
         setContainers(elements)
         handleCloseAddContainerModal();
+    }
+
+    function handleDeleteContainer(elem: ContainerEntity) {
+        Api.project.deleteContainer(elem.id).then((res) => {
+            toast.success(`Container ${elem.name} deleted`, { icon: "🗑️" });
+            fetchContainers();
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
     }
 
     return (
@@ -97,6 +106,7 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                         <th>Priority</th>
                                         <th>Info</th>
                                         <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -108,10 +118,13 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                             <td className='centered-td'>{elem.status}</td>
                                             <td className='centered-td'>{elem.priority}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleElementInfo(elem)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleContainerInfo(elem)}>Info</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleEditElement(elem)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleContainerElement(elem)}>Edit</Button>
+                                            </td>
+                                            <td>
+                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(elem)}>Delete</Button>
                                             </td>
                                         </tr>
                                     ))}
