@@ -3,20 +3,26 @@ import {Property} from "../../../../../model/project/property";
 import {Api} from "../../../../../connector/api";
 import toast from "react-hot-toast";
 import {Image} from "../../../../../model/image/image";
-import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
 import UploadModal from "../../../../util/UploadModal";
 import NewPropertyModal from "../Property/NewPropertyModal";
-import NotesModal from "../../../../util/NotesModal";
-import {ElementEditProps} from "../../Props/ElementEditProps";
 import PropertyEditModal from "../Property/PropertyEditModal";
+import NotesModal from "../../../../util/NotesModal";
+import {ContainerEditProps} from "../../Props/ContainerEditProps";
+import ImageDisplayModal from "../../../../util/ImageDisplayModal";
+import ElementListEditModal from "../element/ElementListEditModal";
+import {ElementEntity} from "../../../../../model/project/elementEntity";
 
-const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedElement }) => {
+const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer, id }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
+    const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
+    const [showEditModal, setEditShowModal] = useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
+    const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
     const [showNotesModal, setShowNotesModal] = useState(false);
     const [name, setName] = React.useState('');
     const [quantity, setQuantity] = React.useState(1);
@@ -24,16 +30,22 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
     const [notes, setNotes] = React.useState([] as string[]);
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [properties, setProperties] = React.useState([] as Property[]);
+    const [editedProperty, setEditedProperty] = React.useState<Property | null>(null);
     const [selectedPriority, setSelectedPriority] = React.useState('');
     const [selectedStatus, setSelectedStatus] = React.useState('');
     const [priorities, setPriorities] = React.useState([] as string[]);
     const [statuses, setStatuses] = React.useState([] as string[]);
-    const [editedProperty, setEditedProperty] = React.useState<Property | null>(null);
-    const [showEditModal, setEditShowModal] = useState(false);
 
     React.useEffect(() => {
-        if (editedElement === null) {
-            return;
+        if (editedContainer) {
+            setName(editedContainer.name);
+            setDescription(editedContainer.description);
+            setNotes(editedContainer.notes);
+            setQuantity(editedContainer.quantity)
+            setImageIds(editedContainer.imageIds);
+            setProperties(editedContainer.properties);
+            setSelectedPriority(editedContainer.priority);
+            setSelectedStatus(editedContainer.status);
         }
         Api.project.getAvailablePriorities().then((priorities) => {
             setPriorities(priorities);
@@ -45,38 +57,26 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
-        setSelectedPriority(editedElement.priority);
-        setSelectedStatus(editedElement.status);
-        setName(editedElement.name);
-        setQuantity(editedElement.quantity);
-        setDescription(editedElement.description);
-        setNotes(editedElement.notes);
-        setImageIds(editedElement.imageIds);
-        setProperties(editedElement.properties);
-    }, [editedElement]);
+    }, [editedContainer]);
 
     const handleClick = () => {
-        setUploadModalShow(true);
+        setImageEditModalShow(true);
     };
-
-    function sendAddElementRequest() {
-        if (editedElement === null) {
+    function sendContainerUpdateRequest() {
+        if  (!editedContainer) {
             return;
         }
-        Api.project.updateElement(editedElement.id, {
+        Api.project.updateContainer(editedContainer.id, {
             name: name,
             description: description,
             notes: notes,
             imageIds: imageIds,
             quantity: quantity,
-            properties: properties,
-        }).then((elements) => {
-            toast.success(`Element updated successfully`, {icon: "👏"});
-            onSave(elements);
-            onClose();
+        }).then((container) => {
+            toast.success(`Container updated successfully!`, {icon: "👏"});
+            onSave(container);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
-            onSave(null);
         });
     }
 
@@ -85,14 +85,17 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
     }
 
     function handleRemoveProp(prop: Property) {
-        Api.property.deleteProperty(prop.id)
-            .then(() => {
-                setProperties((prevProps) =>
-                    prevProps.filter((property) => property !== prop)
-                );
-            }).catch((err) => {
-                toast.error(`${err.response.data.message}`, { icon: "💀" });
-            });
+        if (editedContainer) {
+            Api.property.deleteProperty(prop.id)
+                .then(() => {
+                    setProperties((prevProps) =>
+                        prevProps.filter((property) => property !== prop)
+                    );
+                })
+                .catch((err) => {
+                    toast.error(`${err.response.data.message}`, { icon: "💀" });
+                });
+        }
     }
 
     function handleCloseAddPropertyModal() {
@@ -100,7 +103,10 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
     }
 
     function handleAddNewProperty(prop: Property) {
-        Api.project.addPropertyToElement(editedElement?.id as number, prop).then((box) => {
+        if (!editedContainer) {
+            return;
+        }
+        Api.project.addPropertyToContainer(editedContainer.id, prop).then((box) => {
             setProperties(box.properties);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
@@ -115,6 +121,21 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
+    }
+
+    function handleEditProp(prop: Property) {
+        setEditedProperty(prop);
+        setEditShowModal(true);
+    }
+
+    function handleEditPropSave() {
+        Api.project.getContainer(editedContainer?.id as number).then((box) => {
+            setProperties(box.properties);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+        setEditedProperty(null);
+        setEditShowModal(false);
     }
 
     function handleUploadImages(data: Image[] | null) {
@@ -133,36 +154,45 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
     }
 
     function handleSetSelectedPriority(value: string) {
-        Api.project.updatePriority(editedElement?.id as number, value, 'element').then(() => {
-            toast.success(`Priority updated successfully`, {icon: "👏"});
-            setSelectedPriority(value)
+        Api.project.updatePriority(editedContainer?.id as number, value, "container").then((box) => {
+            setSelectedPriority(box.priority);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
     }
 
-    function handleSetSelectedStatus(value: string) {
-        Api.project.updateStatus(editedElement?.id as number, value, "element").then((box) => {
-            toast.success(`Status updated successfully`, {icon: "👏"});
+    function handlesetSelectedStatus(value: string) {
+        Api.project.updateStatus(editedContainer?.id as number, value, "container").then((box) => {
             setSelectedStatus(box.status);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
     }
 
-    function handleEditProp(prop: Property) {
-        setEditedProperty(prop);
-        setEditShowModal(true);
+    function handleSaveImages(imageIds: number[] | null) {
+        if (!editedContainer) {
+            return;
+        }
+        if (!imageIds) {
+            return;
+        }
+        editedContainer.imageIds = imageIds;
+        setImageIds(imageIds);
+        setImageEditModalShow(false);
     }
 
-    function handleEditPropSave() {
-        Api.project.getElement(editedElement?.id as number).then((elem) => {
-            setProperties(elem.properties);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
-        setEditedProperty(null);
-        setEditShowModal(false);
+    function editElemets() {
+        setShowElementsEditModal(true);
+    }
+
+    function handleEditElementsSave(elements: ElementEntity[] | null) {
+        if (!editedContainer) {
+            return;
+        }
+        if (elements !== null) {
+            editedContainer.elements = elements;
+        }
+        setShowElementsEditModal(false);
     }
 
     return (
@@ -183,14 +213,14 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Element</p>
+                        <p className='font-bold fs-2 mb-12'>Edit Container</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Element name'
+                                            placeholder='Container name'
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -199,7 +229,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Element description'
+                                            placeholder='Container description'
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -274,7 +304,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                             <Form.Control
                                                 as="select"
                                                 value={selectedStatus}
-                                                onChange={(e) => handleSetSelectedStatus(e.target.value)}
+                                                onChange={(e) => handlesetSelectedStatus(e.target.value)}
                                             >{statuses.map((stat) => (
                                                 <option key={stat} value={stat}>
                                                     {stat}
@@ -284,7 +314,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                         </div>
                                     </Form.Group>
                                     <Button type="button"
-                                            onClick={sendAddElementRequest}
+                                            onClick={sendContainerUpdateRequest}
                                             style={{
                                                 backgroundColor: '#7D53DE',
                                                 borderColor: '#7D53DE',
@@ -295,33 +325,31 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                             }}
                                     >Done</Button>
                                 </Col>
-                                <Col>
+                                <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                     <Button
                                         onClick={handleClick}
                                         style={{
                                             backgroundColor: '#7D53DE',
                                             borderColor: '#7D53DE',
                                             borderRadius: '20px',
-                                            marginBottom: '1rem',
-                                            paddingInline: '2rem',
-                                            paddingBlock: '0.5rem',
+                                            margin: '1rem 0',
+                                            padding: '0.5rem 2rem',
+                                            display: 'block'
                                         }}
-                                    >Choose images</Button>
-                                    <div>
-                                        <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
-                                            {imageIds.map((imageId, index) => (
-                                                <Carousel.Item key={index}>
-                                                    <img
-                                                        src={Api.image.getImageUrl(imageId)}
-                                                        alt={`Image ${index}`}
-                                                        style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
-                                                        className="mx-auto d-block"
-                                                    />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
-                                                </Carousel.Item>
-                                            ))}
-                                        </Carousel>
-                                    </div>
+                                    >Edit images
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        onClick={editElemets}
+                                        style={{
+                                            backgroundColor: '#7D53DE',
+                                            borderColor: '#7D53DE',
+                                            borderRadius: '20px',
+                                            padding: '0.5rem 2rem',
+                                            display: 'block'
+                                        }}
+                                    >Edit Elements
+                                    </Button>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
@@ -379,6 +407,14 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                             </Row>
                         </Form>
                     </Card.Body>
+                    {showElementsEditModal && (
+                        <ElementListEditModal
+                            onClose={() => setShowElementsEditModal(false)}
+                            onSave={handleEditElementsSave}
+                            editedElements={editedContainer?.elements ?? null}
+                            id={id ?? null}
+                        />
+                    )}
                     <UploadModal
                         show={uploadModalShow}
                         onClose={() => setUploadModalShow(false)}
@@ -396,9 +432,15 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                         editedProp={editedProperty ?? null} />
                     <NotesModal
                         show={showNotesModal}
-                        notes={editedElement?.notes as string[]}
+                        notes={editedContainer?.notes ?? null}
                         onClose={() => setShowNotesModal(false)}
                         onSave={handleSaveNotes}
+                    />
+                    <ImageDisplayModal
+                        show={imageEditModalShow}
+                        onClose={() => setImageEditModalShow(false)}
+                        imageIds={editedContainer?.imageIds ?? null}
+                        onSave={handleSaveImages}
                     />
                 </Card>
             </Container>
@@ -406,4 +448,4 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
     )
 }
 
-export default ElementEditModal;
+export default ContainerEditModal;

@@ -16,6 +16,8 @@ import NotesModal from "../../../util/NotesModal";
 import {GiNotebook} from "react-icons/gi";
 import ElementListEditModal from "./element/ElementListEditModal";
 import ImageDisplayModal from "../../../util/ImageDisplayModal";
+import ContainerEditModal from "./conteiner/ContainerEditModal";
+import ContainerListEditModal from "./conteiner/ContainerListEditModal";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
 
@@ -149,17 +151,6 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         });
     }
 
-    function fetchComponents() {
-        // if (!editedGame) {
-        //     return;
-        // }
-        // Api.game.getComponentsByGameId(editedGame.id).then((components) => {
-        //     setComponents(components);
-        // }).catch((err) => {
-        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-        // });
-    }
-
     function editBox() {
        setShowBoxEditModal(true);
     }
@@ -199,6 +190,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
             editedProj.elements = elements;
         }
         setShowElementsEditModal(false);
+    }
+
+    function handleEditContainersSave(containers: ContainerEntity[] | null) {
+        if (!editedProj) {
+            return;
+        }
+        if (containers !== null) {
+            editedProj.containers = containers;
+        }
+        setShowContainersEditModal(false);
     }
 
     function handleSaveImages(imageIds: number[] | null) {
@@ -394,6 +395,14 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                             onClose={() => setShowElementsEditModal(false)}
                             onSave={handleEditElementsSave}
                             editedElements={editedProj?.elements ?? null}
+                            id={editedProj?.id ?? null}
+                        />
+                    )}
+                    {showContainersEditModal && (
+                        <ContainerListEditModal
+                            onClose={() => setShowContainersEditModal(false)}
+                            onSave={handleEditContainersSave}
+                            editedContainers={editedProj?.containers ?? null}
                             id={editedProj?.id ?? null}
                         />
                     )}

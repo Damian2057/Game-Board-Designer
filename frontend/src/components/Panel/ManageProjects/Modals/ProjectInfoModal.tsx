@@ -6,7 +6,7 @@ import {ProjectInfoProps} from "../Props/ProjectInfoProps";
 import ImageSliderModal from "./ImageSliderModal";
 import BoxInfoModal from "./box/BoxInfoModal";
 import ElementInfoModal from "./element/ElementInfoModal";
-import ContainerInfoModal from "./component/ComponentInfoModal";
+import ContainerInfoModal from "./conteiner/ContainerInfoModal";
 
 const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
