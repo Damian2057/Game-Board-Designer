@@ -1,5 +1,4 @@
 import React, {useState} from "react";
-import {NewElementProps} from "../../../Props/NewElementProps";
 import {Property} from "../../../../../../model/project/property";
 import {Api} from "../../../../../../connector/api";
 import toast from "react-hot-toast";
@@ -11,8 +10,10 @@ import {FcHighPriority} from "react-icons/fc";
 import UploadModal from "../../../../../util/UploadModal";
 import NewPropertyModal from "../../Property/NewPropertyModal";
 import NotesModal from "../../../../../util/NotesModal";
+import {NewNewElementProps} from "../../../Props/NewNewElementProps";
+import {ElementEntity} from "../../../../../../model/project/elementEntity";
 
-const ElementAddNewModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
+const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onSave }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
@@ -48,11 +49,7 @@ const ElementAddNewModal: React.FC<NewElementProps> = ({onClose, onSave, id }) =
     };
 
     function sendAddElementRequest() {
-        if (id === null) {
-            toast.error(`Project id is null`, {icon: "💀"});
-            return;
-        }
-        Api.project.addElementToContainer(id, {
+        const element = {
             name: name,
             description: description,
             notes: notes,
@@ -61,14 +58,9 @@ const ElementAddNewModal: React.FC<NewElementProps> = ({onClose, onSave, id }) =
             properties: properties,
             priority: selectedPriority,
             status: selectedStatus
-        }).then((elements) => {
-            toast.success(`Element added successfully`, {icon: "👏"});
-            onSave(elements);
-            onClose();
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-            onSave(null);
-        });
+        } as ElementEntity;
+        onSave(element);
+        onClose();
     }
 
     function addProp() {
@@ -353,4 +345,4 @@ const ElementAddNewModal: React.FC<NewElementProps> = ({onClose, onSave, id }) =
     )
 }
 
-export default ElementAddNewModal;
+export default ElementContainerNewNewModal;

@@ -7,9 +7,9 @@ import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import ElementInfoModal from "../../element/ElementInfoModal";
 import ElementEditModal from "../../element/ElementEditModal";
-import ElementAddNewModal from "./ElementAddNewModal";
+import ElementContainerAddNewModal from "./ElementContainerAddNewModal";
 
-const ElementNewListModal: React.FC<ElementsEditProps> = ({onClose, onSave, editedElements, id }) => {
+const ElementContainerEditListModal: React.FC<ElementsEditProps> = ({onClose, onSave, editedElements, id }) => {
 
     const [elements, setElements] = useState([] as ElementEntity[]);
     const [selectedElementInfo, setSelectedElementInfo] = useState<ElementEntity | null>(null);
@@ -140,7 +140,7 @@ const ElementNewListModal: React.FC<ElementsEditProps> = ({onClose, onSave, edit
                     />
                 )}
                 {showAddModal && (
-                    <ElementAddNewModal
+                    <ElementContainerAddNewModal
                         onClose={handleCloseAddElementModal}
                         onSave={handleAddNewElement}
                         id={id}
@@ -158,4 +158,4 @@ const ElementNewListModal: React.FC<ElementsEditProps> = ({onClose, onSave, edit
     )
 }
 
-export default ElementNewListModal;
+export default ElementContainerEditListModal;

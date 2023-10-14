@@ -15,7 +15,7 @@ import {ContainerEditProps} from "../../Props/ContainerEditProps";
 import ImageDisplayModal from "../../../../util/ImageDisplayModal";
 import ElementListEditModal from "../element/ElementListEditModal";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
-import ElementNewListModal from "./elem/ElementNewListModal";
+import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
 
 const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer, id }) => {
 
@@ -400,7 +400,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                         </Form>
                     </Card.Body>
                     {showElementsEditModal && (
-                        <ElementNewListModal
+                        <ElementContainerEditListModal
                             onClose={() => setShowElementsEditModal(false)}
                             onSave={handleEditElementsSave}
                             editedElements={editedContainer?.elements ?? null}
