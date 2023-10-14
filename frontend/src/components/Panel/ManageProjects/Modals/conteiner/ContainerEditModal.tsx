@@ -25,6 +25,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
     const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
     const [showNotesModal, setShowNotesModal] = useState(false);
     const [name, setName] = React.useState('');
+    const [quantity, setQuantity] = React.useState(1);
     const [description, setDescription] = React.useState('');
     const [notes, setNotes] = React.useState([] as string[]);
     const [imageIds, setImageIds] = React.useState([] as number[]);
@@ -40,6 +41,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
             setName(editedContainer.name);
             setDescription(editedContainer.description);
             setNotes(editedContainer.notes);
+            setQuantity(editedContainer.quantity)
             setImageIds(editedContainer.imageIds);
             setProperties(editedContainer.properties);
             setSelectedPriority(editedContainer.priority);
@@ -69,7 +71,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
             description: description,
             notes: notes,
             imageIds: imageIds,
-
+            quantity: quantity,
         }).then((container) => {
             toast.success(`Container updated successfully!`, {icon: "👏"});
             onSave(container);
@@ -233,6 +235,14 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                         />
                                     </Form.Group>
                                     <Form.Group>
+                                        <Form.Control
+                                            type="number"
+                                            placeholder='Element Quantity'
+                                            value={quantity}
+                                            onChange={(e) => setQuantity(parseInt(e.target.value))}
+                                        />
+                                    </Form.Group>
+                                    <Form.Group>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <Button
                                                 type="button"
@@ -315,18 +325,19 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                             }}
                                     >Done</Button>
                                 </Col>
-                                <Col>
+                                <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                     <Button
                                         onClick={handleClick}
                                         style={{
                                             backgroundColor: '#7D53DE',
                                             borderColor: '#7D53DE',
                                             borderRadius: '20px',
-                                            marginBottom: '1rem',
-                                            paddingInline: '2rem',
-                                            paddingBlock: '0.5rem',
+                                            margin: '1rem 0',
+                                            padding: '0.5rem 2rem',
+                                            display: 'block'
                                         }}
-                                    >Edit images</Button>
+                                    >Edit images
+                                    </Button>
                                     <Button
                                         type="button"
                                         onClick={editElemets}
@@ -334,10 +345,11 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                             backgroundColor: '#7D53DE',
                                             borderColor: '#7D53DE',
                                             borderRadius: '20px',
-                                            paddingInline: '2rem',
-                                            paddingBlock: '0.5rem'
+                                            padding: '0.5rem 2rem',
+                                            display: 'block'
                                         }}
-                                    >Edit</Button>
+                                    >Edit Elements
+                                    </Button>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
