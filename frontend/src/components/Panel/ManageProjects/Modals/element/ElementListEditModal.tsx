@@ -62,6 +62,15 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
         handleCloseAddElementModal();
     }
 
+    function handleDeleteElement(elem: ElementEntity) {
+        Api.project.deleteElement(elem.id).then((res) => {
+            toast.success(`Element ${elem.name} deleted`, {icon: "👻"});
+            fetchElements();
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+    }
+
     return (
         <div className='NewGameModal'>
             <Container>
@@ -96,6 +105,7 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
                                         <th>Priority</th>
                                         <th>Info</th>
                                         <th>Edit</th>
+                                        <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -111,6 +121,9 @@ const ElementListEditModal: React.FC<ElementsEditProps> = ({onClose, onSave, edi
                                             </td>
                                             <td>
                                                 <Button className='button-workspace' onClick={() => handleEditElement(elem)}>Edit</Button>
+                                            </td>
+                                            <td>
+                                                <Button className='button-workspace' onClick={() => handleDeleteElement(elem)}>Delete</Button>
                                             </td>
                                         </tr>
                                     ))}

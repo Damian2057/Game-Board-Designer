@@ -8,6 +8,8 @@ import NewElementModal from "../element/NewElementModal";
 import ElementEditModal from "../element/ElementEditModal";
 import {ContainerEditListProps} from "../../Props/ContainerEditListProps";
 import {ContainerEntity} from "../../../../../model/project/containerEntity";
+import ContainerInfoModal from "./ContainerInfoModal";
+import ContainerEditModal from "./ContainerEditModal";
 
 const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSave, editedContainers, id }) => {
 
@@ -119,13 +121,13 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                         </div>
                     </Card.Body>
                 </Card>
-                {/*{selectedContainerInfo && (*/}
-                {/*    <ElementInfoModal*/}
-                {/*        element={selectedContainerInfo}*/}
-                {/*        onClose={() => setSelectedContainerInfo(null)}*/}
-                {/*        show={true}*/}
-                {/*    />*/}
-                {/*)}*/}
+                {selectedContainerInfo && (
+                    <ContainerInfoModal
+                    container={selectedContainerInfo}
+                    onClose={() => setSelectedContainerInfo(null)}
+                    show={true}
+                    />
+                )}
                 {/*{showAddModal && (*/}
                 {/*    <NewElementModal*/}
                 {/*        onClose={handleCloseAddElementModal}*/}
@@ -133,13 +135,14 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                 {/*        id={id}*/}
                 {/*    />*/}
                 {/*)}*/}
-                {/*{showEditModal && (*/}
-                {/*    <ElementEditModal*/}
-                {/*        onClose={() => setShowEditModal(false)}*/}
-                {/*        onSave={handleSaveEditedElement}*/}
-                {/*        editedElement={editedContainer ?? null}*/}
-                {/*    />*/}
-                {/*)}*/}
+                {showEditModal && (
+                    <ContainerEditModal
+                        onClose={() => setShowEditModal(false)}
+                        onSave={handleSaveEditedContainer}
+                        editedContainer={editedContainer ?? null}
+                        id={id}
+                    />
+                )}
             </Container>
         </div>
     )

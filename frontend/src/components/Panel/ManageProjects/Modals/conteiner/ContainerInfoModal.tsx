@@ -38,7 +38,6 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
 
     return (
         <div className='NewGameModal'>
-            <Toaster />
             <Container>
                 <Card className='shadow border-white' style={{
                     position: 'absolute',

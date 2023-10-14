@@ -183,7 +183,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Add Element</p>
+                        <p className='font-bold fs-2 mb-12'>Edit Element</p>
                         <Form>
                             <Row>
                                 <Col>
