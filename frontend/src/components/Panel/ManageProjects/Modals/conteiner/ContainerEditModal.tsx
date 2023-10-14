@@ -15,6 +15,7 @@ import {ContainerEditProps} from "../../Props/ContainerEditProps";
 import ImageDisplayModal from "../../../../util/ImageDisplayModal";
 import ElementListEditModal from "../element/ElementListEditModal";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
+import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
 
 const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer, id }) => {
 
@@ -114,15 +115,6 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
         handleCloseAddPropertyModal();
     }
 
-    function handleRemoveImage(imageId: number) {
-        setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
-        Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
-    }
-
     function handleEditProp(prop: Property) {
         setEditedProperty(prop);
         setEditShowModal(true);
@@ -181,7 +173,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
         setImageEditModalShow(false);
     }
 
-    function editElemets() {
+    function editElements() {
         setShowElementsEditModal(true);
     }
 
@@ -340,7 +332,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                     </Button>
                                     <Button
                                         type="button"
-                                        onClick={editElemets}
+                                        onClick={editElements}
                                         style={{
                                             backgroundColor: '#7D53DE',
                                             borderColor: '#7D53DE',
@@ -408,7 +400,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                         </Form>
                     </Card.Body>
                     {showElementsEditModal && (
-                        <ElementListEditModal
+                        <ElementContainerEditListModal
                             onClose={() => setShowElementsEditModal(false)}
                             onSave={handleEditElementsSave}
                             editedElements={editedContainer?.elements ?? null}
