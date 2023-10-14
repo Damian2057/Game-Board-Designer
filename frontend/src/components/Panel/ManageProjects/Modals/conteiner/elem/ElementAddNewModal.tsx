@@ -1,26 +1,21 @@
 import React, {useState} from "react";
-import {Property} from "../../../../../model/project/property";
-import {Api} from "../../../../../connector/api";
+import {NewElementProps} from "../../../Props/NewElementProps";
+import {Property} from "../../../../../../model/project/property";
+import {Api} from "../../../../../../connector/api";
 import toast from "react-hot-toast";
-import {Image} from "../../../../../model/image/image";
-import {ElementEntity} from "../../../../../model/project/elementEntity";
-import {Button, Card, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
+import {Image} from "../../../../../../model/image/image";
+import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
-import ElementListEditModal from "../element/ElementListEditModal";
-import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../Property/NewPropertyModal";
-import NotesModal from "../../../../util/NotesModal";
-import ImageDisplayModal from "../../../../util/ImageDisplayModal";
-import {NewContainerProps} from "../../Props/NewContainerProps";
+import UploadModal from "../../../../../util/UploadModal";
+import NewPropertyModal from "../../Property/NewPropertyModal";
+import NotesModal from "../../../../../util/NotesModal";
 
-const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) => {
+const ElementAddNewModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
-    const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
-    const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
     const [showNotesModal, setShowNotesModal] = useState(false);
     const [name, setName] = React.useState('');
     const [quantity, setQuantity] = React.useState(1);
@@ -36,31 +31,43 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     React.useEffect(() => {
         Api.project.getAvailablePriorities().then((priorities) => {
             setPriorities(priorities);
+            setSelectedPriority(priorities[0])
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
         Api.project.getAvailableStatuses().then((statuses) => {
             setStatuses(statuses);
+            setSelectedStatus(statuses[0])
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
     }, []);
 
     const handleClick = () => {
-        setImageEditModalShow(true);
+        setUploadModalShow(true);
     };
-    function sendContainerAddRequest() {
-        Api.project.addContainerToProject(id, {
+
+    function sendAddElementRequest() {
+        if (id === null) {
+            toast.error(`Project id is null`, {icon: "💀"});
+            return;
+        }
+        Api.project.addElementToContainer(id, {
             name: name,
             description: description,
             notes: notes,
             imageIds: imageIds,
             quantity: quantity,
-        }).then((container) => {
-            toast.success(`Container updated successfully!`, {icon: "👏"});
-            onSave(container);
+            properties: properties,
+            priority: selectedPriority,
+            status: selectedStatus
+        }).then((elements) => {
+            toast.success(`Element added successfully`, {icon: "👏"});
+            onSave(elements);
+            onClose();
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
+            onSave(null);
         });
     }
 
@@ -80,6 +87,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
 
     function handleAddNewProperty(prop: Property) {
         setProperties((prevProps) => [...prevProps, prop]);
+        handleCloseAddPropertyModal();
     }
 
     function handleRemoveImage(imageId: number) {
@@ -107,33 +115,11 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     }
 
     function handleSetSelectedPriority(value: string) {
-        setSelectedPriority(value);
+        setSelectedPriority(value)
     }
 
     function handleSetSelectedStatus(value: string) {
-        setSelectedStatus(value);
-    }
-
-    function handleSaveImages(imageIds: number[] | null) {
-        if (!imageIds) {
-            return;
-        }
-        setImageIds(imageIds);
-        setImageEditModalShow(false);
-    }
-
-    function editElemets() {
-        setShowElementsEditModal(true);
-    }
-
-    function handleEditElementsSave(elements: ElementEntity[] | null) {
-        // if (!editedContainer) {
-        //     return;
-        // }
-        // if (elements !== null) {
-        //     editedContainer.elements = elements;
-        // }
-        setShowElementsEditModal(false);
+        setSelectedStatus(value)
     }
 
     return (
@@ -154,14 +140,14 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Add Container</p>
+                        <p className='font-bold fs-2 mb-12'>Add Element</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Container name'
+                                            placeholder='Element name'
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -170,7 +156,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Container description'
+                                            placeholder='Element description'
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -255,7 +241,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                         </div>
                                     </Form.Group>
                                     <Button type="button"
-                                            onClick={sendContainerAddRequest}
+                                            onClick={sendAddElementRequest}
                                             style={{
                                                 backgroundColor: '#7D53DE',
                                                 borderColor: '#7D53DE',
@@ -266,31 +252,33 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                             }}
                                     >Done</Button>
                                 </Col>
-                                <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Col>
                                     <Button
                                         onClick={handleClick}
                                         style={{
                                             backgroundColor: '#7D53DE',
                                             borderColor: '#7D53DE',
                                             borderRadius: '20px',
-                                            margin: '1rem 0',
-                                            padding: '0.5rem 2rem',
-                                            display: 'block'
+                                            marginBottom: '1rem',
+                                            paddingInline: '2rem',
+                                            paddingBlock: '0.5rem',
                                         }}
-                                    >Edit images
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={editElemets}
-                                        style={{
-                                            backgroundColor: '#7D53DE',
-                                            borderColor: '#7D53DE',
-                                            borderRadius: '20px',
-                                            padding: '0.5rem 2rem',
-                                            display: 'block'
-                                        }}
-                                    >Edit Elements
-                                    </Button>
+                                    >Choose images</Button>
+                                    <div>
+                                        <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
+                                            {imageIds.map((imageId, index) => (
+                                                <Carousel.Item key={index}>
+                                                    <img
+                                                        src={Api.image.getImageUrl(imageId)}
+                                                        alt={`Image ${index}`}
+                                                        style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
+                                                        className="mx-auto d-block"
+                                                    />
+                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
+                                                </Carousel.Item>
+                                            ))}
+                                        </Carousel>
+                                    </div>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
@@ -343,14 +331,6 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                             </Row>
                         </Form>
                     </Card.Body>
-                    {showElementsEditModal && (
-                        <ElementListEditModal
-                            onClose={() => setShowElementsEditModal(false)}
-                            onSave={handleEditElementsSave}
-                            editedElements={[]}
-                            id={id ?? null}
-                        />
-                    )}
                     <UploadModal
                         show={uploadModalShow}
                         onClose={() => setUploadModalShow(false)}
@@ -363,15 +343,9 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                     />
                     <NotesModal
                         show={showNotesModal}
-                        notes={notes}
+                        notes={null}
                         onClose={() => setShowNotesModal(false)}
                         onSave={handleSaveNotes}
-                    />
-                    <ImageDisplayModal
-                        show={imageEditModalShow}
-                        onClose={() => setImageEditModalShow(false)}
-                        imageIds={imageIds}
-                        onSave={handleSaveImages}
                     />
                 </Card>
             </Container>
@@ -379,4 +353,4 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     )
 }
 
-export default NewContainerModal;
+export default ElementAddNewModal;

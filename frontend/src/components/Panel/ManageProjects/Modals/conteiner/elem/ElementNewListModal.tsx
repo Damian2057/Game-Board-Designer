@@ -1,75 +1,72 @@
 import React, {useState} from "react";
-import {Api} from "../../../../../connector/api";
+import {ElementsEditProps} from "../../../Props/ElementsEditProps";
+import {ElementEntity} from "../../../../../../model/project/elementEntity";
+import {Api} from "../../../../../../connector/api";
 import toast from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import ElementInfoModal from "../element/ElementInfoModal";
-import NewElementModal from "../element/NewElementModal";
-import ElementEditModal from "../element/ElementEditModal";
-import {ContainerEditListProps} from "../../Props/ContainerEditListProps";
-import {ContainerEntity} from "../../../../../model/project/containerEntity";
-import ContainerInfoModal from "./ContainerInfoModal";
-import ContainerEditModal from "./ContainerEditModal";
-import NewContainerModal from "./NewContainerModal";
+import ElementInfoModal from "../../element/ElementInfoModal";
+import ElementEditModal from "../../element/ElementEditModal";
+import ElementAddNewModal from "./ElementAddNewModal";
 
-const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSave, editedContainers, id }) => {
+const ElementNewListModal: React.FC<ElementsEditProps> = ({onClose, onSave, editedElements, id }) => {
 
-    const [containers, setContainers] = useState([] as ContainerEntity[]);
-    const [selectedContainerInfo, setSelectedContainerInfo] = useState<ContainerEntity | null>(null);
+    const [elements, setElements] = useState([] as ElementEntity[]);
+    const [selectedElementInfo, setSelectedElementInfo] = useState<ElementEntity | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
-    const [editedContainer, setEditedContainer] = useState<ContainerEntity | null>(null);
+    const [editedElement, setEditedElement] = useState<ElementEntity | null>(null);
     const [showAddModal, setAddShowModal] = useState(false);
 
     React.useEffect(() => {
-        fetchContainers();
-    }, [editedContainers]);
+        fetchElements();
+    }, [editedElements]);
 
 
-    const fetchContainers = () => {
-        Api.project.getProjectContainers(id).then((res) => {
-            setContainers(res);
+    const fetchElements = () => {
+        Api.project.getContainerElements(id).then((res) => {
+            setElements(res);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, { icon: "💀" });
         });
     }
 
-    function handleContainerInfo(containerEntity: ContainerEntity) {
-        setSelectedContainerInfo(containerEntity)
+    function handleElementInfo(element: ElementEntity) {
+        setSelectedElementInfo(element)
     }
 
-    function handleContainerElement(containerEntity: ContainerEntity) {
+    function handleEditElement(element: ElementEntity) {
         setShowEditModal(true)
-        setEditedContainer(containerEntity)
+        setEditedElement(element)
     }
 
-    function handleSaveEditedContainer() {
+    function handleSaveEditedElement() {
         setShowEditModal(false)
-        setEditedContainer(null)
-        fetchContainers()
+        setEditedElement(null)
+        fetchElements()
     }
 
-    function handleOpenAddContainerModal() {
+    function handleOpenAddElementModal() {
         setAddShowModal(true);
     }
 
-    function handleCloseAddContainerModal() {
+    function handleCloseAddElementModal() {
         setAddShowModal(false);
     }
 
-    function handleAddNewContainer(elements: ContainerEntity[] | null) {
+    function handleAddNewElement(elements: ElementEntity[] | null) {
         if (elements === null) {
             return;
         }
-        setContainers(elements)
-        handleCloseAddContainerModal();
+        setElements(elements)
+        handleCloseAddElementModal();
     }
 
-    function handleDeleteContainer(elem: ContainerEntity) {
-        Api.project.deleteContainer(elem.id).then((res) => {
-            toast.success(`Container ${elem.name} deleted`, { icon: "🗑️" });
-            fetchContainers();
+    function handleDeleteElement(elem: ElementEntity) {
+        Api.project.deleteElement(elem.id).then((res) => {
+            toast.success(`Element ${elem.name} deleted`, {icon: "🗑️"});
+            fetchElements();
         }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
     }
 
@@ -91,9 +88,9 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Containers</p>
+                        <p className='font-bold fs-2'>Elements</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddContainerModal}>Add new Container</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddElementModal}>Add new Element</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -111,7 +108,7 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {containers.map((elem) => (
+                                    {elements.map((elem) => (
                                         <tr key={elem.id}>
                                             <td className='centered-td'>{elem.id}</td>
                                             <td className='centered-td'>{elem.name}</td>
@@ -119,13 +116,13 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                             <td className='centered-td'>{elem.status}</td>
                                             <td className='centered-td'>{elem.priority}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerInfo(elem)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleElementInfo(elem)}>Info</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerElement(elem)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleEditElement(elem)}>Edit</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(elem)}>Delete</Button>
+                                                <Button className='button-workspace' onClick={() => handleDeleteElement(elem)}>Delete</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -135,26 +132,25 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                         </div>
                     </Card.Body>
                 </Card>
-                {selectedContainerInfo && (
-                    <ContainerInfoModal
-                    container={selectedContainerInfo}
-                    onClose={() => setSelectedContainerInfo(null)}
-                    show={true}
+                {selectedElementInfo && (
+                    <ElementInfoModal
+                        element={selectedElementInfo}
+                        onClose={() => setSelectedElementInfo(null)}
+                        show={true}
                     />
                 )}
                 {showAddModal && (
-                    <NewContainerModal
-                        onClose={handleCloseAddContainerModal}
-                        onSave={handleAddNewContainer}
+                    <ElementAddNewModal
+                        onClose={handleCloseAddElementModal}
+                        onSave={handleAddNewElement}
                         id={id}
                     />
                 )}
                 {showEditModal && (
-                    <ContainerEditModal
+                    <ElementEditModal
                         onClose={() => setShowEditModal(false)}
-                        onSave={handleSaveEditedContainer}
-                        editedContainer={editedContainer ?? null}
-                        id={id}
+                        onSave={handleSaveEditedElement}
+                        editedElement={editedElement ?? null}
                     />
                 )}
             </Container>
@@ -162,4 +158,4 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
     )
 }
 
-export default ContainerListEditModal;
+export default ElementNewListModal;
