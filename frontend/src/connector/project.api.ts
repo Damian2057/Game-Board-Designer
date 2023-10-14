@@ -276,7 +276,7 @@ export class ProjectApi {
         });
     }
 
-    static getProjectContainers(id: number): Promise<ContainerEntity[]> {
+    static getProjectContainers(id: any): Promise<ContainerEntity[]> {
         return axios.get(`${import.meta.env.VITE_URL}/project/containers/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
