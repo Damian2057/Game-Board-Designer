@@ -6,11 +6,13 @@ import './Workspace.css'
 import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
 import ProjectInfoModal from "../ManageProjects/Modals/ProjectInfoModal";
+import StartNewProjectModal from "./Modals/StartNewProjectModal";
 
 function  Workspace() {
 
     const [myProjects, setMyProjects] = useState([] as Project[]);
     const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
+    const [showStartNewProjectModal, setShowStartNewProjectModal] = React.useState(false);
 
     React.useEffect(() => {
        Api.project.getMyProjects().then((projects) => {
@@ -48,7 +50,7 @@ function  Workspace() {
     }
 
     function startNewProject() {
-
+        setShowStartNewProjectModal(true);
     }
 
     return (
@@ -127,7 +129,12 @@ function  Workspace() {
                                 </Table>
                             </Col>
                         </div>
-
+                        {showStartNewProjectModal && (
+                            <StartNewProjectModal
+                                onClose={() => setShowStartNewProjectModal(false)}
+                                onSave={() => {}}
+                            />
+                        )}
                     </Card.Body>
                 </Card>
             </Container>
