@@ -5,7 +5,7 @@ import toast, { Toaster } from 'react-hot-toast';
 import './Workspace.css'
 import OrderInfoModal from '../Orders/Modals/OrderInfoModal';
 
-function Workspace() {
+function  Workspace() {
 
     const initialOrders = [
         { id: 1, name: 'Catan', date: `${new Date().getDay()} - ${new Date().getMonth()} -  ${new Date().getFullYear()}`, status: 'in review', price: 30 },
