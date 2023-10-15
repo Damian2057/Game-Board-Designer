@@ -16,10 +16,12 @@ import NotesModal from "../../../util/NotesModal";
 import {GiNotebook} from "react-icons/gi";
 import ElementListEditModal from "./element/ElementListEditModal";
 import ImageDisplayModal from "../../../util/ImageDisplayModal";
-import ContainerEditModal from "./conteiner/ContainerEditModal";
 import ContainerListEditModal from "./conteiner/ContainerListEditModal";
+import {FaUserAstronaut} from "react-icons/fa";
+import CustomSelect from "../../Orders/Modals/CustomSelect";
+import {User} from "../../../../model/user/user";
 
-const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, editedProject }) => {
+const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedProject }) => {
 
     const [showNotesModal, setShowNotesModal] = useState(false);
     const [editedProj, setEditedProj] = useState<Project>();
@@ -33,7 +35,8 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [containers, setContainers] = React.useState([] as ContainerEntity[]);
     const [elements, setElements] = React.useState([] as ElementEntity[]);
-
+    const [worker, setWorker] = React.useState<User | null>();
+    const [employees, setEmployees] = React.useState([] as User[]);
     const [showBoxEditModal, setShowBoxEditModal] = React.useState(false);
     const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
     const [showContainersEditModal, setShowContainersEditModal] = React.useState(false);
@@ -59,6 +62,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
         fetchGames();
+        fetchEmployees();
     }, [editedProject]);
 
     const fetchGames = () => {
@@ -69,6 +73,16 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         });
     }
 
+    const fetchEmployees = () => {
+        Api.user.findUser({
+            roles: 'admin,employee'
+        }).then(res => {
+            setEmployees(res);
+        }).catch(err => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" })
+        })
+    }
+
     const handleGameChange = (e: any) => {
         const name = e.target.value;
         const selectGame = games.find(game => game.title === name);
@@ -77,75 +91,36 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                 selectedGames.push(selectGame);
                 setSelectedGames(selectedGames);
                 fetchGames();
-                // if (editedProject && selectGame.id) {
-                //     // Api.game.addTagToGame(editedGame?.id, selectGame.id).then(() => {
-                //     //     toast.success(`Tag added successfully`, {icon: "👏"});
-                //     // }).catch((err) => {
-                //     //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-                //     // });
-                // }
             }
         }
     }
 
     const handleRemoveGame = (gameToRemove: any) => {
         setSelectedGames(prevGames => prevGames.filter(game => game !== gameToRemove));
-        if (editedProject && gameToRemove.id) {
-            // Api.game.removeTagFromGame(editedGame?.id, tagToRemove.id).then(() => {
-            //     toast.success(`Tag removed successfully`, {icon: "👏"});
-            // }).catch((err) => {
-            //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-            // });
-        }
-    };
-
-    const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const selectedFiles: FileList | null = event.target.files;
-        if (selectedFiles) {
-            const formData = new FormData();
-            for (const element of selectedFiles) {
-                formData.append('file', element);
-            }
-            Api.image.uploadImage(formData)
-                .then((images) => {
-                    const newImageIds = images.map((image) => image.id);
-                    setImageIds((prevIds) => [...prevIds, ...newImageIds]);
-                }).catch((err) => {
-                toast.error(`${err.response.data.message}`, {icon: '💀'});
-            });
-        }
-    };
+    }
 
     const handleClick = () => {
         setImageEditModalShow(true);
     };
 
-    function sendGameCreationRequest() {
-        console.log("Saved");
-        // if (!editedGame) {
-        //     return;
-        // }
-        // Api.game.updateGame(editedGame.id, {
-        //     title: title,
-        //     description: description,
-        //     price: price,
-        //     publicationDate: publicationDate,
-        //     currency: currency,
-        //     tags: selectedTags,
-        //     components: components,
-        //     imageIds: imageIds
-        // }).then((game) => {
-        //     toast.success(`Game updated successfully`, {icon: "👏"});
-        //     onSave(game);
-        // }).catch((err) => {
-        //     toast.error(`${err.response.data.message}`, {icon: "💀"});
-        // });
-    }
-
-    function handleRemoveImage(imageId: number) {
-        setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
-        Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+    function sendProjectEditRequest() {
+        if (!editedProject) {
+            return;
+        }
+        Api.project.updateProject(editedProject.id, {
+            name: name,
+            description: description,
+            notes: notes,
+            isTemplate: isTemplate,
+            isCompleted: isCompleted,
+            games: selectedGames,
+            imageIds: imageIds,
+            containers: containers,
+            elements: elements
+        }).then((project) => {
+            toast.success(`Project updated successfully`, {icon: "👏"});
+            onSave(project);
+            onClose();
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -155,7 +130,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
        setShowBoxEditModal(true);
     }
 
-    function editElemets() {
+    function editElements() {
         setShowElementsEditModal(true);
     }
 
@@ -211,6 +186,22 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
         }
         editedProj.imageIds = imageIds;
         setImageEditModalShow(false);
+    }
+
+    function handleWorkerChange(e: React.ChangeEvent<{ value: unknown }>) {
+        const name = e.target.value;
+        if (name == 'None') {
+            return;
+        }
+        const worker = employees.find(user => user.email === name);
+        if (worker) {
+            setWorker(worker);
+            Api.project.assignProjectToUser(editedProject!.id, worker.id).then((res) => {
+                toast.success(`Project assigned successfully`, {icon: "👏"});
+            }).catch((err) => {
+                toast.error(`${err.response.data.message}`, {icon: "💀"});
+            });
+        }
     }
 
     return (
@@ -274,6 +265,25 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                                     </div>
                                                 </div>
                                             </Button>
+                                        </div>
+                                    </Form.Group>
+                                    <Form.Group>
+                                        <div>
+                                            <Form.Label className='fw-bold'>
+                                                <div className='flex flex-row gap-2 items-center'>
+                                                    <div>
+                                                        <FaUserAstronaut size={30} />
+                                                    </div>
+                                                    <div>
+                                                        Assigned to:
+                                                    </div>
+                                                </div>
+                                            </Form.Label>
+                                            <CustomSelect
+                                                value={worker ? worker.email : 'None'}
+                                                onChange={(e) => handleWorkerChange(e)}
+                                                employees={employees}
+                                            />
                                         </div>
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
@@ -357,7 +367,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                             <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Elements</Modal.Title>
                                             <Button
                                                 type="button"
-                                                onClick={editElemets}
+                                                onClick={editElements}
                                                 style={{
                                                     backgroundColor: '#7D53DE',
                                                     borderColor: '#7D53DE',
@@ -371,7 +381,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ show, onClose, onSave, e
                                 </Col>
                             </Row>
                             <Button type="button"
-                                    onClick={sendGameCreationRequest}
+                                    onClick={sendProjectEditRequest}
                                     style={{
                                         backgroundColor: '#7D53DE',
                                         borderColor: '#7D53DE',

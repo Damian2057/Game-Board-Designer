@@ -8,13 +8,11 @@ import {Button, Card, Col, Container, Form, Modal, Row, Table} from "react-boots
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
-import ElementListEditModal from "../element/ElementListEditModal";
 import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../Property/NewPropertyModal";
+import NewPropertyModal from "../property/NewPropertyModal";
 import NotesModal from "../../../../util/NotesModal";
 import ImageDisplayModal from "../../../../util/ImageDisplayModal";
 import {NewContainerProps} from "../../Props/NewContainerProps";
-import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
 import ElementContainerNewListModal from "./elem/ElementContainerNewListModal";
 
 const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) => {

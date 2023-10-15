@@ -5,8 +5,8 @@ import {Button, Card, Carousel, Col, Container, Form, Modal, Row, Table} from "r
 import {BoxEditProps} from "../../Props/BoxEditProps";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {Property} from "../../../../../model/project/property";
-import NewPropertyModal from "../Property/NewPropertyModal";
-import PropertyEditModal from "../Property/PropertyEditModal";
+import NewPropertyModal from "../property/NewPropertyModal";
+import PropertyEditModal from "../property/PropertyEditModal";
 import UploadModal from "../../../../util/UploadModal";
 import {Image} from "../../../../../model/image/image";
 import {FcHighPriority} from "react-icons/fc";

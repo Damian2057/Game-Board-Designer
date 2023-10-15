@@ -285,27 +285,6 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                 </Form.Control>
                             </div>
                         </Form.Group>
-
-                        {/*<Form.Group>*/}
-                        {/*    <div>*/}
-                        {/*        <Form.Label className='fw-bold'>*/}
-                        {/*            <div className='flex flex-row gap-2 items-center'>*/}
-                        {/*                <div>*/}
-                        {/*                    <FaUserAstronaut size={30} />*/}
-                        {/*                </div>*/}
-                        {/*                <div>*/}
-                        {/*                    Assigned to:*/}
-                        {/*                </div>*/}
-                        {/*            </div>*/}
-                        {/*        </Form.Label>*/}
-                        {/*        <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleChange}>*/}
-                        {/*            <option disabled value={''}>Choose tags</option>*/}
-                        {/*            {employees.map(item => {*/}
-                        {/*                return (<option key={item.id} value={item.email}>{item.email}</option>)*/}
-                        {/*            })}*/}
-                        {/*        </Form.Select>*/}
-                        {/*    </div>*/}
-                        {/*</Form.Group>*/}
                         <Form.Group>
                             <div>
                                 <Form.Label className='fw-bold'>

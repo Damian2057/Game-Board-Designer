@@ -37,7 +37,7 @@ export class ProjectCreatorService {
   ) {}
 
   async createNewProjectTemplate(command: CreateProjectCommand): Promise<ProjectDto> {
-    await this.checkProjectProperties(command.imageIds, command.name);
+    await this.imageService.checkImageExists(command.imageIds);
     const project: Project = mapProjectCreateCommandToProject(command);
     await this.containerService.updatesAndFlush(project.containers);
     await this.elementService.updatesAndFlush(project.elements);
@@ -238,7 +238,7 @@ export class ProjectCreatorService {
   }
 
   async updateProject(command: UpdateProjectCommand, projectId: number) {
-    await this.checkProjectProperties(command.imageIds, command.name);
+    await this.imageService.checkImageExists(command.imageIds);
     let project: Project = await this.getProjectById(projectId);
     project = await this.updateNotNullFields(command, project);
     const updatedProject: Project = await this.projectRepository.save(project);
@@ -275,13 +275,6 @@ export class ProjectCreatorService {
     }
 
     return project;
-  }
-
-  private async checkProjectProperties(imageIds: number[], name: string) {
-    await this.imageService.checkImageExists(imageIds);
-    if (await this.getProjectByName(name)) {
-      throw new IllegalArgumentException(`Project with name: ${name} already exists!`);
-    }
   }
 
   private async assignOrderToProject(orderId: number): Promise<Order> {
