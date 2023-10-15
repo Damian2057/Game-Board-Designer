@@ -10,6 +10,7 @@ import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
 import ProjectInfoModal from "./Modals/ProjectInfoModal";
 import ProjectEditModal from "./Modals/ProjectEditModal";
+import NewProjectModal from "./Modals/NewProjectModal";
 
 export default function ManageProject() {
 
@@ -27,6 +28,7 @@ export default function ManageProject() {
 
     const [showEditModal, setShowEditModal] = useState(false);
     const [editedProject, setEditedProject] = useState<Project | null>(null);
+    const [showAddModal, setShowAddModal] = useState(false);
 
     React.useEffect(() => {
         fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
@@ -136,7 +138,7 @@ export default function ManageProject() {
     }
 
     function handleOpenAddProjectModal() {
-
+        setShowAddModal(true)
     }
 
     return (
@@ -254,6 +256,12 @@ export default function ManageProject() {
                         onClose={() => setShowEditModal(false)}
                         onSave={handleSaveEditedGame}
                         editedProject={editedProject ?? null}
+                    />
+                )}
+                {showAddModal && (
+                    <NewProjectModal
+                        onClose={() => setShowAddModal(false)}
+                        onSave={handleSaveEditedGame}
                     />
                 )}
             </Container>

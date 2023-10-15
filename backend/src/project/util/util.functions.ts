@@ -166,7 +166,7 @@ export function mapElementDtoToElement(elementDto: ElementDto): Element {
 
 function mapBoxDtoToBox(boxDto: BoxDto): Box {
   const box: Box = new Box();
-  if (boxDto.id) {
+  if (boxDto?.id) {
     box.id = boxDto.id;
   }
   box.name = boxDto.name;

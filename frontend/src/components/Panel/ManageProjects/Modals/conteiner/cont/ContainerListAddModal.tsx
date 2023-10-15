@@ -1,48 +1,26 @@
 import React, {useState} from "react";
-import {Api} from "../../../../../connector/api";
-import toast from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import {ContainerEditListProps} from "../../Props/ContainerEditListProps";
-import {ContainerEntity} from "../../../../../model/project/containerEntity";
-import ContainerInfoModal from "./ContainerInfoModal";
-import ContainerEditModal from "./ContainerEditModal";
-import NewContainerModal from "./NewContainerModal";
+import {ContainerEntity} from "../../../../../../model/project/containerEntity";
+import {ContainerListAddProps} from "../../../Props/ContainerListAddProps";
+import ContainerInfoNewModal from "./ContainerInfoNewModal";
+import NewContainerNewModal from "./NewContainerNewModal";
 
-const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSave, editedContainers, id }) => {
+const ContainerListAddModal: React.FC<ContainerListAddProps> = ({onClose, onSave, editedContainers }) => {
 
     const [containers, setContainers] = useState([] as ContainerEntity[]);
     const [selectedContainerInfo, setSelectedContainerInfo] = useState<ContainerEntity | null>(null);
-    const [showEditModal, setShowEditModal] = useState(false);
-    const [editedContainer, setEditedContainer] = useState<ContainerEntity | null>(null);
     const [showAddModal, setAddShowModal] = useState(false);
 
     React.useEffect(() => {
-        fetchContainers();
+        if (editedContainers === null) {
+            return;
+        }
+        setContainers(editedContainers)
     }, [editedContainers]);
-
-
-    const fetchContainers = () => {
-        Api.project.getProjectContainers(id).then((res) => {
-            setContainers(res);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
 
     function handleContainerInfo(containerEntity: ContainerEntity) {
         setSelectedContainerInfo(containerEntity)
-    }
-
-    function handleContainerElement(containerEntity: ContainerEntity) {
-        setShowEditModal(true)
-        setEditedContainer(containerEntity)
-    }
-
-    function handleSaveEditedContainer() {
-        setShowEditModal(false)
-        setEditedContainer(null)
-        fetchContainers()
     }
 
     function handleOpenAddContainerModal() {
@@ -53,21 +31,20 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
         setAddShowModal(false);
     }
 
-    function handleAddNewContainer(elements: ContainerEntity[] | null) {
-        if (elements === null) {
+    function handleAddNewContainer(container: ContainerEntity | null) {
+        if (container === null) {
             return;
         }
-        setContainers(elements)
+        setContainers(prevState => [...prevState, container])
         handleCloseAddContainerModal();
     }
 
     function handleDeleteContainer(container: ContainerEntity) {
-        Api.project.deleteContainer(container.id).then((res) => {
-            toast.success(`Container ${container.name} deleted`, { icon: "🗑️" });
-            fetchContainers();
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
+        setContainers(containers.filter((elem) => elem.id !== container.id))
+    }
+
+    function handleDone() {
+        onSave(containers);
     }
 
     return (
@@ -103,55 +80,55 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                         <th>Status</th>
                                         <th>Priority</th>
                                         <th>Info</th>
-                                        <th>Edit</th>
                                         <th>Delete</th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {containers.map((elem) => (
-                                        <tr key={elem.id}>
-                                            <td className='centered-td'>{elem.id}</td>
-                                            <td className='centered-td'>{elem.name}</td>
-                                            <td className='centered-td'>{elem.quantity}</td>
-                                            <td className='centered-td'>{elem.status}</td>
-                                            <td className='centered-td'>{elem.priority}</td>
+                                    {containers.map((cont, index) => (
+                                        <tr key={cont.id ? cont.id : index}>
+                                            <td className='centered-td'>{cont.id}</td>
+                                            <td className='centered-td'>{cont.name}</td>
+                                            <td className='centered-td'>{cont.quantity}</td>
+                                            <td className='centered-td'>{cont.status}</td>
+                                            <td className='centered-td'>{cont.priority}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerInfo(elem)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleContainerInfo(cont)}>Info</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerElement(elem)}>Edit</Button>
-                                            </td>
-                                            <td>
-                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(elem)}>Delete</Button>
+                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(cont)}>Delete</Button>
                                             </td>
                                         </tr>
                                     ))}
                                     </tbody>
                                 </Table>
                             </Col>
+                            <Col lg={11} className="mx-auto">
+                                <Button type="button"
+                                        onClick={handleDone}
+                                        style={{
+                                            backgroundColor: '#7D53DE',
+                                            borderColor: '#7D53DE',
+                                            borderRadius: '20px',
+                                            marginBottom: '1rem',
+                                            paddingInline: '2rem',
+                                            paddingBlock: '0.5rem'
+                                        }}
+                                >Done</Button>
+                            </Col>
                         </div>
                     </Card.Body>
                 </Card>
                 {selectedContainerInfo && (
-                    <ContainerInfoModal
-                    container={selectedContainerInfo}
-                    onClose={() => setSelectedContainerInfo(null)}
-                    show={true}
+                    <ContainerInfoNewModal
+                        container={selectedContainerInfo}
+                        onClose={() => setSelectedContainerInfo(null)}
+                        show={true}
                     />
                 )}
                 {showAddModal && (
-                    <NewContainerModal
+                    <NewContainerNewModal
                         onClose={handleCloseAddContainerModal}
                         onSave={handleAddNewContainer}
-                        id={id}
-                    />
-                )}
-                {showEditModal && (
-                    <ContainerEditModal
-                        onClose={() => setShowEditModal(false)}
-                        onSave={handleSaveEditedContainer}
-                        editedContainer={editedContainer ?? null}
-                        id={id}
                     />
                 )}
             </Container>
@@ -159,4 +136,4 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
     )
 }
 
-export default ContainerListEditModal;
+export default ContainerListAddModal;

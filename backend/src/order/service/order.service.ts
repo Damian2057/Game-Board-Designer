@@ -97,6 +97,9 @@ export class OrderService {
 
   async claimOrder(worker: User, id: number): Promise<OrderDto> {
     const order: Order = await this.getOrderById(id);
+    if (order.status !== OrderStatus.PENDING) {
+      throw new IllegalArgumentException(`Order with id ${id} cannot be claimed because it is already claimed.`);
+    }
     order.worker = worker;
     order.status = OrderStatus.CLAIMED;
     order.lastUpdate = new Date().toISOString().slice(0, 10);

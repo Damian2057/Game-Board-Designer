@@ -11,6 +11,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
     const [note, setNote] = useState(element.notes[0])
 
     React.useEffect(() => {
+        if (element?.id === undefined) return;
         Api.project.getElement(element.id).then((e) => setSelectedElement(e));
     });
 
@@ -30,7 +31,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
             <Col className='d-flex justify-content-center'>
                 <Modal.Body className='game-info rounded'>
                     <Carousel data-bs-theme="dark">
-                        {selectedElement?.imageIds.map((image, index) => (
+                        {element?.imageIds.map((image, index) => (
                             <Carousel.Item key={index}>
                                 <img
                                     src={Api.image.getImageUrl(image)}
@@ -42,24 +43,24 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                     </Carousel>
                     <Row className='mt-3 align-items-center'>
                         <Col xs={8}>
-                            <Modal.Title className='fs-2 fw-bold text-white'>{selectedElement?.name}</Modal.Title>
+                            <Modal.Title className='fs-2 fw-bold text-white'>{element?.name}</Modal.Title>
                         </Col>
                     </Row>
                     <Row className='mt-3 align-items-center text-white'>
                         <Col xs={8}>
                             <div>
-                                <span className='fw-bold'>Status:</span> {selectedElement?.status}
+                                <span className='fw-bold'>Status:</span> {element?.status}
                             </div>
                             <div>
-                                <span className='fw-bold'>Priority:</span> {selectedElement?.priority}
+                                <span className='fw-bold'>Priority:</span> {element?.priority}
                             </div>
                             <div>
-                                <span className='fw-bold'>Quantity:</span> {selectedElement?.quantity}
+                                <span className='fw-bold'>Quantity:</span> {element?.quantity}
                             </div>
                         </Col>
                     </Row>
                     <Row className='gap-2'>
-                        {selectedElement?.properties && (
+                        {element?.properties && (
                             <table className="tags-table">
                                 <thead>
                                 <tr>
@@ -69,7 +70,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                                 </thead>
                                 <tbody>
                                 {selectedElement?.properties?.map((prop, index) => (
-                                    <tr key={prop.id}>
+                                    <tr key={prop.id ? prop.id : index}>
                                         <td className="tag-cell">
                                             <div className="tag-content">
                                                 <span>{prop.name}</span>

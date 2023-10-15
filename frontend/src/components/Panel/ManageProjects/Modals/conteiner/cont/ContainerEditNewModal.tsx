@@ -1,26 +1,24 @@
 import React, {useState} from "react";
-import {Property} from "../../../../../model/project/property";
-import {Api} from "../../../../../connector/api";
 import toast from "react-hot-toast";
-import {Image} from "../../../../../model/image/image";
 import {Button, Card, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
-import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../property/NewPropertyModal";
-import PropertyEditModal from "../property/PropertyEditModal";
-import NotesModal from "../../../../util/NotesModal";
-import {ContainerEditProps} from "../../Props/ContainerEditProps";
-import ImageDisplayModal from "../../../../util/ImageDisplayModal";
-import {ElementEntity} from "../../../../../model/project/elementEntity";
-import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
+import {ContainerEditProps} from "../../../Props/ContainerEditProps";
+import {Api} from "../../../../../../connector/api";
+import {Property} from "../../../../../../model/project/property";
+import {Image} from "../../../../../../model/image/image";
+import {ElementEntity} from "../../../../../../model/project/elementEntity";
+import UploadModal from "../../../../../util/UploadModal";
+import NewPropertyModal from "../../property/NewPropertyModal";
+import NotesModal from "../../../../../util/NotesModal";
+import ImageDisplayModal from "../../../../../util/ImageDisplayModal";
+import ElementContainerNewListModal from "../elem/ElementContainerNewListModal";
 
-const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer, id }) => {
+const ContainerEditNewModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
-    const [showEditModal, setEditShowModal] = useState(false);
     const [uploadModalShow, setUploadModalShow] = useState(false);
     const [showElementsEditModal, setShowElementsEditModal] = React.useState(false);
     const [showNotesModal, setShowNotesModal] = useState(false);
@@ -30,7 +28,6 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
     const [notes, setNotes] = React.useState([] as string[]);
     const [imageIds, setImageIds] = React.useState([] as number[]);
     const [properties, setProperties] = React.useState([] as Property[]);
-    const [editedProperty, setEditedProperty] = React.useState<Property | null>(null);
     const [selectedPriority, setSelectedPriority] = React.useState('');
     const [selectedStatus, setSelectedStatus] = React.useState('');
     const [priorities, setPriorities] = React.useState([] as string[]);
@@ -112,21 +109,6 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
         handleCloseAddPropertyModal();
-    }
-
-    function handleEditProp(prop: Property) {
-        setEditedProperty(prop);
-        setEditShowModal(true);
-    }
-
-    function handleEditPropSave() {
-        Api.project.getContainer(editedContainer?.id as number).then((box) => {
-            setProperties(box.properties);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
-        setEditedProperty(null);
-        setEditShowModal(false);
     }
 
     function handleUploadImages(data: Image[] | null) {
@@ -382,11 +364,6 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                                 </td>
                                                 <td className="tag-cell">
                                                     <div className="tag-content">
-                                                        <Button className='button-workspace' onClick={() => handleEditProp(prop)}>Edit</Button>
-                                                    </div>
-                                                </td>
-                                                <td className="tag-cell">
-                                                    <div className="tag-content">
                                                         <Button className='button-workspace' onClick={() => handleRemoveProp(prop)}>-</Button>
                                                     </div>
                                                 </td>
@@ -399,11 +376,11 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                         </Form>
                     </Card.Body>
                     {showElementsEditModal && (
-                        <ElementContainerEditListModal
+                        <ElementContainerNewListModal
                             onClose={() => setShowElementsEditModal(false)}
                             onSave={handleEditElementsSave}
                             editedElements={editedContainer?.elements ?? null}
-                            id={id ?? null}
+                            id={null}
                         />
                     )}
                     <UploadModal
@@ -416,11 +393,6 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                         onClose={handleCloseAddPropertyModal}
                         onSave={handleAddNewProperty}
                     />
-                    <PropertyEditModal
-                        show={showEditModal}
-                        onClose={() => setEditShowModal(false)}
-                        onSave={handleEditPropSave}
-                        editedProp={editedProperty ?? null} />
                     <NotesModal
                         show={showNotesModal}
                         notes={editedContainer?.notes ?? null}
@@ -439,4 +411,4 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
     )
 }
 
-export default ContainerEditModal;
+export default ContainerEditNewModal;

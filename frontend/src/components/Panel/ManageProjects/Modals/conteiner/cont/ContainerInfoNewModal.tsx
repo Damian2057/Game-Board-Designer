@@ -1,28 +1,16 @@
 import React, {useState} from "react";
-import toast from "react-hot-toast";
 import {Button, Card, Col, Container, Form, Row, Table} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import ImageSliderModal from "../ImageSliderModal";
-import ElementInfoModal from "../element/ElementInfoModal";
-import {ContainerInfoProps} from "../../Props/ContainerInfoProps";
-import {Api} from "../../../../../connector/api";
-import {ContainerEntity} from "../../../../../model/project/containerEntity";
-import {ElementEntity} from "../../../../../model/project/elementEntity";
+import {ContainerInfoProps} from "../../../Props/ContainerInfoProps";
+import {ElementEntity} from "../../../../../../model/project/elementEntity";
+import ElementInfoModal from "../../element/ElementInfoModal";
+import ImageSliderModal from "../../ImageSliderModal";
 
-const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, show }) => {
+const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClose, show }) => {
 
     const [note, setNote] = useState(container.notes[0])
     const [showImageSliderModal, setShowImageSliderModal] = useState(false)
-    const [selectedContainer, setSelectedContainer] = useState<ContainerEntity>()
     const [selectedElement, setSelectedElement] = useState<ElementEntity | null>()
-
-    React.useEffect(() => {
-        Api.project.getContainer(container.id).then((res) => {
-            setSelectedContainer(res)
-        }).catch((err) => {
-            toast.error(err)
-        })
-    })
 
     const handleClick=(index: number)=>{
         setNote(container.notes[index])
@@ -98,8 +86,8 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {selectedContainer?.elements.map((data)=>
-                                                <tr key={data.id}>
+                                            {container?.elements.map((data, index)=>
+                                                <tr key={data.id ? data.id : index}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
                                                     <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>Show</Button></td>
@@ -120,8 +108,8 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                             </tr>
                                             </thead>
                                             <tbody>
-                                            {selectedContainer?.properties.map((data)=>
-                                                <tr key={data.id}>
+                                            {container?.properties.map((data, index)=>
+                                                <tr key={data.id ? data.id : index}>
                                                     <td>{data.name}</td>
                                                     <td>{data.value}</td>
                                                 </tr>
@@ -151,4 +139,4 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
     )
 }
 
-export default ContainerInfoModal;
+export default ContainerInfoNewModal;
