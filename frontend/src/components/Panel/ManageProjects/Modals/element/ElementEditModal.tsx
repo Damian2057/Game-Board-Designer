@@ -8,10 +8,10 @@ import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
 import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../Property/NewPropertyModal";
+import NewPropertyModal from "../property/NewPropertyModal";
 import NotesModal from "../../../../util/NotesModal";
 import {ElementEditProps} from "../../Props/ElementEditProps";
-import PropertyEditModal from "../Property/PropertyEditModal";
+import PropertyEditModal from "../property/PropertyEditModal";
 
 const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedElement }) => {
 

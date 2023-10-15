@@ -1,7 +1,6 @@
 import {Project} from "../../../../model/project/project";
 
-export interface ProjectEditProps {
+export interface ProjectNewProps {
     onClose: () => void;
     onSave: (project: Project | null) => void;
-    editedProject: Project | null;
 }

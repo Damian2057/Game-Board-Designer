@@ -18,7 +18,7 @@ const ImageSliderModal: React.FC<ImageSliderProps> = ({ show, imageIds, onClose 
             <Col className='d-flex justify-content-center'>
                 <Modal.Body className='game-info rounded'>
                     <Carousel data-bs-theme="dark">
-                        {imageIds.map((image, index) => (
+                        {imageIds?.map((image, index) => (
                             <Carousel.Item key={index}>
                                 <img
                                     src={Api.image.getImageUrl(image)}

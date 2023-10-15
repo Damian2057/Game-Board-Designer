@@ -10,6 +10,7 @@ import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
 import ProjectInfoModal from "./Modals/ProjectInfoModal";
 import ProjectEditModal from "./Modals/ProjectEditModal";
+import NewProjectModal from "./Modals/NewProjectModal";
 
 export default function ManageProject() {
 
@@ -27,6 +28,7 @@ export default function ManageProject() {
 
     const [showEditModal, setShowEditModal] = useState(false);
     const [editedProject, setEditedProject] = useState<Project | null>(null);
+    const [showAddModal, setShowAddModal] = useState(false);
 
     React.useEffect(() => {
         fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
@@ -135,6 +137,10 @@ export default function ManageProject() {
         fetchProjectParams(isTemplate, isCompleted, workerId, selectedGame);
     }
 
+    function handleOpenAddProjectModal() {
+        setShowAddModal(true)
+    }
+
     return (
         <div className='ManageProject'>
             <Toaster />
@@ -149,6 +155,9 @@ export default function ManageProject() {
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
                         <p className='font-bold fs-2'>Projects</p>
+                        <div>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddProjectModal}>Add new Project</Button>
+                        </div>
                         <Col lg={3} className='mb-4 d-flex justify-content-center align-items-center'>
                             <div>
                                 <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
@@ -244,10 +253,15 @@ export default function ManageProject() {
                 )}
                 {showEditModal && (
                     <ProjectEditModal
-                        show={showEditModal}
                         onClose={() => setShowEditModal(false)}
                         onSave={handleSaveEditedGame}
                         editedProject={editedProject ?? null}
+                    />
+                )}
+                {showAddModal && (
+                    <NewProjectModal
+                        onClose={() => setShowAddModal(false)}
+                        onSave={handleSaveEditedGame}
                     />
                 )}
             </Container>

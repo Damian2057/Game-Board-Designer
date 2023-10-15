@@ -1,21 +1,22 @@
 import React, {useState} from "react";
-import {Property} from "../../../../../model/project/property";
-import {Api} from "../../../../../connector/api";
 import toast from "react-hot-toast";
-import {Image} from "../../../../../model/image/image";
-import {ElementEntity} from "../../../../../model/project/elementEntity";
 import {Button, Card, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
-import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../property/NewPropertyModal";
-import NotesModal from "../../../../util/NotesModal";
-import ImageDisplayModal from "../../../../util/ImageDisplayModal";
-import {NewContainerProps} from "../../Props/NewContainerProps";
-import ElementContainerNewListModal from "./elem/ElementContainerNewListModal";
+import {Property} from "../../../../../../model/project/property";
+import {ElementEntity} from "../../../../../../model/project/elementEntity";
+import {Api} from "../../../../../../connector/api";
+import UploadModal from "../../../../../util/UploadModal";
+import NewPropertyModal from "../../property/NewPropertyModal";
+import NotesModal from "../../../../../util/NotesModal";
+import ImageDisplayModal from "../../../../../util/ImageDisplayModal";
+import ElementContainerNewListModal from "../elem/ElementContainerNewListModal";
+import {Image} from "../../../../../../model/image/image";
+import {ContainerEntity} from "../../../../../../model/project/containerEntity";
+import {NewContainerNewProps} from "../../../Props/NewContainerNewProps";
 
-const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) => {
+const NewContainerNewModal: React.FC<NewContainerNewProps> = ({onClose, onSave }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
@@ -37,11 +38,13 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     React.useEffect(() => {
         Api.project.getAvailablePriorities().then((priorities) => {
             setPriorities(priorities);
+            setSelectedPriority(priorities[0])
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
         Api.project.getAvailableStatuses().then((statuses) => {
             setStatuses(statuses);
+            setSelectedStatus(statuses[0])
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -51,22 +54,19 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
         setImageEditModalShow(true);
     };
     function sendContainerAddRequest() {
-        Api.project.addContainerToProject(id, {
+        const container = {
             name: name,
+            quantity: quantity,
             description: description,
             notes: notes,
             imageIds: imageIds,
-            quantity: quantity,
             properties: properties,
             priority: selectedPriority,
             status: selectedStatus,
-            elements: elements
-        }).then((container) => {
-            toast.success(`Container updated successfully!`, {icon: "👏"});
-            onSave(container);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, {icon: "💀"});
-        });
+            elements: elements,
+        } as ContainerEntity;
+        onSave(container);
+        onClose();
     }
 
     function addProp() {
@@ -338,7 +338,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                             onClose={() => setShowElementsEditModal(false)}
                             onSave={handleEditElementsSave}
                             editedElements={elements}
-                            id={id ?? null}
+                            id={null}
                         />
                     )}
                     <UploadModal
@@ -369,4 +369,4 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     )
 }
 
-export default NewContainerModal;
+export default NewContainerNewModal;

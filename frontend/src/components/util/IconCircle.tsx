@@ -1,7 +1,10 @@
 import { GrClose } from "react-icons/gr";
 import './IconCircle.css'
+import React from "react";
+import {IconCircleProps} from "./IconCircleProps";
 
-const IconCircle = ({ path }) => {
+// @ts-ignore
+const IconCircle: React.FC<IconCircleProps> = ({ path }) => {
 
     return (
         <div className='icon-position'>

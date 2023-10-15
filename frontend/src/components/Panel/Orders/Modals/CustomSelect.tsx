@@ -27,7 +27,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({ value, onChange, employees 
                     <option value="None">None</option>
                     {employees.map((user) => (
                         <option key={user.id} value={user.email}>
-                            {user.email}
+                            {user.email} {user.username}
                         </option>
                     ))}
                 </Form.Control>

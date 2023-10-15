@@ -8,12 +8,11 @@ import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
 import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../Property/NewPropertyModal";
-import PropertyEditModal from "../Property/PropertyEditModal";
+import NewPropertyModal from "../property/NewPropertyModal";
+import PropertyEditModal from "../property/PropertyEditModal";
 import NotesModal from "../../../../util/NotesModal";
 import {ContainerEditProps} from "../../Props/ContainerEditProps";
 import ImageDisplayModal from "../../../../util/ImageDisplayModal";
-import ElementListEditModal from "../element/ElementListEditModal";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
 import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
 

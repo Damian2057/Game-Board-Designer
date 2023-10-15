@@ -9,7 +9,7 @@ import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
 import UploadModal from "../../../../../util/UploadModal";
-import NewPropertyModal from "../../Property/NewPropertyModal";
+import NewPropertyModal from "../../property/NewPropertyModal";
 import NotesModal from "../../../../../util/NotesModal";
 
 const ElementContainerAddNewModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {

@@ -1,21 +1,21 @@
 import React, {useState} from "react";
-import {Property} from "../../../../../model/project/property";
-import {Api} from "../../../../../connector/api";
 import toast from "react-hot-toast";
-import {Image} from "../../../../../model/image/image";
-import {ElementEntity} from "../../../../../model/project/elementEntity";
 import {Button, Card, Col, Container, Form, Modal, Row, Table} from "react-bootstrap";
 import {GrClose, GrStatusUnknown} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
 import {FcHighPriority} from "react-icons/fc";
-import UploadModal from "../../../../util/UploadModal";
-import NewPropertyModal from "../property/NewPropertyModal";
-import NotesModal from "../../../../util/NotesModal";
-import ImageDisplayModal from "../../../../util/ImageDisplayModal";
-import {NewContainerProps} from "../../Props/NewContainerProps";
-import ElementContainerNewListModal from "./elem/ElementContainerNewListModal";
+import {ContainerEditProps} from "../../../Props/ContainerEditProps";
+import {Api} from "../../../../../../connector/api";
+import {Property} from "../../../../../../model/project/property";
+import {Image} from "../../../../../../model/image/image";
+import {ElementEntity} from "../../../../../../model/project/elementEntity";
+import UploadModal from "../../../../../util/UploadModal";
+import NewPropertyModal from "../../property/NewPropertyModal";
+import NotesModal from "../../../../../util/NotesModal";
+import ImageDisplayModal from "../../../../../util/ImageDisplayModal";
+import ElementContainerNewListModal from "../elem/ElementContainerNewListModal";
 
-const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) => {
+const ContainerEditNewModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer }) => {
 
     const [showAddModal, setAddShowModal] = useState(false);
     const [imageEditModalShow, setImageEditModalShow] = React.useState(false);
@@ -32,9 +32,18 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     const [selectedStatus, setSelectedStatus] = React.useState('');
     const [priorities, setPriorities] = React.useState([] as string[]);
     const [statuses, setStatuses] = React.useState([] as string[]);
-    const [elements, setElements] = React.useState([] as ElementEntity[]);
 
     React.useEffect(() => {
+        if (editedContainer) {
+            setName(editedContainer.name);
+            setDescription(editedContainer.description);
+            setNotes(editedContainer.notes);
+            setQuantity(editedContainer.quantity)
+            setImageIds(editedContainer.imageIds);
+            setProperties(editedContainer.properties);
+            setSelectedPriority(editedContainer.priority);
+            setSelectedStatus(editedContainer.status);
+        }
         Api.project.getAvailablePriorities().then((priorities) => {
             setPriorities(priorities);
         }).catch((err) => {
@@ -45,22 +54,21 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
-    }, []);
+    }, [editedContainer]);
 
     const handleClick = () => {
         setImageEditModalShow(true);
     };
-    function sendContainerAddRequest() {
-        Api.project.addContainerToProject(id, {
+    function sendContainerUpdateRequest() {
+        if  (!editedContainer) {
+            return;
+        }
+        Api.project.updateContainer(editedContainer.id, {
             name: name,
             description: description,
             notes: notes,
             imageIds: imageIds,
             quantity: quantity,
-            properties: properties,
-            priority: selectedPriority,
-            status: selectedStatus,
-            elements: elements
         }).then((container) => {
             toast.success(`Container updated successfully!`, {icon: "👏"});
             onSave(container);
@@ -74,9 +82,17 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     }
 
     function handleRemoveProp(prop: Property) {
-        setProperties((prevProps) =>
-            prevProps.filter((property) => property !== prop)
-        );
+        if (editedContainer) {
+            Api.property.deleteProperty(prop.id)
+                .then(() => {
+                    setProperties((prevProps) =>
+                        prevProps.filter((property) => property !== prop)
+                    );
+                })
+                .catch((err) => {
+                    toast.error(`${err.response.data.message}`, { icon: "💀" });
+                });
+        }
     }
 
     function handleCloseAddPropertyModal() {
@@ -84,8 +100,17 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     }
 
     function handleAddNewProperty(prop: Property) {
-        setProperties((prevProps) => [...prevProps, prop]);
+        if (!editedContainer) {
+            return;
+        }
+        Api.project.addPropertyToContainer(editedContainer.id, prop).then((box) => {
+            setProperties(box.properties);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
+        handleCloseAddPropertyModal();
     }
+
     function handleUploadImages(data: Image[] | null) {
         if (!data) {
             return;
@@ -102,27 +127,44 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     }
 
     function handleSetSelectedPriority(value: string) {
-        setSelectedPriority(value);
+        Api.project.updatePriority(editedContainer?.id as number, value, "container").then((box) => {
+            setSelectedPriority(box.priority);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
     }
 
-    function handleSetSelectedStatus(value: string) {
-        setSelectedStatus(value);
+    function handlesetSelectedStatus(value: string) {
+        Api.project.updateStatus(editedContainer?.id as number, value, "container").then((box) => {
+            setSelectedStatus(box.status);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
+        });
     }
 
     function handleSaveImages(imageIds: number[] | null) {
+        if (!editedContainer) {
+            return;
+        }
         if (!imageIds) {
             return;
         }
+        editedContainer.imageIds = imageIds;
         setImageIds(imageIds);
         setImageEditModalShow(false);
     }
 
-    function editElemets() {
+    function editElements() {
         setShowElementsEditModal(true);
     }
 
     function handleEditElementsSave(elements: ElementEntity[] | null) {
-        setElements(elements || [])
+        if (!editedContainer) {
+            return;
+        }
+        if (elements !== null) {
+            editedContainer.elements = elements;
+        }
         setShowElementsEditModal(false);
     }
 
@@ -144,7 +186,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Add Container</p>
+                        <p className='font-bold fs-2 mb-12'>Edit Container</p>
                         <Form>
                             <Row>
                                 <Col>
@@ -235,7 +277,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                             <Form.Control
                                                 as="select"
                                                 value={selectedStatus}
-                                                onChange={(e) => handleSetSelectedStatus(e.target.value)}
+                                                onChange={(e) => handlesetSelectedStatus(e.target.value)}
                                             >{statuses.map((stat) => (
                                                 <option key={stat} value={stat}>
                                                     {stat}
@@ -245,7 +287,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                         </div>
                                     </Form.Group>
                                     <Button type="button"
-                                            onClick={sendContainerAddRequest}
+                                            onClick={sendContainerUpdateRequest}
                                             style={{
                                                 backgroundColor: '#7D53DE',
                                                 borderColor: '#7D53DE',
@@ -271,7 +313,7 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                                     </Button>
                                     <Button
                                         type="button"
-                                        onClick={editElemets}
+                                        onClick={editElements}
                                         style={{
                                             backgroundColor: '#7D53DE',
                                             borderColor: '#7D53DE',
@@ -337,8 +379,8 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                         <ElementContainerNewListModal
                             onClose={() => setShowElementsEditModal(false)}
                             onSave={handleEditElementsSave}
-                            editedElements={elements}
-                            id={id ?? null}
+                            editedElements={editedContainer?.elements ?? null}
+                            id={null}
                         />
                     )}
                     <UploadModal
@@ -353,14 +395,14 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
                     />
                     <NotesModal
                         show={showNotesModal}
-                        notes={notes}
+                        notes={editedContainer?.notes ?? null}
                         onClose={() => setShowNotesModal(false)}
                         onSave={handleSaveNotes}
                     />
                     <ImageDisplayModal
                         show={imageEditModalShow}
                         onClose={() => setImageEditModalShow(false)}
-                        imageIds={imageIds}
+                        imageIds={editedContainer?.imageIds ?? null}
                         onSave={handleSaveImages}
                     />
                 </Card>
@@ -369,4 +411,4 @@ const NewContainerModal: React.FC<NewContainerProps> = ({onClose, onSave, id }) 
     )
 }
 
-export default NewContainerModal;
+export default ContainerEditNewModal;
