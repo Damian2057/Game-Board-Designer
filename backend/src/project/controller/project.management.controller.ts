@@ -9,7 +9,7 @@ import { RolesGuard } from "../../auth/guard/roles.guard";
 
 @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
 @UseGuards(JwtGuard, RolesGuard)
-@Controller('project')
+@Controller('project/manage')
 export class ProjectManagementController {
 
   constructor(

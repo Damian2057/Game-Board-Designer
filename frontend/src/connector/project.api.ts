@@ -383,7 +383,7 @@ export class ProjectApi {
     }
 
     static assignProjectToUser(id: number, userId: number): Promise<Project> {
-        return axios.put(`${import.meta.env.VITE_URL}/project/assign-project-to-user/${id}`, {}, {
+        return axios.put(`${import.meta.env.VITE_URL}/project/manage/assign-project-to-user/${id}`, {}, {
             params: {
                 userId: userId
             },
@@ -396,7 +396,7 @@ export class ProjectApi {
     }
 
     static getMyProjects(): Promise<Project[]> {
-        return axios.get(`${import.meta.env.VITE_URL}/project/my-projects`, {
+        return axios.get(`${import.meta.env.VITE_URL}/project/manage/my-projects`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
@@ -406,7 +406,7 @@ export class ProjectApi {
     }
 
     static getMyCompletedProjects(): Promise<Project[]> {
-        return axios.get(`${import.meta.env.VITE_URL}/project/my-completed-projects`, {
+        return axios.get(`${import.meta.env.VITE_URL}/project/manage/my-completed-projects`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
@@ -416,7 +416,7 @@ export class ProjectApi {
     }
 
     static getMyOnGoingProjects(): Promise<Project[]> {
-        return axios.get(`${import.meta.env.VITE_URL}/project/my-ongoing-projects`, {
+        return axios.get(`${import.meta.env.VITE_URL}/project/manage/my-ongoing-projects`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
