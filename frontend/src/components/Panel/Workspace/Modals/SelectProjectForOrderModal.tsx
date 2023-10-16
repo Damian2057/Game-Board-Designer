@@ -1,34 +1,26 @@
 import React, {useState} from "react";
-import {Game} from "../../../../model/game/game";
 import {Project} from "../../../../model/project/project";
 import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
-import {Button, Card, Col, Container, Form, Table} from "react-bootstrap";
+import {Button, Card, Col, Container, Table} from "react-bootstrap";
+import {GrClose} from "react-icons/gr";
 import ReactPaginate from "react-paginate";
 import ProjectInfoModal from "../../ManageProjects/Modals/ProjectInfoModal";
-import {StartNewProjectProps} from "../Props/StartNewProjectProps";
-import {GrClose} from "react-icons/gr";
+import {SelectProjectProps} from "../Props/SelectProjectProps";
 
-const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
+const SelectProjectForOpenModal: React.FC<SelectProjectProps> = ({onClose, game, onSave}) => {
 
     const itemsPerPage = 8;
     const [pageCount, setPageCount] = useState(0);
-    const [games, setGames] = useState([] as Game[]);
     const [selectedGame, setSelectedGame] = useState<string | null>(null);
     const [projects, setProjects] = useState([] as Project[]);
     const [selectedProjectInfo, setSelectedProjectInfo] = useState<Project | null>();
 
     React.useEffect(() => {
-        fetchGames();
+        setSelectedGame(game.title);
+        fetchProjectParams(game.title);
     }, []);
 
-    function fetchGames() {
-        Api.game.getAllGames().then((res) => {
-            setGames(res);
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
 
     function fetchProjectParams(selectedGame: string | null) {
         Api.project.findProjectPage(1, itemsPerPage, {
@@ -40,16 +32,6 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, { icon: "💀" });
         });
-    }
-
-    function handleGameSelect(e: any) {
-        const gameTitle = e.target.value;
-        if (gameTitle == 'None') {
-            fetchProjectParams(null);
-        } else {
-            setSelectedGame(gameTitle);
-            fetchProjectParams(gameTitle);
-        }
     }
 
     function handlePageClick(data: any) {
@@ -70,12 +52,7 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
     }
 
     function handleStartProject(project: Project) {
-        const gameId = games.find(item => item.title == selectedGame)?.id;
-        if (!gameId) {
-            toast.error(`Game not found`, { icon: "💀" });
-            return;
-        }
-        Api.project.startProject(project.id, gameId).then((res) => {
+        Api.project.startProject(project.id, game.id).then((res) => {
             onSave(res);
             onClose();
         }).catch((err) => {
@@ -101,18 +78,7 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Projects</p>
-                        <Col lg={3} className='mb-4 d-flex justify-content-center align-items-center'>
-                            <div>
-                                <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
-                                    <option disabled value={''}>Choose Game</option>
-                                    <option value={'None'}>None</option>
-                                    {games.map(item => {
-                                        return (<option key={item.id} value={item.title}>{item.title}</option>)
-                                    })}
-                                </Form.Select>
-                            </div>
-                        </Col>
+                        <p className='font-bold fs-2'>Select Project</p>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
@@ -179,4 +145,4 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
     )
 }
 
-export default ListProjectsModal;
+export default SelectProjectForOpenModal;

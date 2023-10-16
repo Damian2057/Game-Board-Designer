@@ -222,4 +222,7 @@ export class ProjectManagementService {
     });
   }
 
+  async assignOrderToProject(projectId: number, orderId: number) {
+    return undefined;
+  }
 }

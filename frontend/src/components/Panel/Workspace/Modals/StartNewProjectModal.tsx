@@ -4,8 +4,8 @@ import {GrClose} from "react-icons/gr";
 import {StartNewProjectProps} from "../Props/StartNewProjectProps";
 import ListProjectsModal from "./ListProjectsModal";
 import {Project} from "../../../../model/project/project";
-import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
+import ListOrdersModal from "./ListOrdersModal";
 
 const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
@@ -24,17 +24,23 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
         </svg>)
 
     const [showListProjectsModal, setShowListProjectsModal] = React.useState(false)
+    const [showListOrdersModal, setShowListOrdersModal] = React.useState(false)
 
     function handleStartNewProject() {
-        setShowListProjectsModal(true)
+        setShowListProjectsModal(true);
     }
 
     function handleStartNewOrder() {
-
+        setShowListOrdersModal(true);
     }
 
-    function handleSave(project: Project | null) {
+    function handleProjectSave(project: Project | null) {
         toast(`Project ${project?.name} started`, { icon: "👏" });
+        onClose();
+    }
+
+    function handleOrderSave(project: Project | null) {
+        toast(`Project ${project?.name} for Order started`, { icon: "👏" });
         onClose();
     }
 
@@ -101,7 +107,13 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
             {showListProjectsModal && (
                 <ListProjectsModal
                     onClose={() => setShowListProjectsModal(false)}
-                    onSave={handleSave}
+                    onSave={handleProjectSave}
+                />
+            )}
+            {showListOrdersModal && (
+                <ListOrdersModal
+                    onClose={() => setShowListOrdersModal(false)}
+                    onSave={handleOrderSave}
                 />
             )}
         </div>
