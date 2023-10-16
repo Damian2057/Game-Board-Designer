@@ -511,4 +511,14 @@ export class ProjectApi {
             return res.data;
         });
     }
+
+    static assignOrderToProject(orderId: number, projectId: number, gameId: number): Promise<Project> {
+        return axios.put(`${import.meta.env.VITE_URL}/project/manage/assign-order/${projectId}/${orderId}/${gameId}`, {}, {
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        }).then(res => {
+            return res.data;
+        });
+    }
 }

@@ -23,10 +23,12 @@ export class ProjectManagementController {
     return this.projectManagementService.createNewProjectBasedOnExistingProject(user, projectId, gameId);
   }
 
-  @Put('assign-order/:projectId/:orderId')
-  async assignOrderToProject(@Param('projectId') projectId: number,
-                              @Param('orderId') orderId: number): Promise<ProjectDto> {
-    return this.projectManagementService.assignOrderToProject(projectId, orderId);
+  @Put('assign-order/:projectId/:orderId/:gameId')
+  async assignOrderToProject(@GetCurrentUser() user,
+                             @Param('projectId') projectId: number,
+                              @Param('orderId') orderId: number,
+                             @Param('gameId') gameId: number): Promise<ProjectDto> {
+    return this.projectManagementService.assignOrderToProject(user, projectId, orderId, gameId);
   }
 
   @Put('assign-project/:projectId')

@@ -2,9 +2,8 @@ import React, {useState} from "react";
 import {StartNewProjectProps} from "../Props/StartNewProjectProps";
 import {Api} from "../../../../connector/api";
 import toast from "react-hot-toast";
-import {Button, Card, Col, Container, Form, Table} from "react-bootstrap";
+import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
-import ReactPaginate from "react-paginate";
 import {Order} from "../../../../model/order/order";
 import OrderInfoModal from "../../Orders/Modals/OrderInfoModal";
 import SelectProjectForOpenModal from "./SelectProjectForOrderModal";
@@ -12,8 +11,6 @@ import {Project} from "../../../../model/project/project";
 
 const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
-    const itemsPerPage = 8;
-    const [pageCount, setPageCount] = useState(0);
     const [orders, setOrders] = useState([] as Order[]);
     const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
     const [selectedOrderInfo, setSelectedOrderInfo] = useState<Order | null>();
@@ -23,24 +20,11 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
     }, []);
 
     function fetchOrders() {
-        Api.order.findOrderPage(1, itemsPerPage, {
-            status: 'CLAIMED'
-        }).then((res) => {
-            setOrders(res.items);
-            setPageCount(res.meta.totalPages)
+        Api.order.getOrdersAsWorker().then((res) => {
+            const claimedOrders = res.filter((order) => order.status === 'CLAIMED');
+            setOrders(claimedOrders);
         }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
-    }
-
-    function handlePageClick(data: any) {
-        Api.order.findOrderPage(data.selected + 1, itemsPerPage, {
-            status: 'CLAIMED'
-        }).then((res) => {
-            setOrders(res.items);
-            setPageCount(res.meta.totalPages)
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
+            toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
     }
 
@@ -52,12 +36,14 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
         setSelectedOrder(order);
     }
 
-    function handleOrderClose() {
-
-    }
-
     function handleSaveProjectOrder(project: Project | null) {
-
+        Api.project.assignOrderToProject(selectedOrder!.id, project!.id, selectedOrder!.game.id).then((res) => {
+            toast.success(`Order ${selectedOrder!.id} assigned to project ${project!.id}`, { icon: "👏" });
+            setSelectedOrder(null)
+            onSave(res);
+        }).catch((err) => {
+            toast.error(`${err.response.data.message}`, { icon: "💀" });
+        });
     }
 
     return (
@@ -78,14 +64,14 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Projects</p>
+                        <p className='font-bold fs-2'>Orders</p>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>Game</th>
+                                        <th>Ordered Game</th>
                                         <th>Status</th>
                                         <th>Submit Date</th>
                                         <th>Last Update</th>
@@ -113,25 +99,6 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
                                 </Table>
                             </Col>
                         </div>
-                        <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
-                            breakLabel="..."
-                            breakClassName="page-item"
-                            breakLinkClassName="page-link"
-                            pageCount={pageCount}
-                            pageRangeDisplayed={4}
-                            marginPagesDisplayed={2}
-                            onPageChange={handlePageClick}
-                            containerClassName="pagination justify-content-center"
-                            pageClassName="page-item"
-                            pageLinkClassName="page-link"
-                            previousClassName="page-item"
-                            previousLinkClassName="page-link"
-                            nextClassName="page-item"
-                            nextLinkClassName="page-link"
-                            activeClassName="active"
-                        />
                     </Card.Body>
                 </Card>
                 {selectedOrderInfo && (

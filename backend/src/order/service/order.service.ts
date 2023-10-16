@@ -234,4 +234,8 @@ export class OrderService {
 
     return new Pagination<OrderDto>(pages.items.map(order => mapOrderToOrderDto(order)), pages.meta);
   }
+
+  async saveOrder(order: Order) {
+    return await this.orderRepository.save(order);
+  }
 }

@@ -52,12 +52,8 @@ const SelectProjectForOpenModal: React.FC<SelectProjectProps> = ({onClose, game,
     }
 
     function handleStartProject(project: Project) {
-        Api.project.startProject(project.id, game.id).then((res) => {
-            onSave(res);
-            onClose();
-        }).catch((err) => {
-            toast.error(`${err.response.data.message}`, { icon: "💀" });
-        });
+        onSave(project);
+        onClose();
     }
 
     return (
