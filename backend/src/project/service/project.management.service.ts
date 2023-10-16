@@ -26,7 +26,7 @@ export class ProjectManagementService {
     private readonly elementService: ElementService,
   ) {}
 
-  async createNewProjectBasedOnExistingProject(user, projectId: number): Promise<ProjectDto> {
+  async createNewProjectBasedOnExistingProject(user, projectId: number, gameId: number): Promise<ProjectDto> {
     const project: Project = await this.getProjectById(projectId);
     let newProject: Project = mapProjectCreateCommandToProject(project);
     newProject = deleteIdsFromObject(newProject);
@@ -37,6 +37,7 @@ export class ProjectManagementService {
     for (const game of project.games) {
       games.push(await this.gameService.getGameById(game.id));
     }
+    newProject.currentGame = await this.gameService.getGameById(gameId);
     newProject.games = games;
     newProject.user = user;
     newProject.isCompleted = false;

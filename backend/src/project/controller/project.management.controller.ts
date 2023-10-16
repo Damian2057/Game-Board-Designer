@@ -16,9 +16,11 @@ export class ProjectManagementController {
     private readonly projectManagementService: ProjectManagementService,
   ) {}
 
-  @Post('start-new-project/:projectId')
-  async createNewProjectBasedOnExistingProject(@GetCurrentUser() user, @Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.projectManagementService.createNewProjectBasedOnExistingProject(user, projectId);
+  @Post('start-new-project/:projectId/:gameId')
+  async createNewProjectBasedOnExistingProject(@GetCurrentUser() user,
+                                               @Param('projectId') projectId: number,
+                                               @Param('gameId') gameId: number): Promise<ProjectDto> {
+    return this.projectManagementService.createNewProjectBasedOnExistingProject(user, projectId, gameId);
   }
 
   @Put('assign-project/:projectId')

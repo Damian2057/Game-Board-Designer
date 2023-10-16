@@ -2,7 +2,10 @@ import React from "react";
 import {Card, Col, Container, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {StartNewProjectProps} from "../Props/StartNewProjectProps";
-import ContentCard from "../../util/ContentCard/ContentCard";
+import ListProjectsModal from "./ListProjectsModal";
+import {Project} from "../../../../model/project/project";
+import {Api} from "../../../../connector/api";
+import toast from "react-hot-toast";
 
 const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
@@ -19,6 +22,21 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
             <path
                 d="M6.5 3a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm-4 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3zm8 0a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1V3z"/>
         </svg>)
+
+    const [showListProjectsModal, setShowListProjectsModal] = React.useState(false)
+
+    function handleStartNewProject() {
+        setShowListProjectsModal(true)
+    }
+
+    function handleStartNewOrder() {
+
+    }
+
+    function handleSave(project: Project | null) {
+        toast(`Project ${project?.name} started`, { icon: "👏" });
+        onClose();
+    }
 
     return (
         <div className='NewGameModal'>
@@ -41,15 +59,51 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
                         <p className='font-bold fs-2'>Start New Project</p>
                         <Row className="w-100 d-flex justify-content-center">
                             <Col lg={4}>
-                                <ContentCard linkTo={'/panel/orders'} icon={project} title={'Start Project'} description={''} />
+                                <Card onClick={handleStartNewProject} id="panelCard" className="mt-5 p-2 shadow" style={{
+                                    backgroundColor: '#7D53DE',
+                                    borderColor: '#7D53DE',
+                                    color: 'white',
+                                    borderRadius: '20px'
+                                }}>
+                                    <Card.Body>
+                                        <div className="text-start flex gap-3 items-center">
+                                            {project}
+                                        </div>
+                                        <div className="py-2">
+                                            <span className="fs-3 fw-bold">{'Start Project'}</span>
+                                        </div>
+                                        <div className="font-semibold py-3">{}</div>
+                                    </Card.Body>
+                                </Card>
                             </Col>
                             <Col lg={4}>
-                                <ContentCard linkTo={'/panel/workspace'} icon={todoIcon} title={'Start Order'} description={''} />
+                                <Card onClick={handleStartNewOrder} id="panelCard" className="mt-5 p-2 shadow" style={{
+                                    backgroundColor: '#7D53DE',
+                                    borderColor: '#7D53DE',
+                                    color: 'white',
+                                    borderRadius: '20px'
+                                }}>
+                                    <Card.Body>
+                                        <div className="text-start flex gap-3 items-center">
+                                            {todoIcon}
+                                        </div>
+                                        <div className="py-2">
+                                            <span className="fs-3 fw-bold">{'Start Order'}</span>
+                                        </div>
+                                        <div className="font-semibold py-3">{}</div>
+                                    </Card.Body>
+                                </Card>
                             </Col>
                         </Row>
                     </Card.Body>
                 </Card>
             </Container>
+            {showListProjectsModal && (
+                <ListProjectsModal
+                    onClose={() => setShowListProjectsModal(false)}
+                    onSave={handleSave}
+                />
+            )}
         </div>
     )
 }

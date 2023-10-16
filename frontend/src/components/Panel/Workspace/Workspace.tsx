@@ -15,12 +15,16 @@ function  Workspace() {
     const [showStartNewProjectModal, setShowStartNewProjectModal] = React.useState(false);
 
     React.useEffect(() => {
-       Api.project.getMyProjects().then((projects) => {
+        fetchMyProjects();
+    }, []);
+
+    const fetchMyProjects = () => {
+        Api.project.getMyProjects().then((projects) => {
             setMyProjects(projects);
         }).catch((error) => {
-           toast.error(`${error.response.data.message}`, {icon: "💀"});
+            toast.error(`${error.response.data.message}`, {icon: "💀"});
         });
-    }, []);
+    }
 
     const handleProjectInfo = (order: any) => {
         setSelectedProject(order);
@@ -51,6 +55,11 @@ function  Workspace() {
 
     function startNewProject() {
         setShowStartNewProjectModal(true);
+    }
+
+    function handleCloseStartNewProject() {
+        setShowStartNewProjectModal(false);
+        fetchMyProjects();
     }
 
     return (
@@ -95,6 +104,7 @@ function  Workspace() {
                                 <Table striped bordered hover>
                                     <thead>
                                         <tr className='uppercase'>
+                                            <th>ID</th>
                                             <th>Name</th>
                                             <th>Containers</th>
                                             <th>Elements</th>
@@ -107,10 +117,12 @@ function  Workspace() {
                                     <tbody>
                                         {myProjects.map((proj) => (
                                             <tr key={proj.id}>
+                                                <td className='centered-td'>{proj.id}</td>
                                                 <td className='centered-td'>{proj.name}</td>
                                                 <td className='centered-td'>{proj.containers.length}</td>
                                                 <td className='centered-td'>{proj.elements.length}</td>
                                                 <td className='centered-td'>{proj.isCompleted ? 'Completed' : 'OnGoing'}</td>
+                                                <td className='centered-td'>{proj.currentGame?.title}</td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleProjectInfo(proj)}>Info</Button>
                                                 </td>
@@ -119,19 +131,19 @@ function  Workspace() {
                                                 </td>
                                             </tr>
                                         ))}
-                                        {selectedProject && (
-                                            <ProjectInfoModal
-                                                project={selectedProject}
-                                                onClose={() => setSelectedProject(null)}
-                                            />
-                                        )}
                                     </tbody>
                                 </Table>
                             </Col>
                         </div>
+                        {selectedProject && (
+                            <ProjectInfoModal
+                                project={selectedProject}
+                                onClose={() => setSelectedProject(null)}
+                            />
+                        )}
                         {showStartNewProjectModal && (
                             <StartNewProjectModal
-                                onClose={() => setShowStartNewProjectModal(false)}
+                                onClose={handleCloseStartNewProject}
                                 onSave={() => {}}
                             />
                         )}

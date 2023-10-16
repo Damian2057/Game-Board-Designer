@@ -362,8 +362,8 @@ export class ProjectApi {
         });
     }
 
-    static startProject(id: number): Promise<Project> {
-        return axios.post(`${import.meta.env.VITE_URL}/project/start-new-project/${id}`, {}, {
+    static startProject(id: number, gameId: number): Promise<Project> {
+        return axios.post(`${import.meta.env.VITE_URL}/project/manage/start-new-project/${id}/${gameId}`, {}, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
@@ -373,7 +373,7 @@ export class ProjectApi {
     }
 
     static assignProjectToMe(id: number): Promise<Project> {
-        return axios.put(`${import.meta.env.VITE_URL}/project/assign-project/${id}`, {}, {
+        return axios.put(`${import.meta.env.VITE_URL}/project/manage/assign-project/${id}`, {}, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
@@ -460,7 +460,7 @@ export class ProjectApi {
             params: {
                 page: page,
                 limit: itemsPerPage,
-                isTemplate: data.isTemplate ? data.isTemplate : null,
+                isTemplate: data.isTemplate ? data.isTemplate : false,
                 isCompleted: data.isCompleted ? data.isCompleted : null,
                 workerId: data.workerId ? data.workerId : null,
                 game: data.game ? data.game : null,
