@@ -9,16 +9,26 @@ import { RolesGuard } from "../../auth/guard/roles.guard";
 
 @HasRoles(UserRole.EMPLOYEE, UserRole.ADMIN)
 @UseGuards(JwtGuard, RolesGuard)
-@Controller('project')
+@Controller('project/manage')
 export class ProjectManagementController {
 
   constructor(
     private readonly projectManagementService: ProjectManagementService,
   ) {}
 
-  @Post('start-new-project/:projectId')
-  async createNewProjectBasedOnExistingProject(@GetCurrentUser() user, @Param('projectId') projectId: number): Promise<ProjectDto> {
-    return this.projectManagementService.createNewProjectBasedOnExistingProject(user, projectId);
+  @Post('start-new-project/:projectId/:gameId')
+  async createNewProjectBasedOnExistingProject(@GetCurrentUser() user,
+                                               @Param('projectId') projectId: number,
+                                               @Param('gameId') gameId: number): Promise<ProjectDto> {
+    return this.projectManagementService.createNewProjectBasedOnExistingProject(user, projectId, gameId);
+  }
+
+  @Put('assign-order/:projectId/:orderId/:gameId')
+  async assignOrderToProject(@GetCurrentUser() user,
+                             @Param('projectId') projectId: number,
+                              @Param('orderId') orderId: number,
+                             @Param('gameId') gameId: number): Promise<ProjectDto> {
+    return this.projectManagementService.assignOrderToProject(user, projectId, orderId, gameId);
   }
 
   @Put('assign-project/:projectId')

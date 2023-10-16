@@ -12,6 +12,9 @@ import { ContainerService } from "./container.service";
 import { BoxService } from "./box.service";
 import { ElementService } from "./element.service";
 import { Game } from "../../game/model/domain/game.entity";
+import { Order } from "../../order/model/domain/order.entity";
+import { OrderService } from "../../order/service/order.service";
+import { OrderStatus } from "../../order/model/domain/order.status.enum";
 
 @Injectable()
 export class ProjectManagementService {
@@ -24,9 +27,10 @@ export class ProjectManagementService {
     private readonly containerService: ContainerService,
     private readonly boxService: BoxService,
     private readonly elementService: ElementService,
+    private readonly orderService: OrderService,
   ) {}
 
-  async createNewProjectBasedOnExistingProject(user, projectId: number): Promise<ProjectDto> {
+  async createNewProjectBasedOnExistingProject(user, projectId: number, gameId: number): Promise<ProjectDto> {
     const project: Project = await this.getProjectById(projectId);
     let newProject: Project = mapProjectCreateCommandToProject(project);
     newProject = deleteIdsFromObject(newProject);
@@ -37,6 +41,7 @@ export class ProjectManagementService {
     for (const game of project.games) {
       games.push(await this.gameService.getGameById(game.id));
     }
+    newProject.currentGame = await this.gameService.getGameById(gameId);
     newProject.games = games;
     newProject.user = user;
     newProject.isCompleted = false;
@@ -221,4 +226,30 @@ export class ProjectManagementService {
     });
   }
 
+  async assignOrderToProject(user, projectId: number, orderId: number, gameId: number): Promise<ProjectDto> {
+    let order: Order = await this.getOrder(orderId);
+    let createProj: ProjectDto = await this.createNewProjectBasedOnExistingProject(user, projectId, gameId);
+    let project: Project = await this.getProjectById(createProj.id);
+    order.status = OrderStatus.IN_PROGRESS;
+    project.order = await this.orderService.saveOrder(order);
+    project = await this.projectRepository.save(project);
+    return mapProjectToProjectDto(project);
+  }
+
+  private async getOrder(orderId: number): Promise<Order> {
+    const project: Project = await this.projectRepository.findOne({
+      relations: {
+        order: true,
+      },
+      where: {
+        order: {
+          id: orderId
+        }
+      }
+    });
+    if (project == null) {
+      return await this.orderService.getOrderById(orderId);
+    }
+    throw new IllegalArgumentException(`Order with id ${orderId} already assigned to project`);
+  }
 }
