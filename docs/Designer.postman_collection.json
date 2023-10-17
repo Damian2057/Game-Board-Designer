@@ -1331,14 +1331,15 @@
 								"method": "PUT",
 								"header": [],
 								"url": {
-									"raw": "{{BASEURL}}/project/assign-project/1",
+									"raw": "{{BASEURL}}/project/manage/assign-project/37",
 									"host": [
 										"{{BASEURL}}"
 									],
 									"path": [
 										"project",
+										"manage",
 										"assign-project",
-										"1"
+										"37"
 									]
 								}
 							},
