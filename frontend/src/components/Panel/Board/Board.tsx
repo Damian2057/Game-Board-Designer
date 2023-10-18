@@ -10,18 +10,25 @@ import {useNavigate, useParams} from "react-router-dom";
 import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
 import {TaskModel} from "../../../model/TaskModel";
+import StatusUpdateModal from "./Modals/StatusUpdateModal";
+import {Order} from "../../../model/order/order";
 
 function Board() {
 
     const { id } = useParams();
     const [tasks, setTasks] = React.useState([] as TaskModel[])
     const [project, setProject] = React.useState<Project>()
+    const [showStatusModal, setShowStatusModal] = React.useState(false);
+    const [currentStatus, setCurrentStatus] = React.useState('' as string);
     const navigate = useNavigate();
 
     React.useEffect(() => {
         Api.project.getProject(id).then((project) => {
             setProject(project);
             mapElementsToTask(project)
+            if (project.order) {
+                setCurrentStatus(project.order.status);
+            }
         }).catch((error) => {
             toast.error(`${error.response.data.message}`, { icon: "💀" });
         });
@@ -58,6 +65,17 @@ function Board() {
         });
     }
 
+    function handleSaveStatusUpdate(order: Order | undefined) {
+        setShowStatusModal(false);
+        if (order?.status) {
+            setCurrentStatus(order.status);
+        }
+    }
+
+    function handleStatusSelect() {
+        setShowStatusModal(true);
+    }
+
     return (
         <div className='board'>
             <DndProvider backend={HTML5Backend}>
@@ -66,17 +84,17 @@ function Board() {
                     <div className='flex flex-row justify-end items-end'>
                         <IconCircle path={'/panel/workspace'} />
                     </div>
-                    <h1 className='pb-5'>Board</h1>
+                    <h1 className='pb-5'>{project?.name}</h1>
                     <Row className='w-100 justify-content-end'>
                         {project?.order && (
                             <Col lg={3} className="text-right">
                                 <div className="d-flex flex-column align-items-center justify-content-center">
                                     <Row>
-                                        <button className='rounded-md w-40 p-2 bg-blue-500 text-white'>Status</button>
+                                        <button className='rounded-md w-40 p-2 bg-blue-500 text-white' onClick={handleStatusSelect}>Status</button>
                                     </Row>
                                     <Row>
                                         <div className="rounded-md w-40 p-2 bg-blue-500 text-white d-flex align-items-center justify-content-center" style={{ width: '100px', height: '40px' }}>
-                                            <p className="m-0">{project?.order?.status}</p>
+                                            <p className="m-0">{currentStatus}</p>
                                         </div>
                                     </Row>
                                 </div>
@@ -107,6 +125,12 @@ function Board() {
                     </div>
                 </Card>
             </DndProvider>
+            <StatusUpdateModal
+                show={showStatusModal}
+                onClose={() => setShowStatusModal(false)}
+                onSave={handleSaveStatusUpdate}
+                editedOrder={project?.order}
+            />
         </div>
     )
 }
