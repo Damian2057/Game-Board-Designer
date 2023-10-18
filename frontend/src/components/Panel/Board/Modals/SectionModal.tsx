@@ -5,15 +5,16 @@ import React from "react";
 import {SectionProps} from "../Props/SectionProps";
 import HeaderModal from "./HeaderModal";
 import TaskModal from "./TaskModal";
+import {TaskModel} from "../../../../model/TaskModel";
 
 
 const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, inProgress, done, blocked }) => {
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: 'task',
-        drop: (item) => addItemToSection(item.id),
+        drop: (item: TaskModel) => addItemToSection(item),
         collect: (monitor) => ({
-            isOver: !!monitor.isOver()
+            isOver: monitor.isOver()
         })
     }))
 
@@ -39,21 +40,21 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
         tasksToMap = blocked;
     }
 
-    const addItemToSection = (id) => {
-        setTasks(prev => {
-            const modifiedTasks = prev.map(t => {
-                if (t.id === id) {
-                    return { ...t, status: status }
+    const addItemToSection = (item: any) => {
+        const selectedTask = item.task;
+        // @ts-ignore
+        setTasks((prev) => {
+            const modifiedTasks = prev.map((task: any) => {
+                if (task.id === selectedTask.id && task.type === selectedTask.type) {
+                    return { ...task, status: status };
                 }
-                return t;
+                return task;
             });
-
-            localStorage.setItem("tasks", JSON.stringify(modifiedTasks));
 
             toast("Task status changed", { icon: "😎" });
 
             return modifiedTasks;
-        })
+        });
     }
 
     return (

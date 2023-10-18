@@ -1,7 +1,9 @@
 import {Button, Form, Modal} from "react-bootstrap";
 import React from "react";
+import {TaskInfoProps} from "../Props/TaskInfoProps";
 
-function TaskInfoModal(props) {
+
+const TaskInfoModal: React.FC<TaskInfoProps> = ({ show, onHide }) => {
 
     const handleClose = () => {
     }
@@ -11,13 +13,14 @@ function TaskInfoModal(props) {
     }
     return (
         <Modal
-            {...props}
-            size="md"
+            show={show}
+            onHide={onHide}
+            size="lg"
             aria-labelledby="contained-modal-title-vcenter"
             centered
         >
             <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter" >
+                <Modal.Title id="contained-modal-title-vcenter">
                     Task Info
                 </Modal.Title>
             </Modal.Header>
@@ -34,7 +37,10 @@ function TaskInfoModal(props) {
                 <Button variant="secondary" onClick={handleClose}>
                     Close
                 </Button>
-                <Button onClick={handleSave} style={{ backgroundColor: '#7D53DE', borderColor: '#7D53DE' }}>
+                <Button
+                    onClick={handleSave}
+                    style={{ backgroundColor: '#7D53DE', borderColor: '#7D53DE' }}
+                >
                     Save Changes
                 </Button>
             </Modal.Footer>
