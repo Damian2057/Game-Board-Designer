@@ -25,10 +25,13 @@ const TaskModal: React.FC<TaskProps> = ({ task, tasks, setTasks }) => {
                     <PriorityModal priority={task.priority} />
                 </div>
             </div>
-            <TaskInfoModal
-                show={modalShow}
-                onHide={() => setModalShow(false)}
-            />
+            {modalShow && (
+                <TaskInfoModal
+                    task={task}
+                    show={modalShow}
+                    onHide={() => setModalShow(false)}
+                />
+            )}
         </div>
     )
 }
