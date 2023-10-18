@@ -3,7 +3,7 @@ import {Row, Col, Card } from 'react-bootstrap'
 import toast, { Toaster } from 'react-hot-toast';
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
-import ListTasks from './Modals/ListTasks';
+import ListTasksModal from './Modals/ListTasksModal';
 import IconCircle from '../../util/IconCircle';
 import './Board.css'
 import {useNavigate, useParams} from "react-router-dom";
@@ -121,7 +121,7 @@ function Board() {
                         </Col>
                     </Row>
                     <div className='bg-slate-100 flex flex-col p-3 gap-16 justify-center items-center'>
-                        <ListTasks tasks={tasks} setTasks={setTasks} id={project?.id}/>
+                        <ListTasksModal tasks={tasks} setTasks={setTasks} id={project?.id}/>
                     </div>
                 </Card>
             </DndProvider>
