@@ -120,9 +120,6 @@ function Board() {
                         )}
                         <Col lg={3} className="text-right">
                             <div>
-                                {/*<Row>*/}
-                                {/*    <button className='rounded-md w-40 p-2 bg-red-500 text-white' onClick={deleteProject}>Decline</button>*/}
-                                {/*</Row>*/}
                                 <Row>
                                     <button className='rounded-md w-40 p-2 bg-green-500 text-white' onClick={markAsCompleted}>Complete</button>
                                 </Row>

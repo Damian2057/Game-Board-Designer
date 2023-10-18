@@ -6,6 +6,7 @@ import {SectionProps} from "../Props/SectionProps";
 import HeaderModal from "./HeaderModal";
 import TaskModal from "./TaskModal";
 import {TaskModel} from "../../../../model/TaskModel";
+import {Api} from "../../../../connector/api";
 
 
 const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, inProgress, done, blocked }) => {
@@ -46,6 +47,7 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
         setTasks((prev) => {
             const modifiedTasks = prev.map((task: any) => {
                 if (task.id === selectedTask.id && task.type === selectedTask.type) {
+                    handleUpdateStatus(task, status);
                     return { ...task, status: status };
                 }
                 return task;
@@ -54,6 +56,12 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
             toast("Task status changed", { icon: "😎" });
 
             return modifiedTasks;
+        });
+    }
+
+    const handleUpdateStatus = (task: TaskModel, status: string) => {
+        Api.project.updateStatus(task.id, status, task.type).catch((err) => {
+            toast.error("Error while updating task status");
         });
     }
 
