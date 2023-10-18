@@ -8,4 +8,6 @@ export class UpdateProjectCommand {
   games: GameDto[];
   imageIds: number[];
   order: OrderDto;
+  isTemplate: boolean;
+  isCompleted: boolean;
 }

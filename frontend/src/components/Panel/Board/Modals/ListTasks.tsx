@@ -2,31 +2,35 @@ import React, { useEffect, useState } from 'react'
 import { Button, Form, Modal } from 'react-bootstrap';
 import { useDrag, useDrop } from 'react-dnd';
 import toast from 'react-hot-toast';
+import {ListTasksProps} from "../Props/ListTasksProps";
+import {TaskModel} from "../../../../model/TaskModel";
+import {Status} from "../Status";
 
-const ListTasks = ({ tasks, setTasks }) => {
+const ListTasks: React.FC<ListTasksProps> = ({ tasks, setTasks, id }) => {
 
-    const [todos, setTodos] = useState([]);
-    const [inProgress, setInProgress] = useState([]);
-    const [done, setDone] = useState([]);
+    const [todos, setTodos] = useState([] as TaskModel[]);
+    const [inProgress, setInProgress] = useState([] as TaskModel[]);
+    const [done, setDone] = useState([] as TaskModel[]);
+    const [blocked, setBlocked] = useState([] as TaskModel[]);
+    const statuses = [Status.TODO, Status.IN_PROGRESS, Status.BLOCKED, Status.DONE];
 
     useEffect(() => {
-
-        const filteredTodos = tasks.filter(task => task.status === 'todo')
-        const filteredInProgress = tasks.filter(task => task.status === 'inprogress')
-        const filteredDone = tasks.filter(task => task.status === 'done')
+        const filteredTodos = tasks.filter(task => task.status === Status.TODO)
+        const filteredInProgress = tasks.filter(task => task.status === Status.IN_PROGRESS)
+        const filteredDone = tasks.filter(task => task.status === Status.DONE)
+        const filteredBlocked = tasks.filter(task => task.status === Status.BLOCKED)
 
         setTodos(filteredTodos);
         setInProgress(filteredInProgress);
         setDone(filteredDone);
+        setBlocked(filteredBlocked);
 
     }, [tasks]);
-
-    const statuses = ['todo', 'inprogress', 'done']
 
     return (
         <div className='flex gap-16'>
             {statuses.map((status, index) => (
-                <Section key={index} status={status} tasks={tasks} setTasks={setTasks} todos={todos} inProgress={inProgress} done={done} />
+                <Section key={index} status={status} tasks={tasks} setTasks={setTasks} todos={todos} inProgress={inProgress} done={done} blocked={blocked} />
             ))}
         </div>
     )
@@ -34,7 +38,7 @@ const ListTasks = ({ tasks, setTasks }) => {
 
 export default ListTasks
 
-const Section = ({ status, tasks, setTasks, todos, inProgress, done }) => {
+const Section = ({ status, tasks, setTasks, todos, inProgress, done, blocked }) => {
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: 'task',
@@ -48,16 +52,22 @@ const Section = ({ status, tasks, setTasks, todos, inProgress, done }) => {
     let bg = 'bg-orange-400';
     let tasksToMap = todos;
 
-    if (status === "inprogress") {
+    if (status === Status.IN_PROGRESS) {
         text = 'In Progress';
         bg = 'bg-purple-400';
         tasksToMap = inProgress;
     }
 
-    if (status === "done") {
+    if (status === Status.DONE) {
         text = 'Done';
         bg = 'bg-green-400';
         tasksToMap = done;
+    }
+
+    if (status === Status.BLOCKED) {
+        text = 'Blocked';
+        bg = 'bg-red-400';
+        tasksToMap = blocked;
     }
 
     const addItemToSection = (id) => {
