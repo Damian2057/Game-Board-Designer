@@ -7,14 +7,17 @@ import CreateTask from './CreateTask';
 import ListTasks from './ListTasks';
 import IconCircle from '../../util/IconCircle';
 import './Board.css'
+import {useParams} from "react-router-dom";
 
 type Props = {}
 
 function Board({ }: Props) {
+
+    const { id } = useParams();
     const [tasks, setTasks] = React.useState([])
 
     React.useEffect(() => {
-        setTasks(JSON.parse(localStorage.getItem('tasks')));
+        // setTasks(JSON.parse(localStorage.getItem('tasks')));
     }, [])
 
     return (
@@ -48,7 +51,7 @@ function Board({ }: Props) {
                         </Col>
                     </Row>
                     <div className='bg-slate-100 flex flex-col p-3 gap-16 justify-center items-center'>
-                        <CreateTask tasks={tasks} setTasks={setTasks} />
+                        {/*<CreateTask tasks={tasks} setTasks={setTasks} />*/}
                         <ListTasks tasks={tasks} setTasks={setTasks} />
                     </div>
                 </Card>
