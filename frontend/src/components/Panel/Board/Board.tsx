@@ -12,6 +12,7 @@ import {Api} from "../../../connector/api";
 import {TaskModel} from "../../../model/TaskModel";
 import StatusUpdateModal from "./Modals/StatusUpdateModal";
 import {Order} from "../../../model/order/order";
+import OrderInfoModal from "../Orders/Modals/OrderInfoModal";
 
 function Board() {
 
@@ -20,6 +21,7 @@ function Board() {
     const [project, setProject] = React.useState<Project>()
     const [showStatusModal, setShowStatusModal] = React.useState(false);
     const [currentStatus, setCurrentStatus] = React.useState('' as string);
+    const [selectedOrderInfo, setSelectedOrderInfo] = React.useState<Order | null>();
     const navigate = useNavigate();
 
     React.useEffect(() => {
@@ -50,10 +52,6 @@ function Board() {
         setTasks(taskTODO);
     }
 
-    function deleteProject() {
-        //TODO: delete project
-    }
-
     function markAsCompleted() {
         Api.project.completeProject(id).then(() => {
             toast.success(`Project marked as completed`);
@@ -74,6 +72,17 @@ function Board() {
 
     function handleStatusSelect() {
         setShowStatusModal(true);
+    }
+
+    function showOrderDetails() {
+        if (!project?.order) {
+            return;
+        }
+        Api.order.getOrderById(project?.order?.id).then((order) => {
+            setSelectedOrderInfo(order);
+        }).catch((error) => {
+            toast.error(`${error.response.data.message}`, { icon: "💀" });
+        });
     }
 
     return (
@@ -104,16 +113,13 @@ function Board() {
                             <Col lg={3} className="text-right">
                                 <div>
                                     <Row>
-                                        <button className='rounded-md w-40 p-2 bg-blue-500 text-white'>Order Details</button>
+                                        <button onClick={showOrderDetails} className='rounded-md w-40 p-2 bg-blue-500 text-white'>Order Details</button>
                                     </Row>
                                 </div>
                             </Col>
                         )}
                         <Col lg={3} className="text-right">
                             <div>
-                                <Row>
-                                    <button className='rounded-md w-40 p-2 bg-red-500 text-white' onClick={deleteProject}>Decline</button>
-                                </Row>
                                 <Row>
                                     <button className='rounded-md w-40 p-2 bg-green-500 text-white' onClick={markAsCompleted}>Complete</button>
                                 </Row>
@@ -131,6 +137,12 @@ function Board() {
                 onSave={handleSaveStatusUpdate}
                 editedOrder={project?.order}
             />
+            {selectedOrderInfo && (
+                <OrderInfoModal
+                    order={selectedOrderInfo}
+                    onClose={() => setSelectedOrderInfo(null)}
+                />
+            )}
         </div>
     )
 }

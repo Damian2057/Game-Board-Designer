@@ -22,7 +22,7 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
     }
 
     return (
-        <Modal show={true} onHide={onClose} className='text-white'>
+        <Modal show={true} onHide={onClose} className='text-white' size="lg">
             <div className='icon-position' >
                 <a onClick={onClose} >
                     <div className='icon-circle' >
