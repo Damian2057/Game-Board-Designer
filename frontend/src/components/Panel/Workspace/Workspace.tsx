@@ -7,12 +7,14 @@ import {Project} from "../../../model/project/project";
 import {Api} from "../../../connector/api";
 import ProjectInfoModal from "../ManageProjects/Modals/ProjectInfoModal";
 import StartNewProjectModal from "./Modals/StartNewProjectModal";
+import {useNavigate} from "react-router-dom";
 
 function  Workspace() {
 
     const [myProjects, setMyProjects] = useState([] as Project[]);
     const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
     const [showStartNewProjectModal, setShowStartNewProjectModal] = React.useState(false);
+    const navigate = useNavigate();
 
     React.useEffect(() => {
         fetchMyProjects();
@@ -60,6 +62,10 @@ function  Workspace() {
     function handleCloseStartNewProject() {
         setShowStartNewProjectModal(false);
         fetchMyProjects();
+    }
+
+    function redirectProjectBoard(proj: Project) {
+        navigate(`/panel/workspace/board/${proj.id}`);
     }
 
     return (
@@ -127,7 +133,7 @@ function  Workspace() {
                                                     <Button className='button-workspace' onClick={() => handleProjectInfo(proj)}>Info</Button>
                                                 </td>
                                                 <td>
-                                                    <Button href='/panel/workspace/board' className='button-workspace'>Continue</Button>
+                                                    <Button onClick={() => redirectProjectBoard(proj)} className='button-workspace'>Continue</Button>
                                                 </td>
                                             </tr>
                                         ))}

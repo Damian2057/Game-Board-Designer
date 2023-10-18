@@ -306,7 +306,7 @@ export class ProjectApi {
         });
     }
 
-    static completeProject(id: number): Promise<Project> {
+    static completeProject(id: any): Promise<Project> {
         return axios.put(`${import.meta.env.VITE_URL}/project/complete-project/${id}`, {}, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -316,7 +316,7 @@ export class ProjectApi {
         });
     }
 
-    static getProject(id: number): Promise<Project> {
+    static getProject(id: any): Promise<Project> {
         return axios.get(`${import.meta.env.VITE_URL}/project/${id}`, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
@@ -334,6 +334,8 @@ export class ProjectApi {
             games: data.games,
             imageIds: data.imageIds,
             order: data.order,
+            isTemplate: data.isTemplate,
+            isCompleted: data.isCompleted,
         }, {
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')

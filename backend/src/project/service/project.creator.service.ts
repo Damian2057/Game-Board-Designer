@@ -273,6 +273,12 @@ export class ProjectCreatorService {
       }
       project.games = games;
     }
+    if (command.isTemplate) {
+      project.isTemplate = command.isTemplate;
+    }
+    if (command.isCompleted) {
+      project.isCompleted = command.isCompleted;
+    }
 
     return project;
   }

@@ -37,7 +37,7 @@ function App() {
           <Route path='/login' element={<Login />} />
           <Route path='/register' element={<Register />} />
           <Route path='/order' element={<Order />} />
-          <Route path='/panel/workspace/board' element={<Board />} />
+          <Route path='/panel/workspace/board/:id' element={<Board />} />
           <Route path='/panel/admin' element={<AdminPanel />} />
           <Route path='/panel/custom' element={<CustomOptionPanel />} />
           <Route path='/panel/employee' element={<EmployeePanel />} />
