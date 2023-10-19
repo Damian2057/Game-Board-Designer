@@ -3,20 +3,19 @@ import './NavBar.css';
 import { Navbar, Container, Nav } from "react-bootstrap";
 import {Link, useLocation} from "react-router-dom";
 import {Api} from "../../connector/api";
-import {PiUserListBold} from "react-icons/pi";
 import {FaRegUserCircle} from "react-icons/fa";
 import {TbLayoutDashboard} from "react-icons/tb";
 import {FiShoppingCart} from "react-icons/fi";
 import LanguageSwitcher from "./LanguageSwitcher/LanguageSwitcher";
+import {useTranslation} from "react-i18next";
 
 export const NavBar = () => {
 
+    const { t } = useTranslation();
     const location = useLocation();
-
     const isUserLoggedIn: boolean = !!Api.auth.getAuthToken();
-    const linkText = isUserLoggedIn ? 'Sign Out' : 'Sign In';
+    const linkText: string = isUserLoggedIn ? t('Sign out') : t('Sign in');
     const linkPath = isUserLoggedIn ? '/' : '/login';
-
     const isEmployee: boolean = Api.auth.isEmployee();
 
     const handleSignOut = () => {
@@ -33,16 +32,16 @@ export const NavBar = () => {
                 <Navbar.Collapse id="responsive-navbar-nav">
                     <Nav variant="underline" activeKey={location.pathname}>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/" eventKey="/">Home</Nav.Link>
+                            <Nav.Link as={Link} to="/" eventKey="/">{t('Home')}</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/games" eventKey="/games">Games</Nav.Link>
+                            <Nav.Link as={Link} to="/games" eventKey="/games">{t('Games')}</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/about" eventKey="/about">About</Nav.Link>
+                            <Nav.Link as={Link} to="/about" eventKey="/about">{t('About')}</Nav.Link>
                         </Nav.Item>
                         <Nav.Item>
-                            <Nav.Link as={Link} to="/contact" eventKey="/contact">Contact</Nav.Link>
+                            <Nav.Link as={Link} to="/contact" eventKey="/contact">{t('Contact')}</Nav.Link>
                         </Nav.Item>
                         {isUserLoggedIn && (
                             <Nav.Item>
@@ -76,7 +75,7 @@ export const NavBar = () => {
                                        <TbLayoutDashboard size={30} />
                                    </div>
                                    <div>
-                                       DashBoard
+                                       {t('Dashboard')}
                                    </div>
                                     </div>
                                 </Nav.Link>

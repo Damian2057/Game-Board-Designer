@@ -15,8 +15,8 @@ import toast, {Toaster} from "react-hot-toast";
 import {useTranslation} from "react-i18next";
 
 function Home() {
-    const { t } = useTranslation();
 
+    const { t } = useTranslation();
     const maxTags = 6;
     const [tags, setTags] = useState<Tag[]>([]);
     const [games, setGames] = useState<Game[]>([]);
@@ -46,15 +46,15 @@ function Home() {
                 height: '94vh',
             }}>
                 <h1 className='text-dsc'>{t('Evert game has a story')}</h1>
-                <p className='p-dsc'>Discover the captivating narratives woven into every gaming experience, where imagination and gameplay unite to create unforgettable stories.</p>
-                <Button href="/games" className='button-games px-4'>View games</Button>
+                <p className='p-dsc'>{t('Main Text')}</p>
+                <Button href="/games" className='button-games px-4'>{t('View Games')}</Button>
             </section>
             <section className='featured-categories'>
                 <h1 style={{
                     fontSize: '50px',
                     color: 'white',
                     fontWeight: 'bold'
-                }}>Featured Categories</h1>
+                }}>{t('Featured Categories')}</h1>
                 <Container className='mt-5'>
                     <Row>
                         {tags.slice(0, maxTags).map((tag, index) => (
@@ -68,15 +68,15 @@ function Home() {
                             </Col>
                         ))}
                     </Row>
-                    <span className='mt-4 category-text'>And more...</span>
+                    <span className='mt-4 category-text'>{t('And More')}</span>
                 </Container>
             </section>
             <section className='week-highlights py-5'>
                 <h1 style={{
                     fontSize: '50px',
                     fontWeight: 'bold'
-                }}>Trending Games</h1>
-                <p>Explore the hottest and most popular games taking the gaming world by storm in our 'Trending Games' spotlight.</p>
+                }}>{t('Trending Games')}</h1>
+                <p>{t('Trending games description')}</p>
                 <Container className='mt-5 trending-games-container'>
                     <Row>
                         {games.map((game, index) => (
@@ -92,7 +92,7 @@ function Home() {
                         ))}
                     </Row>
                 </Container>
-                <Button href="/games" className='all-down-button px-4 mt-4'>View All Games</Button>
+                <Button href="/games" className='all-down-button px-4 mt-4'>{t('View All Games')}</Button>
             </section>
             <section className='trending-games'>
                 <h1 style={{
