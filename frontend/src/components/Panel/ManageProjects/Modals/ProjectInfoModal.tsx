@@ -7,6 +7,8 @@ import ImageSliderModal from "./ImageSliderModal";
 import BoxInfoModal from "./box/BoxInfoModal";
 import ElementInfoModal from "./element/ElementInfoModal";
 import ContainerInfoModal from "./conteiner/ContainerInfoModal";
+import ChoiceElement from "../../../util/ChoiceElement";
+import {boxIcon, imageIcon} from "../../../util/Icons";
 
 const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
@@ -100,11 +102,13 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                             </tbody>
                                         </Table>
                                     </div>
-                                    <div>
-                                        <span className='fw-bold'>Box:</span> <Button variant="outline-primary" onClick={handleShowBox}>Show</Button>
-                                    </div>
-                                    <div>
-                                        <span className='fw-bold'>Images:</span> <Button variant="outline-primary" onClick={handleShowImage}>Show</Button>
+                                    <div style={{ display: 'flex' }}>
+                                        <div style={{ marginRight: '20px' }}>
+                                            <ChoiceElement name={"Box"} icon={boxIcon} onClick={handleShowBox}/>
+                                        </div>
+                                        <div>
+                                            <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleShowImage}/>
+                                        </div>
                                     </div>
                                 </Col>
                                 <Col>
@@ -123,7 +127,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary" onClick={() => handleShowContainer(data)}>Show</Button></td>
+                                                    <td><Button className={"button-workspace"} onClick={() => handleShowContainer(data)}>Show</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>
@@ -146,7 +150,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>Show</Button></td>
+                                                    <td><Button className={"button-workspace"} onClick={() => handleShowElement(data)}>Show</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>

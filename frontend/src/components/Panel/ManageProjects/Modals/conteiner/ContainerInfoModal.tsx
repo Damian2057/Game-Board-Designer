@@ -8,10 +8,12 @@ import {ContainerInfoProps} from "../../Props/ContainerInfoProps";
 import {Api} from "../../../../../connector/api";
 import {ContainerEntity} from "../../../../../model/project/containerEntity";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
+import {imageIcon} from "../../../../util/Icons";
+import ChoiceElement from "../../../../util/ChoiceElement";
 
 const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, show }) => {
 
-    const [note, setNote] = useState(container.notes[0])
+    const [note, setNote] = useState('')
     const [showImageSliderModal, setShowImageSliderModal] = useState(false)
     const [selectedContainer, setSelectedContainer] = useState<ContainerEntity>()
     const [selectedElement, setSelectedElement] = useState<ElementEntity | null>()
@@ -19,13 +21,17 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
     React.useEffect(() => {
         Api.project.getContainer(container.id).then((res) => {
             setSelectedContainer(res)
+            setNote(res.notes[0])
         }).catch((err) => {
             toast.error(err)
         })
     })
 
     const handleClick=(index: number)=>{
-        setNote(container.notes[index])
+        if (selectedContainer === undefined) {
+            return
+        }
+        setNote(selectedContainer.notes[index])
     }
 
     function handleShowImage() {
@@ -54,7 +60,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Container: {container.name}</p>
+                        <p className='font-bold fs-2 mb-12'>Container: {selectedContainer?.name}</p>
                         <Form>
                             <Row>
                                 <Col>
@@ -63,7 +69,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                         <Form.Control
                                             as="textarea"
                                             disabled
-                                            placeholder={container.description}
+                                            placeholder={selectedContainer?.description}
                                             style={{ height: '100px', margin: '1rem 0' }}
                                         />
                                     </div>
@@ -71,19 +77,19 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                         <span className='fw-bold'>Notes:</span>
                                         <div>"{note}"</div>
                                         <div className='flex_row'>
-                                            {container.notes.map((data, i)=>
+                                            {selectedContainer?.notes.map((data, i)=>
                                                 <h1 key={i} onClick={()=>handleClick(i)}>.</h1>
                                             )}
                                         </div>
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Status:</span> {container.status}
+                                        <span className='fw-bold'>Status:</span> {selectedContainer?.status}
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Priority:</span> {container.priority}
+                                        <span className='fw-bold'>Priority:</span> {selectedContainer?.priority}
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Images:</span> <Button variant="outline-primary" onClick={handleShowImage}>Show</Button>
+                                        <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleShowImage}/>
                                     </div>
                                 </Col>
                                 <Col>
@@ -102,7 +108,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>Show</Button></td>
+                                                    <td><Button className={"button-workspace"} onClick={() => handleShowElement(data)}>Show</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>
@@ -135,7 +141,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                     </Card.Body>
                     <ImageSliderModal
                         show={showImageSliderModal}
-                        imageIds={container.imageIds}
+                        imageIds={selectedContainer?.imageIds === undefined ? [] : selectedContainer.imageIds}
                         onClose={() => setShowImageSliderModal(false)}
                     />
                     {selectedElement && (

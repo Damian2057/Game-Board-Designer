@@ -8,15 +8,19 @@ import {ElementEntity} from "../../../../../model/project/elementEntity";
 const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => {
 
     const [selectedElement, setSelectedElement] = React.useState<ElementEntity>();
-    const [note, setNote] = useState(element.notes[0])
+    const [note, setNote] = useState('')
 
     React.useEffect(() => {
         if (element?.id === undefined) return;
-        Api.project.getElement(element.id).then((e) => setSelectedElement(e));
+        Api.project.getElement(element.id).then((e) => {
+            setSelectedElement(e)
+            setNote(e.notes[0])
+        });
     });
 
     const handleClick=(index: number)=>{
-        setNote(element.notes[index])
+        if (selectedElement === undefined) return;
+        setNote(selectedElement.notes[index])
     }
 
     return (
@@ -31,7 +35,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
             <Col className='d-flex justify-content-center'>
                 <Modal.Body className='game-info rounded'>
                     <Carousel data-bs-theme="dark">
-                        {element?.imageIds.map((image, index) => (
+                        {selectedElement?.imageIds.map((image, index) => (
                             <Carousel.Item key={index}>
                                 <img
                                     src={Api.image.getImageUrl(image)}
@@ -43,24 +47,24 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                     </Carousel>
                     <Row className='mt-3 align-items-center'>
                         <Col xs={8}>
-                            <Modal.Title className='fs-2 fw-bold text-white'>{element?.name}</Modal.Title>
+                            <Modal.Title className='fs-2 fw-bold text-white'>{selectedElement?.name}</Modal.Title>
                         </Col>
                     </Row>
                     <Row className='mt-3 align-items-center text-white'>
                         <Col xs={8}>
                             <div>
-                                <span className='fw-bold'>Status:</span> {element?.status}
+                                <span className='fw-bold'>Status:</span> {selectedElement?.status}
                             </div>
                             <div>
-                                <span className='fw-bold'>Priority:</span> {element?.priority}
+                                <span className='fw-bold'>Priority:</span> {selectedElement?.priority}
                             </div>
                             <div>
-                                <span className='fw-bold'>Quantity:</span> {element?.quantity}
+                                <span className='fw-bold'>Quantity:</span> {selectedElement?.quantity}
                             </div>
                         </Col>
                     </Row>
                     <Row className='gap-2'>
-                        {element?.properties && (
+                        {selectedElement?.properties && (
                             <table className="tags-table">
                                 <thead>
                                 <tr>
@@ -92,7 +96,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                             <span className='fw-bold'>Notes:</span>
                             <div>"{note}"</div>
                             <div className='flex_row'>
-                                {element.notes.map((data, i)=>
+                                {selectedElement?.notes.map((data, i)=>
                                     <h1 key={i} onClick={()=>handleClick(i)}>.</h1>
                                 )}
                             </div>

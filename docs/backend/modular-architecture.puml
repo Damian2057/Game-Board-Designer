@@ -1,0 +1,48 @@
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.2.0/C4_Component.puml
+
+Container_Boundary(c1, Reactjs, "Reactjs") {
+    Component_Ext(react,"Communication with BE", "RESTAPI", "frontend to backend communication")
+}
+
+System_Boundary(backend, "backend") {
+    Container(api, "NestJs", "NestJs") {
+        Component(auth, "Auth", "authentication module")
+        Component(database, "Database", "database configuration module")
+        Component(exception, "Exception", "exception module")
+        Component(game, "Game", "game module")
+        Component(image, "Image", "image module")
+        Component(information, "Information", "information module")
+        Component(user, "User", "user module")
+        Component(order, "Order", "order module")
+        Component(project, "Project", "project module")
+    }
+
+    Container_Boundary(c2, "Postgres", "Postgres") {
+        Component_Ext(Postgres, "PostgresSQL", "")
+    }
+}
+
+
+Rel(auth, user, "")
+Rel(user, auth, "")
+
+Rel(user, order, "")
+Rel(project, order, "")
+Rel(project, image, "")
+Rel(project, game, "")
+Rel(game, order, "")
+Rel(game, image, "")
+
+Rel(database, auth, "")
+Rel(database, user, "")
+Rel(database, order, "")
+Rel(database, project, "")
+Rel(database, game, "")
+Rel(database, image, "")
+
+Rel(react, backend, "call")
+Rel(Postgres, database, "")
+Rel(database, Postgres, "")
+
+@enduml

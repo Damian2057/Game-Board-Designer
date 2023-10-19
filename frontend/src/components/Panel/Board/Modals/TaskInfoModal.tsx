@@ -1,50 +1,37 @@
-import {Button, Form, Modal} from "react-bootstrap";
 import React from "react";
 import {TaskInfoProps} from "../Props/TaskInfoProps";
+import BoxInfoModal from "../../ManageProjects/Modals/box/BoxInfoModal";
+import {Box} from "../../../../model/project/box";
+import ElementInfoModal from "../../ManageProjects/Modals/element/ElementInfoModal";
+import {ElementEntity} from "../../../../model/project/elementEntity";
+import ContainerInfoModal from "../../ManageProjects/Modals/conteiner/ContainerInfoModal";
+import {ContainerEntity} from "../../../../model/project/containerEntity";
 
-
-const TaskInfoModal: React.FC<TaskInfoProps> = ({ show, onHide }) => {
-
-    const handleClose = () => {
-    }
-
-    const handleSave = () => {
-
-    }
+const TaskInfoModal: React.FC<TaskInfoProps> = ({ show, onHide, task }) => {
     return (
-        <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
-            aria-labelledby="contained-modal-title-vcenter"
-            centered
-        >
-            <Modal.Header closeButton>
-                <Modal.Title id="contained-modal-title-vcenter">
-                    Task Info
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <h4>Modify task</h4>
-                <Form>
-                    <Form.Group>
-                        <Form.Label>Task description</Form.Label>
-                        <Form.Control type="text" placeholder="There must be 5 pawns" />
-                    </Form.Group>
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                    Close
-                </Button>
-                <Button
-                    onClick={handleSave}
-                    style={{ backgroundColor: '#7D53DE', borderColor: '#7D53DE' }}
-                >
-                    Save Changes
-                </Button>
-            </Modal.Footer>
-        </Modal>
+        <div>
+            {task.type === 'box' && (
+                <BoxInfoModal
+                    box={{id: task.id} as Box}
+                    onClose={onHide}
+                    show={show}
+                />
+            )}
+            {task.type === 'element' && (
+                <ElementInfoModal
+                    element={{id: task.id} as ElementEntity}
+                    onClose={onHide}
+                    show={true}
+                />
+            )}
+            {task.type === 'container' && (
+                <ContainerInfoModal
+                    container={{id: task.id} as ContainerEntity}
+                    onClose={onHide}
+                    show={true}
+                />
+            )}
+        </div>
     );
 }
 

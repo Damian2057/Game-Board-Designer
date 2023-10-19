@@ -1,0 +1,29 @@
+.purple-square {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: #7D53DE !important;
+    border-color: #7D53DE !important;
+    border-radius: 20px !important;
+    padding-inline: 1.5em !important;
+    font-weight: 600 !important;
+}
+
+.icon-container {
+    color: white;
+    font-size: 24px;
+}
+
+.text {
+    color: white;
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.purple-square:hover {
+    transform: scale(1.1);
+    background-color: rebeccapurple;
+}

@@ -9,7 +9,10 @@ import {TaskModel} from "../../../../model/TaskModel";
 import {Api} from "../../../../connector/api";
 
 
-const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, inProgress, done, blocked }) => {
+const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, inProgress, done, blocked}) => {
+
+    React.useEffect(() => {
+    }, [tasks])
 
     const [{ isOver }, drop] = useDrop(() => ({
         accept: 'task',
@@ -48,7 +51,8 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
             const modifiedTasks = prev.map((task: any) => {
                 if (task.id === selectedTask.id && task.type === selectedTask.type) {
                     handleUpdateStatus(task, status);
-                    return { ...task, status: status };
+                    task.status = status;
+                    return task;
                 }
                 return task;
             });
@@ -57,6 +61,7 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
 
             return modifiedTasks;
         });
+
     }
 
     const handleUpdateStatus = (task: TaskModel, status: string) => {
@@ -68,7 +73,7 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
     return (
         <div ref={drop} className={`w-64 rounded-md p-2 ${isOver ? 'bg-slate-200' : ''}`}>
             <HeaderModal text={text} bgColor={bg} count={tasksToMap.length} />
-            {tasksToMap.length > 0 && tasksToMap.map((task, index) => <TaskModal key={index} task={task} tasks={tasks} setTasks={setTasks} />)}
+            {tasksToMap.length > 0 && tasksToMap.map((task, index) => <TaskModal key={index} task={task} tasks={tasks} setTasks={setTasks}/>)}
         </div>
     )
 }
