@@ -1,0 +1,25 @@
+@startuml
+
+skinparam component {
+    BackgroundColor<<layerTop>> LightBlue
+    BackgroundColor<<layerMiddle>> LightGreen
+    BackgroundColor<<layerBottom>> LightYellow
+}
+
+package "Frontend" {
+    [ReactJs] as UI
+}
+
+package "Backend" {
+    [NestJs] as NestJs
+}
+
+package "Database" {
+    [PostgresSQL] as DB
+}
+
+UI --> NestJs
+NestJs --> Database
+Database --> NestJs
+
+@enduml

@@ -46,7 +46,6 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
 
     const addItemToSection = (item: any) => {
         const selectedTask = item.task;
-        handleUpdateStatus(selectedTask, status);
         // @ts-ignore
         setTasks((prev) => {
             const modifiedTasks = prev.map((task: any) => {
@@ -74,7 +73,7 @@ const SectionModal: React.FC<SectionProps> = ({ status, tasks, setTasks, todos, 
     return (
         <div ref={drop} className={`w-64 rounded-md p-2 ${isOver ? 'bg-slate-200' : ''}`}>
             <HeaderModal text={text} bgColor={bg} count={tasksToMap.length} />
-            {tasksToMap.length > 0 && tasksToMap.map((task, index) => <TaskModal key={index} task={task} tasks={tasks} setTasks={setTasks} />)}
+            {tasksToMap.length > 0 && tasksToMap.map((task, index) => <TaskModal key={index} task={task} tasks={tasks} setTasks={setTasks}/>)}
         </div>
     )
 }
