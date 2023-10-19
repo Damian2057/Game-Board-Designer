@@ -7,6 +7,8 @@ import ImageSliderModal from "./ImageSliderModal";
 import BoxInfoModal from "./box/BoxInfoModal";
 import ElementInfoModal from "./element/ElementInfoModal";
 import ContainerInfoModal from "./conteiner/ContainerInfoModal";
+import ChoiceElement from "../../../util/ChoiceElement";
+import {boxIcon} from "../../../util/Icons";
 
 const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
@@ -100,11 +102,13 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                             </tbody>
                                         </Table>
                                     </div>
-                                    <div>
-                                        <span className='fw-bold'>Box:</span> <Button variant="outline-primary" onClick={handleShowBox}>Show</Button>
-                                    </div>
-                                    <div>
-                                        <span className='fw-bold'>Images:</span> <Button variant="outline-primary" onClick={handleShowImage}>Show</Button>
+                                    <div style={{ display: 'flex' }}>
+                                        <div style={{ marginRight: '20px' }}>
+                                            <ChoiceElement name={"Box"} icon={boxIcon} onClick={handleShowBox}/>
+                                        </div>
+                                        <div>
+                                            <ChoiceElement name={"Images"} icon={boxIcon} onClick={handleShowImage}/>
+                                        </div>
                                     </div>
                                 </Col>
                                 <Col>
