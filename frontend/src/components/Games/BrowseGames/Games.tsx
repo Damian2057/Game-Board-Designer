@@ -14,9 +14,11 @@ import {Tag} from "../../../model/game/tag";
 import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import ReactPaginate from "react-paginate";
+import {useTranslation} from "react-i18next";
 
 function Games() {
 
+    const { t } = useTranslation();
     const itemsPerPage = 11;
     const [tags, setTags] = React.useState([] as Tag[]);
     const [games, setGames] = React.useState([] as Game[]);
@@ -106,11 +108,11 @@ function Games() {
                 <Form className='filter-form mt-5' onSubmit={handleSubmit}>
                     <Row>
                         <Col lg={4} className='mb-4'>
-                            <Form.Control type='text' placeholder='Search' onChange={e => setSearchTitle(e.target.value)} />
+                            <Form.Control type='text' placeholder={t('Search')} onChange={e => setSearchTitle(e.target.value)} />
                         </Col>
                         <Col lg={3} className='mb-4'>
                             <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleChange}>
-                                <option disabled value={''}>Choose tags</option>
+                                <option disabled value={''}>{t('Choose tags')}</option>
                                 {tags.map(item => {
                                     return (<option key={item.id} value={item.name}>{item.name}</option>)
                                 })}
@@ -136,10 +138,10 @@ function Games() {
                             <div className='fs-3 fw-bold'>{game.title}</div>
                             <Row>
                                 <Col>
-                                    <Button className='button-card' onClick={() => handleGameClick(game)}>Info</Button>
+                                    <Button className='button-card' onClick={() => handleGameClick(game)}>{t('Info')}</Button>
                                 </Col>
                                 <Col>
-                                    <Link to="/order" state={{ game: game }}><Button className='button-card'>Order</Button></Link>
+                                    <Link to="/order" state={{ game: game }}><Button className='button-card'>{t('Order')}</Button></Link>
                                 </Col>
                             </Row>
 
@@ -155,8 +157,8 @@ function Games() {
                 <div className="pagination flex justify-center items-center">
                     {pageCount > 1 && (
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"
