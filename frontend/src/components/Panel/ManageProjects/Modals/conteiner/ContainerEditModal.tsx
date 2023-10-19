@@ -15,6 +15,8 @@ import {ContainerEditProps} from "../../Props/ContainerEditProps";
 import ImageDisplayModal from "../../../../util/ImageDisplayModal";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
 import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
+import {elementIcon, imageIcon} from "../../../../util/Icons";
+import ChoiceElement from "../../../../util/ChoiceElement";
 
 const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer, id }) => {
 
@@ -317,30 +319,8 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                     >Done</Button>
                                 </Col>
                                 <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                    <Button
-                                        onClick={handleClick}
-                                        style={{
-                                            backgroundColor: '#7D53DE',
-                                            borderColor: '#7D53DE',
-                                            borderRadius: '20px',
-                                            margin: '1rem 0',
-                                            padding: '0.5rem 2rem',
-                                            display: 'block'
-                                        }}
-                                    >Edit images
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={editElements}
-                                        style={{
-                                            backgroundColor: '#7D53DE',
-                                            borderColor: '#7D53DE',
-                                            borderRadius: '20px',
-                                            padding: '0.5rem 2rem',
-                                            display: 'block'
-                                        }}
-                                    >Edit Elements
-                                    </Button>
+                                    <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleClick}/>
+                                    <ChoiceElement name={"Elements"} icon={elementIcon} onClick={editElements}/>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>

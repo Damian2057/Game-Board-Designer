@@ -8,6 +8,8 @@ import {ContainerInfoProps} from "../../Props/ContainerInfoProps";
 import {Api} from "../../../../../connector/api";
 import {ContainerEntity} from "../../../../../model/project/containerEntity";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
+import {imageIcon} from "../../../../util/Icons";
+import ChoiceElement from "../../../../util/ChoiceElement";
 
 const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, show }) => {
 
@@ -87,7 +89,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                         <span className='fw-bold'>Priority:</span> {selectedContainer?.priority}
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Images:</span> <Button variant="outline-primary" onClick={handleShowImage}>Show</Button>
+                                        <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleShowImage}/>
                                     </div>
                                 </Col>
                                 <Col>
@@ -106,7 +108,7 @@ const ContainerInfoModal: React.FC<ContainerInfoProps> = ({ container, onClose, 
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>Show</Button></td>
+                                                    <td><Button className={"button-workspace"} onClick={() => handleShowElement(data)}>Show</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>

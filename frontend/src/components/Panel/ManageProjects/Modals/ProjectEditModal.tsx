@@ -20,6 +20,8 @@ import ContainerListEditModal from "./conteiner/ContainerListEditModal";
 import {FaUserAstronaut} from "react-icons/fa";
 import CustomSelect from "../../Orders/Modals/CustomSelect";
 import {User} from "../../../../model/user/user";
+import {boxIcon, containerIcon, elementIcon, imageIcon} from "../../../util/Icons";
+import ChoiceElement from "../../../util/ChoiceElement";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedProject }) => {
 
@@ -317,65 +319,26 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                     </Form.Group>
                                 </Col>
                                 <Col>
-                                    <Button
-                                        onClick={handleClick}
-                                        style={{
-                                            backgroundColor: '#7D53DE',
-                                            borderColor: '#7D53DE',
-                                            borderRadius: '20px',
-                                            marginBottom: '1rem',
-                                            paddingInline: '2rem',
-                                            paddingBlock: '0.5rem',
-                                        }}
-                                    >Edit images</Button>
+                                    <Col xs={8}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleClick}/>
+                                        </div>
+                                    </Col>
+                                    <Col xs={8}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                            <ChoiceElement name={"Box"} icon={boxIcon} onClick={editBox}/>
+                                        </div>
+                                    </Col>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Box</Modal.Title>
-                                            <Button
-                                                type="button"
-                                                onClick={editBox}
-                                                style={{
-                                                    backgroundColor: '#7D53DE',
-                                                    borderColor: '#7D53DE',
-                                                    borderRadius: '20px',
-                                                    paddingInline: '2rem',
-                                                    paddingBlock: '0.5rem'
-                                                }}
-                                            >Edit</Button>
+                                            <ChoiceElement name={"Containers"} icon={containerIcon} onClick={editContainers}/>
                                         </div>
                                     </Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Containers</Modal.Title>
-                                            <Button
-                                                type="button"
-                                                onClick={editContainers}
-                                                style={{
-                                                    backgroundColor: '#7D53DE',
-                                                    borderColor: '#7D53DE',
-                                                    borderRadius: '20px',
-                                                    paddingInline: '2rem',
-                                                    paddingBlock: '0.5rem'
-                                                }}
-                                            >Edit</Button>
-                                        </div>
-                                    </Col>
-                                    <Col xs={8}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Elements</Modal.Title>
-                                            <Button
-                                                type="button"
-                                                onClick={editElements}
-                                                style={{
-                                                    backgroundColor: '#7D53DE',
-                                                    borderColor: '#7D53DE',
-                                                    borderRadius: '20px',
-                                                    paddingInline: '2rem',
-                                                    paddingBlock: '0.5rem'
-                                                }}
-                                            >Edit</Button>
+                                            <ChoiceElement name={"Elements"} icon={elementIcon} onClick={editElements}/>
                                         </div>
                                     </Col>
                                 </Col>
