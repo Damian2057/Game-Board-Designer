@@ -36,5 +36,14 @@
   "Edit order": "Edit order",
   "Sign out": "Sign out",
   "Sign in": "Sign in",
-  "Dashboard": "Dashboard"
+  "Dashboard": "Dashboard",
+  "next": "next",
+  "previous": "previous",
+  "Name": "Name",
+  "Count": "Count",
+  "Price": "Price",
+  "firstname": "firstname",
+  "lastname": "lastname",
+  "address": "address",
+  "submit Order": "Submit Order"
 }

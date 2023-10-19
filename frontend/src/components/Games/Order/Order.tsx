@@ -8,10 +8,12 @@ import IconCircle from "../../util/IconCircle";
 import './Order.css'
 import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
+import {useTranslation} from "react-i18next";
 
 const Order: React.FC = () => {
-    const location = useLocation();
 
+    const location = useLocation();
+    const { t } = useTranslation();
     const { game } = location.state;
     const navigate = useNavigate();
     const [firstName, setFirstName] = useState('');
@@ -53,22 +55,22 @@ const Order: React.FC = () => {
                     width: '70%',
                 }}>
                     <IconCircle path={'/games'} />
-                    <h1 className="fw-bold m-0">Order</h1>
+                    <h1 className="fw-bold m-0">{t('Order')}</h1>
                     <Card.Body>
                         <Col lg={11} className="mx-auto">
                             <Table striped bordered hover>
                                 <thead>
                                     <tr>
-                                        <th>NAME</th>
-                                        <th>COUNT</th>
-                                        <th>PRICE</th>
+                                        <th>{t('Name')}</th>
+                                        <th>{t('Count')}</th>
+                                        <th>{t('Price')}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr>
                                         <td>{game.title}</td>
                                         <td>1</td>
-                                        <td>${game.price}</td>
+                                        <td>{game.price} {game.currency}</td>
                                     </tr>
                                 </tbody>
                             </Table>
@@ -78,36 +80,36 @@ const Order: React.FC = () => {
                             <Row className='names-row mx-lg-3 mx-md-1 mx-sm-0'>
                                 <Form.Group as={Col} >
                                     <Form.Label column sm={10} xs={10} className='order-form-label'>
-                                        First Name
+                                        {t('firstname')}
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='firstname'
+                                            placeholder={t('firstname')}
                                             onChange={(e) => setFirstName(e.target.value)}
                                         />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Label column sm={10} xs={10} className='order-form-label'>
-                                        Last Name
+                                        {t('lastname')}
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='lastname'
+                                            placeholder={t('lastname')}
                                             onChange={(e) => setLastName(e.target.value)}
                                         />
                                     </Col>
                                 </Form.Group>
                                 <Form.Group as={Col} >
                                     <Form.Label column sm={10} xs={10} className='order-form-label'>
-                                        City
+                                        {t('City')}
                                     </Form.Label>
                                     <Col sm={10} xs={10} className='mx-auto'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='City'
+                                            placeholder={t('City')}
                                             onChange={(e) => setCity(e.target.value)}
                                         />
                                     </Col>
@@ -117,12 +119,12 @@ const Order: React.FC = () => {
                                 <Col>
                                     <Form.Group>
                                         <Form.Label column sm={10} xs={10} className='order-form-label'>
-                                            Address
+                                            {t('address')}
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
                                             <Form.Control
                                                 type='text'
-                                                placeholder='address'
+                                                placeholder={t('address')}
                                                 onChange={(e) => setAddress(e.target.value)}
                                             />
                                         </Col>
@@ -131,7 +133,7 @@ const Order: React.FC = () => {
                                 <Col>
                                     <Form.Group>
                                         <Form.Label column sm={10} xs={10} className='order-form-label'>
-                                            Phone number
+                                            {t('Phone')}
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
                                             <Form.Control
@@ -145,12 +147,12 @@ const Order: React.FC = () => {
                                 <Col>
                                     <Form.Group>
                                         <Form.Label column sm={10} xs={10} className='order-form-label'>
-                                            Email
+                                            {t('Email')}
                                         </Form.Label>
                                         <Col sm={10} xs={10} className='mx-auto'>
                                             <Form.Control
                                                 type='text'
-                                                placeholder='yourEmail@domain.com'
+                                                placeholder='email@domain.com'
                                                 onChange={(e) => setEmail(e.target.value)}
                                             />
                                         </Col>
@@ -159,10 +161,10 @@ const Order: React.FC = () => {
                             </Row>
                             <Row>
                                 <Col md={11} sm={10} xs={10} className="mt-4 mx-auto" >
-                                    <FloatingLabel controlId="floatingInputGrid" label="Comments">
+                                    <FloatingLabel controlId="floatingInputGrid" label={t('Description')}>
                                         <Form.Control
                                             type="text"
-                                            placeholder="Leave a comment here"
+                                            placeholder={t('Description')}
                                             style={{ height: '80' }}
                                             onChange={(e) => setComment(e.target.value)}
                                         />
@@ -170,7 +172,7 @@ const Order: React.FC = () => {
                                 </Col>
                             </Row>
                             <Col lg={3} className="mt-4 mx-auto">
-                                <Button type="button" className="order-button py-2 px-4" onClick={sendOrderRequest}>Submit order</Button>
+                                <Button type="button" className="order-button py-2 px-4" onClick={sendOrderRequest}>{t('submit Order')}</Button>
                             </Col>
                         </Form>
                     </Card.Body>

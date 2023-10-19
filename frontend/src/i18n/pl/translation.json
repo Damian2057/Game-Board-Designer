@@ -36,5 +36,14 @@
   "Edit order": "Edytuj zamówienie",
   "Sign out": "Wyloguj się",
   "Sign in": "Zaloguj się",
-  "Dashboard": "Panel"
+  "Dashboard": "Panel",
+  "next": "następna",
+  "previous": "poprzednia",
+  "Name": "Nazwa",
+  "Count": "Ilość",
+  "Price": "Cena",
+  "firstname": "Imię",
+  "lastname": "Nazwisko",
+  "address": "Adres",
+  "submit Order": "Złóż zamówienie"
 }

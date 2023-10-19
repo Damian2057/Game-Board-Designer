@@ -5,6 +5,7 @@ import './GameInfo.css'
 import {Game} from "../../../model/game/game";
 import {Api} from "../../../connector/api";
 import {AiFillTags} from "react-icons/ai";
+import {useTranslation} from "react-i18next";
 
 interface GameInfoProps {
     game: Game;
@@ -12,6 +13,8 @@ interface GameInfoProps {
 }
 
 const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
+
+    const { t } = useTranslation();
 
     return (
         <Modal show={true} onHide={onClose}>
@@ -45,7 +48,7 @@ const GameInfo: React.FC<GameInfoProps> = ({ game, onClose }) => {
                                 <table className="tags-table">
                                     <thead>
                                     <tr>
-                                        <th>Tags:</th>
+                                        <th>{t('Tags')}:</th>
                                     </tr>
                                     </thead>
                                     <tbody>
