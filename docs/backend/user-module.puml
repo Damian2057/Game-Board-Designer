@@ -10,6 +10,5 @@ Container_Boundary(backend, "module") {
 
 Rel(Controller, Service, "")
 Rel(Service, Repository, "")
-Rel(Repository, Service, "")
 
 @enduml
