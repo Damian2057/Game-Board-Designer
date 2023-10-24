@@ -8,6 +8,7 @@ import {Api} from "../../../connector/api";
 import ProjectInfoModal from "../ManageProjects/Modals/ProjectInfoModal";
 import StartNewProjectModal from "./Modals/StartNewProjectModal";
 import {useNavigate} from "react-router-dom";
+import {t} from "i18next";
 
 function  Workspace() {
 
@@ -81,14 +82,14 @@ function  Workspace() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'}></IconCircle>
-                        <p className='font-bold fs-2'>Workspace</p>
+                        <p className='font-bold fs-2'>{t('My workspace')}</p>
                         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                             <div>
                                 <Form.Select className='form-select' aria-label="Worker selector" defaultValue={''} onChange={handleCompleteChange}>
-                                    <option disabled value={''}>Choose Status</option>
-                                    <option value={'All'}>All</option>
-                                    <option value={'Completed'}>Completed</option>
-                                    <option value={'OnGoing'}>Ongoing</option>
+                                    <option disabled value={''}>{t('Choose status')}</option>
+                                    <option value={'All'}>{t('All')}</option>
+                                    <option value={'Completed'}>{t('Completed')}</option>
+                                    <option value={'OnGoing'}>{t('OnGoing')}</option>
                                 </Form.Select>
                             </div>
                             <div>
@@ -102,7 +103,7 @@ function  Workspace() {
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem'
                                         }}
-                                >Start New Project</Button>
+                                >{t('Start New Project')}</Button>
                             </div>
                         </div>
                         <div className="table-responsive">
@@ -111,13 +112,13 @@ function  Workspace() {
                                     <thead>
                                         <tr className='uppercase'>
                                             <th>ID</th>
-                                            <th>Name</th>
-                                            <th>Containers</th>
-                                            <th>Elements</th>
-                                            <th>Completed</th>
-                                            <th>Game</th>
-                                            <th>Info</th>
-                                            <th>Continue work</th>
+                                            <th>{t('Name')}</th>
+                                            <th>{t('Containers')}</th>
+                                            <th>{t('Elements')}</th>
+                                            <th>{t('Completed')}</th>
+                                            <th>{t('Game')}</th>
+                                            <th>{t('Info')}</th>
+                                            <th>{t('Continue work')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -127,13 +128,13 @@ function  Workspace() {
                                                 <td className='centered-td'>{proj.name}</td>
                                                 <td className='centered-td'>{proj.containers.length}</td>
                                                 <td className='centered-td'>{proj.elements.length}</td>
-                                                <td className='centered-td'>{proj.isCompleted ? 'Completed' : 'OnGoing'}</td>
+                                                <td className='centered-td'>{proj.isCompleted ? t('Completed') : t('OnGoing')}</td>
                                                 <td className='centered-td'>{proj.currentGame?.title}</td>
                                                 <td>
-                                                    <Button className='button-workspace' onClick={() => handleProjectInfo(proj)}>Info</Button>
+                                                    <Button className='button-workspace' onClick={() => handleProjectInfo(proj)}>{t('Info')}</Button>
                                                 </td>
                                                 <td>
-                                                    <Button onClick={() => redirectProjectBoard(proj)} className='button-workspace'>Continue</Button>
+                                                    <Button onClick={() => redirectProjectBoard(proj)} className='button-workspace'>{t('Continue')}</Button>
                                                 </td>
                                             </tr>
                                         ))}

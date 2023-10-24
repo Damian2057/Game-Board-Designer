@@ -11,6 +11,7 @@ import {Api} from "../../../connector/api";
 import ProjectInfoModal from "./Modals/ProjectInfoModal";
 import ProjectEditModal from "./Modals/ProjectEditModal";
 import NewProjectModal from "./Modals/NewProjectModal";
+import {t} from "i18next";
 
 export default function ManageProject() {
 
@@ -225,8 +226,8 @@ export default function ManageProject() {
                             </Col>
                         </div>
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"
