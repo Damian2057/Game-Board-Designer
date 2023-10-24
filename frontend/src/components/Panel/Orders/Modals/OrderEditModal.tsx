@@ -12,6 +12,7 @@ import {FaAddressBook, FaUserAstronaut} from "react-icons/fa";
 import {BiSolidCity} from "react-icons/bi";
 import {GiPriceTag} from "react-icons/gi";
 import CustomSelect from "./CustomSelect";
+import {t} from "i18next";
 
 const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave, editedOrder }) => {
 
@@ -89,7 +90,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
             worker: work
         }).then((order) => {
             onSave(order);
-            toast.success('Successfully updated!', { icon: "👋" });
+            toast.success(t('Successfully updated'), { icon: "👋" });
             onClose();
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })
@@ -117,7 +118,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit {name}</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Edit')} {name}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
@@ -129,7 +130,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <PiUserListBold size={30} />
                                         </div>
                                         <div>
-                                            FirstName:
+                                            {t('firstname')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -144,7 +145,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <PiUserListBold size={30} />
                                         </div>
                                         <div>
-                                            LastName:
+                                            {t('lastname')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -159,7 +160,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <BsEnvelope size={30} />
                                         </div>
                                         <div>
-                                            Email:
+                                            {t('Email')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -174,7 +175,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <BsTelephone size={30} />
                                         </div>
                                         <div>
-                                            Phone number:
+                                            {t('Phone')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -189,7 +190,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <FaAddressBook size={30} />
                                         </div>
                                         <div>
-                                            Address:
+                                            {t('address')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -204,7 +205,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <BiSolidCity size={30} />
                                         </div>
                                         <div>
-                                            City:
+                                            {t('City')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -219,7 +220,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <MdOutlineDescription size={30} />
                                         </div>
                                         <div>
-                                            Description:
+                                            {t('Description')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -240,7 +241,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <GiPriceTag size={30} />
                                         </div>
                                         <div>
-                                            Price:
+                                            {t('Price')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -255,7 +256,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                         </Form.Group>
                         <Form.Group className='mt-3'>
                             <Form.Select className='form-select ' aria-label="Currency selector" defaultValue={currency} onChange={(e) => setCurrency(e.target.value)}>
-                                <option disabled value={''}>Choose currency</option>
+                                <option disabled value={''}>{t('Choose currency')}</option>
                                 <option value={'PLN'}>PLN</option>
                                 <option value={'EUR'}>EUR</option>
                                 <option value={'USD'}>USD</option>
@@ -269,7 +270,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <GrStatusCriticalSmall size={30} />
                                         </div>
                                         <div>
-                                            Status:
+                                            {t('Status')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -293,7 +294,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                             <FaUserAstronaut size={30} />
                                         </div>
                                         <div>
-                                            Assigned to:
+                                            {t('Assigned to')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -306,7 +307,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                         </Form.Group>
 
                         <div className='flex justify-center items-center mt-4'>
-                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
+                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>{t('Save Data')}</Button>
                         </div>
                     </Form>
                 </Modal.Body>

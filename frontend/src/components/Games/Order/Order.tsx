@@ -30,13 +30,13 @@ const Order: React.FC = () => {
 
     const sendOrderRequest = () => {
         Api.order.submitOrder(firstName, lastName, city, address, phoneNumber, comment, game.id, email).then(() => {
-            toast.success('Successfully ordered!', { icon: "👋" });
+            toast.success(t("Successfully ordered"), { icon: "👋" });
             setTimeout(() => {
                 navigate('/');
             }, 2000);
         }).catch(err => {
             if (err.response.data.statusCode === 400) {
-                toast.error(`The entered order data is not correct.`, { icon: "💀" })
+                toast.error(t("The entered order data is not correct"), { icon: "💀" })
             } else {
                 toast.error(`${err.response.data.message}`, { icon: "💀" })
             }

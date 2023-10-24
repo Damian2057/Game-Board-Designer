@@ -72,5 +72,21 @@
   "Enter tag name": "Enter tag name",
   "add": "add",
   "Edit tag": "Edit tag",
+  "Choose status": "Choose status",
+  "Ordered game": "Ordered game",
+  "Submit Date": "Submit Date",
+  "Last Update": "Last Update",
+  "Worker": "Worker",
+  "Claim": "Claim",
+  "Customer": "Customer",
+  "Assigned to": "Assigned to",
+  "None": "None",
+  "Game Details": "Game Details",
+  "Successfully updated": "Successfully updated!",
+  "Choose currency": "Choose currency",
+
+  "Successfully ordered": "Successfully ordered!",
+  "The entered order data is not correct": "The entered order data is not correct!",
+  "Order claimed": "Order claimed!",
   "": ""
 }
