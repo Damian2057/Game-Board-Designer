@@ -9,9 +9,11 @@ import React, {useState} from "react";
 import {Information} from "../../model/information/information";
 import {Api} from "../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
+import {useTranslation} from "react-i18next";
 
 function Contact() {
 
+    const { t } = useTranslation();
     const [information, setInformation] = useState({} as Information);
 
     React.useEffect(() => {
@@ -31,7 +33,7 @@ function Contact() {
                     <Row>
                         <Col className='d-flex justify-content-center align-items-center'>
                             <div>
-                                <Card.Title className='fs-1 text-center mb-4 mt-3'>Get In Touch</Card.Title>
+                                <Card.Title className='fs-1 text-center mb-4 mt-3'>{t('Get In Touch')}</Card.Title>
                                 <div className='contact-item text-start'>
                                     <span>
                                         <BsGeoAlt size={30} />

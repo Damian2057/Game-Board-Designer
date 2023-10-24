@@ -11,9 +11,11 @@ import {PiUserListBold} from "react-icons/pi";
 import {RiLockPasswordFill} from "react-icons/ri";
 import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
+import {useTranslation} from "react-i18next";
 
 function Profile() {
 
+    const { t } = useTranslation();
     const [user, setUser] = useState({} as any);
     const [username, setUsername] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -54,7 +56,7 @@ function Profile() {
                     <Row>
                         <Col className='d-flex justify-content-center align-items-center'>
                             <div>
-                                <Card.Title className='fs-1 text-center mb-4 mt-3'>User Data</Card.Title>
+                                <Card.Title className='fs-1 text-center mb-4 mt-3'>{t('User Data')}</Card.Title>
                                 <Form>
                                     <div className='contact-item text-start'>
                                         <div className='flex flex-row gap-2 items-center'>
@@ -62,7 +64,7 @@ function Profile() {
                                                 <BsEnvelope size={30} />
                                             </div>
                                             <div>
-                                                Email
+                                                {t('Email')}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -75,7 +77,7 @@ function Profile() {
                                                 <BsTelephone size={30} />
                                             </div>
                                             <div>
-                                                PhoneNumber
+                                                {t('Phone')}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -88,7 +90,7 @@ function Profile() {
                                                 <PiUserListBold size={30} />
                                             </div>
                                             <div>
-                                                UserName
+                                                {t('Username')}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -101,7 +103,7 @@ function Profile() {
                                                 <RiLockPasswordFill size={30} />
                                             </div>
                                             <div>
-                                                Password
+                                                {t('Password')}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -110,7 +112,7 @@ function Profile() {
                                     </div>
                                     <Col lg={10} xs={10} className='mx-auto mb-5'>
                                         <Button type="button" className='register-button' onClick={updateData}>
-                                            Save Data
+                                            {t('Save Data')}
                                         </Button>
                                     </Col>
                                 </Form>
