@@ -8,6 +8,7 @@ import {Order} from "../../../model/order/order";
 import ReactPaginate from "react-paginate";
 import OrderEditModal from "./Modals/OrderEditModal";
 import Form from "react-bootstrap/Form";
+import {t} from "i18next";
 
 export default function Orders() {
 
@@ -66,7 +67,7 @@ export default function Orders() {
 
     function handleOrderClaim(order: Order) {
         Api.order.claimOrder(order.id).then((res) => {
-            toast.success(`Order ${order.id} claimed`, { icon: "👏" });
+            toast.success(t('Order claimed'), { icon: "👏" });
             fetchOrdersByStatus(selectedStatus);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, { icon: "💀" });
@@ -111,10 +112,10 @@ export default function Orders() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Orders</p>
+                        <p className='font-bold fs-2'>{t('Orders')}</p>
                         <Col lg={3} className='mb-4'>
                             <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleWithStatusOrders}>
-                                <option disabled value={''}>Choose status</option>
+                                <option disabled value={''}>{t('Choose status')}</option>
                                 {statuses.map(item => {
                                     return (<option key={item} value={item}>{item}</option>)
                                 })}
@@ -126,14 +127,14 @@ export default function Orders() {
                                     <thead>
                                         <tr className='uppercase'>
                                             <th>ID</th>
-                                            <th>Ordered game</th>
-                                            <th>Submit Date</th>
-                                            <th>Last Update</th>
-                                            <th>Status</th>
-                                            <th>Worker</th>
-                                            <th>Edit</th>
-                                            <th>Info</th>
-                                            <th>Claim</th>
+                                            <th>{t('Ordered game')}</th>
+                                            <th>{t('Submit Date')}</th>
+                                            <th>{t('Last Update')}</th>
+                                            <th>{t('Status')}</th>
+                                            <th>{t('Worker')}</th>
+                                            <th>{t('Edit')}</th>
+                                            <th>{t('Info')}</th>
+                                            <th>{t('Claim')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -146,13 +147,13 @@ export default function Orders() {
                                             <td className='centered-td'>{order.status}</td>
                                             <td className='centered-td'>{order.worker ? order.worker.username : 'Not claimed'}</td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleOrderEdit(order)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleOrderEdit(order)}>{t('Edit')}</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>{t('Info')}</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleOrderClaim(order)}>Claim</Button>
+                                                <Button className='button-workspace' onClick={() => handleOrderClaim(order)}>{t('Claim')}</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -165,7 +166,7 @@ export default function Orders() {
                                     </tbody>
                                 </Table>
                                 <OrderEditModal
-                                    name={"order"}
+                                    name={t('Order')}
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}
                                     onSave={handleSaveEditedOrder}
@@ -174,8 +175,8 @@ export default function Orders() {
                             </Col>
                         </div>
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"

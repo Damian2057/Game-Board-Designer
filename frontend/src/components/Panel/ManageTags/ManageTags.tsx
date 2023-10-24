@@ -3,10 +3,10 @@ import {Api} from "../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import IconCircle from "../../util/IconCircle";
-import EmployeeEditModal from "../ManageEmployees/Modals/EmployeeEditModal";
 import {Tag} from "../../../model/game/tag";
 import TagEditModal from "./Modals/TagEditModal";
 import NewTagModal from "./Modals/NewTagModal";
+import {t} from "i18next";
 
 export default function ManageTags() {
 
@@ -62,9 +62,9 @@ export default function ManageTags() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Tags</p>
+                        <p className='font-bold fs-2'>{t('Tags')}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenNewTagModal}>Add new tag</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenNewTagModal}>{t('add new tag')}</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -72,8 +72,8 @@ export default function ManageTags() {
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>id</th>
-                                        <th>name</th>
-                                        <th>Edit</th>
+                                        <th>{t('Name')}</th>
+                                        <th>{t('Edit')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -82,7 +82,7 @@ export default function ManageTags() {
                                             <td className='centered-td'>{tag.id}</td>
                                             <td className='centered-td'>{tag.name}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleEditEmployee(tag)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleEditEmployee(tag)}>{t('Edit')}</Button>
                                             </td>
                                         </tr>
                                     ))}

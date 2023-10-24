@@ -3,6 +3,7 @@ import {Button, Col, Form, Modal} from "react-bootstrap";
 import {NotesProps} from "./NotesProps";
 import {GrClose} from "react-icons/gr";
 import {GiNotebook} from "react-icons/gi";
+import {t} from "i18next";
 
 const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
 
@@ -59,7 +60,7 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Fill Note'
+                                            placeholder={t('Fill Note')}
                                             value={note}
                                             onChange={(e) => handleChangeNotes(e, index)}
                                         />
@@ -91,7 +92,7 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
                                     paddingBlock: '0.5rem',
                                     color: '#7D53DE',
                                 }}
-                            >Add</Button>
+                            >{t('add')}</Button>
                         </Form.Group>
                     </Col>
                 </Form>
@@ -103,7 +104,7 @@ const NotesModal: React.FC<NotesProps> = ({ show, onClose, notes, onSave }) => {
                     borderColor: '#ffffff',
                     color: '#7D53DE',
                 }}
-            >Save
+            >{t('Save')}
             </Button>
         </Modal>
     );

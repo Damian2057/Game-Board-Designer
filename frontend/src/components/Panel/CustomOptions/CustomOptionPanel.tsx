@@ -11,6 +11,7 @@ import IconCircle from "../../util/IconCircle";
 import {FaAddressBook} from "react-icons/fa";
 import {AiFillFacebook} from "react-icons/ai";
 import {FcAbout, FcTodoList} from "react-icons/fc";
+import {t} from "i18next";
 
 function CustomOptionPanel() {
 
@@ -47,7 +48,7 @@ function CustomOptionPanel() {
             mission: mission,
             facebook: facebook
         }).then(() => {
-            toast.success('Successfully updated!', { icon: "👋" });
+            toast.success(t("Successfully updated"), { icon: "👋" });
             fetchData();
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })
@@ -67,7 +68,7 @@ function CustomOptionPanel() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Options</p>
+                        <p className='font-bold fs-2'>{t("Options")}</p>
                     </Card.Body>
                     <Row>
                         <Col className='d-flex justify-content-center align-items-start'>
@@ -79,7 +80,7 @@ function CustomOptionPanel() {
                                                 <FaAddressBook size={30} />
                                             </div>
                                             <div>
-                                                Address
+                                                {t("address")}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -92,7 +93,7 @@ function CustomOptionPanel() {
                                                 <BsTelephone size={30} />
                                             </div>
                                             <div>
-                                                Phone number
+                                                {t("Phone")}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -105,7 +106,7 @@ function CustomOptionPanel() {
                                                 <PiUserListBold size={30} />
                                             </div>
                                             <div>
-                                                Email
+                                                {t("Email")}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -137,7 +138,7 @@ function CustomOptionPanel() {
                                                 <FcAbout size={30} />
                                             </div>
                                             <div>
-                                                About
+                                                {t("About Us")}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -155,7 +156,7 @@ function CustomOptionPanel() {
                                                 <FcTodoList size={30} />
                                             </div>
                                             <div>
-                                                Mission
+                                                {t("Our Mission")}
                                             </div>
                                         </div>
                                         <div className="mt-2">
@@ -169,7 +170,7 @@ function CustomOptionPanel() {
                                     </div>
                                     <Col lg={10} xs={10} className='mx-auto mb-5'>
                                         <Button type="button" className='register-button' onClick={updateData}>
-                                            Save Data
+                                            {t("Save Data")}
                                         </Button>
                                     </Col>
                                 </Form>

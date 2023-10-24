@@ -20,6 +20,5 @@ package "Database" {
 
 UI --> NestJs
 NestJs --> Database
-Database --> NestJs
 
 @enduml

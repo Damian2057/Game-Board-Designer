@@ -9,6 +9,7 @@ import {BsEnvelope, BsTelephone} from "react-icons/bs";
 import {MdAdminPanelSettings} from "react-icons/md";
 import ToggleComponent from "./ToggleComponent";
 import {RiLockPasswordFill} from "react-icons/ri";
+import {t} from "i18next";
 
 const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSave }) => {
 
@@ -38,7 +39,7 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
             role: selectedRole,
             isActive: isActivated
         }).then(() => {
-            toast.success(`Employee ${userName} successfully created`, { icon: "👏" });
+            toast.success(t('Employee created successfully'), { icon: "👏" });
             onSave(null);
             onClose();
         }).catch(err => {
@@ -55,7 +56,7 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Add employee</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Add employee')}</Modal.Title>
             <Modal.Body>
                 <Form as={Col} lg={8} className='mx-auto mb-5'>
                     <Form.Group>
@@ -66,13 +67,13 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                                         <BsEnvelope size={30} />
                                     </div>
                                     <div>
-                                        Email:
+                                        {t('Email')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={email}
-                                          placeholder="Enter email"
+                                          placeholder={t('Enter email')}
                                           onChange={(e) => setEmail(e.target.value)} />
                         </div>
                     </Form.Group>
@@ -84,13 +85,13 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                                         <PiUserListBold size={30} />
                                     </div>
                                     <div>
-                                        UserName:
+                                        {t('Username')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={userName}
-                                          placeholder="Enter username"
+                                          placeholder={t('Enter username')}
                                           onChange={(e) => setUserName(e.target.value)} />
                         </div>
                     </Form.Group>
@@ -102,13 +103,13 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                                         <BsTelephone size={30} />
                                     </div>
                                     <div>
-                                        Phone Number:
+                                        {t('Phone')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={phone}
-                                          placeholder="Enter phone number"
+                                          placeholder={t('Enter phone number')}
                                           onChange={(e) => setPhone(e.target.value)} />
                         </div>
                     </Form.Group>
@@ -120,14 +121,14 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                                         <RiLockPasswordFill size={30} />
                                     </div>
                                     <div>
-                                        Password:
+                                        {t('Password')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control
                                 type='password'
                                 value={password}
-                                placeholder="Enter password"
+                                placeholder={t('Enter password')}
                                 onChange={(e) => setPassword(e.target.value)}
                             />
                         </div>
@@ -140,7 +141,7 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                                         <MdAdminPanelSettings size={30} />
                                     </div>
                                     <div>
-                                        Role:
+                                        {t('Role')}
                                     </div>
                                 </div>
                             </Form.Label>
@@ -157,11 +158,11 @@ const NewEmployeeModal: React.FC<NewEmployeeModalProps> = ({ show, onClose, onSa
                         </div>
                     </Form.Group>
                     <div className='flex justify-center items-center'>
-                        <ToggleComponent label="Active: " initialValue={isActivated}  onChange={setIsActivated}  labels={['Yes', 'No']}/>
+                        <ToggleComponent label="Active: " initialValue={isActivated}  onChange={setIsActivated}  labels={[t('Yes'), t('No')]}/>
                     </div>
                     <div className='flex justify-center items-center mt-4'>
                         <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px', paddingInline: '3rem' }}>
-                            Add</Button>
+                            {t('add')}</Button>
                     </div>
                 </Form>
             </Modal.Body>

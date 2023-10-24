@@ -9,6 +9,7 @@ import {BsEnvelope, BsTelephone} from "react-icons/bs";
 import {PiUserListBold} from "react-icons/pi";
 import {MdAdminPanelSettings} from "react-icons/md";
 import toast from "react-hot-toast";
+import {t} from "i18next";
 
 const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSave, editedEmployee }) => {
 
@@ -52,7 +53,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                 isActive: isActivated
             }).then((user) => {
                 onSave(user);
-                toast.success('Successfully updated!', { icon: "👋" });
+                toast.success(t('Successfully updated'), { icon: "👋" });
                 onClose();
             }).catch(err => {
                 toast.error(`${err.response.data.message}`, { icon: "💀" })
@@ -69,7 +70,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit {name}</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Edit')} {name}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
@@ -81,7 +82,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                                             <PiUserListBold size={30} />
                                         </div>
                                         <div>
-                                            UserName:
+                                            {t('Username')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -96,7 +97,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                                             <BsEnvelope size={30} />
                                         </div>
                                         <div>
-                                            Email:
+                                            {t('Email')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -111,7 +112,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                                             <BsTelephone size={30} />
                                         </div>
                                         <div>
-                                            Phone number:
+                                            {t('Phone')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -126,7 +127,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                                             <RiLockPasswordFill size={30} />
                                         </div>
                                         <div>
-                                            Password:
+                                            {t('Password')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -145,7 +146,7 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                                             <MdAdminPanelSettings size={30} />
                                         </div>
                                         <div>
-                                            Role:
+                                            {t('Role')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -162,10 +163,10 @@ const EmployeeEditModal: React.FC<UserEditProps> = ({ name, show, onClose, onSav
                             </div>
                         </Form.Group>
                         <div className='flex justify-center items-center'>
-                            <ToggleComponent label="Active: " initialValue={isActivated}  onChange={setIsActivated}  labels={['Yes', 'No']}/>
+                            <ToggleComponent label="Active: " initialValue={isActivated}  onChange={setIsActivated}  labels={[t('Yes'), t('No')]}/>
                         </div>
                         <div className='flex justify-center items-center mt-4'>
-                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
+                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>{t('Save Data')}</Button>
                         </div>
                     </Form>
                 </Modal.Body>

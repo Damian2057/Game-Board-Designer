@@ -4,6 +4,7 @@ import {GrClose} from "react-icons/gr";
 import {NewComponentModalProps} from "../Props/NewComponentModalProps";
 import {FaSortAmountDownAlt} from "react-icons/fa";
 import {VscSymbolNamespace} from "react-icons/vsc";
+import {t} from "i18next";
 
 const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, onSave }) => {
 
@@ -27,7 +28,7 @@ const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, on
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Add employee</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Add new component')}</Modal.Title>
             <Modal.Body>
                 <Form as={Col} lg={8} className='mx-auto mb-5'>
                     <Form.Group>
@@ -38,13 +39,13 @@ const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, on
                                         <VscSymbolNamespace size={30} />
                                     </div>
                                     <div>
-                                        Component name:
+                                        {t('Component name')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={name}
-                                          placeholder="Enter component name"
+                                          placeholder={t('Name')}
                                           onChange={(e) => setName(e.target.value)} />
                         </div>
                     </Form.Group>
@@ -56,19 +57,19 @@ const NewComponentModal: React.FC<NewComponentModalProps> = ({ show, onClose, on
                                         <FaSortAmountDownAlt size={30} />
                                     </div>
                                     <div>
-                                        Quantity:
+                                        {t('Quantity')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='number'
                                           value={isNaN(quantity) ? '' : quantity.toString()}
-                                          placeholder="Enter quantity"
+                                          placeholder={t('Quantity')}
                                           onChange={(e) => setQuantity(parseFloat(e.target.value))} />
                         </div>
                     </Form.Group>
                     <div className='flex justify-center items-center mt-4'>
                         <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px', paddingInline: '3rem' }}>
-                            Add</Button>
+                            {t('add')}</Button>
                     </div>
                 </Form>
             </Modal.Body>

@@ -42,7 +42,6 @@ Rel(database, game, "")
 Rel(database, image, "")
 
 Rel(react, backend, "call")
-Rel(Postgres, database, "")
 Rel(database, Postgres, "")
 
 @enduml

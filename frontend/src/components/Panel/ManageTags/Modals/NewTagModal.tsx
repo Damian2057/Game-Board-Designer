@@ -5,6 +5,7 @@ import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {NewTagProps} from "../Props/NewTagProps";
 import {AiFillTags} from "react-icons/ai";
+import {t} from "i18next";
 
 const NewTagModal: React.FC<NewTagProps> = ({ show, onClose, onSave }) => {
 
@@ -31,7 +32,7 @@ const NewTagModal: React.FC<NewTagProps> = ({ show, onClose, onSave }) => {
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Add tag</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('add new tag')}</Modal.Title>
             <Modal.Body>
                 <Form as={Col} lg={8} className='mx-auto mb-5'>
                     <Form.Group>
@@ -42,19 +43,19 @@ const NewTagModal: React.FC<NewTagProps> = ({ show, onClose, onSave }) => {
                                         <AiFillTags size={30} />
                                     </div>
                                     <div>
-                                        Tag name:
+                                        {t('Tag name')}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={tagName}
-                                          placeholder="Enter tag name"
+                                          placeholder={t('Enter tag name')}
                                           onChange={(e) => setTagName(e.target.value)} />
                         </div>
                     </Form.Group>
                     <div className='flex justify-center items-center mt-4'>
                         <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px', paddingInline: '3rem' }}>
-                            Add</Button>
+                            {t('add')}</Button>
                     </div>
                 </Form>
             </Modal.Body>

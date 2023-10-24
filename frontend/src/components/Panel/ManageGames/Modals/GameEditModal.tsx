@@ -9,6 +9,7 @@ import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import NewComponentModal from "./NewComponentModal";
 import ComponentEditModal from "./ComponentEditModal";
+import {t} from "i18next";
 
 
 const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedGame }) => {
@@ -60,7 +61,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                 fetchTags();
                 if (editedGame && selectedTag.id) {
                     Api.game.addTagToGame(editedGame?.id, selectedTag.id).then(() => {
-                        toast.success(`Tag added successfully`, {icon: "👏"});
+                        toast.success(t('Tag added successfully'), {icon: "👏"});
                     }).catch((err) => {
                         toast.error(`${err.response.data.message}`, {icon: "💀"});
                     });
@@ -73,7 +74,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
         setSelectedTags(prevTags => prevTags.filter(tag => tag !== tagToRemove));
         if (editedGame && tagToRemove.id) {
             Api.game.removeTagFromGame(editedGame?.id, tagToRemove.id).then(() => {
-                toast.success(`Tag removed successfully`, {icon: "👏"});
+                toast.success(t('Tag removed successfully'), {icon: "👏"});
             }).catch((err) => {
                 toast.error(`${err.response.data.message}`, {icon: "💀"});
             });
@@ -119,7 +120,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
             components: components,
             imageIds: imageIds
         }).then((game) => {
-            toast.success(`Game updated successfully`, {icon: "👏"});
+            toast.success(t('Successfully updated'), {icon: "👏"});
             onSave(game);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
@@ -134,7 +135,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
         if (editedGame && components.includes(component)) {
             Api.game.deleteComponent(component.id)
                 .then(() => {
-                    toast.success(`Component removed successfully`, { icon: "👏" });
+                    toast.success(t('Component removed successfully'), { icon: "👏" });
                     setComponents((prevComponents) =>
                         prevComponents.filter((comp) => comp !== component)
                     );
@@ -154,7 +155,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
             return;
         }
         Api.game.createComponentForGame(editedGame?.id, component).then(() => {
-            toast.success(`Component added successfully`, {icon: "👏"});
+            toast.success(t('Component added to game successfully'), {icon: "👏"});
             setComponents((prevComponents) => [...prevComponents, component]);
             handleCloseAddComponentModal();
         }).catch((err) => {
@@ -165,7 +166,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+            toast.success(t('Image removed successfully'), {icon: "👏"});
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -212,7 +213,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Game</p>
+                        <p className='font-bold fs-2 mb-12'>{t('Edit Game')}</p>
                         <Form>
                             <Row>
                                 <Col>
@@ -252,7 +253,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
                                         <Form.Select className='form-select ' aria-label="Currency selector" defaultValue={currency} onChange={(e) => setCurrency(e.target.value)}>
-                                            <option disabled value={''}>Choose currency</option>
+                                            <option disabled value={''}>{t('Choose currency')}</option>
                                             <option value={'PLN'}>PLN</option>
                                             <option value={'EUR'}>EUR</option>
                                             <option value={'USD'}>USD</option>
@@ -263,7 +264,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                         <Row className='d-flex justify-content-start mt-3'>
                                             <Col lg={4}>
                                                 <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleChange}>
-                                                    <option disabled value={''}>Choose tags</option>
+                                                    <option disabled value={''}>{t('Choose tags')}</option>
                                                     {tags.map(item => {
                                                         return (<option key={item.id} value={item.name}>{item.name}</option>)
                                                     })}
@@ -297,7 +298,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
+                                    >{t('Choose images')}</Button>
                                     <div>
                                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                                             {imageIds.map((imageId, index) => (
@@ -308,7 +309,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                                         style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
                                                         className="mx-auto d-block"
                                                     />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
+                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>{t('Remove')}</Button>
                                                 </Carousel.Item>
                                             ))}
                                         </Carousel>
@@ -317,7 +318,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Components</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t('Components')}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addComponent}
@@ -335,10 +336,10 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Quantity:</th>
-                                            <th>Edit</th>
-                                            <th>Remove</th>
+                                            <th>{t('Name')}</th>
+                                            <th>{t('Quantity')}</th>
+                                            <th>{t('Edit')}</th>
+                                            <th>{t('Remove')}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -356,7 +357,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                                 </td>
                                                 <td className="tag-cell">
                                                     <div className="tag-content">
-                                                        <Button className='button-workspace' onClick={() => handleEditComponent(component)}>Edit</Button>
+                                                        <Button className='button-workspace' onClick={() => handleEditComponent(component)}>{t('Edit')}</Button>
                                                     </div>
                                                 </td>
                                                 <td className="tag-cell">
@@ -380,7 +381,7 @@ const GameEditModal: React.FC<GameEditProps> = ({ show, onClose, onSave, editedG
                                         paddingInline: '2rem',
                                         paddingBlock: '0.5rem'
                                     }}
-                            >Save Data</Button>
+                            >{t('Save Data')}</Button>
                         </Form>
                     </Card.Body>
                     <NewComponentModal

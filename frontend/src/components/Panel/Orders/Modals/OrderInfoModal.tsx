@@ -6,6 +6,7 @@ import {User} from "../../../../model/user/user";
 import EmployeeInfoModal from "../../ManageEmployees/Modals/EmployeeInfoModal";
 import GameInfo from "../../../Games/GameInfo/GameInfo";
 import {Game} from "../../../../model/game/game";
+import {t} from "i18next";
 
 const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
 
@@ -33,46 +34,46 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
             <Row className='align-items-center'>
                 <Col>
                     <Modal.Title className='fs-1 text-center fw-bold'>
-                        <div>{order.game.title} Order: {order.id}</div>
+                        <div>{order.game.title} {t('Order')}: {order.id}</div>
                     </Modal.Title>
                     <Modal.Body className=' fs-5'>
                         <Row className='mt-3 align-items-center'>
                             <Col xs={8}>
                                 <div>
-                                    <span className='fw-bold'>Price:</span> {order.price}{order.currency}
+                                    <span className='fw-bold'>{t('Price')}:</span> {order.price}{order.currency}
                                 </div>
                                 <div>
-                                    <span className='fw-bold'>Submitting Date:</span> {order.submittingDate}
+                                    <span className='fw-bold'>{t('Submit Date')}:</span> {order.submittingDate}
                                 </div>
                                 <div>
-                                    <span className='fw-bold'>Last update Date:</span> {order.lastUpdate}
+                                    <span className='fw-bold'>{t('Last Update')}:</span> {order.lastUpdate}
                                 </div>
                                 <div>
-                                    <span className='fw-bold'>Order status:</span> {order.status}
+                                    <span className='fw-bold'>{t('Status')}:</span> {order.status}
                                 </div>
                                 <div>
-                                    <span className='fw-bold'>Description:</span> {order.description}
+                                    <span className='fw-bold'>{t('Description')}:</span> {order.description}
                                 </div>
                             </Col>
                         </Row>
                         <Row className='gap-2'>
                             <div>
-                                <span className='fw-bold'>User data:</span>
+                                <span className='fw-bold'>{t('User Data')}:</span>
                             </div>
                             <div>
-                                <span className='fw-bold'>First name:</span> {order.firstName}
+                                <span className='fw-bold'>{t('firstname')}:</span> {order.firstName}
                             </div>
                             <div>
-                                <span className='fw-bold'>Last name:</span> {order.lastName}
+                                <span className='fw-bold'>{t('lastname')}:</span> {order.lastName}
                             </div>
                             <table className="tags-table">
                                 <thead>
                                 <tr>
-                                    <th>Address</th>
-                                    <th>City</th>
-                                    <th>Email</th>
-                                    <th>Phone</th>
-                                    <th>Customer</th>
+                                    <th>{t('address')}</th>
+                                    <th>{t('City')}</th>
+                                    <th>{t('Email')}</th>
+                                    <th>{t('Phone')}</th>
+                                    <th>{t('Customer')}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -82,7 +83,7 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                                     <td>{order.email}</td>
                                     <td>{order.phone}</td>
                                     <td>
-                                        <Button className='button-workspace' onClick={() => handleUserInfo(order.customer)}>Info</Button>
+                                        <Button className='button-workspace' onClick={() => handleUserInfo(order.customer)}>{t('Info')}</Button>
                                     </td>
                                 </tr>
                                 {selectedUserInfo && (
@@ -97,13 +98,13 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                         </Row>
                         <Row className='gap-2'>
                             <div>
-                                <span className='fw-bold'>Assigned to:</span>
-                                <Button className='button-workspace' onClick={() => handleUserInfo(order.worker)}>{order.worker ? order.worker?.username : "None"}</Button>
+                                <span className='fw-bold'>{t('Assigned to')}:</span>
+                                <Button className='button-workspace' onClick={() => handleUserInfo(order.worker)}>{order.worker ? order.worker?.username : t('None')}</Button>
                             </div>
                         </Row>
                         <Row className='gap-2'>
                             <div>
-                                <Button className='button-workspace' onClick={() => handleGameInfo(order.game)}>Game Details</Button>
+                                <Button className='button-workspace' onClick={() => handleGameInfo(order.game)}>{t('Game Details')}</Button>
                             </div>
                             {selectedGame && (
                                 <GameInfo

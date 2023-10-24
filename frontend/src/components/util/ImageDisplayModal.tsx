@@ -6,6 +6,7 @@ import toast from "react-hot-toast";
 import UploadModal from "./UploadModal";
 import {Image} from "../../model/image/image";
 import {ImageDisplayProps} from "../Panel/ManageProjects/Props/ImageDisplayProps";
+import {t} from "i18next";
 
 const ImageDisplayModal: React.FC<ImageDisplayProps> = ({ show, imageIds, onClose, onSave }) => {
 
@@ -26,7 +27,7 @@ const ImageDisplayModal: React.FC<ImageDisplayProps> = ({ show, imageIds, onClos
     function handleRemoveImage(imageId: number) {
         setEditedImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+            toast.success(t('Image removed successfully'), {icon: "👏"});
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -73,9 +74,7 @@ const ImageDisplayModal: React.FC<ImageDisplayProps> = ({ show, imageIds, onClos
                             paddingInline: '2rem',
                             paddingBlock: '0.5rem',
                         }}
-                    >
-                        Choose images
-                    </Button>
+                    >{t('Choose images')}</Button>
                     <div>
                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                             {editedImageIds.map((imageId, index) => (
@@ -88,7 +87,7 @@ const ImageDisplayModal: React.FC<ImageDisplayProps> = ({ show, imageIds, onClos
                                             className="mx-auto d-block"
                                         />
                                         <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>
-                                            Remove
+                                            {t('Remove')}
                                         </Button>
                                     </div>
                                 </Carousel.Item>
@@ -106,9 +105,7 @@ const ImageDisplayModal: React.FC<ImageDisplayProps> = ({ show, imageIds, onClos
                             paddingInline: '2rem',
                             paddingBlock: '0.5rem',
                         }}
-                    >
-                        Done
-                    </Button>
+                    >{t('Done')}</Button>
                 </div>
             </Col>
             <UploadModal show={uploadModalShow} onClose={() => setUploadModalShow(false)} onSave={handleUploadImages} />

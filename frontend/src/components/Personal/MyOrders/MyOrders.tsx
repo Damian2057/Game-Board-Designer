@@ -8,9 +8,11 @@ import {Order} from "../../../model/order/order";
 import {Api} from "../../../connector/api";
 import OrderInfo from "./Modals/OrderInfo";
 import OrderEdit from "./Modals/OrderEdit";
+import {useTranslation} from "react-i18next";
 
 function MyOrders() {
 
+    const { t } = useTranslation();
     const [orders, setOrders] = React.useState([] as Order[]);
 
     const [selectedOrderInfo, setSelectedOrderInfo] = React.useState<Order | null>(null);
@@ -50,16 +52,16 @@ function MyOrders() {
             <Toaster />
             <Container className='mt-5'>
                 <Card className='shadow border-white'>
-                    <p className='font-bold fs-2'>Orders</p>
+                    <p className='font-bold fs-2'>{t('Orders')}</p>
                     <div className="table-responsive">
                         <Col lg={11} className="mx-auto">
                             <Table striped bordered hover>
                                 <thead>
                                 <tr className='uppercase'>
-                                    <th>Ordered game</th>
-                                    <th>Status</th>
-                                    <th>Details</th>
-                                    <th>Edit</th>
+                                    <th>{t('Ordered Game')}</th>
+                                    <th>{t('Status')}</th>
+                                    <th>{t('Details')}</th>
+                                    <th>{t('Edit')}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -68,10 +70,10 @@ function MyOrders() {
                                         <td className='centered-td'>{order.game?.title}</td>
                                         <td className='centered-td'>{order.status}</td>
                                         <td className='centered-td'>
-                                            <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>Info</Button>
+                                            <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>{t('Info')}</Button>
                                         </td>
                                         <td className='centered-td'>
-                                            <Button className='button-workspace' onClick={() => handleEditOrder(order)}>Edit</Button>
+                                            <Button className='button-workspace' onClick={() => handleEditOrder(order)}>{t('Edit')}</Button>
                                         </td>
                                     </tr>
                                 ))}

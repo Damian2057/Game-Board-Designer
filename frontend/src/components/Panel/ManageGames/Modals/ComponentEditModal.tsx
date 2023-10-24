@@ -5,6 +5,7 @@ import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {MdDriveFileRenameOutline} from "react-icons/md";
 import {ComponentEditProps} from "../Props/ComponentEditProps";
+import {t} from "i18next";
 
 const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSave, editedComponent }) => {
 
@@ -27,7 +28,7 @@ const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSav
                 quantity: quantity
             }).then((component) => {
                 onSave(component);
-                toast.success('Successfully updated!', { icon: "👋" });
+                toast.success(t('Successfully updated'), { icon: "👋" });
                 onClose();
             }).catch(err => {
                 toast.error(`${err.response.data.message}`, { icon: "💀" })
@@ -44,7 +45,7 @@ const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSav
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit Tag</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Edit Component')}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
@@ -56,7 +57,7 @@ const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSav
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Component name:
+                                            {t('Component name')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -71,7 +72,7 @@ const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSav
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Component quantity:
+                                            {t('Quantity')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -79,7 +80,7 @@ const ComponentEditModal: React.FC<ComponentEditProps> = ({ show, onClose, onSav
                             </div>
                         </Form.Group>
                         <div className='flex justify-center items-center mt-4'>
-                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
+                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>{t('Save Data')}</Button>
                         </div>
                     </Form>
                 </Modal.Body>
