@@ -4,6 +4,7 @@ import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {UploadProps} from "./UploadProps";
 import {Api} from "../../connector/api";
+import {t} from "i18next";
 
 const UploadModal: React.FC<UploadProps> = ({show, onClose, onSave }) => {
 
@@ -41,7 +42,7 @@ const UploadModal: React.FC<UploadProps> = ({show, onClose, onSave }) => {
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Upload Image</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Upload Image')}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
@@ -66,8 +67,7 @@ const UploadModal: React.FC<UploadProps> = ({show, onClose, onSave }) => {
                                     margin: '0 auto',
                                     color: 'black',
                                 }}
-                            >Choose images
-                            </Button>
+                            >{t('Choose images')}</Button>
                         </Col>
                     </Form>
                 </Modal.Body>
