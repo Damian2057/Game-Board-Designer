@@ -8,6 +8,7 @@ import GameInfoModal from "./Modals/GameInfoModal";
 import GameEditModal from "./Modals/GameEditModal";
 import ReactPaginate from "react-paginate";
 import NewGameModal from "./Modals/NewGameModal";
+import {t} from "i18next";
 
 export default function ManageGames() {
 
@@ -67,7 +68,7 @@ export default function ManageGames() {
     }
 
     function handleAddNewGame() {
-        toast.success(`Game added successfully`, {icon: "👏"});
+        toast.success(t('Game added successfully'), {icon: "👏"});
         handleCloseAddGameModal();
     }
 
@@ -84,9 +85,9 @@ export default function ManageGames() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Games</p>
+                        <p className='font-bold fs-2'>{t('Games')}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddGameModal}>Add new game</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddGameModal}>{t('Add new game')}</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -94,10 +95,10 @@ export default function ManageGames() {
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>Title</th>
-                                        <th>Price</th>
-                                        <th>Details</th>
-                                        <th>Edit</th>
+                                        <th>{t('Title')}</th>
+                                        <th>{t('Price')}</th>
+                                        <th>{t('Details')}</th>
+                                        <th>{t('Edit')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -107,10 +108,10 @@ export default function ManageGames() {
                                             <td className='centered-td'>{game.title}</td>
                                             <td className='centered-td'>{game.price} {game.currency}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleGameInfo(game)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleGameInfo(game)}>{t('Info')}</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleEditGame(game)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleEditGame(game)}>{t('Edit')}</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -126,8 +127,8 @@ export default function ManageGames() {
                         </div>
                     </Card.Body>
                     <ReactPaginate
-                        previousLabel="previous"
-                        nextLabel="next"
+                        previousLabel={t('previous')}
+                        nextLabel={t('next')}
                         breakLabel="..."
                         breakClassName="page-item"
                         breakLinkClassName="page-link"

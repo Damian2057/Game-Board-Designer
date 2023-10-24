@@ -4,6 +4,7 @@ import {GrClose} from "react-icons/gr";
 import {Api} from "../../../../connector/api";
 import {AiFillTags} from "react-icons/ai";
 import {GameInfoProps} from "../Props/GameInfoProps";
+import {t} from "i18next";
 
 const GameInfoModal: React.FC<GameInfoProps> = ({ game, onClose }) => {
 
@@ -39,7 +40,7 @@ const GameInfoModal: React.FC<GameInfoProps> = ({ game, onClose }) => {
                             <table className="tags-table">
                                 <thead>
                                 <tr>
-                                    <th>Tags:</th>
+                                    <th>{t('Tags')}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -71,8 +72,8 @@ const GameInfoModal: React.FC<GameInfoProps> = ({ game, onClose }) => {
                         <table className="tags-table">
                             <thead>
                             <tr>
-                                <th>Components</th>
-                                <th>Quantity</th>
+                                <th>{t('Components')}</th>
+                                <th>{t('Quantity')}</th>
                             </tr>
                             </thead>
                             <tbody>

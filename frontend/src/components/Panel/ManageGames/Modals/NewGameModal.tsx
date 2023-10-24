@@ -8,6 +8,7 @@ import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
 import {Component} from "../../../../model/game/component";
 import NewComponentModal from "./NewComponentModal";
+import {t} from "i18next";
 
 const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) => {
 
@@ -106,7 +107,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
             components: components,
             imageIds: imageIds
         }).then((game) => {
-            toast.success(`Game created successfully`, { icon: '👏' });
+            toast.success(t('Game created successfully'), { icon: '👏' });
             onSave(game);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, { icon: '💀' });
@@ -126,7 +127,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
     }
 
     function handleAddNewComponent(component: Component) {
-        toast.success(`Component added successfully`, {icon: "👏"});
+        toast.success(t('Component added successfully'), {icon: "👏"});
         setComponents((prevComponents) => [...prevComponents, component]);
         handleCloseAddComponentModal();
     }
@@ -150,14 +151,14 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Create new Game</p>
+                        <p className='font-bold fs-2 mb-12'>{t('Create new game')}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Game title'
+                                            placeholder={t('Title')}
                                             value={title}
                                             onChange={(e) => setTitle(e.target.value)}
                                         />
@@ -166,7 +167,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Game description'
+                                            placeholder={t('Description')}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -174,7 +175,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                     <Form.Group className='mt-3'>
                                         <Form.Control
                                             type='number'
-                                            placeholder='Game price'
+                                            placeholder={t('Price')}
                                             value={isNaN(price) ? '' : price.toString()}
                                             onChange={(e) => setPrice(parseFloat(e.target.value))}
                                             step="any"
@@ -183,14 +184,14 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                     <Form.Group className='mt-3'>
                                         <Form.Control
                                             type='date'
-                                            placeholder='Publication date'
+                                            placeholder={t('Publication date')}
                                             value={publicationDate}
                                             onChange={(e) => setPublicationDate(e.target.value)}
                                         />
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
                                         <Form.Select className='form-select ' aria-label="Currency selector" defaultValue={''} onChange={(e) => setCurrency(e.target.value)}>
-                                            <option disabled value={''}>Choose currency</option>
+                                            <option disabled value={''}>{t('Choose currency')}</option>
                                             <option value={'PLN'}>PLN</option>
                                             <option value={'EUR'}>EUR</option>
                                             <option value={'USD'}>USD</option>
@@ -201,7 +202,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                         <Row className='d-flex justify-content-start mt-3'>
                                             <Col lg={4}>
                                                 <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleChange}>
-                                                    <option disabled value={''}>Choose tags</option>
+                                                    <option disabled value={''}>{t('Choose tags')}</option>
                                                     {tags.map(item => {
                                                         return (<option key={item.id} value={item.name}>{item.name}</option>)
                                                     })}
@@ -235,7 +236,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
+                                    >{t('Choose images')}</Button>
                                     <div>
                                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                                             {imagesUrls.map((imageURL, index) => (
@@ -249,7 +250,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Components</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t('Components')}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addComponent}
@@ -267,8 +268,8 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Quantity:</th>
+                                            <th>{t('Name')}</th>
+                                            <th>{t('Quantity')}</th>
                                             <th></th>
                                         </tr>
                                         </thead>
@@ -306,7 +307,7 @@ const NewGameModal: React.FC<NewGameModalProps> = ({ show, onClose, onSave }) =>
                                 paddingInline: '2rem',
                                 paddingBlock: '0.5rem'
                             }}
-                            >Create</Button>
+                            >{t('Create')}</Button>
                         </Form>
                     </Card.Body>
                     <NewComponentModal
