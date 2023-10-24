@@ -9,6 +9,7 @@ import EmployeeInfoModal from "./Modals/EmployeeInfoModal";
 import EmployeeEditModal from "./Modals/EmployeeEditModal";
 import NewEmployeeModal from "./Modals/NewEmployeeModal";
 import ReactPaginate from "react-paginate";
+import {t} from "i18next";
 
 export default function ManageEmployees() {
 
@@ -81,7 +82,7 @@ export default function ManageEmployees() {
             isActive: flag
         }).then(res => {
             fetchEmployees();
-            toast.success('Employee changed', { icon: "💀" });
+            toast.success(t('Employee changed successfully'), { icon: "💀" });
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })
         });
@@ -100,21 +101,21 @@ export default function ManageEmployees() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Employees</p>
+                        <p className='font-bold fs-2'>{t('Employees')}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddEmployeeModal}>Add new employee</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddEmployeeModal}>{t('Add new employee')}</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
                                         <tr className='uppercase'>
-                                            <th>Username</th>
-                                            <th>Email</th>
-                                            <th>Role</th>
-                                            <th>Details</th>
-                                            <th>Edit</th>
-                                            <th>Activation</th>
+                                            <th>{t('Username')}</th>
+                                            <th>{t('Email')}</th>
+                                            <th>{t('Role')}</th>
+                                            <th>{t('Details')}</th>
+                                            <th>{t('Edit')}</th>
+                                            <th>{t('Activation')}</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -124,21 +125,21 @@ export default function ManageEmployees() {
                                                 <td className='centered-td'>{employee.email}</td>
                                                 <td className='centered-td'>{employee.role}</td>
                                                 <td>
-                                                    <Button className='button-workspace' onClick={() => handleEmployeeInfo(employee)}>Info</Button>
+                                                    <Button className='button-workspace' onClick={() => handleEmployeeInfo(employee)}>{t('Info')}</Button>
                                                 </td>
                                                 <td>
-                                                    <Button className='button-workspace' onClick={() => handleEditEmployee(employee)}>Edit</Button>
+                                                    <Button className='button-workspace' onClick={() => handleEditEmployee(employee)}>{t('Edit')}</Button>
                                                 </td>
                                                 <td>
                                                     <Button className='button-workspace' onClick={() => handleEmployeeDeactivate(employee.id, employee.isActive)}>
-                                                        {employee.isActive ? 'Deactivate' : 'Activate'}
+                                                        {employee.isActive ? t('Deactivate') : t('Activate')}
                                                     </Button>
                                                 </td>
                                             </tr>
                                         ))}
                                         {selectedEmployeeInfo && (
                                             <EmployeeInfoModal
-                                                name={"Employee"}
+                                                name={t('Employee')}
                                                 employee={selectedEmployeeInfo}
                                                 onClose={() => setSelectedEmployeeInfo(null)}
                                             />
@@ -151,7 +152,7 @@ export default function ManageEmployees() {
                                     onSave={handleAddNewEmployee}
                                 />
                                 <EmployeeEditModal
-                                    name={"employee"}
+                                    name={t('Employee')}
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}
                                     onSave={handleSaveEditedEmployee}
@@ -160,8 +161,8 @@ export default function ManageEmployees() {
                             </Col>
                         </div>
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"

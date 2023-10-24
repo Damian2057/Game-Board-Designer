@@ -7,6 +7,7 @@ import IconCircle from "../../util/IconCircle";
 import EmployeeInfoModal from "../ManageEmployees/Modals/EmployeeInfoModal";
 import EmployeeEditModal from "../ManageEmployees/Modals/EmployeeEditModal";
 import ReactPaginate from "react-paginate";
+import {t} from "i18next";
 
 export default function ManageUsers() {
 
@@ -67,7 +68,7 @@ export default function ManageUsers() {
             isActive: flag
         }).then(res => {
             fetchUsers();
-            toast.success('User changed');
+            toast.success(t('User changed successfully'));
         }).catch(err => {
             toast.error(`${err.response.data.message}`, { icon: "💀" })
         });
@@ -86,18 +87,18 @@ export default function ManageUsers() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Users</p>
+                        <p className='font-bold fs-2'>{t('Users')}</p>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
                                     <tr className='uppercase'>
-                                        <th>Username</th>
-                                        <th>Email</th>
-                                        <th>Role</th>
-                                        <th>Details</th>
-                                        <th>Edit</th>
-                                        <th>Activation</th>
+                                        <th>{t('Username')}</th>
+                                        <th>{t('Email')}</th>
+                                        <th>{t('Role')}</th>
+                                        <th>{t('Details')}</th>
+                                        <th>{t('Edit')}</th>
+                                        <th>{t('Activation')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -107,21 +108,21 @@ export default function ManageUsers() {
                                             <td className='centered-td'>{employee.email}</td>
                                             <td className='centered-td'>{employee.role}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleUserInfo(employee)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleUserInfo(employee)}>{t('Info')}</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleEditUser(employee)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleEditUser(employee)}>{t('Edit')}</Button>
                                             </td>
                                             <td>
                                                 <Button className='button-workspace' onClick={() => handleUserDeactivate(employee.id, employee.isActive)}>
-                                                    {employee.isActive ? 'Deactivate' : 'Activate'}
+                                                    {employee.isActive ? t('Deactivate') : t('Activate')}
                                                 </Button>
                                             </td>
                                         </tr>
                                     ))}
                                     {selectedUserInfo && (
                                         <EmployeeInfoModal
-                                            name={"User"}
+                                            name={t('User')}
                                             employee={selectedUserInfo}
                                             onClose={() => setSelectedUserInfo(null)}
                                         />
@@ -129,7 +130,7 @@ export default function ManageUsers() {
                                     </tbody>
                                 </Table>
                                 <EmployeeEditModal
-                                    name={"user"}
+                                    name={t('User')}
                                     show={showEditModal}
                                     onClose={() => setShowEditModal(false)}
                                     onSave={handleSaveEditedUser}
@@ -138,8 +139,8 @@ export default function ManageUsers() {
                             </Col>
                         </div>
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"
