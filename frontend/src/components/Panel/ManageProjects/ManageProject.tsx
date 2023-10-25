@@ -211,8 +211,8 @@ export default function ManageProject() {
                                             <td className='centered-td'>{project.box.name}</td>
                                             <td className='centered-td'>{project.containers.length}</td>
                                             <td className='centered-td'>{project.elements.length}</td>
-                                            <td className='centered-td'>{project.isTemplate ? 'Yes' : 'No'}</td>
-                                            <td className='centered-td'>{project.isCompleted ? 'Yes' : 'No'}</td>
+                                            <td className='centered-td'>{project.isTemplate ? t("Yes") : t("No")}</td>
+                                            <td className='centered-td'>{project.isCompleted ? t("Yes") : t("No")}</td>
                                             <td className='centered-td'>
                                                 <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>{t("Info")}</Button>
                                             </td>

@@ -198,5 +198,11 @@
   "Box description": "Box description",
   "Box updated successfully": "Box updated successfully!",
   "Edit Box": "Edit Box",
-  "": ""
+  "Container updated successfully": "Container updated successfully!",
+  "Add Container": "Add Container",
+  "Container name": "Container name",
+  "Container description": "Container description",
+  "Container deleted": "Container deleted",
+  "Add new Container": "Add new Container",
+  "Edit Container": "Edit Container"
 }

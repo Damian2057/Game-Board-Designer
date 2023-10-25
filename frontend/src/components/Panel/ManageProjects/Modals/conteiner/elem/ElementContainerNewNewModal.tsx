@@ -12,6 +12,7 @@ import NewPropertyModal from "../../property/NewPropertyModal";
 import NotesModal from "../../../../../util/NotesModal";
 import {NewNewElementProps} from "../../../Props/NewNewElementProps";
 import {ElementEntity} from "../../../../../../model/project/elementEntity";
+import {t} from "i18next";
 
 const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onSave }) => {
 
@@ -85,7 +86,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+            toast.success(t("Image removed successfully"), {icon: "👏"});
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -132,14 +133,14 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Add Element</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Add Element")}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Element name'
+                                            placeholder={t("Element name")}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -148,7 +149,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Element description'
+                                            placeholder={t("Element description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -156,7 +157,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                     <Form.Group>
                                         <Form.Control
                                             type="number"
-                                            placeholder='Element Quantity'
+                                            placeholder={t("Element Quantity")}
                                             value={quantity}
                                             onChange={(e) => setQuantity(parseInt(e.target.value))}
                                         />
@@ -178,7 +179,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                                         <GiNotebook size={30} />
                                                     </div>
                                                     <div>
-                                                        Notes
+                                                        {t("Notes")}
                                                     </div>
                                                 </div>
                                             </Button>
@@ -192,7 +193,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                                         <FcHighPriority size={30} />
                                                     </div>
                                                     <div>
-                                                        Priority:
+                                                        {t("Priority")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -216,7 +217,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                                         <GrStatusUnknown size={30} />
                                                     </div>
                                                     <div>
-                                                        Status:
+                                                        {t("Status")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -242,7 +243,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                                 paddingInline: '2rem',
                                                 paddingBlock: '0.5rem'
                                             }}
-                                    >Done</Button>
+                                    >{t("Done")}</Button>
                                 </Col>
                                 <Col>
                                     <Button
@@ -255,7 +256,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
+                                    >{t("Choose images")}</Button>
                                     <div>
                                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                                             {imageIds.map((imageId, index) => (
@@ -266,7 +267,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                                         style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
                                                         className="mx-auto d-block"
                                                     />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
+                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>{t("Remove")}</Button>
                                                 </Carousel.Item>
                                             ))}
                                         </Carousel>
@@ -275,7 +276,7 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Properties</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t("Properties")}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addProp}
@@ -293,8 +294,8 @@ const ElementContainerNewNewModal: React.FC<NewNewElementProps> = ({onClose, onS
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Value:</th>
+                                            <th>{t("Name")}</th>
+                                            <th>{t("Value")}</th>
                                         </tr>
                                         </thead>
                                         <tbody>

@@ -69,7 +69,7 @@ export const NavBar = () => {
                         </Nav.Item>
                         {isEmployee && (
                             <Nav.Item>
-                                <Nav.Link as={Link} to={Api.auth.isAdmin() ? '/panel/admin' : '/panel/employee'} className="fw-semibold">
+                                <Nav.Link as={Link} to={'/panel/admin'} className="fw-semibold">
                                     <div className='flex flex-row items-center'>
                                    <div>
                                        <TbLayoutDashboard size={30} />
