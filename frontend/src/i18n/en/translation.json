@@ -193,5 +193,10 @@
   "Priority updated successfully": "Priority updated successfully!",
   "Status updated successfully": "Status updated successfully!",
   "Edit Element": "Edit Element",
+  "Add Box": "Add Box",
+  "Box name": "Box name",
+  "Box description": "Box description",
+  "Box updated successfully": "Box updated successfully!",
+  "Edit Box": "Edit Box",
   "": ""
 }

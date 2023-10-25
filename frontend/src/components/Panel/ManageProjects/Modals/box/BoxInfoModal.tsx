@@ -4,6 +4,7 @@ import {GrClose} from "react-icons/gr";
 import {Api} from "../../../../../connector/api";
 import {BoxInfoProps} from "../../Props/BoxInfoProps";
 import {Box} from "../../../../../model/project/box";
+import {t} from "i18next";
 
 const BoxInfo: React.FC<BoxInfoProps> = ({ show, box, onClose }) => {
 
@@ -45,10 +46,10 @@ const BoxInfo: React.FC<BoxInfoProps> = ({ show, box, onClose }) => {
                     <Row className='mt-3 align-items-center text-white'>
                         <Col xs={8}>
                             <div>
-                                <span className='fw-bold'>Status:</span> {selectedBox?.status}
+                                <span className='fw-bold'>{t("Status")}</span> {selectedBox?.status}
                             </div>
                             <div>
-                                <span className='fw-bold'>Priority:</span> {selectedBox?.priority}
+                                <span className='fw-bold'>{t("Priority")}</span> {selectedBox?.priority}
                             </div>
                         </Col>
                     </Row>
@@ -57,8 +58,8 @@ const BoxInfo: React.FC<BoxInfoProps> = ({ show, box, onClose }) => {
                             <table className="tags-table">
                                 <thead>
                                 <tr>
-                                    <th>name</th>
-                                    <th>value</th>
+                                    <th>{t("Name")}</th>
+                                    <th>{t("Value")}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
