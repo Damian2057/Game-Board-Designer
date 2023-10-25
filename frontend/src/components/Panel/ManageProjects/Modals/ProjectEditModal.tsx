@@ -22,6 +22,7 @@ import CustomSelect from "../../Orders/Modals/CustomSelect";
 import {User} from "../../../../model/user/user";
 import {boxIcon, containerIcon, elementIcon, imageIcon} from "../../../util/Icons";
 import ChoiceElement from "../../../util/ChoiceElement";
+import {t} from "i18next";
 
 const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedProject }) => {
 
@@ -120,7 +121,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
             containers: containers,
             elements: elements
         }).then((project) => {
-            toast.success(`Project updated successfully`, {icon: "👏"});
+            toast.success(t("Project updated successfully"), {icon: "👏"});
             onSave(project);
             onClose();
         }).catch((err) => {
@@ -199,7 +200,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
         if (worker) {
             setWorker(worker);
             Api.project.assignProjectToUser(editedProject!.id, worker.id).then((res) => {
-                toast.success(`Project assigned successfully`, {icon: "👏"});
+                toast.success(t("Project assigned successfully"), {icon: "👏"});
             }).catch((err) => {
                 toast.error(`${err.response.data.message}`, {icon: "💀"});
             });
@@ -225,14 +226,14 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Project</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Edit Project")}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Project name'
+                                            placeholder={t("Project name")}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -241,7 +242,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Project description'
+                                            placeholder={t("Project description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -263,7 +264,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                                         <GiNotebook size={30} />
                                                     </div>
                                                     <div>
-                                                        Notes
+                                                        {t("Notes")}
                                                     </div>
                                                 </div>
                                             </Button>
@@ -277,12 +278,12 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                                         <FaUserAstronaut size={30} />
                                                     </div>
                                                     <div>
-                                                        Assigned to:
+                                                        {t("Assigned to")}:
                                                     </div>
                                                 </div>
                                             </Form.Label>
                                             <CustomSelect
-                                                value={worker ? worker.email : 'None'}
+                                                value={worker ? worker.email : t("None")}
                                                 onChange={(e) => handleWorkerChange(e)}
                                                 employees={employees}
                                             />
@@ -290,19 +291,19 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
                                         <div className='flex justify-center items-center'>
-                                            <ToggleComponent label="Template: " initialValue={isTemplate}  onChange={setIsTemplate}  labels={['Yes', 'No']}/>
+                                            <ToggleComponent label="Template: " initialValue={isTemplate}  onChange={setIsTemplate}  labels={[t("Yes"), t("No")]}/>
                                         </div>
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
                                         <div className='flex justify-center items-center'>
-                                            <ToggleComponent label="Completed: " initialValue={isCompleted}  onChange={setIsCompleted}  labels={['Yes', 'No']}/>
+                                            <ToggleComponent label="Completed: " initialValue={isCompleted}  onChange={setIsCompleted}  labels={[t("Yes"), t("No")]}/>
                                         </div>
                                     </Form.Group>
                                     <Form.Group className='mt-3'>
                                         <Row className='d-flex justify-content-start mt-3'>
                                             <Col lg={4}>
                                                 <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleGameChange}>
-                                                    <option disabled value={''}>Choose game</option>
+                                                    <option disabled value={''}>{t("Choose Game")}</option>
                                                     {games.map(item => {
                                                         return (<option key={item.id} value={item.title}>{item.title}</option>)
                                                     })}
@@ -321,24 +322,24 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleClick}/>
+                                            <ChoiceElement name={t("Images")} icon={imageIcon} onClick={handleClick}/>
                                         </div>
                                     </Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <ChoiceElement name={"Box"} icon={boxIcon} onClick={editBox}/>
+                                            <ChoiceElement name={t("box")} icon={boxIcon} onClick={editBox}/>
                                         </div>
                                     </Col>
                                 </Col>
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <ChoiceElement name={"Containers"} icon={containerIcon} onClick={editContainers}/>
+                                            <ChoiceElement name={t("Containers")} icon={containerIcon} onClick={editContainers}/>
                                         </div>
                                     </Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <ChoiceElement name={"Elements"} icon={elementIcon} onClick={editElements}/>
+                                            <ChoiceElement name={t("Elements")} icon={elementIcon} onClick={editElements}/>
                                         </div>
                                     </Col>
                                 </Col>
@@ -353,7 +354,7 @@ const ProjectEditModal: React.FC<ProjectEditProps> = ({ onClose, onSave, editedP
                                         paddingInline: '2rem',
                                         paddingBlock: '0.5rem'
                                     }}
-                            >Save Data</Button>
+                            >{t("Save Data")}</Button>
                         </Form>
                     </Card.Body>
                     {showBoxEditModal && (

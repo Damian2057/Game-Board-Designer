@@ -5,6 +5,7 @@ import {Button, Col, Form, Modal} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {MdDriveFileRenameOutline} from "react-icons/md";
 import {PropertyEditProps} from "../../Props/PropertyEditProps";
+import {t} from "i18next";
 
 const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave, editedProp }) => {
 
@@ -43,7 +44,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Edit Property</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t("Edit property")}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
                     <Form as={Col} lg={8} className='mx-auto mb-5'>
@@ -55,7 +56,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Property name:
+                                            {t("Property name")}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -70,7 +71,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                                             <MdDriveFileRenameOutline size={30} />
                                         </div>
                                         <div>
-                                            Property value:
+                                            {t("Property value")}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -78,7 +79,7 @@ const PropertyEditModal: React.FC<PropertyEditProps> = ({ show, onClose, onSave,
                             </div>
                         </Form.Group>
                         <div className='flex justify-center items-center mt-4'>
-                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>Save changes</Button>
+                            <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>{t("Save Data")}</Button>
                         </div>
                     </Form>
                 </Modal.Body>

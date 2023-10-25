@@ -116,7 +116,7 @@ export default function ManageProject() {
         }
         const worker = workers.find(item => item.email == email);
         if (!worker) {
-            toast.error(`Worker not found`, { icon: "💀" });
+            toast.error(t("Worker not found"), { icon: "💀" });
             return;
         }
         setWorkerId(worker?.id);
@@ -155,35 +155,35 @@ export default function ManageProject() {
                 }}>
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
-                        <p className='font-bold fs-2'>Projects</p>
+                        <p className='font-bold fs-2'>{t("Projects")}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddProjectModal}>Add new Project</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddProjectModal}>{t("Add new project")}</Button>
                         </div>
                         <Col lg={3} className='mb-4 d-flex justify-content-center align-items-center'>
                             <div>
                                 <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
-                                    <option disabled value={''}>Choose Game</option>
-                                    <option value={'None'}>None</option>
+                                    <option disabled value={''}>{t("Choose Game")}</option>
+                                    <option value={'None'}>{t("None")}</option>
                                     {games.map(item => {
                                         return (<option key={item.id} value={item.title}>{item.title}</option>)
                                     })}
                                 </Form.Select>
                                 <Form.Select className='form-select' aria-label="Worker selector" defaultValue={''} onChange={handleWorkerSelect}>
-                                    <option disabled value={''}>Choose Worker</option>
-                                    <option value={'None'}>None</option>
+                                    <option disabled value={''}>{t("Choose worker")}</option>
+                                    <option value={'None'}>{t("None")}</option>
                                     {workers.map(item => {
                                         return (<option key={item.id} value={item.email}>{item.email}</option>)
                                     })}
                                 </Form.Select>
                                 <Form.Select className='form-select' aria-label="Template" defaultValue={''} onChange={handleTemplateStatusSelect}>
-                                    <option disabled value={''}>Choose Template Status</option>
-                                    <option value={'Yes'}>Yes</option>
-                                    <option value={'No'}>No</option>
+                                    <option disabled value={''}>{t("Choose template status")}</option>
+                                    <option value={'Yes'}>{t("Yes")}</option>
+                                    <option value={'No'}>{t("No")}</option>
                                 </Form.Select>
                                 <Form.Select className='form-select' aria-label="Complete" defaultValue={''} onChange={handleCompleteStatusSelect}>
-                                    <option disabled value={''}>Choose Complete Status</option>
-                                    <option value={'Yes'}>Yes</option>
-                                    <option value={'No'}>No</option>
+                                    <option disabled value={''}>{t("Choose complete status")}</option>
+                                    <option value={'Yes'}>{t("Yes")}</option>
+                                    <option value={'No'}>{t("No")}</option>
                                 </Form.Select>
                             </div>
                         </Col>
@@ -193,14 +193,14 @@ export default function ManageProject() {
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>name</th>
-                                        <th>box</th>
-                                        <th>containers</th>
-                                        <th>elements</th>
-                                        <th>Template</th>
-                                        <th>Completed</th>
-                                        <th>Info</th>
-                                        <th>Edit</th>
+                                        <th>{t("Name")}</th>
+                                        <th>{t("box")}</th>
+                                        <th>{t("Containers")}</th>
+                                        <th>{t("Elements")}</th>
+                                        <th>{t("Template")}</th>
+                                        <th>{t("Completed")}</th>
+                                        <th>{t("Info")}</th>
+                                        <th>{t("Edit")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -214,10 +214,10 @@ export default function ManageProject() {
                                             <td className='centered-td'>{project.isTemplate ? 'Yes' : 'No'}</td>
                                             <td className='centered-td'>{project.isCompleted ? 'Yes' : 'No'}</td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>{t("Info")}</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleProjectEdit(project)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleProjectEdit(project)}>{t("Edit")}</Button>
                                             </td>
                                         </tr>
                                     ))}

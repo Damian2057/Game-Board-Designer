@@ -11,6 +11,7 @@ import UploadModal from "../../../../util/UploadModal";
 import NewPropertyModal from "../property/NewPropertyModal";
 import NotesModal from "../../../../util/NotesModal";
 import {NewElementProps} from "../../Props/NewElementProps";
+import {t} from "i18next";
 
 const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
 
@@ -49,7 +50,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
 
     function sendAddElementRequest() {
         if (id === null) {
-            toast.error(`Project id is null`, {icon: "💀"});
+            toast.error(t("Project id is null"), {icon: "💀"});
             return;
         }
         Api.project.addElementToProject(id, {
@@ -62,7 +63,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
             priority: selectedPriority,
             status: selectedStatus
         }).then((elements) => {
-            toast.success(`Element added successfully`, {icon: "👏"});
+            toast.success(t("Element added successfully"), {icon: "👏"});
             onSave(elements);
             onClose();
         }).catch((err) => {
@@ -93,7 +94,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+            toast.success(t("Image removed successfully"), {icon: "👏"});
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -140,14 +141,14 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Add Element</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Add Element")}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Element name'
+                                            placeholder={t("Element name")}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -156,7 +157,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Element description'
+                                            placeholder={t("Element description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -164,7 +165,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                     <Form.Group>
                                         <Form.Control
                                             type="number"
-                                            placeholder='Element Quantity'
+                                            placeholder={t("Element Quantity")}
                                             value={quantity}
                                             onChange={(e) => setQuantity(parseInt(e.target.value))}
                                         />
@@ -186,7 +187,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                                         <GiNotebook size={30} />
                                                     </div>
                                                     <div>
-                                                        Notes
+                                                        {t("Notes")}
                                                     </div>
                                                 </div>
                                             </Button>
@@ -200,7 +201,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                                         <FcHighPriority size={30} />
                                                     </div>
                                                     <div>
-                                                        Priority:
+                                                        {t("Priority")}:
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -224,7 +225,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                                         <GrStatusUnknown size={30} />
                                                     </div>
                                                     <div>
-                                                        Status:
+                                                        {t("Status")}:
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -250,7 +251,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                                 paddingInline: '2rem',
                                                 paddingBlock: '0.5rem'
                                             }}
-                                    >Done</Button>
+                                    >{t("Done")}</Button>
                                 </Col>
                                 <Col>
                                     <Button
@@ -263,7 +264,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
+                                    >{t("Choose images")}</Button>
                                     <div>
                                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                                             {imageIds.map((imageId, index) => (
@@ -274,7 +275,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                                         style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
                                                         className="mx-auto d-block"
                                                     />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
+                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>{t("Remove")}</Button>
                                                 </Carousel.Item>
                                             ))}
                                         </Carousel>
@@ -283,7 +284,7 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Properties</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t("Properties")}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addProp}
@@ -301,8 +302,8 @@ const NewElementModal: React.FC<NewElementProps> = ({onClose, onSave, id }) => {
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Value:</th>
+                                            <th>{t("Name")}</th>
+                                            <th>{t("Value")}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
