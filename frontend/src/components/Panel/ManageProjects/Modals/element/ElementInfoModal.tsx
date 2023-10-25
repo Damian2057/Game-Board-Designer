@@ -4,6 +4,7 @@ import {Carousel, Col, Form, Modal, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {ElementInfoProps} from "../../Props/ElementInfoProps";
 import {ElementEntity} from "../../../../../model/project/elementEntity";
+import {t} from "i18next";
 
 const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => {
 
@@ -53,13 +54,13 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                     <Row className='mt-3 align-items-center text-white'>
                         <Col xs={8}>
                             <div>
-                                <span className='fw-bold'>Status:</span> {selectedElement?.status}
+                                <span className='fw-bold'>{t("Status")}:</span> {selectedElement?.status}
                             </div>
                             <div>
-                                <span className='fw-bold'>Priority:</span> {selectedElement?.priority}
+                                <span className='fw-bold'>{t("Priority")}:</span> {selectedElement?.priority}
                             </div>
                             <div>
-                                <span className='fw-bold'>Quantity:</span> {selectedElement?.quantity}
+                                <span className='fw-bold'>{t("Quantity")}:</span> {selectedElement?.quantity}
                             </div>
                         </Col>
                     </Row>
@@ -68,8 +69,8 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                             <table className="tags-table">
                                 <thead>
                                 <tr>
-                                    <th>name</th>
-                                    <th>value</th>
+                                    <th>{t("Name")}</th>
+                                    <th>{t("Value")}</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -93,7 +94,7 @@ const ElementInfo: React.FC<ElementInfoProps> = ({ show, element, onClose }) => 
                     </Row>
                     <Row className='mt-3 text-white'>
                         <div>
-                            <span className='fw-bold'>Notes:</span>
+                            <span className='fw-bold'>{t("Notes")}:</span>
                             <div>"{note}"</div>
                             <div className='flex_row'>
                                 {selectedElement?.notes.map((data, i)=>

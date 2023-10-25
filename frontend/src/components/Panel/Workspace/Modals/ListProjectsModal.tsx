@@ -8,6 +8,7 @@ import ReactPaginate from "react-paginate";
 import ProjectInfoModal from "../../ManageProjects/Modals/ProjectInfoModal";
 import {StartNewProjectProps} from "../Props/StartNewProjectProps";
 import {GrClose} from "react-icons/gr";
+import {t} from "i18next";
 
 const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
@@ -72,7 +73,7 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
     function handleStartProject(project: Project) {
         const gameId = games.find(item => item.title == selectedGame)?.id;
         if (!gameId) {
-            toast.error(`Game not found`, { icon: "💀" });
+            toast.error(t('Game not found'), { icon: "💀" });
             return;
         }
         Api.project.startProject(project.id, gameId).then((res) => {
@@ -101,12 +102,12 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Projects</p>
+                        <p className='font-bold fs-2'>{t('Projects')}</p>
                         <Col lg={3} className='mb-4 d-flex justify-content-center align-items-center'>
                             <div>
                                 <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
-                                    <option disabled value={''}>Choose Game</option>
-                                    <option value={'None'}>None</option>
+                                    <option disabled value={''}>{t('Choose Game')}</option>
+                                    <option value={'None'}>{t('None')}</option>
                                     {games.map(item => {
                                         return (<option key={item.id} value={item.title}>{item.title}</option>)
                                     })}
@@ -119,12 +120,12 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>name</th>
-                                        <th>box</th>
-                                        <th>containers</th>
-                                        <th>elements</th>
-                                        <th>Info</th>
-                                        <th>Start</th>
+                                        <th>{t('Name')}</th>
+                                        <th>{t('box')}</th>
+                                        <th>{t('Containers')}</th>
+                                        <th>{t('Elements')}</th>
+                                        <th>{t('Info')}</th>
+                                        <th>{t('Start')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -136,10 +137,10 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
                                             <td className='centered-td'>{project.containers.length}</td>
                                             <td className='centered-td'>{project.elements.length}</td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>{t('Info')}</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleStartProject(project)}>Start</Button>
+                                                <Button className='button-workspace' onClick={() => handleStartProject(project)}>{t('Start')}</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -148,8 +149,8 @@ const ListProjectsModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) =>
                             </Col>
                         </div>
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"

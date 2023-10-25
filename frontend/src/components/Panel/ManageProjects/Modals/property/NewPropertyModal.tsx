@@ -4,6 +4,7 @@ import {GrClose} from "react-icons/gr";
 import {VscSymbolNamespace} from "react-icons/vsc";
 import {FaSortAmountDownAlt} from "react-icons/fa";
 import {NewPropertyProps} from "../../Props/NewPropertyProps";
+import {t} from "i18next";
 
 const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave }) => {
 
@@ -27,7 +28,7 @@ const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave })
                     </div>
                 </a>
             </div>
-            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>Add Property</Modal.Title>
+            <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t("Add Property")}</Modal.Title>
             <Modal.Body>
                 <Form as={Col} lg={8} className='mx-auto mb-5'>
                     <Form.Group>
@@ -38,13 +39,13 @@ const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave })
                                         <VscSymbolNamespace size={30} />
                                     </div>
                                     <div>
-                                        Property name:
+                                        {t("Property name")}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={name}
-                                          placeholder="Enter property name"
+                                          placeholder={t("Enter property name")}
                                           onChange={(e) => setName(e.target.value)} />
                         </div>
                     </Form.Group>
@@ -56,19 +57,19 @@ const NewPropertyModal: React.FC<NewPropertyProps> = ({ show, onClose, onSave })
                                         <FaSortAmountDownAlt size={30} />
                                     </div>
                                     <div>
-                                        Value:
+                                        {t("Value")}
                                     </div>
                                 </div>
                             </Form.Label>
                             <Form.Control type='text'
                                           value={value}
-                                          placeholder="Enter value"
+                                          placeholder={t("Enter value")}
                                           onChange={(e) => setValue(e.target.value)} />
                         </div>
                     </Form.Group>
                     <div className='flex justify-center items-center mt-4'>
                         <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px', paddingInline: '3rem' }}>
-                            Add</Button>
+                            {t("add")}</Button>
                     </div>
                 </Form>
             </Modal.Body>

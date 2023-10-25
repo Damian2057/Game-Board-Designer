@@ -5,6 +5,7 @@ import {ContainerInfoProps} from "../../../Props/ContainerInfoProps";
 import {ElementEntity} from "../../../../../../model/project/elementEntity";
 import ElementInfoModal from "../../element/ElementInfoModal";
 import ImageSliderModal from "../../ImageSliderModal";
+import {t} from "i18next";
 
 const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClose, show }) => {
 
@@ -42,12 +43,12 @@ const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClos
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Container: {container.name}</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Container")}: {container.name}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <div>
-                                        <span className='fw-bold'>Description:</span>
+                                        <span className='fw-bold'>{t("Description")}:</span>
                                         <Form.Control
                                             as="textarea"
                                             disabled
@@ -56,7 +57,7 @@ const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClos
                                         />
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Notes:</span>
+                                        <span className='fw-bold'>{t("Notes")}:</span>
                                         <div>"{note}"</div>
                                         <div className='flex_row'>
                                             {container.notes.map((data, i)=>
@@ -71,18 +72,18 @@ const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClos
                                         <span className='fw-bold'>Priority:</span> {container.priority}
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Images:</span> <Button variant="outline-primary" onClick={handleShowImage}>Show</Button>
+                                        <span className='fw-bold'>Images:</span> <Button variant="outline-primary" onClick={handleShowImage}>{t("Show")}</Button>
                                     </div>
                                 </Col>
                                 <Col>
                                     <div>
-                                        <span className='fw-bold'>Elements:</span>
+                                        <span className='fw-bold'>{t("Elements")}:</span>
                                         <Table striped bordered hover>
                                             <thead>
                                             <tr className='uppercase'>
-                                                <th>Element</th>
-                                                <th>Quantity</th>
-                                                <th>Info</th>
+                                                <th>{t("Element")}</th>
+                                                <th>{t("Quantity")}</th>
+                                                <th>{t("Info")}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -90,7 +91,7 @@ const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClos
                                                 <tr key={data.id ? data.id : index}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>Show</Button></td>
+                                                    <td><Button variant="outline-primary" onClick={() => handleShowElement(data)}>{t("Show")}</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>
@@ -99,12 +100,12 @@ const ContainerInfoNewModal: React.FC<ContainerInfoProps> = ({ container, onClos
                                 </Col>
                                 <Col>
                                     <div>
-                                        <span className='fw-bold'>Properties:</span>
+                                        <span className='fw-bold'>{t("Properties")}:</span>
                                         <Table striped bordered hover>
                                             <thead>
                                             <tr className='uppercase'>
-                                                <th>Name</th>
-                                                <th>Value</th>
+                                                <th>{t("Name")}</th>
+                                                <th>{t("Value")}</th>
                                             </tr>
                                             </thead>
                                             <tbody>

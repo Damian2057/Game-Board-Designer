@@ -9,6 +9,7 @@ import ElementInfoModal from "./element/ElementInfoModal";
 import ContainerInfoModal from "./conteiner/ContainerInfoModal";
 import ChoiceElement from "../../../util/ChoiceElement";
 import {boxIcon, imageIcon} from "../../../util/Icons";
+import {t} from "i18next";
 
 const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
 
@@ -57,12 +58,12 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Project: {project.name}</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Project")}: {project.name}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <div>
-                                        <span className='fw-bold'>Description:</span>
+                                        <span className='fw-bold'>{t("Description")}:</span>
                                         <Form.Control
                                             as="textarea"
                                             disabled
@@ -71,7 +72,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                         />
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Notes:</span>
+                                        <span className='fw-bold'>{t("Notes")}:</span>
                                         <div>"{note}"</div>
                                         <div className='flex_row'>
                                             {project.notes.map((data, i)=>
@@ -80,17 +81,17 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                         </div>
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Template:</span> {project.isTemplate ? 'Yes' : 'No'}
+                                        <span className='fw-bold'>Template:</span> {project.isTemplate ? t("Yes") : t("No")}
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Completed:</span> {project.isCompleted ? 'Yes' : 'No'}
+                                        <span className='fw-bold'>Completed:</span> {project.isCompleted ? t("Yes") : t("No")}
                                     </div>
                                     <div>
-                                        <span className='fw-bold'>Games:</span>
+                                        <span className='fw-bold'>{t("Games")}:</span>
                                         <Table striped bordered hover>
                                             <thead>
                                             <tr className='uppercase'>
-                                                <th>Game</th>
+                                                <th>{t("Game")}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -104,22 +105,22 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                     </div>
                                     <div style={{ display: 'flex' }}>
                                         <div style={{ marginRight: '20px' }}>
-                                            <ChoiceElement name={"Box"} icon={boxIcon} onClick={handleShowBox}/>
+                                            <ChoiceElement name={t("box")} icon={boxIcon} onClick={handleShowBox}/>
                                         </div>
                                         <div>
-                                            <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleShowImage}/>
+                                            <ChoiceElement name={t("Images")} icon={imageIcon} onClick={handleShowImage}/>
                                         </div>
                                     </div>
                                 </Col>
                                 <Col>
                                     <div>
-                                        <span className='fw-bold'>Containers:</span>
+                                        <span className='fw-bold'>{t("Container")}:</span>
                                         <Table striped bordered hover>
                                             <thead>
                                             <tr className='uppercase'>
-                                                <th>Container</th>
-                                                <th>Quantity</th>
-                                                <th>Info</th>
+                                                <th>{t("Container")}</th>
+                                                <th>{t("Quantity")}</th>
+                                                <th>{t("Info")}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -127,7 +128,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button className={"button-workspace"} onClick={() => handleShowContainer(data)}>Show</Button></td>
+                                                    <td><Button className={"button-workspace"} onClick={() => handleShowContainer(data)}>{t("Show")}</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>
@@ -136,13 +137,13 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                 </Col>
                                 <Col>
                                     <div>
-                                        <span className='fw-bold'>Elements:</span>
+                                        <span className='fw-bold'>{t("Elements")}:</span>
                                         <Table striped bordered hover>
                                             <thead>
                                             <tr className='uppercase'>
-                                                <th>Element</th>
-                                                <th>Quantity</th>
-                                                <th>Info</th>
+                                                <th>{t("Element")}</th>
+                                                <th>{t("Quantity")}</th>
+                                                <th>{t("Info")}</th>
                                             </tr>
                                             </thead>
                                             <tbody>
@@ -150,7 +151,7 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                                 <tr key={data.id}>
                                                     <td>{data.name}</td>
                                                     <td>{data.quantity}</td>
-                                                    <td><Button className={"button-workspace"} onClick={() => handleShowElement(data)}>Show</Button></td>
+                                                    <td><Button className={"button-workspace"} onClick={() => handleShowElement(data)}>{t("Show")}</Button></td>
                                                 </tr>
                                             )}
                                             </tbody>

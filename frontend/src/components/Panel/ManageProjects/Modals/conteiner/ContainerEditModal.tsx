@@ -17,6 +17,7 @@ import {ElementEntity} from "../../../../../model/project/elementEntity";
 import ElementContainerEditListModal from "./elem/ElementContainerEditListModal";
 import {elementIcon, imageIcon} from "../../../../util/Icons";
 import ChoiceElement from "../../../../util/ChoiceElement";
+import {t} from "i18next";
 
 const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, editedContainer, id }) => {
 
@@ -75,7 +76,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
             imageIds: imageIds,
             quantity: quantity,
         }).then((container) => {
-            toast.success(`Container updated successfully!`, {icon: "👏"});
+            toast.success(t("Container updated successfully"), {icon: "👏"});
             onSave(container);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
@@ -206,14 +207,14 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Container</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Edit Container")}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Container name'
+                                            placeholder={t("Container name")}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -222,7 +223,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Container description'
+                                            placeholder={t("Container description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -230,7 +231,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                     <Form.Group>
                                         <Form.Control
                                             type="number"
-                                            placeholder='Element Quantity'
+                                            placeholder={t("Element Quantity")}
                                             value={quantity}
                                             onChange={(e) => setQuantity(parseInt(e.target.value))}
                                         />
@@ -252,7 +253,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                                         <GiNotebook size={30} />
                                                     </div>
                                                     <div>
-                                                        Notes
+                                                        {t("Notes")}
                                                     </div>
                                                 </div>
                                             </Button>
@@ -266,7 +267,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                                         <FcHighPriority size={30} />
                                                     </div>
                                                     <div>
-                                                        Priority:
+                                                        {t("Priority")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -290,7 +291,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                                         <GrStatusUnknown size={30} />
                                                     </div>
                                                     <div>
-                                                        Status:
+                                                        {t("Status")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -316,7 +317,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                                 paddingInline: '2rem',
                                                 paddingBlock: '0.5rem'
                                             }}
-                                    >Done</Button>
+                                    >{t("Done")}</Button>
                                 </Col>
                                 <Col style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                     <ChoiceElement name={"Images"} icon={imageIcon} onClick={handleClick}/>
@@ -325,7 +326,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Properties</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t("Properties")}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addProp}
@@ -343,8 +344,8 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Value:</th>
+                                            <th>{t("Name")}</th>
+                                            <th>{t("Value")}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -362,7 +363,7 @@ const ContainerEditModal: React.FC<ContainerEditProps> = ({onClose, onSave, edit
                                                 </td>
                                                 <td className="tag-cell">
                                                     <div className="tag-content">
-                                                        <Button className='button-workspace' onClick={() => handleEditProp(prop)}>Edit</Button>
+                                                        <Button className='button-workspace' onClick={() => handleEditProp(prop)}>{t("Edit")}</Button>
                                                     </div>
                                                 </td>
                                                 <td className="tag-cell">

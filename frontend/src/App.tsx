@@ -12,7 +12,6 @@ import AdminPanel from './components/Panel/AdminPanel/AdminPanel';
 import Workspace from './components/Panel/Workspace/Workspace';
 import Orders from './components/Panel/Orders/Orders';
 import ManageEmployees from './components/Panel/ManageEmployees/ManageEmployees';
-import EmployeePanel from './components/Panel/EmployeePanel/EmployeePanel';
 import NewSchema from './components/Panel/ManageProjects/ManageProject';
 import './App.css';
 import Profile from "./components/Personal/Profile/Profile";
@@ -40,7 +39,6 @@ function App() {
           <Route path='/panel/workspace/board/:id' element={<Board />} />
           <Route path='/panel/admin' element={<AdminPanel />} />
           <Route path='/panel/custom' element={<CustomOptionPanel />} />
-          <Route path='/panel/employee' element={<EmployeePanel />} />
           <Route path='/panel/workspace' element={<Workspace />} />
           <Route path='/panel/orders' element={<Orders />} />
           <Route path='/panel/manage' element={<ManageEmployees />} />

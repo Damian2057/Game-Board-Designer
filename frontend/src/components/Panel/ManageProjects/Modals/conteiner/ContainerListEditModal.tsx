@@ -8,6 +8,7 @@ import {ContainerEntity} from "../../../../../model/project/containerEntity";
 import ContainerInfoModal from "./ContainerInfoModal";
 import ContainerEditModal from "./ContainerEditModal";
 import NewContainerModal from "./NewContainerModal";
+import {t} from "i18next";
 
 const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSave, editedContainers, id }) => {
 
@@ -63,7 +64,7 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
 
     function handleDeleteContainer(container: ContainerEntity) {
         Api.project.deleteContainer(container.id).then((res) => {
-            toast.success(`Container ${container.name} deleted`, { icon: "🗑️" });
+            toast.success(t("Container deleted"), { icon: "🗑️" });
             fetchContainers();
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, { icon: "💀" });
@@ -88,9 +89,9 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Containers</p>
+                        <p className='font-bold fs-2'>{t("Containers")}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddContainerModal}>Add new Container</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddContainerModal}>{t("Add new Container")}</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -98,13 +99,13 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                        <th>Priority</th>
-                                        <th>Info</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
+                                        <th>{t("Name")}</th>
+                                        <th>{t("Quantity")}</th>
+                                        <th>{t("Status")}</th>
+                                        <th>{t("Priority")}</th>
+                                        <th>{t("Info")}</th>
+                                        <th>{t("Edit")}</th>
+                                        <th>{t("Delete")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -116,13 +117,13 @@ const ContainerListEditModal: React.FC<ContainerEditListProps> = ({onClose, onSa
                                             <td className='centered-td'>{elem.status}</td>
                                             <td className='centered-td'>{elem.priority}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerInfo(elem)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleContainerInfo(elem)}>{t("Info")}</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerElement(elem)}>Edit</Button>
+                                                <Button className='button-workspace' onClick={() => handleContainerElement(elem)}>{t("Edit")}</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(elem)}>Delete</Button>
+                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(elem)}>{t("Delete")}</Button>
                                             </td>
                                         </tr>
                                     ))}

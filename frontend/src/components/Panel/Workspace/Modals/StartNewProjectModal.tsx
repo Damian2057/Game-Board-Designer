@@ -6,6 +6,7 @@ import ListProjectsModal from "./ListProjectsModal";
 import {Project} from "../../../../model/project/project";
 import toast from "react-hot-toast";
 import ListOrdersModal from "./ListOrdersModal";
+import {t} from "i18next";
 
 const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
@@ -35,12 +36,12 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
     }
 
     function handleProjectSave(project: Project | null) {
-        toast(`Project ${project?.name} started`, { icon: "👏" });
+        toast(t('Project started'), { icon: "👏" });
         onClose();
     }
 
     function handleOrderSave(project: Project | null) {
-        toast(`Project ${project?.name} for Order started`, { icon: "👏" });
+        toast(t('Project for order started'), { icon: "👏" });
         onClose();
     }
 
@@ -62,7 +63,7 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Start New Project</p>
+                        <p className='font-bold fs-2'>{t('Start New Project')}</p>
                         <Row className="w-100 d-flex justify-content-center">
                             <Col lg={4}>
                                 <Card onClick={handleStartNewProject} id="panelCard" className="mt-5 p-2 shadow" style={{
@@ -76,7 +77,7 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
                                             {project}
                                         </div>
                                         <div className="py-2">
-                                            <span className="fs-3 fw-bold">{'Start Project'}</span>
+                                            <span className="fs-3 fw-bold">{t('Start Project')}</span>
                                         </div>
                                         <div className="font-semibold py-3">{}</div>
                                     </Card.Body>
@@ -94,7 +95,7 @@ const StartNewProjectModal: React.FC<StartNewProjectProps> = ({onClose, onSave})
                                             {todoIcon}
                                         </div>
                                         <div className="py-2">
-                                            <span className="fs-3 fw-bold">{'Start Order'}</span>
+                                            <span className="fs-3 fw-bold">{t('Start Order')}</span>
                                         </div>
                                         <div className="font-semibold py-3">{}</div>
                                     </Card.Body>

@@ -8,6 +8,7 @@ import {Order} from "../../../../model/order/order";
 import OrderInfoModal from "../../Orders/Modals/OrderInfoModal";
 import SelectProjectForOpenModal from "./SelectProjectForOrderModal";
 import {Project} from "../../../../model/project/project";
+import {t} from "i18next";
 
 const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
@@ -38,7 +39,7 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
 
     function handleSaveProjectOrder(project: Project | null) {
         Api.project.assignOrderToProject(selectedOrder!.id, project!.id, selectedOrder!.game.id).then((res) => {
-            toast.success(`Order ${selectedOrder!.id} assigned to project ${project!.id}`, { icon: "👏" });
+            toast.success(t('Order assigned to project'), { icon: "👏" });
             setSelectedOrder(null)
             onSave(res);
         }).catch((err) => {
@@ -64,19 +65,19 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Orders</p>
+                        <p className='font-bold fs-2'>{t('Orders')}</p>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>Ordered Game</th>
-                                        <th>Status</th>
-                                        <th>Submit Date</th>
-                                        <th>Last Update</th>
-                                        <th>Info</th>
-                                        <th>Start</th>
+                                        <th>{t('Ordered Game')}</th>
+                                        <th>{t('Status')}</th>
+                                        <th>{t('Submit Date')}</th>
+                                        <th>{t('Last Update')}</th>
+                                        <th>{t('Info')}</th>
+                                        <th>{t('Start')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -88,10 +89,10 @@ const ListOrdersModal: React.FC<StartNewProjectProps> = ({onClose, onSave}) => {
                                             <td className='centered-td'>{order.submittingDate}</td>
                                             <td className='centered-td'>{order.lastUpdate}</td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleOrderInfo(order)}>{t('Info')}</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleStartOrder(order)}>Start</Button>
+                                                <Button className='button-workspace' onClick={() => handleStartOrder(order)}>{t('Start')}</Button>
                                             </td>
                                         </tr>
                                     ))}

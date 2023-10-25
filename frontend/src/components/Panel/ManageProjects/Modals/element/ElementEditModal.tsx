@@ -12,6 +12,7 @@ import NewPropertyModal from "../property/NewPropertyModal";
 import NotesModal from "../../../../util/NotesModal";
 import {ElementEditProps} from "../../Props/ElementEditProps";
 import PropertyEditModal from "../property/PropertyEditModal";
+import {t} from "i18next";
 
 const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedElement }) => {
 
@@ -71,7 +72,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
             quantity: quantity,
             properties: properties,
         }).then((elements) => {
-            toast.success(`Element updated successfully`, {icon: "👏"});
+            toast.success(t("Element updated successfully"), {icon: "👏"});
             onSave(elements);
             onClose();
         }).catch((err) => {
@@ -111,7 +112,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+            toast.success(t("Image removed successfully"), {icon: "👏"});
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -134,7 +135,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
 
     function handleSetSelectedPriority(value: string) {
         Api.project.updatePriority(editedElement?.id as number, value, 'element').then(() => {
-            toast.success(`Priority updated successfully`, {icon: "👏"});
+            toast.success(t("Priority updated successfully"), {icon: "👏"});
             setSelectedPriority(value)
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
@@ -143,7 +144,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
 
     function handleSetSelectedStatus(value: string) {
         Api.project.updateStatus(editedElement?.id as number, value, "element").then((box) => {
-            toast.success(`Status updated successfully`, {icon: "👏"});
+            toast.success(t("Status updated successfully"), {icon: "👏"});
             setSelectedStatus(box.status);
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
@@ -183,14 +184,14 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Edit Element</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Edit Element")}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Element name'
+                                            placeholder={t("Element name")}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -199,7 +200,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Element description'
+                                            placeholder={t("Element description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -207,7 +208,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                     <Form.Group>
                                         <Form.Control
                                             type="number"
-                                            placeholder='Element Quantity'
+                                            placeholder={t("Element Quantity")}
                                             value={quantity}
                                             onChange={(e) => setQuantity(parseInt(e.target.value))}
                                         />
@@ -229,7 +230,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                                         <GiNotebook size={30} />
                                                     </div>
                                                     <div>
-                                                        Notes
+                                                        {t("Notes")}
                                                     </div>
                                                 </div>
                                             </Button>
@@ -243,7 +244,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                                         <FcHighPriority size={30} />
                                                     </div>
                                                     <div>
-                                                        Priority:
+                                                        {t("Priority")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -267,7 +268,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                                         <GrStatusUnknown size={30} />
                                                     </div>
                                                     <div>
-                                                        Status:
+                                                        {t("Status")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -293,7 +294,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                                 paddingInline: '2rem',
                                                 paddingBlock: '0.5rem'
                                             }}
-                                    >Done</Button>
+                                    >{t("Done")}</Button>
                                 </Col>
                                 <Col>
                                     <Button
@@ -306,7 +307,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
+                                    >{t("Choose images")}</Button>
                                     <div>
                                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                                             {imageIds.map((imageId, index) => (
@@ -317,7 +318,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                                         style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
                                                         className="mx-auto d-block"
                                                     />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
+                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>{t("Remove")}</Button>
                                                 </Carousel.Item>
                                             ))}
                                         </Carousel>
@@ -326,7 +327,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Properties</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t("Properties")}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addProp}
@@ -344,8 +345,8 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Value:</th>
+                                            <th>{t("Name")}</th>
+                                            <th>{t("Value")}</th>
                                         </tr>
                                         </thead>
                                         <tbody>
@@ -363,7 +364,7 @@ const ElementEditModal: React.FC<ElementEditProps> = ({onClose, onSave, editedEl
                                                 </td>
                                                 <td className="tag-cell">
                                                     <div className="tag-content">
-                                                        <Button className='button-workspace' onClick={() => handleEditProp(prop)}>Edit</Button>
+                                                        <Button className='button-workspace' onClick={() => handleEditProp(prop)}>{t("Edit")}</Button>
                                                     </div>
                                                 </td>
                                                 <td className="tag-cell">

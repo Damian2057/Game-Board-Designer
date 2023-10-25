@@ -12,6 +12,7 @@ import NotesModal from "../../../../util/NotesModal";
 import {GiNotebook} from "react-icons/gi";
 import {BoxNewProps} from "../../Props/BoxNewProps";
 import {Box} from "../../../../../model/project/box";
+import {t} from "i18next";
 
 
 const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
@@ -91,7 +92,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
     function handleRemoveImage(imageId: number) {
         setImageIds((prevIds) => prevIds.filter((id) => id !== imageId));
         Api.image.deleteImage(imageId).then(() => {
-            toast.success(`Image removed successfully`, {icon: "👏"});
+            toast.success(t("Image removed successfully"), {icon: "👏"});
         }).catch((err) => {
             toast.error(`${err.response.data.message}`, {icon: "💀"});
         });
@@ -138,14 +139,14 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2 mb-12'>Add Box</p>
+                        <p className='font-bold fs-2 mb-12'>{t("Add Box")}</p>
                         <Form>
                             <Row>
                                 <Col>
                                     <Form.Group className='mb-3'>
                                         <Form.Control
                                             type='text'
-                                            placeholder='Box name'
+                                            placeholder={t("Box name")}
                                             value={name}
                                             onChange={(e) => setName(e.target.value)}
                                         />
@@ -154,7 +155,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                         <Form.Control
                                             as="textarea"
                                             rows={3}
-                                            placeholder='Game description'
+                                            placeholder={t("Box description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
@@ -176,7 +177,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                                         <GiNotebook size={30} />
                                                     </div>
                                                     <div>
-                                                        Notes
+                                                        {t("Notes")}
                                                     </div>
                                                 </div>
                                             </Button>
@@ -190,7 +191,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                                         <FcHighPriority size={30} />
                                                     </div>
                                                     <div>
-                                                        Priority:
+                                                        {t("Priority")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -214,7 +215,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                                         <GrStatusUnknown size={30} />
                                                     </div>
                                                     <div>
-                                                        Status:
+                                                        {t("Status")}
                                                     </div>
                                                 </div>
                                             </Form.Label>
@@ -240,7 +241,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                                 paddingInline: '2rem',
                                                 paddingBlock: '0.5rem'
                                             }}
-                                    >Done</Button>
+                                    >{t("Done")}</Button>
                                 </Col>
                                 <Col>
                                     <Button
@@ -253,7 +254,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem',
                                         }}
-                                    >Choose images</Button>
+                                    >{t("Choose images")}</Button>
                                     <div>
                                         <Carousel data-bs-theme="dark" className="d-flex justify-content-center align-items-center">
                                             {imageIds.map((imageId, index) => (
@@ -264,7 +265,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                                         style={{ width: 'auto', height: 'auto', maxWidth: '200px', maxHeight: '200px' }}
                                                         className="mx-auto d-block"
                                                     />
-                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>Remove</Button>
+                                                    <Button className='button-workspace' onClick={() => handleRemoveImage(imageId)}>{t("Remove")}</Button>
                                                 </Carousel.Item>
                                             ))}
                                         </Carousel>
@@ -273,7 +274,7 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                 <Col>
                                     <Col xs={8}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>Properties</Modal.Title>
+                                            <Modal.Title className='fs-2 fw-bold' style={{ flex: 1, marginRight: '1rem' }}>{t("Properties")}</Modal.Title>
                                             <Button
                                                 type="button"
                                                 onClick={addProp}
@@ -291,8 +292,8 @@ const NewBoxModal: React.FC<BoxNewProps> = ({onClose, onSave, editedBox }) => {
                                     <Table striped bordered hover>
                                         <thead>
                                         <tr>
-                                            <th>Name:</th>
-                                            <th>Value:</th>
+                                            <th>{t("Name")}</th>
+                                            <th>{t("Value")}</th>
                                         </tr>
                                         </thead>
                                         <tbody>

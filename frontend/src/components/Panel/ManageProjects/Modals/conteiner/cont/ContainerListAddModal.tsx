@@ -5,6 +5,7 @@ import {ContainerEntity} from "../../../../../../model/project/containerEntity";
 import {ContainerListAddProps} from "../../../Props/ContainerListAddProps";
 import ContainerInfoNewModal from "./ContainerInfoNewModal";
 import NewContainerNewModal from "./NewContainerNewModal";
+import {t} from "i18next";
 
 const ContainerListAddModal: React.FC<ContainerListAddProps> = ({onClose, onSave, editedContainers }) => {
 
@@ -65,9 +66,9 @@ const ContainerListAddModal: React.FC<ContainerListAddProps> = ({onClose, onSave
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Containers</p>
+                        <p className='font-bold fs-2'>{t("Containers")}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddContainerModal}>Add new Container</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddContainerModal}>{t("Add new Container")}</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -75,12 +76,12 @@ const ContainerListAddModal: React.FC<ContainerListAddProps> = ({onClose, onSave
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                        <th>Priority</th>
-                                        <th>Info</th>
-                                        <th>Delete</th>
+                                        <th>{t("Name")}</th>
+                                        <th>{t("Quantity")}</th>
+                                        <th>{t("Status")}</th>
+                                        <th>{t("Priority")}</th>
+                                        <th>{t("Info")}</th>
+                                        <th>{t("Delete")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -92,10 +93,10 @@ const ContainerListAddModal: React.FC<ContainerListAddProps> = ({onClose, onSave
                                             <td className='centered-td'>{cont.status}</td>
                                             <td className='centered-td'>{cont.priority}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleContainerInfo(cont)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleContainerInfo(cont)}>{t("Info")}</Button>
                                             </td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(cont)}>Delete</Button>
+                                                <Button className='button-workspace' onClick={() => handleDeleteContainer(cont)}>{t("Delete")}</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -113,7 +114,7 @@ const ContainerListAddModal: React.FC<ContainerListAddProps> = ({onClose, onSave
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem'
                                         }}
-                                >Done</Button>
+                                >{t("Done")}</Button>
                             </Col>
                         </div>
                     </Card.Body>

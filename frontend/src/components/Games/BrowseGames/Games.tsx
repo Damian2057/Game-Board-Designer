@@ -19,6 +19,7 @@ import {useTranslation} from "react-i18next";
 function Games() {
 
     const { t } = useTranslation();
+    const { i18n } = useTranslation();
     const itemsPerPage = 11;
     const [tags, setTags] = React.useState([] as Tag[]);
     const [games, setGames] = React.useState([] as Game[]);
@@ -29,6 +30,10 @@ function Games() {
     const [pageCount, setPageCount] = React.useState(itemsPerPage);
 
     React.useEffect(() => {
+        const storedLanguage = localStorage.getItem('selectedLanguage');
+        if (storedLanguage) {
+            i18n.changeLanguage(storedLanguage);
+        }
         fetchTags();
         fetchGames();
     }, []);

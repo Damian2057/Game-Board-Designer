@@ -4,15 +4,18 @@ import './AdminPanel.css'
 import NavBar from "../../NavBar/NavBar";
 import React from "react";
 import {useTranslation} from "react-i18next";
+import {Api} from "../../../connector/api";
 
 function AdminPanel() {
 
     const { t } = useTranslation();
+    const { i18n } = useTranslation();
+    const isAdmin: boolean = Api.auth.isAdmin();
+
     const todoIcon = (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
         <path fillRule="evenodd" d="M7.502 6h7.128A3.375 3.375 0 0118 9.375v9.375a3 3 0 003-3V6.108c0-1.505-1.125-2.811-2.664-2.94a48.972 48.972 0 00-.673-.05A3 3 0 0015 1.5h-1.5a3 3 0 00-2.663 1.618c-.225.015-.45.032-.673.05C8.662 3.295 7.554 4.542 7.502 6zM13.5 3A1.5 1.5 0 0012 4.5h4.5A1.5 1.5 0 0015 3h-1.5z" clipRule="evenodd" />
         <path fillRule="evenodd" d="M3 9.375C3 8.339 3.84 7.5 4.875 7.5h9.75c1.036 0 1.875.84 1.875 1.875v11.25c0 1.035-.84 1.875-1.875 1.875h-9.75A1.875 1.875 0 013 20.625V9.375zM6 12a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V12zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 15a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V15zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75zM6 18a.75.75 0 01.75-.75h.008a.75.75 0 01.75.75v.008a.75.75 0 01-.75.75H6.75a.75.75 0 01-.75-.75V18zm2.25 0a.75.75 0 01.75-.75h3.75a.75.75 0 010 1.5H9a.75.75 0 01-.75-.75z" clipRule="evenodd" />
     </svg>)
-
     const workSpaceIcon = (<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-10 h-10">
         <path fillRule="evenodd" d="M7.5 5.25a3 3 0 013-3h3a3 3 0 013 3v.205c.933.085 1.857.197 2.774.334 1.454.218 2.476 1.483 2.476 2.917v3.033c0 1.211-.734 2.352-1.936 2.752A24.726 24.726 0 0112 15.75c-2.73 0-5.357-.442-7.814-1.259-1.202-.4-1.936-1.541-1.936-2.752V8.706c0-1.434 1.022-2.7 2.476-2.917A48.814 48.814 0 017.5 5.455V5.25zm7.5 0v.09a49.488 49.488 0 00-6 0v-.09a1.5 1.5 0 011.5-1.5h3a1.5 1.5 0 011.5 1.5zm-3 8.25a.75.75 0 100-1.5.75.75 0 000 1.5z" clipRule="evenodd" />
         <path d="M3 18.4v-2.796a4.3 4.3 0 00.713.31A26.226 26.226 0 0012 17.25c2.892 0 5.68-.468 8.287-1.335.252-.084.49-.189.713-.311V18.4c0 1.452-1.047 2.728-2.523 2.923-2.12.282-4.282.427-6.477.427a49.19 49.19 0 01-6.477-.427C4.047 21.128 3 19.852 3 18.4z" />
@@ -46,6 +49,13 @@ function AdminPanel() {
               d="M2 15.5V2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v13.5a.5.5 0 0 1-.74.439L8 13.069l-5.26 2.87A.5.5 0 0 1 2 15.5zm8.854-9.646a.5.5 0 0 0-.708-.708L7.5 7.793 6.354 6.646a.5.5 0 1 0-.708.708l1.5 1.5a.5.5 0 0 0 .708 0l3-3z"/>
     </svg>)
 
+    React.useEffect(() => {
+        const storedLanguage = localStorage.getItem('selectedLanguage');
+        if (storedLanguage) {
+            i18n.changeLanguage(storedLanguage);
+        }
+    }, [])
+
     return (
         <div className="adminPanel">
             <NavBar />
@@ -63,21 +73,27 @@ function AdminPanel() {
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/workspace'} icon={workSpaceIcon} title={t("My workspace")} description={t("view my projects")} />
                     </Col>
-                    <Col lg={4}>
-                        <ContentCard linkTo={'/panel/custom'} icon={customIcon} title={t("custom options")} description={t("configuration")} />
-                    </Col>
+                    {isAdmin && (
+                        <Col lg={4}>
+                            <ContentCard linkTo={'/panel/custom'} icon={customIcon} title={t("custom options")} description={t("configuration")} />
+                        </Col>
+                    )}
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/scheme'} icon={newSchemaIcon} title={t("Manage Projects")} description={t("add or edit projects")} />
                     </Col>
-                    <Col lg={4}>
-                        <ContentCard linkTo={'/panel/manage'} icon={employeeManagementIcon} title={t("Manage employees")} description={t("edit employees")} />
-                    </Col>
+                    {isAdmin && (
+                        <Col lg={4}>
+                            <ContentCard linkTo={'/panel/manage'} icon={employeeManagementIcon} title={t("Manage employees")} description={t("edit employees")} />
+                        </Col>
+                    )}
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/manage/games'} icon={statsIcon} title={t("Manage Games")} description={t("add or edit games")} />
                     </Col>
-                    <Col lg={4}>
-                        <ContentCard linkTo={'/panel/manage/users'} icon={userManagementIcon} title={t("Manage Users")} description={t("edit users")} />
-                    </Col>
+                    {isAdmin && (
+                        <Col lg={4}>
+                            <ContentCard linkTo={'/panel/manage/users'} icon={userManagementIcon} title={t("Manage Users")} description={t("edit users")} />
+                        </Col>
+                    )}
                     <Col lg={4}>
                         <ContentCard linkTo={'/panel/manage/tags'} icon={tagIcon} title={t("Manage Tags")} description={t("add or edit tags")} />
                     </Col>

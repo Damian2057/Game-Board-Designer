@@ -7,6 +7,7 @@ import {GrClose} from "react-icons/gr";
 import ReactPaginate from "react-paginate";
 import ProjectInfoModal from "../../ManageProjects/Modals/ProjectInfoModal";
 import {SelectProjectProps} from "../Props/SelectProjectProps";
+import {t} from "i18next";
 
 const SelectProjectForOpenModal: React.FC<SelectProjectProps> = ({onClose, game, onSave}) => {
 
@@ -74,19 +75,19 @@ const SelectProjectForOpenModal: React.FC<SelectProjectProps> = ({onClose, game,
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Select Project</p>
+                        <p className='font-bold fs-2'>{t('Select Project')}</p>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>name</th>
-                                        <th>box</th>
-                                        <th>containers</th>
-                                        <th>elements</th>
-                                        <th>Info</th>
-                                        <th>Start</th>
+                                        <th>{t('Name')}</th>
+                                        <th>{t('box')}</th>
+                                        <th>{t('Containers')}</th>
+                                        <th>{t('Elements')}</th>
+                                        <th>{t('Info')}</th>
+                                        <th>{t('Start')}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -98,10 +99,10 @@ const SelectProjectForOpenModal: React.FC<SelectProjectProps> = ({onClose, game,
                                             <td className='centered-td'>{project.containers.length}</td>
                                             <td className='centered-td'>{project.elements.length}</td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>Info</Button>
+                                                <Button className='button-workspace' onClick={() => handleProjectInfo(project)}>{t('Info')}</Button>
                                             </td>
                                             <td className='centered-td'>
-                                                <Button className='button-workspace' onClick={() => handleStartProject(project)}>Start</Button>
+                                                <Button className='button-workspace' onClick={() => handleStartProject(project)}>{t('Start')}</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -110,8 +111,8 @@ const SelectProjectForOpenModal: React.FC<SelectProjectProps> = ({onClose, game,
                             </Col>
                         </div>
                         <ReactPaginate
-                            previousLabel="previous"
-                            nextLabel="next"
+                            previousLabel={t('previous')}
+                            nextLabel={t('next')}
                             breakLabel="..."
                             breakClassName="page-item"
                             breakLinkClassName="page-link"

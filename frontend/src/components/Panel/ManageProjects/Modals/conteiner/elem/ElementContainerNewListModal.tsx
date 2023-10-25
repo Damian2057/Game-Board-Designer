@@ -4,6 +4,7 @@ import {ElementEntity} from "../../../../../../model/project/elementEntity";
 import {Button, Card, Col, Container, Table} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import ElementContainerNewNewModal from "./ElementContainerNewNewModal";
+import {t} from "i18next";
 
 const ElementContainerNewListModal: React.FC<ElementsEditProps> = ({onClose, onSave, editedElements}) => {
 
@@ -57,9 +58,9 @@ const ElementContainerNewListModal: React.FC<ElementsEditProps> = ({onClose, onS
                                 </div>
                             </a>
                         </div>
-                        <p className='font-bold fs-2'>Add new Element</p>
+                        <p className='font-bold fs-2'>{t("Add new Element")}</p>
                         <div>
-                            <Button className='button-workspace my-4' onClick={handleOpenAddElementModal}>Add new Element</Button>
+                            <Button className='button-workspace my-4' onClick={handleOpenAddElementModal}>{t("Add new Element")}</Button>
                         </div>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
@@ -67,11 +68,11 @@ const ElementContainerNewListModal: React.FC<ElementsEditProps> = ({onClose, onS
                                     <thead>
                                     <tr className='uppercase'>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Quantity</th>
-                                        <th>Status</th>
-                                        <th>Priority</th>
-                                        <th>Delete</th>
+                                        <th>{t("Name")}</th>
+                                        <th>{t("Quantity")}</th>
+                                        <th>{t("Status")}</th>
+                                        <th>{t("Priority")}</th>
+                                        <th>{t("Delete")}</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -83,7 +84,7 @@ const ElementContainerNewListModal: React.FC<ElementsEditProps> = ({onClose, onS
                                             <td className='centered-td'>{elem.status}</td>
                                             <td className='centered-td'>{elem.priority}</td>
                                             <td>
-                                                <Button className='button-workspace' onClick={() => handleDeleteElement(elem)}>Delete</Button>
+                                                <Button className='button-workspace' onClick={() => handleDeleteElement(elem)}>{t("Delete")}</Button>
                                             </td>
                                         </tr>
                                     ))}
@@ -101,7 +102,7 @@ const ElementContainerNewListModal: React.FC<ElementsEditProps> = ({onClose, onS
                                             paddingInline: '2rem',
                                             paddingBlock: '0.5rem'
                                         }}
-                                >Done</Button>
+                                >{t("Done")}</Button>
                             </Col>
                         </div>
                     </Card.Body>
