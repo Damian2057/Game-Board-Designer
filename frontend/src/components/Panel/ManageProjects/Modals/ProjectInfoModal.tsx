@@ -103,8 +103,10 @@ const ProjectInfoModal: React.FC<ProjectInfoProps> = ({ project, onClose }) => {
                                             </tbody>
                                         </Table>
                                     </div>
-                                    <div style={{ display: 'flex' }}>
-                                        <div style={{ marginRight: '20px' }}>
+                                    <div style={{ display: 'flex'}}>
+                                        <div style={{
+                                            marginRight: '20px',
+                                        }}>
                                             <ChoiceElement name={t("box")} icon={boxIcon} onClick={handleShowBox}/>
                                         </div>
                                         <div>

@@ -2,16 +2,24 @@
     background-color: #7D53DE !important;
 }
 
+.custom-modal {
+    max-width: 800px !important;
+    margin: 0 auto;
+}
+
 .tags-table {
     width: 100%;
     border-collapse: collapse;
+    background-color: #F2F4F8;
+    border-radius: 10px;
 }
 
 .tags-table th,
 .tags-table td {
     padding: 8px 12px;
     text-align: left;
-    border-bottom: 1px solid #ddd;
+    /*border-bottom: 1px solid #ddd;*/
+    color: #7D53DE !important;
 }
 
 .tags-table th,
@@ -32,4 +40,13 @@
 
 .tag-content span {
     margin-left: 10px;
+}
+
+.button-order-info {
+    background-color: #F2F4F8 !important;
+    border-color: #7D53DE !important;
+    border-radius: 20px !important;
+    padding-inline: 1.5em !important;
+    font-weight: 600 !important;
+    color: #7D53DE !important;
 }

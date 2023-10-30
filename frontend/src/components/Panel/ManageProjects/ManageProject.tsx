@@ -11,11 +11,12 @@ import {Api} from "../../../connector/api";
 import ProjectInfoModal from "./Modals/ProjectInfoModal";
 import ProjectEditModal from "./Modals/ProjectEditModal";
 import NewProjectModal from "./Modals/NewProjectModal";
+import Row from "react-bootstrap/Row";
 import {t} from "i18next";
 
 export default function ManageProject() {
 
-    const itemsPerPage = 8;
+    const itemsPerPage = 10;
     const [pageCount, setPageCount] = useState(0);
     const [games, setGames] = useState([] as Game[]);
     const [selectedGame, setSelectedGame] = useState<string | null>(null);
@@ -159,34 +160,40 @@ export default function ManageProject() {
                         <div>
                             <Button className='button-workspace my-4' onClick={handleOpenAddProjectModal}>{t("Add new project")}</Button>
                         </div>
-                        <Col lg={3} className='mb-4 d-flex justify-content-center align-items-center'>
+                        <Row lg={4} className='d-flex justify-content-center align-items-center'>
                             <div>
-                                <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
+                                <Form.Select className='form-select mb-4' aria-label="Category selector" defaultValue={''} onChange={handleGameSelect}>
                                     <option disabled value={''}>{t("Choose Game")}</option>
                                     <option value={'None'}>{t("None")}</option>
                                     {games.map(item => {
                                         return (<option key={item.id} value={item.title}>{item.title}</option>)
                                     })}
                                 </Form.Select>
-                                <Form.Select className='form-select' aria-label="Worker selector" defaultValue={''} onChange={handleWorkerSelect}>
+                            </div>
+                            <div>
+                                <Form.Select className='form-select mb-4' aria-label="Worker selector" defaultValue={''} onChange={handleWorkerSelect}>
                                     <option disabled value={''}>{t("Choose worker")}</option>
                                     <option value={'None'}>{t("None")}</option>
                                     {workers.map(item => {
                                         return (<option key={item.id} value={item.email}>{item.email}</option>)
                                     })}
                                 </Form.Select>
-                                <Form.Select className='form-select' aria-label="Template" defaultValue={''} onChange={handleTemplateStatusSelect}>
+                            </div>
+                            <div>
+                                <Form.Select className='form-select mb-4' aria-label="Template" defaultValue={''} onChange={handleTemplateStatusSelect}>
                                     <option disabled value={''}>{t("Choose template status")}</option>
                                     <option value={'Yes'}>{t("Yes")}</option>
                                     <option value={'No'}>{t("No")}</option>
                                 </Form.Select>
-                                <Form.Select className='form-select' aria-label="Complete" defaultValue={''} onChange={handleCompleteStatusSelect}>
+                            </div>
+                            <div>
+                                <Form.Select className='form-select mb-4' aria-label="Complete" defaultValue={''} onChange={handleCompleteStatusSelect}>
                                     <option disabled value={''}>{t("Choose complete status")}</option>
                                     <option value={'Yes'}>{t("Yes")}</option>
                                     <option value={'No'}>{t("No")}</option>
                                 </Form.Select>
                             </div>
-                        </Col>
+                        </Row>
                         <div className="table-responsive">
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>

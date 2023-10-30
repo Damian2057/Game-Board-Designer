@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import {Api} from "../../../../connector/api";
 import toast, {Toaster} from "react-hot-toast";
-import {Button, Card, Col, Container, Form, Modal, Row} from "react-bootstrap";
+import {Button, Card, Col, Container, Form, Row} from "react-bootstrap";
 import {GrClose} from "react-icons/gr";
 import {BsXLg} from "react-icons/bs";
 import {Game} from "../../../../model/game/game";
@@ -163,7 +163,7 @@ const NewProjectModal: React.FC<ProjectNewProps> = ({ onClose, onSave }) => {
                         <Form>
                             <Row>
                                 <Col>
-                                    <Form.Group className='mb-3'>
+                                    <Form.Group className='mb-4'>
                                         <Form.Control
                                             type='text'
                                             placeholder={t("Project name")}
@@ -174,85 +174,89 @@ const NewProjectModal: React.FC<ProjectNewProps> = ({ onClose, onSave }) => {
                                     <Form.Group>
                                         <Form.Control
                                             as="textarea"
-                                            rows={3}
+                                            rows={6}
                                             placeholder={t("Project description")}
                                             value={description}
                                             onChange={(e) => setDescription(e.target.value)}
                                         />
                                     </Form.Group>
-                                    <Form.Group>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                            <Button
-                                                type="button"
-                                                onClick={() => setShowNotesModal(true)}
-                                                style={{
-                                                    backgroundColor: '#7D53DE',
-                                                    borderColor: '#7D53DE',
-                                                    borderRadius: '20px',
-                                                    paddingInline: '2rem',
-                                                    paddingBlock: '0.5rem'
-                                                }}>
-                                                <div className='flex flex-row gap-2 items-center'>
-                                                    <div>
-                                                        <GiNotebook size={30} />
+                                    <div className="flex flex-row gap-4 items-center mb-2">
+                                        <Form.Group>
+                                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '1em' }}>
+                                                <Button
+                                                    type="button"
+                                                    onClick={() => setShowNotesModal(true)}
+                                                    style={{
+                                                        backgroundColor: '#7D53DE',
+                                                        borderColor: '#7D53DE',
+                                                        borderRadius: '20px',
+                                                        paddingInline: '2rem',
+                                                        paddingBlock: '0.5rem'
+                                                    }}>
+                                                    <div className='flex flex-row gap-2 items-center'>
+                                                        <div>
+                                                            <GiNotebook size={30} />
+                                                        </div>
+                                                        <div>
+                                                            {t("Notes")}
+                                                        </div>
                                                     </div>
-                                                    <div>
-                                                        {t("Notes")}
-                                                    </div>
-                                                </div>
-                                            </Button>
+                                                </Button>
+                                            </div>
+                                        </Form.Group>
+                                        <div className="flex gap-2 justify-center items-center">
+                                            <Form.Group>
+                                                <ToggleComponent label={t("Completed")} initialValue={isCompleted}  onChange={setIsCompleted}  labels={[t("Yes"), t("No")]}/>
+                                            </Form.Group>
                                         </div>
-                                    </Form.Group>
-                                    <Form.Group className='mt-3'>
-                                        <div className='flex justify-center items-center'>
-                                            <ToggleComponent label="Completed: " initialValue={isCompleted}  onChange={setIsCompleted}  labels={[t("Yes"), t("No")]}/>
-                                        </div>
-                                    </Form.Group>
-                                    <Form.Group className='mt-3'>
-                                        <Row className='d-flex justify-content-start mt-3'>
-                                            <Col lg={4}>
-                                                <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleGameChange}>
-                                                    <option disabled value={''}>{t("Choose game")}</option>
-                                                    {games.map(item => {
-                                                        return (<option key={item.id} value={item.title}>{item.title}</option>)
-                                                    })}
-                                                </Form.Select>
-                                            </Col>
-                                            {Array.isArray(selectedGames) && selectedGames.length > 0 ? (
-                                                    selectedGames.map(item => {
-                                                        return <Col lg={4} className='tag ps-3' key={item.id}>{item.title}<BsXLg className='' onClick={() => handleRemoveGame(item)} /></Col>
-                                                    }))
-                                                : (
-                                                    <div></div>
-                                                )}
-                                        </Row>
-                                    </Form.Group>
+                                    </div>
                                 </Col>
                                 <Col>
-                                    <Col xs={8}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Col xs={12} className="mb-2">
+                                        <div className="flex justify-end items-center">
                                             <ChoiceElement name={t("Images")} icon={imageIcon} onClick={handleClick}/>
                                         </div>
                                     </Col>
-                                    <Col xs={8}>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                    <Col xs={12}>
+                                        <div className="flex justify-end items-center">
                                             <ChoiceElement name={t("box")} icon={boxIcon} onClick={editBox}/>
                                         </div>
                                     </Col>
                                 </Col>
                                 <Col>
-                                    <Col xs={8}>
+                                    <Col xs={12} className="mb-2">
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <ChoiceElement name={t("Containers")} icon={containerIcon} onClick={editContainers}/>
                                         </div>
                                     </Col>
-                                    <Col xs={8}>
+                                    <Col xs={12}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                             <ChoiceElement name={t("Elements")} icon={elementIcon} onClick={editElements}/>
                                         </div>
                                     </Col>
                                 </Col>
                             </Row>
+                            <Form.Group className='mt-2'>
+                                <Row className='d-flex justify-content-start mt-2'>
+                                    <Col lg={4} className="mb-4">
+                                        <Form.Select className='form-select ' aria-label="Category selector" defaultValue={''} onChange={handleGameChange}>
+                                            <option disabled value={''}>{t("Choose Game")}</option>
+                                            {games.map(item => {
+                                                return (<option key={item.id} value={item.title}>{item.title}</option>)
+                                            })}
+                                        </Form.Select>
+                                    </Col>
+                                    <Row lg={12}>
+                                        {Array.isArray(selectedGames) && selectedGames.length > 0 ? (
+                                                selectedGames.map(item => {
+                                                    return <Col lg={3} className='tag ml-2 ps-3' key={item.id}>{item.title}<BsXLg className='' onClick={() => handleRemoveGame(item)} /></Col>
+                                                }))
+                                            : (
+                                                <div></div>
+                                            )}
+                                    </Row>
+                                </Row>
+                            </Form.Group>
                             <Button type="button"
                                     onClick={sendProjectEditRequest}
                                     style={{

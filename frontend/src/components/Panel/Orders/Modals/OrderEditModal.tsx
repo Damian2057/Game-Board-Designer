@@ -110,7 +110,7 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
 
 
     return (
-        <Modal show={show} onHide={onClose} className='text-white'>
+        <Modal show={show} onHide={onClose} className='text-white' dialogClassName='custom-modal'>
             <div className='icon-position rounded-md' style={{ backgroundColor: '#7D53DE' }}>
                 <a onClick={onClose} >
                     <div className='icon-circle' >
@@ -121,97 +121,103 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
             <Modal.Title className='fs-2 fw-bold text-center' style={{ backgroundColor: '#7D53DE' }}>{t('Edit')} {name}</Modal.Title>
             <div className='game-info rounded'>
                 <Modal.Body className=' fs-5 rounded-md'>
-                    <Form as={Col} lg={8} className='mx-auto mb-5'>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <PiUserListBold size={30} />
+                    <Form as={Col} lg={12} className='mx-auto py-0 px-4'>
+                        <div className='flex flex-row gap-8'>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <PiUserListBold size={30} />
+                                            </div>
+                                            <div>
+                                                {t('firstname')}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {t('firstname')}
+                                    </Form.Label>
+                                    <Form.Control type='text' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
+                                </div>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <PiUserListBold size={30} />
+                                            </div>
+                                            <div>
+                                                {t('lastname')}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control type='text' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <PiUserListBold size={30} />
+                                    </Form.Label>
+                                    <Form.Control type='text' value={lastName} onChange={(e) => setLastName(e.target.value)} />
+                                </div>
+                            </Form.Group>
+                        </div>
+                        <div className='flex flex-row gap-8'>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <BsEnvelope size={30} />
+                                            </div>
+                                            <div>
+                                                {t('Email')}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {t('lastname')}
+                                    </Form.Label>
+                                    <Form.Control type='text' value={email} onChange={(e) => setEmail(e.target.value)} />
+                                </div>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <BsTelephone size={30} />
+                                            </div>
+                                            <div>
+                                                {t('Phone')}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control type='text' value={lastName} onChange={(e) => setLastName(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <BsEnvelope size={30} />
+                                    </Form.Label>
+                                    <Form.Control type='text' value={phone} onChange={(e) => setPhone(e.target.value)} />
+                                </div>
+                            </Form.Group>
+                        </div>
+                        <div className='flex flex-row gap-8'>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <FaAddressBook size={30} />
+                                            </div>
+                                            <div>
+                                                {t('address')}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {t('Email')}
+                                    </Form.Label>
+                                    <Form.Control type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
+                                </div>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <BiSolidCity size={30} />
+                                            </div>
+                                            <div>
+                                                {t('City')}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control type='text' value={email} onChange={(e) => setEmail(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <BsTelephone size={30} />
-                                        </div>
-                                        <div>
-                                            {t('Phone')}
-                                        </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control type='text' value={phone} onChange={(e) => setPhone(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <FaAddressBook size={30} />
-                                        </div>
-                                        <div>
-                                            {t('address')}
-                                        </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <BiSolidCity size={30} />
-                                        </div>
-                                        <div>
-                                            {t('City')}
-                                        </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control type='text' value={city} onChange={(e) => setCity(e.target.value)} />
-                            </div>
-                        </Form.Group>
+                                    </Form.Label>
+                                    <Form.Control type='text' value={city} onChange={(e) => setCity(e.target.value)} />
+                                </div>
+                            </Form.Group>
+                        </div>
                         <Form.Group>
                             <div>
                                 <Form.Label className='fw-bold'>
@@ -233,79 +239,82 @@ const OrderEditModal: React.FC<OrderEditProps> = ({ name, show, onClose, onSave,
                                 />
                             </div>
                         </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <GiPriceTag size={30} />
+                        <div className='flex flex-row gap-8 justify-center items-center'>
+                            <Form.Group as={Col} className="mt-0">
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <GiPriceTag size={30} />
+                                            </div>
+                                            <div>
+                                                {t('Price')}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {t('Price')}
+                                    </Form.Label>
+                                    <Form.Control
+                                        type='number'
+                                        placeholder='Game price'
+                                        value={isNaN(price) ? '' : price.toString()}
+                                        onChange={(e) => setPrice(parseFloat(e.target.value))}
+                                        step="any"
+                                    />
+                                </div>
+                            </Form.Group>
+                            <Form.Group as={Col} className='mt-16'>
+                                <Form.Select className='currency-select ' aria-label="Currency selector" defaultValue={currency} onChange={(e) => setCurrency(e.target.value)}>
+                                    <option disabled value={''}>{t('Choose currency')}</option>
+                                    <option value={'PLN'}>PLN</option>
+                                    <option value={'EUR'}>EUR</option>
+                                    <option value={'USD'}>USD</option>
+                                </Form.Select>
+                            </Form.Group>
+                        </div>
+                        <div className='flex flex-row gap-8'>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <GrStatusCriticalSmall size={30} />
+                                            </div>
+                                            <div>
+                                                {t('Status')}
+                                            </div>
                                         </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control
-                                    type='number'
-                                    placeholder='Game price'
-                                    value={isNaN(price) ? '' : price.toString()}
-                                    onChange={(e) => setPrice(parseFloat(e.target.value))}
-                                    step="any"
-                                />
-                            </div>
-                        </Form.Group>
-                        <Form.Group className='mt-3'>
-                            <Form.Select className='form-select ' aria-label="Currency selector" defaultValue={currency} onChange={(e) => setCurrency(e.target.value)}>
-                                <option disabled value={''}>{t('Choose currency')}</option>
-                                <option value={'PLN'}>PLN</option>
-                                <option value={'EUR'}>EUR</option>
-                                <option value={'USD'}>USD</option>
-                            </Form.Select>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <GrStatusCriticalSmall size={30} />
+                                    </Form.Label>
+                                    <Form.Control
+                                        as="select"
+                                        value={selectedStatus}
+                                        onChange={(e) => setSelectedStatus(e.target.value)}
+                                    >{status.map((stat) => (
+                                        <option key={stat} value={stat}>
+                                            {stat}
+                                        </option>
+                                    ))}
+                                    </Form.Control>
+                                </div>
+                            </Form.Group>
+                            <Form.Group as={Col}>
+                                <div>
+                                    <Form.Label className='fw-bold'>
+                                        <div className='flex flex-row gap-2 items-center'>
+                                            <div>
+                                                <FaUserAstronaut size={30} />
+                                            </div>
+                                            <div>
+                                                {t('Assigned to')}
+                                            </div>
                                         </div>
-                                        <div>
-                                            {t('Status')}
-                                        </div>
-                                    </div>
-                                </Form.Label>
-                                <Form.Control
-                                    as="select"
-                                    value={selectedStatus}
-                                    onChange={(e) => setSelectedStatus(e.target.value)}
-                                >{status.map((stat) => (
-                                    <option key={stat} value={stat}>
-                                        {stat}
-                                    </option>
-                                ))}
-                                </Form.Control>
-                            </div>
-                        </Form.Group>
-                        <Form.Group>
-                            <div>
-                                <Form.Label className='fw-bold'>
-                                    <div className='flex flex-row gap-2 items-center'>
-                                        <div>
-                                            <FaUserAstronaut size={30} />
-                                        </div>
-                                        <div>
-                                            {t('Assigned to')}
-                                        </div>
-                                    </div>
-                                </Form.Label>
-                                <CustomSelect
-                                    value={worker ? worker.email : 'None'}
-                                    onChange={(e) => handleChange(e)}
-                                    employees={employees}
-                                />
-                            </div>
-                        </Form.Group>
-
+                                    </Form.Label>
+                                    <CustomSelect
+                                        value={worker ? worker.email : 'None'}
+                                        onChange={(e) => handleChange(e)}
+                                        employees={employees}
+                                    />
+                                </div>
+                            </Form.Group>
+                        </div>
                         <div className='flex justify-center items-center mt-4'>
                             <Button type='submit' className='bg-light border-light fw-semibold' onClick={handleSave} style={{ color: '#7D53DE', borderRadius: '20px' }}>{t('Save Data')}</Button>
                         </div>
