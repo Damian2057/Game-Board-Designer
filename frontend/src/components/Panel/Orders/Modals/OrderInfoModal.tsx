@@ -36,9 +36,9 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                     <Modal.Title className='fs-1 text-center fw-bold'>
                         <div>{order.game.title} {t('Order')}: {order.id}</div>
                     </Modal.Title>
-                    <Modal.Body className=' fs-5'>
-                        <Row className='mt-3 align-items-center'>
-                            <Col xs={8}>
+                    <Modal.Body className='fs-5'>
+                        <Row className='mt-3 align-items-center pb-4'>
+                            <Col xs={6}>
                                 <div>
                                     <span className='fw-bold'>{t('Price')}:</span> {order.price}{order.currency}
                                 </div>
@@ -51,21 +51,24 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                                 <div>
                                     <span className='fw-bold'>{t('Status')}:</span> {order.status}
                                 </div>
+
+                            </Col>
+                            <Col xs={6}>
                                 <div>
                                     <span className='fw-bold'>{t('Description')}:</span> {order.description}
                                 </div>
+                                <div>
+                                    <span className='fw-bold'>{t('User Data')}:</span>
+                                </div>
+                                <div>
+                                    <span className='fw-bold'>{t('firstname')}:</span> {order.firstName}
+                                </div>
+                                <div>
+                                    <span className='fw-bold'>{t('lastname')}:</span> {order.lastName}
+                                </div>
                             </Col>
                         </Row>
-                        <Row className='gap-2'>
-                            <div>
-                                <span className='fw-bold'>{t('User Data')}:</span>
-                            </div>
-                            <div>
-                                <span className='fw-bold'>{t('firstname')}:</span> {order.firstName}
-                            </div>
-                            <div>
-                                <span className='fw-bold'>{t('lastname')}:</span> {order.lastName}
-                            </div>
+                        <Row className='gap-2 px-2'>
                             <table className="tags-table">
                                 <thead>
                                 <tr>
@@ -99,12 +102,12 @@ const OrderInfoModal: React.FC<OrderInfoProps> = ({ order, onClose }) => {
                         <Row className='gap-2'>
                             <div>
                                 <span className='fw-bold'>{t('Assigned to')}:</span>
-                                <Button className='button-workspace' onClick={() => handleUserInfo(order.worker)}>{order.worker ? order.worker?.username : t('None')}</Button>
+                                <Button className='button-order-info my-2 ml-2' onClick={() => handleUserInfo(order.worker)}>{order.worker ? order.worker?.username : t('None')}</Button>
                             </div>
                         </Row>
                         <Row className='gap-2'>
-                            <div>
-                                <Button className='button-workspace' onClick={() => handleGameInfo(order.game)}>{t('Game Details')}</Button>
+                            <div className="flex justify-center items-center">
+                                <Button className='button-order-info' onClick={() => handleGameInfo(order.game)}>{t('Game Details')}</Button>
                             </div>
                             {selectedGame && (
                                 <GameInfo

@@ -10,11 +10,17 @@
     color: white !important;
 }
 
+.currency-select {
+    background-color: #F2F4F8 !important;
+    border-color: #7D53DE !important;
+    color: #7D53DE !important;
+}
+
 .tag {
     background-color: #F2F4F8;
     border-radius: 20px;
-    margin-right: 2em;
-    margin-bottom: 2em;
+    margin-right: 1em;
+    margin-bottom: 1em;
     font-weight: 500;
     padding: 0.4rem;
     display: flex;

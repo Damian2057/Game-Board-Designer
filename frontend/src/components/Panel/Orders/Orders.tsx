@@ -113,7 +113,7 @@ export default function Orders() {
                     <Card.Body>
                         <IconCircle path={'/panel/admin'} />
                         <p className='font-bold fs-2'>{t('Orders')}</p>
-                        <Col lg={3} className='mb-4'>
+                        <Col lg={3} className='mb-4 ml-12 px-2'>
                             <Form.Select className='form-select' aria-label="Category selector" defaultValue={''} onChange={handleWithStatusOrders}>
                                 <option disabled value={''}>{t('Choose status')}</option>
                                 {statuses.map(item => {
@@ -125,17 +125,17 @@ export default function Orders() {
                             <Col lg={11} className="mx-auto">
                                 <Table striped bordered hover>
                                     <thead>
-                                        <tr className='uppercase'>
-                                            <th>ID</th>
-                                            <th>{t('Ordered game')}</th>
-                                            <th>{t('Submit Date')}</th>
-                                            <th>{t('Last Update')}</th>
-                                            <th>{t('Status')}</th>
-                                            <th>{t('Worker')}</th>
-                                            <th>{t('Edit')}</th>
-                                            <th>{t('Info')}</th>
-                                            <th>{t('Claim')}</th>
-                                        </tr>
+                                    <tr className='uppercase'>
+                                        <th>ID</th>
+                                        <th>{t('Ordered game')}</th>
+                                        <th>{t('Submit Date')}</th>
+                                        <th>{t('Last Update')}</th>
+                                        <th>{t('Status')}</th>
+                                        <th>{t('Worker')}</th>
+                                        <th>{t('Edit')}</th>
+                                        <th>{t('Info')}</th>
+                                        <th>{t('Claim')}</th>
+                                    </tr>
                                     </thead>
                                     <tbody>
                                     {orders.map((order) => (
@@ -157,12 +157,12 @@ export default function Orders() {
                                             </td>
                                         </tr>
                                     ))}
-                                        {selectedOrderInfo && (
-                                            <OrderInfoModal
-                                                order={selectedOrderInfo}
-                                                onClose={() => setSelectedOrderInfo(null)}
-                                            />
-                                        )}
+                                    {selectedOrderInfo && (
+                                        <OrderInfoModal
+                                            order={selectedOrderInfo}
+                                            onClose={() => setSelectedOrderInfo(null)}
+                                        />
+                                    )}
                                     </tbody>
                                 </Table>
                                 <OrderEditModal
