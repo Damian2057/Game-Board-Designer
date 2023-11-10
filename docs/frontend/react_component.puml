@@ -1,0 +1,12 @@
+@startuml
+!define RECTANGLE class
+
+RECTANGLE FunkcyjnyKomponent {
+  - props: Props
+  - stan: String
+
+  + FunkcyjnyKomponent(props: Props)
+  + obslugaKlikniecia(): void
+  + render(): JSX.Element
+}
+@enduml
