@@ -1,0 +1,32 @@
+@startuml
+
+title Correct login and access to the protected resource
+autonumber
+
+participant "Browser" as browser
+participant "Server" as server
+
+
+
+browser -> server : login and password
+activate server
+server -> server : Check credentials
+alt correct
+server -> browser : access token
+else incorrect
+server -> browser : incorrect login or password
+end
+deactivate server
+
+browser -> server : get users
+activate server
+server -> server : Check token
+alt correct
+server -> browser : protected resource
+else incorrect
+server -> browser : token expired
+end
+deactivate server
+
+
+@enduml
