@@ -1,0 +1,74 @@
+@startuml
+|Klient|
+start
+:Wybór gry;
+:Doczytanie opisu gry;
+:Złożenie zamówienia;
+:         Uzupełnienie danych
+w tym szczegółów zamówienia;
+|System|
+:Sprawdzenie poprawności zamówienia;
+if (Poprawnego zamówienie?) then (Tak)
+  |Klient|
+  :Informacja o poprawnym złożeniu zamówieniu;
+  |System|
+  :Zapisanie jako zamówienie do realizacji;
+  |Przedsiębiorca|
+  :Wybór zamówienia do realizacji;
+  :Potwierdzenie zamówienia u klienta;
+    |Klient|
+    if (Klient potwierdza zamówienie?) is (Tak) then
+    :Wpłata zaliczki;
+        |Przedsiębiorca|
+        :Zmiana statusu zamówienia na przyjęte;
+        |System|
+        :Zmiana statusu zamówienia na przyjęte;
+        |Przedsiębiorca|
+        :Realizacja zamówienia;
+        :Wybór szablonu projektu;
+        :Ewentualna modyfikacja szablonu;
+        :Rozpoczęcie realizacji zamówienia;
+        |System|
+        :Zmiana statusu zamówienia na w realizacji;
+        |Przedsiębiorca|
+        :Zmiana statusów elementów w
+          zależności od postępu prac;
+        |System|
+        :Kontrola realizacji elementów;
+        :Zmiana statusów elementów w
+          zależności od postępu prac;
+        |Przedsiębiorca|
+        :Aktualizacja postępu prac;
+        |System|
+        :Kontrola realizacji elementów;
+        :Aktualizacja postępu prac;
+        |Przedsiębiorca|
+        :Zakończenie realizacji zamówienia;
+        |System|
+        :Kontrola realizacji elementów;
+        if (Zrealizowano każdy element?) is (Tak) then
+          :Zmiana statusu zamówienia na zrealizowane;
+        else (Nie)
+          :Zrealizuj pozostałe elementy;
+          |Przedsiębiorca|
+          :Realizacja brakujących elementów;
+        endif
+        :Zmiana statusu zamówienia na zrealizowane;
+        |Przedsiębiorca|
+        :Powiadomienie klienta o zakończeniu realizacji;
+        |Klient|
+        :Odbiór zamówienia;
+        :Zapłać za zamówienie;
+        stop
+    else (No)
+      |System|
+        :Zmiana statusu zamówienia na anulowane;
+        stop
+    endif
+
+else (Nie)
+  |Klient|
+  :Nie złożenie zamówienia;
+  stop
+endif
+@enduml
