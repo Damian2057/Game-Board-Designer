@@ -1,0 +1,97 @@
+@startuml
+
+left to right direction
+
+package Frontend {
+    package About
+    package Contact
+    package Footer
+    package Games
+    package Home
+    package Login
+    package Navbar
+    package Register
+    package Personal
+    package Panel {
+        package AdminPanel
+        package Board
+        package CustomOptions
+        package ManageEmployees
+        package ManageGames
+        package ManageProjects
+        package ManageTags
+        package ManageUsers
+        package Orders
+        package UserPanel
+        package Workspace
+    }
+    package Connector
+}
+
+About ..> Connector : <<import>>
+Contact ..> Connector : <<import>>
+Footer ..> Connector : <<import>>
+Games ..> Connector : <<import>>
+Home ..> Connector : <<import>>
+Login ..> Connector : <<import>>
+Navbar ..> Connector : <<import>>
+Register ..> Connector : <<import>>
+Personal ..> Connector : <<import>>
+AdminPanel ..> Connector : <<import>>
+Board ..> Connector : <<import>>
+CustomOptions ..> Connector : <<import>>
+ManageEmployees ..> Connector : <<import>>
+ManageGames ..> Connector : <<import>>
+ManageProjects ..> Connector : <<import>>
+ManageTags ..> Connector : <<import>>
+ManageUsers ..> Connector : <<import>>
+Orders ..> Connector : <<import>>
+UserPanel ..> Connector : <<import>>
+Workspace ..> Connector : <<import>>
+
+package Backend {
+    package auth
+    package database
+    package exceptions
+    package game
+    package image
+    package information
+    package order
+    package project
+    package users
+}
+
+Connector ..> game : <<import>>
+Connector ..> image : <<import>>
+Connector ..> information : <<import>>
+Connector ..> order : <<import>>
+Connector ..> project : <<import>>
+Connector ..> users : <<import>>
+Connector ..> auth : <<import>>
+
+game ..> auth : <<import>>
+image ..> auth : <<import>>
+information ..> auth : <<import>>
+order ..> auth : <<import>>
+project ..> auth : <<import>>
+users ..> auth : <<import>>
+
+game ..> database : <<import>>
+image ..> database : <<import>>
+information ..> database : <<import>>
+order ..> database : <<import>>
+project ..> database : <<import>>
+users ..> database : <<import>>
+
+game ..> exceptions : <<import>>
+image ..> exceptions : <<import>>
+information ..> exceptions : <<import>>
+order ..> exceptions : <<import>>
+project ..> exceptions : <<import>>
+users ..> exceptions : <<import>>
+
+package Database
+
+database ..> Database : <<import>>
+
+@enduml

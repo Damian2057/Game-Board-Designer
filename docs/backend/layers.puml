@@ -6,19 +6,20 @@ skinparam component {
     BackgroundColor<<layerBottom>> LightYellow
 }
 
-package "Frontend" {
-    [ReactJs] as UI
+component "Frontend" as "Frontend" {
+
 }
 
-package "Backend" {
-    [NestJs] as NestJs
+component "Backend" as "Backend" {
+
 }
 
-package "Database" {
-    [PostgresSQL] as DB
+component "Database" as "Database" {
+
 }
 
-UI --> NestJs
-NestJs --> Database
+"Frontend" --> "Backend"
+"Backend" --> "Database"
+
 
 @enduml
