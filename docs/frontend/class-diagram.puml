@@ -1,0 +1,50 @@
+@startuml
+
+left to right direction
+
+
+component Frontend {
+    class About
+    class Contact
+    class Footer
+    class Games
+    component AdminPanel {
+        class Board
+        class CustomOptions
+        class ManageEmployees
+        class ManageGames
+        class ManageProjects
+        class ManageTags
+        class ManageUsers
+        class Orders
+        class Workspace
+    }
+    class Home
+    class Login
+    class Navbar
+    class Personal
+    class Register
+
+    component Connector {
+        class API
+    }
+
+    About --(0-- API
+    Contact --(0-- API
+    Games --(0-- API
+    Home --(0-- API
+    Login --(0-- API
+    Personal --(0-- API
+    Register --(0-- API
+    Board --(0-- API
+    CustomOptions --(0-- API
+    ManageEmployees --(0-- API
+    ManageGames --(0-- API
+    ManageProjects --(0-- API
+    ManageTags --(0-- API
+    ManageUsers --(0-- API
+    Orders --(0-- API
+    Workspace --(0-- API
+}
+
+@enduml

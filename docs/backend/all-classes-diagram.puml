@@ -1,0 +1,207 @@
+@startuml
+
+class User {
+  - id: int
+  - username: string
+  - password: string
+  - email: string
+  - phoneNumber: string
+  - isActive: boolean
+  - role: UserRole
+
+   + emailToLowerCase(): void
+}
+
+class CodeEntity {
+  - id: int
+  - code: string
+  - email: string
+  - createdAt: DateTime
+}
+
+class Tag {
+  - id: int
+  - name: string
+}
+
+class Component {
+  - id: int
+  - name: string
+  - quantity: int
+}
+
+class Game {
+  - id: int
+  - title: string
+  - description: string
+  - price: float
+  - publicationDate: DateTime
+  - currency: string
+  - components: Component[]
+  - imageIds: int[]
+  - tags: Tag[]
+}
+
+class ImageEntity {
+  - id: int
+  - filename: string
+  - mimetype: string
+}
+
+class Information {
+  - id: int
+  - address: string
+  - phoneNumber: string
+  - email: string
+  - about: string
+  - mission: string
+  - facebook: string
+}
+
+class Order {
+  - id: int
+  - phone: string
+  - email: string
+  - description: string
+  - price: float
+  - address: string
+  - submittingDate: DateTime
+  - lastUpdate: DateTime
+  - firstName: string
+  - lastName: string
+  - city: string
+  - currency: string
+  - game: Game
+  - customer: User
+  - worker: User
+  - status: OrderStatus
+}
+
+abstract class AbstractTicketEntity {
+  - id: int
+  - status: Status
+  - priority: Priority
+}
+
+class Property {
+  - id: int
+  - name: string
+  - value: string
+}
+
+class Box extends AbstractTicketEntity {
+  - name: string
+  - description: string
+  - notes: string[]
+  - properties: Property[]
+  - imageIds: int[]
+  - type: string
+}
+
+class Element extends AbstractTicketEntity {
+  - name: string
+  - description: string
+  - notes: string[]
+  - quantity: int
+  - properties: Property[]
+  - imageIds: int[]
+  - type: string
+}
+
+class Container extends AbstractTicketEntity {
+  - name: string
+  - description: string
+  - notes: string[]
+  - quantity: int
+  - properties: Property[]
+  - imageIds: int[]
+  - type: string
+}
+
+class Project {
+  - id: int
+  - name: string
+  - description: string
+  - notes: string[]
+  - box: Box
+  - containers: Container[]
+  - elements: Element[]
+  - games: Game[]
+  - currentGame: Game
+  - isTemplate: boolean
+  - isCompleted: boolean
+  - worker: User
+  - order: Order
+}
+
+enum Priority {
+  A
+  B
+  C
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum OrderStatus {
+  PENDING
+  CLAIMED
+  CANCELLED
+  COMPLETED
+  IN_PROGRESS
+  BLOCKED
+  DONE
+  APPROVED
+  REJECTED
+  DRAFT
+  DISCUSSING
+  IN_NEGOTIATION
+  IN_REVIEW
+}
+
+enum Status {
+  TODO
+  IN_PROGRESS
+  DONE
+  BLOCKED
+}
+
+Game "1" --> "1..n" Component : has
+Component "1" --> "0..1" Game : belongs to
+
+Game "1..n" --> "1..n" Tag : has
+
+User "1" --> "0..n" Order : places
+Order "1" --> "0..1" User : belongs to
+
+Order "0..1" --> "0..n" Project : is part of
+Project "0..n" --> "0..n" Order : includes
+Project "1" --> "0..n" User : has employee
+
+Project "1" --> "1" Box : has
+Box "1" --> "1" Project : belongs to
+
+Project "1" --> "0..n" Element : has
+Element "1" --> "1" Project : belongs to
+
+Project "1" --> "0..n" Container : has
+Container "1" --> "1" Project : belongs to
+
+Container "1" --> "0..n" Element : contains
+Element "1" --> "0..1" Container : belongs to
+
+Element "1" --> "0..n" Property : has
+Property "1" --> "0..1" Element : belongs to
+
+Box "1" --> "0..n" Property : has
+Property "1" --> "0..1" Box : belongs to
+
+Container "1" --> "0..n" Property : has
+Property "1" --> "0..1" Container : belongs to
+
+Project "1..n" --> "1..n" Game : is part of
+Game "1" --> "0..n" Project : has
+
+@enduml

@@ -1,11 +1,11 @@
 @startuml
 !includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/v2.2.0/C4_Component.puml
 
-Container_Boundary(c1, Reactjs, "Reactjs") {
-    Component_Ext(react,"Communication with BE", "RESTAPI", "frontend to backend communication")
+Container_Boundary(c1, Frontend, "Frontend") {
+    Component_Ext(react, "React", "React")
 }
 
-System_Boundary(backend, "backend") {
+System_Boundary(backend, "Backend") {
     Container(api, "NestJs", "NestJs") {
         Component(auth, "Auth", "authentication module")
         Component(database, "Database", "database configuration module")
@@ -17,16 +17,16 @@ System_Boundary(backend, "backend") {
         Component(order, "Order", "order module")
         Component(project, "Project", "project module")
     }
+}
 
-    Container_Boundary(c2, "Postgres", "Postgres") {
-        Component_Ext(Postgres, "PostgresSQL", "")
-    }
+Container_Boundary(c2, "Postgres", "Postgres") {
+    Component_Ext(postgres, "Postgres", "Postgres")
 }
 
 
-Rel(auth, user, "")
-Rel(user, auth, "")
+Rel(react, api, "call")
 
+Rel(auth, user, "")
 Rel(user, order, "")
 Rel(project, order, "")
 Rel(project, image, "")
@@ -41,7 +41,14 @@ Rel(database, project, "")
 Rel(database, game, "")
 Rel(database, image, "")
 
-Rel(react, backend, "call")
-Rel(database, Postgres, "")
+Rel(exception, auth, "")
+Rel(exception, user, "")
+Rel(exception, order, "")
+Rel(exception, project, "")
+Rel(exception, game, "")
+Rel(exception, image, "")
+Rel(exception, information, "")
+
+Rel(database, postgres, "")
 
 @enduml
