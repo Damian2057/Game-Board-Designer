@@ -1,10 +1,6 @@
-import { CanActivate, ExecutionContext, forwardRef, Inject, Injectable } from "@nestjs/common";
-import { Observable } from "rxjs";
-import { ROLES } from "../../auth/util/const";
-import { User } from "../../users/model/domain/user.entity";
+import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { Reflector } from "@nestjs/core";
 import { UserService } from "../../users/service/user.service";
-import { UpdateOrderCommand } from "../model/command/update.order.command";
 import { OrderService } from "../service/order.service";
 import { Order } from "../model/domain/order.entity";
 

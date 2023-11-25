@@ -1,0 +1,44 @@
+@startuml
+|Klient|
+start
+:Wybór gry do zamówienia;
+:Złożenie zamówienia za pośrednictwem numeru telefonu;
+|Przedsiębiorca|
+if (Odebranie telefonu?) then (Tak)
+    :Oszacowanie ceny gry;
+    |Klient|
+    if (Akceptacja ceny zamówienia?) is (Tak) then
+    |Klient|
+    :Wpłata zaliczki;
+        |Przedsiębiorca|
+          :    Zapisanie w notesie
+          szczegółów zamówienia;
+
+          :Przejscie do realizacji zamówienia;
+          :Znalezienie szablonu gry do zamówienia;
+          :Wypisanie elementów projektu do zrobienia;
+          :Zaprojektowanie każdego elementu;
+          :Kontrola czy każdy element jest zrobiony;
+          :Realizacja każdego elementu;
+            :Kontrola czy każdy element jest zrobiony;
+          :Kompletacja całego zamówienia;
+          :Wykonanie telefonu do klienta;
+
+            |Klient|
+            :Odebranie telefonu;
+            :Przyjazd do sklepu;
+            :Odbiór zamówienia;
+            :Zapłata za zamówienie;
+            :Powrót do domu;
+    stop
+        else (Nie)
+          |Klient|
+            :Nie złożenie zamówienia;
+            stop
+        endif
+else (Nie)
+  |Klient|
+  :Nie przyjecie zamówienia;
+  stop
+endif
+@enduml
