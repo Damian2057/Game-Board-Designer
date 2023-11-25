@@ -1,0 +1,25 @@
+@startuml
+
+title Sequence for a resoruce modification
+autonumber
+
+participant "Browser" as browser
+participant "Server" as server
+
+browser -> server : send request
+activate server
+server -> server : check token
+alt token is valid
+    server -> server : get user from context
+    server -> server : check if user is owner of requested resource
+    alt user is owner
+        server -> server : modify resource
+        server -> browser : send modified resource
+    else user is not owner
+        server -> browser : send error
+    end
+else token is invalid
+    server -> browser : send error
+end
+
+@enduml

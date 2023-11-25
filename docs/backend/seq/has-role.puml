@@ -1,0 +1,24 @@
+@startuml
+
+title Sequence for a role-secured request
+autonumber
+
+participant "Browser" as browser
+participant "Server" as server
+
+browser -> server : send request
+activate server
+server -> server : verify token
+alt token is valid
+    server -> server : get user from context
+    server -> server : check role
+    alt correct
+        server -> browser : protected resource
+    else incorrect
+        server -> browser : insufficient permissions
+    end
+else token is invalid
+    server -> browser : invalid token
+end
+
+@enduml
