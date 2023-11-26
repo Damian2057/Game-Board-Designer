@@ -34,7 +34,10 @@ export class AuthService {
   }
 
   private createToken(user: User) : Promise<string> {
-    return this.jwtService.signAsync({user});
+    return this.jwtService.signAsync({
+      user,
+      expiresIn: process.env.JWT_EXPIRATION_TIME
+    });
   }
 
   private async refresh(user: User): Promise<string> {
