@@ -42,5 +42,4 @@ export class CodeActivatorConsumer {
     hash.update(email);
     return hash.digest('hex').slice(0, 6);
   }
-
 }

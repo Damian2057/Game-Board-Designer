@@ -23,6 +23,10 @@ Container_Boundary(c2, "Postgres", "Postgres") {
     Component_Ext(postgres, "Postgres", "Postgres")
 }
 
+Container_Boundary(c3, "Redis", "Redis") {
+    Component_Ext(bullmq, "BullMQ", "BullMQ")
+}
+
 
 Rel(react, api, "call")
 
@@ -50,5 +54,7 @@ Rel(exception, image, "")
 Rel(exception, information, "")
 
 Rel(database, postgres, "")
+
+Rel(user, bullmq, "")
 
 @enduml

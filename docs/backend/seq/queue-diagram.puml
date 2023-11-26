@@ -1,0 +1,63 @@
+@startuml
+
+title User registration sequence diagram
+autonumber
+
+participant "Browser" as browser
+participant "Email service" as email
+participant "Server" as server
+participant "BullMq" as bullmq
+
+browser -> server : send registration request
+activate server
+server -> server : verify data
+server -> server : check if email is already used
+alt email is not used
+    server -> server : create user
+    server -> bullmq : send job to queue
+    deactivate server
+    activate bullmq
+    bullmq -> server : process job
+    deactivate bullmq
+    activate server
+    server -> server : start email send job
+    alt email is sent successfully
+        server -> browser : send email with activation code
+    else email is not sent
+        server -> server : log error
+    end
+    deactivate server
+
+else email is already used
+    server -> browser : send error message
+end
+
+
+
+
+
+
+'server -> server : verify token
+'alt token is valid
+'    server -> server : check if the project is not a template
+'    alt project is not template
+'        server -> server : check if project is not completed
+'        alt project is not completed
+'            server -> server : check if user is admin or project owner
+'            alt user is admin or project owner
+'                server -> server : update project
+'                server -> browser : send success message
+'            else user is not admin or project owner
+'                server -> browser : send error message
+'            end
+'        else project is completed
+'            server -> browser : send error message
+'        end
+'    else project is template
+'        server -> browser : send error message
+'    end
+'else token is invalid
+'    server -> browser : invalid token
+'end
+
+@enduml
