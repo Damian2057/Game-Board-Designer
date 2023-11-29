@@ -16,7 +16,7 @@ const Footer = () => {
                             <img src="/src/assets/logo_GBD.png" alt="Game Board Designer logo" height={'140px'} style={{ maxHeight: '140px' }} />
                         </span>
                             <h3 className="footer-logo-name text-uppercase fw-bolder" style={{ marginLeft: '10px' }}>
-                                Game Board Designer
+                                Game Flow
                             </h3>
                         </div>
                         <p className="footer-description">{t('Footer description')}</p>
