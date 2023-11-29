@@ -21,6 +21,7 @@ function Games() {
     const { t } = useTranslation();
     const { i18n } = useTranslation();
     const itemsPerPage = 11;
+    const isUserLoggedIn: boolean = !!Api.auth.getAuthToken();
     const [tags, setTags] = React.useState([] as Tag[]);
     const [games, setGames] = React.useState([] as Game[]);
 
@@ -145,9 +146,11 @@ function Games() {
                                 <Col>
                                     <Button className='button-card' onClick={() => handleGameClick(game)}>{t('Info')}</Button>
                                 </Col>
-                                <Col>
-                                    <Link to="/order" state={{ game: game }}><Button className='button-card'>{t('Order')}</Button></Link>
-                                </Col>
+                                {isUserLoggedIn && (
+                                    <Col>
+                                        <Link to="/order" state={{ game: game }}><Button className='button-card'>{t('Order')}</Button></Link>
+                                    </Col>
+                                )}
                             </Row>
 
                         </div></Col>
