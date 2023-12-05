@@ -59,7 +59,7 @@ const EmployeeInfoModal: React.FC<UserInfoProps> = ({ name, employee, onClose })
                                             <BsTelephone size={30} />
                                         </div>
                                         <div>
-                                            {t('Phone}')}
+                                            {t('Phone')}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -74,7 +74,7 @@ const EmployeeInfoModal: React.FC<UserInfoProps> = ({ name, employee, onClose })
                                             <MdAdminPanelSettings size={30} />
                                         </div>
                                         <div>
-                                            {t('Role}')}: {employee?.role}
+                                            {t('Role')}: {employee?.role}
                                         </div>
                                     </div>
                                 </Form.Label>
@@ -82,7 +82,7 @@ const EmployeeInfoModal: React.FC<UserInfoProps> = ({ name, employee, onClose })
                         </Form.Group>
                         <Form.Group>
                             <div>
-                                <Form.Label className='fw-bold'>Active: {employee?.isActive ? t('Yes}') : t('No}')}</Form.Label>
+                                <Form.Label className='fw-bold'>Active: {employee?.isActive ? t('Yes') : t('No')}</Form.Label>
                             </div>
                         </Form.Group>
                     </Form>
