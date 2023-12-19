@@ -2,6 +2,8 @@ version: "3.8"
 volumes:
     postgres_data:
         driver: local
+    postgres_test_data:
+        driver: local
 services:
     postgres:
         container_name: GameBoard-Postgres
@@ -16,6 +18,23 @@ services:
         volumes:
             - postgres_data:/var/lib/postgresql/data
             - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
+        healthcheck:
+            test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+            interval: 10s
+            timeout: 5s
+            retries: 3
+    test_postgres:
+        container_name: GameBoard-Test-Postgres
+        image: postgres
+        env_file: .env
+        environment:
+            POSTGRES_DB: ${POSTGRESQL_DB}
+            POSTGRES_USER: ${POSTGRESQL_USER}
+            POSTGRES_PASSWORD: ${POSTGRESQL_PASS}
+        ports:
+            - ${POSTGRES_LOCAL_PORT}:${POSTGRES_DOCKER_PORT}
+        volumes:
+            - postgres_test_data:/var/lib/postgresql/data
         healthcheck:
             test: [ "CMD-SHELL", "pg_isready -U postgres" ]
             interval: 10s

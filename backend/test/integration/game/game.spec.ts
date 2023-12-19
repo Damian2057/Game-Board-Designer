@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
-import { AppModule } from "../../src/app.module";
+import { AppModule } from "../../../src/app.module";
 
-describe('AppController (e2e)', () => {
+describe('GameController (integration)', () => {
   let app: INestApplication;
 
   beforeEach(async () => {
@@ -19,9 +19,9 @@ describe('AppController (e2e)', () => {
     await app.close()
   })
 
-  it('/user (GET)', () => {
+  it('/game/all (GET)', () => {
     return request(app.getHttpServer())
-      .get('/hello')
+      .get('/game/all')
       .expect(200)
       .expect('Hello World!');
   });
