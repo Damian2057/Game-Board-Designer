@@ -24,9 +24,6 @@ import { IllegalArgumentException } from "../../exceptions/type/Illegal.argument
 import { AdvancedUserUpdateCommand } from "../model/command/advanced.user.update.command";
 import { AdvancedUserCreateCommand } from "../model/command/advanced.user.create.command";
 import { paginate, Pagination } from "nestjs-typeorm-paginate";
-import { Game } from "../../game/model/domain/game.entity";
-import { GameDto } from "../../game/model/dto/game.dto";
-import { mapGameToGameDto } from "../../game/util/util.functions";
 
 @Injectable()
 export class UserService {

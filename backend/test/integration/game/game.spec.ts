@@ -1,16 +1,20 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
+import { Test, TestingModule } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
+import * as request from "supertest";
 import { AppModule } from "../../../src/app.module";
 import { Repository } from "typeorm";
 import { Game } from "../../../src/game/model/domain/game.entity";
 import { getRepositoryToken } from "@nestjs/typeorm";
 import { createGame } from "../utils";
+import { User } from "../../../src/users/model/domain/user.entity";
+import { UserRole } from "../../../src/users/model/domain/user.role.enum";
+const bcrypt = require('bcrypt');
 
 describe('GameController (integration)', () => {
 
   let app: INestApplication;
   let gameRepository: Repository<Game>
+  let userRepository: Repository<User>
 
   beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -19,9 +23,31 @@ describe('GameController (integration)', () => {
 
     app = moduleFixture.createNestApplication();
     gameRepository = moduleFixture.get<Repository<Game>>(getRepositoryToken(Game));
+    userRepository = moduleFixture.get<Repository<User>>(getRepositoryToken(User));
 
+    await gameRepository.delete({});
+    await userRepository.delete({});
+
+    await userRepository.save({
+      username: "username",
+      email: "email",
+      password: await bcrypt.hash("password", 12),
+      isActive: true,
+      phoneNumber: "123123123",
+      role: UserRole.ADMIN
+    });
     await app.init();
   });
+
+  async function getAuthToken(): Promise<string> {
+    const res = await request(app.getHttpServer()).post("/auth/login")
+      .send({
+        email: "email",
+        password: "password"
+      })
+      .expect(201);
+    return res.body.token;
+  }
 
   beforeEach(async () => {
     const game: Game = createGame('title',
@@ -51,7 +77,7 @@ describe('GameController (integration)', () => {
     await app.close()
   })
 
-  it('/game/all (GET) OK', () => {
+  it('/game/all (GET) OK', async () => {
     return request(app.getHttpServer())
       .get('/game/all')
       .expect(200)
@@ -117,5 +143,27 @@ describe('GameController (integration)', () => {
         expect(res.body[0].currency).toBe('EUR');
         expect(res.body[0].imageIds.length).toBe(2);
       })
+  });
+
+  it('game/create (POST) UNAUTHORIZED', () => {
+    return request(app.getHttpServer()).post(`/game/create`)
+      .send({})
+      .expect(401)
+  });
+
+  it('game/create (POST) UNAUTHORIZED bad token', () => {
+    return request(app.getHttpServer()).post(`/game/create`)
+      .set('Authorization', 'Bearer ' + 'invalid token')
+      .send({})
+      .expect(401)
+  });
+
+  it('game/create (POST) NOT ACCEPTABLE missing data', async () => {
+    const token = await getAuthToken();
+    console.log(token);
+    return request(app.getHttpServer()).post(`/game/create`)
+      .set('Authorization', 'Bearer ' + token)
+      .send({})
+      .expect(406)
   });
 });
