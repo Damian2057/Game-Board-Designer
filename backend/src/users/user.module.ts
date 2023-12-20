@@ -4,7 +4,6 @@ import { UserService } from './service/user.service';
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { User } from "./model/domain/user.entity";
 import { AuthModule } from "../auth/auth.module";
-import { HelloController } from "./controller/hello.controller";
 import { BullModule } from "@nestjs/bull";
 import { CODE_SEND_EMAIL } from "../util/bullMQ/queue";
 import { CodeActivatorConsumer } from "./service/consumer/code.activator.consumer";
@@ -18,7 +17,7 @@ import { CodeEntity } from "./model/domain/code.entity";
       name: CODE_SEND_EMAIL
     }),
   ],
-  controllers: [UserController, HelloController],
+  controllers: [UserController],
   providers: [
     UserService,
     CodeActivatorConsumer
