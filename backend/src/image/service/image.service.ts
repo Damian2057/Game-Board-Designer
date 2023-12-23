@@ -80,6 +80,9 @@ export class ImageService {
 
   async checkImageExists(imageIds: number[]): Promise<void> {
     try {
+      if (!imageIds) {
+        return;
+      }
       for (const id of imageIds) {
         await this.getFile(id);
       }
