@@ -160,7 +160,6 @@ describe('GameController (integration)', () => {
 
   it('game/create (POST) NOT ACCEPTABLE missing data', async () => {
     const token = await getAuthToken();
-    console.log(token);
     return request(app.getHttpServer()).post(`/game/create`)
       .set('Authorization', 'Bearer ' + token)
       .send({})
