@@ -1,0 +1,58 @@
+@startuml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+Container_Boundary(c1, React) {
+    Component_Ext(febecommunicationReact,"Communication with backend", "Axios", "Frontend to backend communication")
+}
+
+Container_Boundary(c2, Backend) {
+    Container(backend, "Backend", "Nestjs", "Backend") {
+        Component(auth, "Auth", "Nestjs","authentication module")
+        Component(database, "Database", "Nestjs", "database configuration module")
+        Component(exception, "Exception", "Nestjs", "exception module")
+        Component(game, "Game", "Nestjs", "game module")
+        Component(image, "Image", "Nestjs", "image module")
+        Component(information, "Information", "Nestjs", "information module")
+        Component(user, "User", "Nestjs", "user module")
+        Component(order, "Order", "Nestjs", "order module")
+        Component(project, "Project", "Nestjs", "project module")
+    }
+}
+
+Container_Boundary(c3, Database) {
+    Component_Ext(databaseCom, "Database", "PostgreSQL", "Database")
+}
+
+Container_Boundary(c4, redis) {
+    Component_Ext(bullCom, "BullMQ", "BullMQ", "queue system")
+}
+
+Rel(febecommunicationReact, backend, "")
+
+Rel(auth, user, "")
+Rel(user, order, "")
+Rel(project, order, "")
+Rel(project, image, "")
+Rel(project, game, "")
+Rel(game, order, "")
+Rel(game, image, "")
+
+Rel(database, auth, "")
+Rel(database, user, "")
+Rel(database, order, "")
+Rel(database, project, "")
+Rel(database, game, "")
+Rel(database, image, "")
+
+Rel(exception, auth, "")
+Rel(exception, user, "")
+Rel(exception, order, "")
+Rel(exception, project, "")
+Rel(exception, game, "")
+Rel(exception, image, "")
+Rel(exception, information, "")
+
+Rel(database, databaseCom, "")
+Rel(user, bullCom, "")
+
+@enduml
