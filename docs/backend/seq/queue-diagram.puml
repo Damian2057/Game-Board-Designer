@@ -32,32 +32,4 @@ else email is already used
     server -> browser : send error message
 end
 
-
-
-
-
-
-'server -> server : verify token
-'alt token is valid
-'    server -> server : check if the project is not a template
-'    alt project is not template
-'        server -> server : check if project is not completed
-'        alt project is not completed
-'            server -> server : check if user is admin or project owner
-'            alt user is admin or project owner
-'                server -> server : update project
-'                server -> browser : send success message
-'            else user is not admin or project owner
-'                server -> browser : send error message
-'            end
-'        else project is completed
-'            server -> browser : send error message
-'        end
-'    else project is template
-'        server -> browser : send error message
-'    end
-'else token is invalid
-'    server -> browser : invalid token
-'end
-
 @enduml
