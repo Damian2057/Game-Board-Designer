@@ -1,0 +1,117 @@
+@startuml
+
+left to right direction
+
+actor "Administator" as Admin
+
+rectangle "Aplikacja" {
+    usecase "Wylogowanie" as UC2
+    usecase "Przeglądanie gier" as UC5
+    usecase "Wyszukiwanie gier" as UC6
+    usecase "Przeglądanie informacji o grze" as UC7
+    usecase "Zmiana języka" as UC8
+    usecase "Składanie zamówienia" as UC9
+    usecase "Przeglądanie zamówień" as UC10
+    usecase "Przeglądanie informacji o zamówieniu" as UC11
+    usecase "Edycja zamówienia" as UC12
+    usecase "Przeglądanie informacji o użytkowniku" as UC13
+    usecase "Edycja informacji o użytkowniku" as UC14
+
+    usecase "Zarządzanie grami" as UC15
+    usecase "Dodawanie gry" as UC16
+    usecase "Edycja gry" as UC17
+    usecase "Usuwanie gry" as UC18
+    usecase "Dodawanie elementu do gry" as UC40
+    usecase "Edycja elementu gry" as UC41
+    usecase "Usuwanie elementu gry" as UC42
+
+    usecase "Zarządzanie zamówieniami" as UC19
+    usecase "Edycja zamówienia" as UC20
+    usecase "Przyjmowanie zamówienia" as UC21
+    usecase "Anulowanie zamówienia" as UC22
+
+    usecase "Zarządzanie użytkownikami" as UC23
+    usecase "Edycja użytkownika" as UC24
+    usecase "Usuwanie użytkownika" as UC25
+    usecase "Dodanie użytkownika" as UC26
+
+    usecase "Zarządzanie kategoriami" as UC27
+    usecase "Dodawanie kategorii" as UC28
+    usecase "Edycja kategorii" as UC29
+    usecase "Usuwanie kategorii" as UC30
+
+    usecase "Zarzadzanie schematami" as UC31
+    usecase "Dodawanie schematu" as UC32
+    usecase "Edycja schematu" as UC33
+    usecase "Usuwanie schematu" as UC34
+    usecase "Przeglądanie schematów" as UC35
+    usecase "Przeglądanie informacji o schemacie" as UC36
+    usecase "Dodawanie elementu do schematu" as UC43
+    usecase "Edycja elementu schematu" as UC44
+    usecase "Usuwanie elementu schematu" as UC45
+    usecase "Edycja rozmiaru elementu schematu" as UC46
+
+    usecase "Realizacja schematu" as UC37
+    usecase "Priorytetyzacja elementów schematu" as UC38
+    usecase "Kategoryzacja elementów schematu" as UC39
+
+    Admin -- UC2
+    Admin -- UC5
+    Admin -- UC8
+    Admin -- UC9
+    Admin -- UC10
+    Admin -- UC13
+
+    Admin -- UC15
+    Admin -- UC19
+    Admin -- UC23
+    Admin -- UC27
+    Admin -- UC31
+    Admin -- UC37
+
+    UC5 <.. UC6 : <<extends>>
+    UC5 <.. UC7 : <<extends>>
+
+    UC10 <.. UC11 : <<extends>>
+    UC11 <.. UC12 : <<extends>>
+
+    UC13 <.. UC14 : <<extends>>
+
+    UC15 <.. UC16 : <<extends>>
+    UC15 <.. UC17 : <<extends>>
+    UC15 <.. UC18 : <<extends>>
+    UC17 <.. UC40 : <<extends>>
+    UC17 <.. UC41 : <<extends>>
+    UC17 <.. UC42 : <<extends>>
+
+    UC19 <.. UC20 : <<extends>>
+    UC19 <.. UC21 : <<extends>>
+    UC19 <.. UC22 : <<extends>>
+
+    UC23 <.. UC24 : <<extends>>
+    UC23 <.. UC25 : <<extends>>
+    UC23 <.. UC26 : <<extends>>
+
+    UC27 <.. UC28 : <<extends>>
+    UC27 <.. UC29 : <<extends>>
+    UC27 <.. UC30 : <<extends>>
+
+    UC31 <.. UC32 : <<extends>>
+    UC31 <.. UC33 : <<extends>>
+    UC31 <.. UC34 : <<extends>>
+    UC31 <.. UC35 : <<extends>>
+    UC31 <.. UC36 : <<extends>>
+    UC33 <.. UC43 : <<extends>>
+    UC33 <.. UC44 : <<extends>>
+    UC33 <.. UC45 : <<extends>>
+    UC44 <.. UC46 : <<extends>>
+
+
+    UC37 <.. UC38 : <<extends>>
+    UC37 <.. UC39 : <<extends>>
+
+
+
+}
+
+@enduml

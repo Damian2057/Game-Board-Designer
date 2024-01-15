@@ -1,0 +1,36 @@
+@startuml
+
+left to right direction
+
+actor "Zalogowany użytkownik" as User
+
+rectangle "Aplikacja" {
+    usecase "Wylogowanie" as UC2
+    usecase "Przeglądanie gier" as UC5
+    usecase "Wyszukiwanie gier" as UC6
+    usecase "Przeglądanie informacji o grze" as UC7
+    usecase "Zmiana języka" as UC8
+    usecase "Składanie zamówienia" as UC9
+    usecase "Przeglądanie zamówień" as UC10
+    usecase "Przeglądanie informacji o zamówieniu" as UC11
+    usecase "Edycja zamówienia" as UC12
+    usecase "Przeglądanie informacji o użytkowniku" as UC13
+    usecase "Edycja informacji o użytkowniku" as UC14
+
+    User -- UC2
+    User -- UC5
+    User -- UC8
+    User -- UC9
+    User -- UC10
+    User -- UC13
+
+    UC5 <.. UC6 : <<extends>>
+    UC5 <.. UC7 : <<extends>>
+
+    UC10 <.. UC11 : <<extends>>
+    UC11 <.. UC12 : <<extends>>
+
+    UC13 <.. UC14 : <<extends>>
+}
+
+@enduml
