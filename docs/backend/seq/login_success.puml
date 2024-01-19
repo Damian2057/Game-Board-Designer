@@ -12,20 +12,20 @@ browser -> server : login and password
 activate server
 server -> server : Check credentials
 alt correct
-server -> browser : access token
+server --> browser : access token
+browser -> server : get users
+server -> server : Check token
+alt correct
+server --> browser : protected resource
 else incorrect
-server -> browser : incorrect login or password
+server --> browser : token expired
+end
+else incorrect
+server --> browser : incorrect login or password
 end
 deactivate server
 
-browser -> server : get users
-activate server
-server -> server : Check token
-alt correct
-server -> browser : protected resource
-else incorrect
-server -> browser : token expired
-end
+
 deactivate server
 
 

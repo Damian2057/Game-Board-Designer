@@ -17,18 +17,18 @@ alt token is valid
             server -> server : check if user is admin or project owner
             alt user is admin or project owner
                 server -> server : update project
-                server -> browser : send success message
+                server --> browser : send success message
             else user is not admin or project owner
-                server -> browser : send error message
+                server --> browser : send error message
             end
         else project is completed
-            server -> browser : send error message
+            server --> browser : send error message
         end
     else project is template
-        server -> browser : send error message
+        server --> browser : send error message
     end
 else token is invalid
-    server -> browser : invalid token
+    server --> browser : invalid token
 end
 
 @enduml
