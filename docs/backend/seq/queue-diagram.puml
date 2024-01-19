@@ -15,21 +15,20 @@ server -> server : check if email is already used
 alt email is not used
     server -> server : create user
     server -> bullmq : send job to queue
-    deactivate server
     activate bullmq
     bullmq -> server : process job
     deactivate bullmq
-    activate server
     server -> server : start email send job
     alt email is sent successfully
-        server -> browser : send email with activation code
+        server --> browser : send email with activation code
     else email is not sent
         server -> server : log error
     end
-    deactivate server
+
 
 else email is already used
-    server -> browser : send error message
+    server --> browser : send error message
+        deactivate server
 end
 
 @enduml
